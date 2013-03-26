@@ -1,0 +1,54 @@
+<%--
+    Document   : header
+    Created on : 9/05/2011, 10:19 PM
+    Author     : Adam Shortall
+--%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<%@page import="util.*" %>
+<%@page import="web.Form" %>
+<%@page import="domain.User.Status" %>
+
+<jsp:useBean id="user" scope="session" class="domain.User" />
+
+<html>
+<head>
+    <script src="<%= RPLFragment.JAVASCRIPT.absoluteAddress %>"></script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT %>/css/rpl.css">
+    <title><%= thisPage.title %></title>
+</head>
+
+<body>
+<div id="wrapper">
+    <div id="side_left">
+        <img src="<%= RPLPage.ROOT %>/images/UoN_logo_secondary.gif" alt="logo" />
+        <div id="menu">
+            <ul>
+                <li><a href="<%= RPLPage.ROOT %>/home">Home</a></li>
+<%
+if(user != null && user.getStatus() == Status.LOGGED_IN) {
+%>
+                <li><a href="<%= RPLPage.ROOT %>/logout">Log Out</a></li>
+            </ul>
+<% } else { %>
+            </ul>
+            <hr />
+            <form name="login" action="<%= RPLPage.ROOT %>/home" method="post">
+            Username: <input type="text" name="userID" value="370669520" /><br />
+            Password: <input type="password" name="password" value="abcd1234" />
+            <input type="submit" name="" value="Login" />
+            <a href="register">Register</a>
+            </form>
+<% } %>
+
+
+        </div>
+    </div>
+    <div id="content">

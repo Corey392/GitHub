@@ -1,0 +1,15 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%-- 
+    Document   : sidebar
+    Created on : 14/05/2011, 3:25:41 AM
+    Author     : James
+--%>
+<jsp:useBean id="sidebarLinks" scope="request" class="java.util.ArrayList"/>
+<div class="sidebar">
+    <%-- TODO: use a list of Link objects or Enum instead of strings --%>
+    <c:forEach var="href" items="${sidebarLinks}">
+        <form action="${href.address}" method="post">
+            <a href="${href.address}"><input type="button" value="${href.name}" /></a>
+        </form>
+    </c:forEach>
+</div>

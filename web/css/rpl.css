@@ -1,0 +1,137 @@
+/* 
+    Document   : rpl
+    Created on : Sep 1, 2012, 12:00:00 AM
+    Author     : James Lee Chin
+    Description:
+    Purpose of the stylesheet follows.
+*/
+
+body {
+    font-family: Arial;
+    font-size: 12px;
+    margin-left: 20px;
+    margin-right: 30px;
+}
+#wrapper {
+    min-width: 2000px;
+}
+#side_left {
+    float: left;
+    width: 170px;
+    padding: 5px;
+}
+#content {
+    overflow: auto; /*IMPORTANT! DO NOT REMOVE*/
+    display: inline-block;
+    margin-left: 5px;
+    padding: 5px;
+    border-left: 1px solid #ccc;
+}
+
+#menu {
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 0px 5px;
+}
+#menu ul {
+    display: inline;
+    list-style-type: none;
+    padding: 0px;
+}
+#menu li {
+    padding: 5px;
+}
+#menu li:hover {
+    background: lightcyan;
+    border-radius: 5px;
+}
+
+#menu li a {
+    font-weight: bold;
+}
+#footer {
+    clear: both;
+    width: 100%;
+    border-top: 1px solid #ccc;
+    margin-top: 15px;
+    padding-top: 5px;
+    text-align: center;
+}
+
+.tablecontrols {
+    text-align: right;
+    background: white;
+    border: 2px solid #eee;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.datatable, .inputtable {
+    border: 0px;
+    border-spacing: 0px;
+}
+
+.datatable th, .inputtable th {
+    background: antiquewhite;
+    padding: 5px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.datatable td {
+    padding: 5px;
+    border-left: 1px solid #ccc;
+    border-bottom: 2px solid #e4e4e4;
+}
+.datatable td:last-child {
+    border-right: 1px solid #ccc;
+}
+
+.inputtable td {
+    padding: 5px;
+}
+
+.inputtable td:last-child {
+    border-right: 1px solid #ccc;
+}
+
+.last_row {
+    background: blanchedalmond;
+}
+
+tr.highlight_row td button {
+    visibility: hidden;
+}
+tr.highlight_row:hover td button {
+    visibility: visible;
+}
+
+tr.highlight_row:hover {
+    background: lightyellow;
+}
+
+.center {
+    text-align: center;
+}
+
+.warning {
+    text-align: center;
+    border: 2px solid red;
+    margin-bottom: 5px;
+    padding: 5px;
+}   
+
+a {
+    color: #05A;
+    border-bottom: 1px dotted #05A;
+    text-decoration: none;
+}
+a:hover, a:active, a:focus {
+    border-bottom: 1px solid #48D;
+    color: #48D;
+}
+
+li {
+    list-style-position: inside;
+}

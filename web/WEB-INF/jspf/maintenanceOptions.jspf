@@ -1,0 +1,25 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="util.RPLPage"%>
+<%@page import="util.RPLServlet"%>
+<jsp:useBean id="selectedTable" scope="request" class="java.lang.String"/>
+
+<div class="topOptions">
+    <form action="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>" method="POST" name="form" id="form">   
+        Show Table:
+        <select name="selectedTable" onchange="form.submit()">
+            <option value="">(Select a table)</option>
+            <option value="Campus"      <% if(thisPage == RPLPage.CLERICAL_CAMPUS)      {%> selected <%}%>>
+                Campus
+            </option>
+            <option value="Discipline"  <% if(thisPage == RPLPage.CLERICAL_DISCIPLINE)  {%> selected <%}%>>
+                Discipline
+            </option>
+            <option value="Course"      <% if(thisPage == RPLPage.CLERICAL_COURSE)      {%> selected <%}%>>
+                Course
+            </option>
+            <option value="Module"      <% if(thisPage == RPLPage.CLERICAL_MODULE)      {%> selected <%}%>>
+                Module
+            </option>
+        </select>     
+    </form>
+</div>
