@@ -173,17 +173,19 @@ public class ListClaimsServlet extends HttpServlet {
         ClaimIO claimIO = new ClaimIO(user.getRole());
         ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         Claim selectedClaim = this.setSelectedClaim(request, user);
-        RPLError error = null;
+        
         try {
             if (selectedClaim.getStatus() == Claim.Status.DRAFT){
                 claimIO.delete(selectedClaim);
                 claimRecordIO.insert(new ClaimRecord(selectedClaim.getClaimID(), selectedClaim.getStudentID(), 0, user.getUserID(), "", 3, 0, selectedClaim.getCampusID(), selectedClaim.getCourseID(), selectedClaim.getClaimType().desc)); //  Update - Kyoungho Lee
              } else {
-                error = new RPLError("You can only remove Draft claims");
+                RPLError error = new RPLError("You can only remove Draft claims");
                 request.setAttribute("error", error);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ListClaimsServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException npe) {
+            Logger.getLogger(ListClaimsServlet.class.getName()).log(Level.SEVERE, null, npe);
         }
         this.populateClaimList(user);
         return request;
