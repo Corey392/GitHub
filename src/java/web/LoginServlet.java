@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession(true);
             User user = (User) session.getAttribute("user");
             
-            String url = "";
+            String url = RPLPage.HOME.relativeAddress;
             String userID;
             String password;
             
@@ -56,16 +56,12 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("user", user);
             }
             
-            
-            
             if (user.getStatus() == Status.LOGGED_IN) { // Logged in users should not see the home page
                 url = this.getURL(user.role);
             } else { // User has not logged in
                 userID = request.getParameter("userID");
                 password = request.getParameter("password");
                 
-                
-
                 if (userID != null) {   // Tests that user has attempted to log in
                     try {
                         System.out.println("before");
@@ -75,10 +71,7 @@ public class LoginServlet extends HttpServlet {
                     } catch (IllegalArgumentException e) {
                         RPLError loginError = new RPLError("Username and/or password incorrect");
                         request.setAttribute("loginError", loginError);
-                        url = RPLPage.HOME.relativeAddress;
                     }
-                } else {    // Came to this servlet from somewhere else
-                    url = RPLPage.HOME.relativeAddress;
                 }
             }
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
