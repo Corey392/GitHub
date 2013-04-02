@@ -39,8 +39,7 @@ public class ListClaimsServlet extends HttpServlet {
             throws ServletException, IOException {
         // Initialises the list of claims and error as null and the url as an 
         // empty string.
-        ArrayList<Claim> claims = null;
-        RPLError error = null;
+        RPLError error;
         String url = "";
         
         // Gets the session and the current user.
@@ -48,7 +47,7 @@ public class ListClaimsServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         
         // Gets the list of claims for the current user.
-        claims = this.populateClaimList(user);
+        ArrayList<Claim> claims = this.populateClaimList(user);
         
         // Sets the url to the next page and sets the error if there was any.
         if (request.getParameter("view") != null){
@@ -129,10 +128,9 @@ public class ListClaimsServlet extends HttpServlet {
      */
     private ArrayList<Claim> populateClaimList(User user){
         ClaimIO claimIO = new ClaimIO(user.getRole());
-        ArrayList<Claim> claims = new ArrayList<Claim>();
         ArrayList<Claim> completeClaims = new ArrayList<Claim>();
         try {
-            claims = claimIO.getList(user);
+            ArrayList<Claim> claims = claimIO.getList(user);
             for (Claim claim : claims){
                 Claim c = Util.getCompleteClaim(user.getUserID(), 
                         claim.getClaimID(), user.role);
@@ -152,10 +150,8 @@ public class ListClaimsServlet extends HttpServlet {
      */
     private Claim setSelectedClaim(HttpServletRequest request, User user){
         String claimID = request.getParameter("selectedClaim");
-        Claim selectedClaim = new Claim();
-        if (claimID == null){
-            selectedClaim = null;
-        } else {
+        Claim selectedClaim = null;
+        if (claimID != null){
             int id = Integer.valueOf(claimID);
             selectedClaim = Util.getCompleteClaim(user.getUserID(), id, user.getRole());
         }
