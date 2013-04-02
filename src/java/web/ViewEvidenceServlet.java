@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.ElementIO;
@@ -68,9 +64,9 @@ public class ViewEvidenceServlet extends HttpServlet {
                         }
 
                         EvidenceIO evidenceIO = new EvidenceIO(user.role);
-                        Evidence evidence = null;
+                        
                         for (int i = 0; i < selectedValues.length; i++) {
-                            evidence = Util.getCompleteEvidence(claimID, studentID, moduleID, selectedValues[i], user.role);
+                            Evidence evidence = Util.getCompleteEvidence(claimID, studentID, moduleID, selectedValues[i], user.role);
                             evidence.setApproved(true);
                             try {
                                 evidenceIO.update(evidence);
