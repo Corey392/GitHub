@@ -1,14 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
-import data.AccessHistoryIO;
-import domain.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,14 +29,8 @@ public class LogoutServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
             if (session != null) {
                 session.invalidate();
-                try {
-                    AccessHistoryIO accessIO = new AccessHistoryIO(user.role); // Ben Morrison
-                    accessIO.insert(user.getUserID(), "O");
-                } catch(SQLException e) { System.out.println("Database Error..."); }
-            
             }
             RequestDispatcher dispatcher = request.getRequestDispatcher(RPLPage.HOME.relativeAddress);
             dispatcher.forward(request, response);
