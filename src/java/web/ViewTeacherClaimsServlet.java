@@ -1,25 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.ClaimIO;
 import domain.Claim;
 import domain.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import util.RPLError;
 import util.RPLPage;
 
 /**
@@ -52,8 +44,8 @@ public class ViewTeacherClaimsServlet extends HttpServlet {
             claims = claimIO.getList(user);
             request.setAttribute("claims", claims);
         } catch (SQLException sqlex) {
+            sqlex.printStackTrace();
             url = RPLPage.HOME.relativeAddress;
-            System.out.println("anus");
         }
         int len = claims.size();
         if (len == 0) {
