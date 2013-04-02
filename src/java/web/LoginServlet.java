@@ -18,9 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import util.RPLError;
 import util.RPLPage;
-import domain.AccessHistory;
-import data.AccessHistoryIO;
-import java.sql.SQLException;
 
 /**
  * A user can invoke this from the home page. It gets the username and
