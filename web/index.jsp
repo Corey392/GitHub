@@ -21,7 +21,7 @@
             <td>Username:</td>
             <td><input class="textbox" size="25" type="text" name="userID" id="userID" value="370669520"/></td>
             <td rowspan="2">
-                <select id="userInfo" onchange="fn_Auto()">
+                <select id="userInfo" onchange="fn_Auto();">
                     <option value="374371959;password">STUDENT: Todd</option>
                     <option value="365044651;password">STUDENT: Mitch</option>
                     <option value="366796436;password">STUDENT: Bryce</option>
@@ -42,9 +42,9 @@
             <td colspan="3" height="55" style="background-color: white" ><b>${loginError.message}</b>&nbsp;</td>
         </tr>
         <tr>
-            <td  style="background-color: white" ></td>
-            <td style="background-color: white"  colspan="2">
-                <a class="button" href="#" onclick="document.getElementById('login').submit()"><span>Login</span></a>
+            <td style="background-color: white" ></td>
+            <td style="background-color: white" colspan="2">
+                <a class="button" href="#" onclick="document.getElementById('login').submit();"><span>Login</span></a>
                 <a class="button" href="register"><span>Register</span></a>
              </td>
         </tr>
