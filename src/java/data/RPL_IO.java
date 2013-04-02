@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import domain.User.Role;
@@ -55,10 +51,9 @@ public abstract class RPL_IO <T> {
      * @throws SQLException the database threw an exception, check exception's SQLState for Postgre exception code.
      */
     protected ResultSet doQuery(String sql) throws SQLException{
-        Statement statement = null;
         try {
             conn.openDatabase();
-            statement = conn.getConnection().createStatement();
+            Statement statement = conn.getConnection().createStatement();
             return statement.executeQuery(sql);
         } finally {
             conn.closeDatabase();
@@ -74,10 +69,10 @@ public abstract class RPL_IO <T> {
      * @throws SQLException the database threw an exception, check exception's SQLState for Postgre exception code.
      */
     protected ResultSet doPreparedStatement(String sql, SQLParameter... params) throws SQLException {
-        PreparedStatement statement = null;
+        
         try {
             conn.openDatabase();
-            statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql);
             int i = 0;
             for (SQLParameter p : params) {
                 i++;
