@@ -60,11 +60,11 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                 }
 
                 String selectedClaimID = request.getParameter("selectedClaim");
-                RPLError listError = null;
+                
                 if (selectedClaimID == null) {
                     url = RPLServlet.VIEW_TEACHER_CLAIM_SERVLET.relativeAddress;
 
-                    listError = new RPLError("Please select a Module");
+                    RPLError listError = new RPLError("Please select a Module");
                     request.setAttribute("listError", listError);
                     RequestDispatcher dispatcher = request.getRequestDispatcher(url);
                     dispatcher.forward(request, response);
@@ -76,7 +76,6 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                         e.getMessage();
                     }
 
-                    Claim claim = null;
                     String[] studentIDArray = request.getParameterValues("studentID");
                     String studentID = "";
                     for (int i = 0; i < studentIDArray.length; i++) {
@@ -87,7 +86,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                         }
 
                     }
-                    claim = Util.getCompleteClaim(studentID, claimID, user.role);
+                    Claim claim = Util.getCompleteClaim(studentID, claimID, user.role);
                     url = getForwardURLForClaimType(claim);
                     request.setAttribute("claim", claim);
                     RequestDispatcher dispatcher = request.getRequestDispatcher(url);
@@ -133,7 +132,9 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                 request.removeAttribute("rpath");
                 String claimID = request.getParameter("claimID");
                 String studentID = request.getParameter("studentID");
-                rpath = RPLServlet.ASSESS_CLAIM_RPL_SERVLET.relativeAddress;
+                //rpath = RPLServlet.ASSESS_CLAIM_RPL_SERVLET.relativeAddress;
+                //Mitchell: I can't see any reason for the above statement to exist,
+                //so I've commented it out for the time being
                 
                 url = RPLServlet.VIEW_EVIDENCE_SERVLET.relativeAddress;
                 request.setAttribute("claimID", claimID);
@@ -256,14 +257,13 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
      * @return 
      */
     private String getForwardURLForClaimType(Claim claim) {
-        String url;
 
         if (claim.getClaimType().RPL.value) {
-            url = RPLPage.ASSESS_CLAIM_RPL.relativeAddress;
+            return RPLPage.ASSESS_CLAIM_RPL.relativeAddress;
         } else {
-            url = RPLPage.ASSESS_CLAIM_PREV.relativeAddress;
+            return RPLPage.ASSESS_CLAIM_PREV.relativeAddress;
         }
-        return url;
+        
     }
     
     private void completeRequest(HttpServletRequest request) {
