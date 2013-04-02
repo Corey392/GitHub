@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import util.RPLError;
 import util.RPLPage;
 import util.RPLValidator;
 import util.Util;
@@ -37,9 +36,8 @@ public class ListClaimRecordServlet extends HttpServlet {
      
         // Initialises the list of claims and error as null and the url as an 
         // empty string.
-        ArrayList<ClaimRecord> claimRecords = null;
-        Integer wholeClaimRecordCnt = 0;
-        RPLError error = null;
+        Integer wholeClaimRecordCnt;
+        
         String url = "";
          
         // Gets the session and the current user.
@@ -47,7 +45,7 @@ public class ListClaimRecordServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         
         // Gets the list of claims for the current user.
-        claimRecords = this.populateClaimRecordsList(user
+        ArrayList<ClaimRecord> claimRecords = this.populateClaimRecordsList(user
                                                    , request.getParameter("workType")
                                                    , request.getParameter("workResult")
                                                    , request.getParameter("pageNo")
@@ -73,10 +71,11 @@ public class ListClaimRecordServlet extends HttpServlet {
             request.setAttribute("claimRecordsCount", String.valueOf(wholeClaimRecordCnt));
              
         } else if (request.getParameter("back") != null){
-            if(user.role.toString().equals("STUDENT"))
+            if(user.role.toString().equals("STUDENT")){
                 url = RPLPage.STUDENT_HOME.relativeAddress;
-            else if(user.role.toString().equals("TEACHER"))
+            }else if(user.role.toString().equals("TEACHER")){
                 url = RPLPage.TEACHER_HOME.relativeAddress;
+            }
         }
        
         ClaimRecord oClaimRecord = new ClaimRecord();
@@ -138,11 +137,10 @@ System.out.println("=============================" + url);
      */
     private ArrayList<ClaimRecord> populateClaimRecordsList(User user, String workType, String workResult, String pageNo, String claimType){
         ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());
-        ArrayList<ClaimRecord> claimRecords = new ArrayList<ClaimRecord>();
         ArrayList<ClaimRecord> completeClaimRecords = new ArrayList<ClaimRecord>();
         
         try {
-            claimRecords = claimRecordIO.getList(new ClaimRecord(user.getUserID()
+            ArrayList<ClaimRecord> claimRecords = claimRecordIO.getList(new ClaimRecord(user.getUserID()
                                                                 , RPLValidator.fixParseIntEx(workType, -1)
                                                                 , RPLValidator.fixParseIntEx(workResult, -1)
                                                                 , RPLValidator.fixParseIntEx(pageNo, 1)
