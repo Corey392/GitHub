@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import domain.ClaimRecord;
@@ -48,7 +44,6 @@ public class ClaimRecordIO extends RPL_IO<ClaimRecord> {
      */
     public ArrayList<ClaimRecord> getList(ClaimRecord pClaimRecord, String role) {
         ArrayList<ClaimRecord> list = null;
-        ClaimRecord oClaimRecord = null;
         String claimType = "";
         String sql = "SELECT * FROM fn_ListClaimRecords(?, ?, ?, ?, ?, ?, ?);";
         SQLParameter p1 = new SQLParameter(pClaimRecord.getWorkerID());
@@ -68,7 +63,7 @@ public class ClaimRecordIO extends RPL_IO<ClaimRecord> {
                     case 0: claimType = "RPL"; break;
                     case 1: claimType = "Previous Studies"; break;    
                 }
-                oClaimRecord = new ClaimRecord(rs.getInt(Field.CLAIM_ID.name)
+                ClaimRecord oClaimRecord = new ClaimRecord(rs.getInt(Field.CLAIM_ID.name)
                                              , rs.getString(Field.STUDENT_ID.name)
                                              , rs.getInt(Field.CLAIM_SEQ.name)
                                              , rs.getString(Field.WORKER_ID.name)
@@ -144,9 +139,9 @@ public class ClaimRecordIO extends RPL_IO<ClaimRecord> {
         String sql = "SELECT fn_GetSequenceClaimRecords(?,?) as maxSeq";
         SQLParameter p1 = new SQLParameter(pClaimRecord.getClaimID());
         SQLParameter p2 = new SQLParameter(pClaimRecord.getStudentID());
-        ResultSet rs = null;
+        
         try {
-            rs = super.doPreparedStatement(sql, p1, p2);
+            ResultSet rs = super.doPreparedStatement(sql, p1, p2);
             if(rs.next()) {
                 maxSeq = rs.getInt("maxSeq");
             }
