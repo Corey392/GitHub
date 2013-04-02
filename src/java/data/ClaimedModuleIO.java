@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import domain.ClaimedModule;
@@ -142,7 +138,9 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
                 overseasEvidence = rs.getBoolean(Field.OVERSEAS_EVIDENCE.name);
                 if (rs.getString(Field.RECOGNITION.name) != null) {
                     recognition = rs.getString(Field.RECOGNITION.name).charAt(0);
-                } else recognition = ' ';
+                } else {
+                    recognition = ' ';
+                }
                 name = rs.getString(Field.NAME.name);
                 instructions = rs.getString(Field.INSTRUCTIONS.name);
                 module = new ClaimedModule(claimID, studentID, moduleID);
