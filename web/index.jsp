@@ -2,6 +2,8 @@
     Document   : index
     Created on : 09/05/2011, 6:46:17 PM
     Author     : Adam Shortall
+    Modified   : Todd Wiggins
+    Change Log : Added our usernames into the drop down box to match the DB create script we are using.
 --%>
 <%@include file="WEB-INF/jspf/header.jspf" %>
 <%@page import="util.RPLPage" %>
@@ -20,10 +22,14 @@
             <td><input class="textbox" size="25" type="text" name="userID" id="userID" value="370669520"/></td>
             <td rowspan="2">
                 <select id="userInfo" onchange="fn_Auto()">
-                    <option value="370669520;abcd1234">STUDENT</option>
-                    <option value="123456789;123456789">TEACHER</option>
-                    <option value="123456780;abcd1234">CLERICAL</option>
-                    <option value="admin1234;abcd1234">ADMIN</option>
+                    <option value="374371959;password">STUDENT: Todd</option>
+                    <option value="365044651;password">STUDENT: Mitch</option>
+                    <option value="366796436;password">STUDENT: Bryce</option>
+                    <option value="355273971;password">STUDENT: Ryan</option>
+                    <option value="366688315;password">STUDENT: Kelly</option>
+                    <option value="teacher;password">TEACHER</option>
+                    <option value="assessor;password">ASSESSOR</option>
+                    <option value="admin;password">ADMIN</option>
                 </select>
 
             </td>
