@@ -61,27 +61,31 @@ public class AdminModifyAccountServlet extends HttpServlet {
             String cancel = request.getParameter(FormAdminModifyAccount.CANCEL);
             
             // Event handling:
-            boolean isValid = true;
+            //boolean isValid = true;
+            //Mitchell: Variable is currently unused, thus commented out,
+            //but may be added again later? I see no use for it right now.
             if (submit != null && selectedUser != null) {
                 selectedUser.setUserID(newUserID);
                 if (!selectedUser.validateField(User.Field.USER_ID)) {
                     request.setAttribute(FormAdminModifyAccount.errID, new RPLError(FieldError.TEACHER_ID));
-                    isValid = false;
+                    //isValid = false;
                 }
                 selectedUser.setFirstName(newFName);
                 if (selectedUser.validateField(User.Field.FIRST_NAME)) {
                     request.setAttribute(FormAdminModifyAccount.errFName, new RPLError(FieldError.NAME));
-                    isValid = false;
+                    //isValid = false;
                 }
                 selectedUser.setLastName(newLName);
                 if (selectedUser.validateField(User.Field.LAST_NAME)) {
                     request.setAttribute(FormAdminModifyAccount.errLName, new RPLError(FieldError.NAME));
-                    isValid = false;
+                    //isValid = false;
                 }
                 if (isAdmin != null) {
                     if (selectedUser.role != Role.ADMIN) {
                         modifiedUser = new User(newUserID, newFName, newLName, newUserID, Role.ADMIN);
                     }
+                    //TODO: If they are an admin, modifiedUser will remain null,
+                    //causing a NullPointerException at setPassword just below
                 } else {
                     modifiedUser = new User(newUserID, newFName, newLName, newUserID, Role.TEACHER);
                 }
