@@ -35,8 +35,6 @@ public class ErrorsServlet extends HttpServlet {
      
         // Initialises the list of claims and error as null and the url as an 
         // empty string.
-        ArrayList<Errors> errors = null;
-        Integer wholeErrorsCnt = 0;
         String url = "";
          
         // Gets the session and the current user.
@@ -44,7 +42,7 @@ public class ErrorsServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         
         // Gets the list of claims for the current user.
-        errors = this.populateErrorsList(user);
+        ArrayList<Errors> errors = this.populateErrorsList(user);
          
         // Sets the url to the next page and sets the error if there was any.
         if (request.getParameter("view") != null){
@@ -52,21 +50,21 @@ public class ErrorsServlet extends HttpServlet {
             request.setAttribute("errors", errors);
            
             // count 
-            wholeErrorsCnt = populateErrorsListCount(user);
+            Integer wholeErrorsCnt = populateErrorsListCount(user);
             
             wholeErrorsCnt = (int)(wholeErrorsCnt/10) + 1;
             request.setAttribute("errorsCount", String.valueOf(wholeErrorsCnt));
              
         } else if (request.getParameter("back") != null){
-            if(user.role.toString().equals("STUDENT"))
+            if(user.role.toString().equals("STUDENT")){
                 url = RPLPage.STUDENT_HOME.relativeAddress;
-            else if(user.role.toString().equals("TEACHER"))
+            }else if(user.role.toString().equals("TEACHER")){
                 url = RPLPage.TEACHER_HOME.relativeAddress;
-            else if(user.role.toString().equals("CLERICAL"))
+            }else if(user.role.toString().equals("CLERICAL")){
                 url = RPLPage.CLERICAL_HOME.relativeAddress;
-            else if(user.role.toString().equals("ADMIN"))
+            }else if(user.role.toString().equals("ADMIN")){
                 url = RPLPage.ADMIN_HOME.relativeAddress;
-        
+            }
         } else if (request.getParameter("insert") != null){
             
             ErrorsIO errorsIO = new ErrorsIO(user.getRole());
