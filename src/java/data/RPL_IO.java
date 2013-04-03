@@ -25,18 +25,22 @@ public abstract class RPL_IO <T> {
         switch (role) {
             case ADMIN:
                 this.conn = RPLConnection.ADMIN;
+    			Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as ADMIN");
                 break;
             case CLERICAL:
                 this.conn = RPLConnection.CLERICAL;
+				Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as CLERICAL");
                 break;
             case STUDENT:
                 this.conn = RPLConnection.STUDENT;
+				Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as STUDENT");
                 break;
             case TEACHER:
                 this.conn = RPLConnection.TEACHER;
+				Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as TEACHER");
                 break;
             default:
-                throw new IllegalArgumentException("Invalid role supplied for RPL_IO.setConn(Role)");
+                throw new IllegalArgumentException("Invalid role supplied for RPL_IO.setConn(Role), Role is: "+(role != null ? role.toString() : "null"));
         }
     }
     
