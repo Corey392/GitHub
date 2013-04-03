@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : assessClaim - This page is for the assessment of a Claim for RPL
     Created on : 20/05/2011, 6:11:47 PM
     Author     : David
@@ -11,7 +11,7 @@
 <c:if test="${claim.claimedModules == null || claim == null}">
     <c:redirect url="<%= RPLServlet.ASSESS_CLAIM_RPL_SERVLET.relativeAddress %>" />
 </c:if> 
-<script><%@include file="../WEB-INF/jspf/selectAll.js" %></script>
+<script type="text/javascript" src="<%= RPLPage.ROOT %>/scripts/selectAll.js"></script>
 <h1><%=thisPage.title%></h1>
 <div class="body">
     <table>
@@ -62,7 +62,7 @@
                                 <c:forEach var="provider" items="${module.providers}">
                                     ${provider.name}<br />
                                 </c:forEach>
-                            </td>        
+                            </td>
                             <td><input type="checkbox" id="approved" name="approved" value="${module.moduleID}"></td>
                         </tr>
                     </c:forEach>

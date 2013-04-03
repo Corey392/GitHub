@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : viewEvidence
     Created on : 11/06/2011, 6:56:16 PM
     Author     : David
@@ -15,7 +15,7 @@
 <c:if test="${claimedModule == null}">
     <c:redirect url="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET.relativeAddress %>" />
 </c:if>
-<script><%@include file="../WEB-INF/jspf/selectAll.js" %></script>
+<script type="text/javascript" src="<%= RPLPage.ROOT %>/scripts/selectAll.js"></script>
 <h1><%=thisPage.title%></h1>
 <div class="body">
     <form action="<%= RPLServlet.ASSESS_CLAIM_RPL_SERVLET.relativeAddress %>" method="post">
@@ -26,6 +26,6 @@
             <input type="hidden" name="rpath" value=""/>
         </div>
     </form>
-</div>    
-        
+</div>
+
 <%@include file="../WEB-INF/jspf/footer.jspf" %>

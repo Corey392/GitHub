@@ -6,16 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Defines some fields common to all of the IO classes.
  * @author Adam Shortall
  */
 public abstract class RPL_IO <T> {
-    
+
     private RPLConnection conn;
     public final Role role;
-    
+
     /**
      * Sets the connection type for the RPL_IO object being constructed.
      * @param role the role of the current user.
@@ -25,32 +27,32 @@ public abstract class RPL_IO <T> {
         switch (role) {
             case ADMIN:
                 this.conn = RPLConnection.ADMIN;
-    		Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as ADMIN");
+				Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as ADMIN");
                 break;
             case CLERICAL:
                 this.conn = RPLConnection.CLERICAL;
-		Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as CLERICAL");
+				Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as CLERICAL");
                 break;
             case STUDENT:
                 this.conn = RPLConnection.STUDENT;
-		Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as STUDENT");
+				Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as STUDENT");
                 break;
             case TEACHER:
                 this.conn = RPLConnection.TEACHER;
-		Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as TEACHER");
+				Logger.getLogger(RPL_IO.class.getName()).log(Level.INFO, "Logging in as TEACHER");
                 break;
             default:
                 throw new IllegalArgumentException("Invalid role supplied for RPL_IO.setConn(Role), Role is: "+(role != null ? role.toString() : "null"));
         }
     }
-    
+
     /**
-     * Does an executeQuery on the sql String specified. Returns a 
+     * Does an executeQuery on the sql String specified. Returns a
      * ResultSet of results from the database.
-     * 
+     *
      * @param sql The sql statement. The values of any parameters have to be passed in as
      * part of this String.
-     * 
+     *
      * @return ResultSet from doing the query
      * @throws SQLException the database threw an exception, check exception's SQLState for Postgre exception code.
      */
@@ -66,14 +68,14 @@ public abstract class RPL_IO <T> {
 
     /**
      * Used when needing to call a function in the database, or any statement with parameters.
-     * 
+     *
      * @param sql The sql statement, any parameters should be represented as question marks.
-     * @param params the parameters, which must be entered in the same order that they 
+     * @param params the parameters, which must be entered in the same order that they
      * appear in the database.
      * @throws SQLException the database threw an exception, check exception's SQLState for Postgre exception code.
      */
     protected ResultSet doPreparedStatement(String sql, SQLParameter... params) throws SQLException {
-        
+
         try {
             conn.openDatabase();
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -106,12 +108,12 @@ public abstract class RPL_IO <T> {
                         throw new IllegalArgumentException ("SQLParameter has wrong type");
                 }
             }
-            return statement.executeQuery();        
+            return statement.executeQuery();
         } finally {
             conn.closeDatabase();
         }
     }
-    
+
     /**
      * Convenience method to return a SQLParameter without having to declare
      * a new object.
