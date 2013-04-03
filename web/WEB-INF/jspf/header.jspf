@@ -66,8 +66,8 @@
             </ul>
             <hr />
             <form name="login" action="<%= RPLPage.ROOT %>/home" method="post">
-            Username: <input type="text" name="userID" value="370669520" /><br />
-            Password: <input type="password" name="password" value="abcd1234" />
+            Username: <input type="text" name="userID" value="teacher" /><br />
+            Password: <input type="password" name="password" value="password" />
             <input type="submit" name="" value="Login" />
             <a href="register">Register</a>
             </form>
