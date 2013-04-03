@@ -1,8 +1,11 @@
-<%--
-    Document   : header
-    Created on : 9/05/2011, 10:19 PM
-    Author     : Adam Shortall
+<%-- @author     Adam Shortall, Todd Wiggins
+     @version    1.1
+	 Created:    9/05/2011, 10:19 PM
+	 Modified:   03/04/2013
+	 Change Log: 1.1: TW: Moved user level navigation to header from each users index pages.
+	 Purpose:    Header code, sets up page, ensures consistency, reduced code.
 --%>
+<%@page import="domain.User.Role"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -19,7 +22,6 @@
 <html>
 <head>
     <script src="<%= RPLFragment.JAVASCRIPT.absoluteAddress %>"></script>
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT %>/css/rpl.css">
     <title><%= thisPage.title %></title>
@@ -32,12 +34,35 @@
         <div id="menu">
             <ul>
                 <li><a href="<%= RPLPage.ROOT %>/home">Home</a></li>
-<%
-if(user != null && user.getStatus() == Status.LOGGED_IN) {
-%>
+			<%
+			if(user != null && user.getStatus() == Status.LOGGED_IN) {
+				if (user.getRole() == Role.STUDENT)	{ %>
+					<li><a href="<%= RPLServlet.CREATE_CLAIM_SERVLET %>?createClaim=true">Create Claim</a></li>
+					<li><a href="<%= RPLServlet.LIST_CLAIMS_STUDENT_SERVLET %>?List%20Claims=true">List Claims</a></li>
+					<li><a href="<%= RPLServlet.STUDENT_LIST_CLAIM_RECORDS %>?view=View%20Claim%20Status">View Claim Status</a></li>
+			<%	} else if (user.getRole() == Role.TEACHER) {%>
+					<li><a href="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET %>?List%20Claims=true">List Available Claims</a></li>
+					<li><a href="<%= RPLServlet.TEACHER_LIST_CLAIM_RECORDS %>?view=View%20Claim%20Status">View Claim History</a></li>
+			<%	} else if (user.getRole() == Role.ADMIN) {%>
+					<li><a href="<%= RPLServlet.ADD_TEACHER %>">Add new Teacher account</a></li>
+					<li><a href="<%= RPLServlet.ADD_CLERICAL %>">Add new Clerical account</a></li>
+					<li><a href="<%= RPLServlet.ADD_ADMIN %>">Add new Admin account</a></li>
+					<li><a href="<%= RPLServlet.ADMIN_LIST_ACCOUNTS %>">Modify permissions for existing account</a></li>
+					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>">Data entry/maintenance page</a></li>
+					<li><a href="<%= RPLPage.TEACHER_HOME %>">Assess or approve claims</a></li>
+					<li><a href="">Assign assessors to claims</a></li>
+					<li><a href="">Assign assessors/delegates to courses/disciplines</a></li>
+					<li><a href="<%= RPLServlet.LIST_ERRORS %>?view=">Manage Error Codes</a></li>
+					<li><a href="">View Access History [REMOVED 2/4/13]</a></li>
+			<%	} else if (user.getRole() == Role.CLERICAL) {%>
+                    <li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Campus">Add/Modify Campuses or campus-sepcific data</a></li>
+					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Discipline">Add/Modify Disciplines (will be available to add to any campus)</a></li>
+					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Course">Add/Modify Courses or course core modules</a></li>
+					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Module">Add/Modify Modules, Elements and Criteria</a></li>
+			<%	} %>
                 <li><a href="<%= RPLPage.ROOT %>/logout">Log Out</a></li>
-            </ul>
-<% } else { %>
+			<%
+			} else { %>
             </ul>
             <hr />
             <form name="login" action="<%= RPLPage.ROOT %>/home" method="post">
@@ -46,7 +71,7 @@ if(user != null && user.getStatus() == Status.LOGGED_IN) {
             <input type="submit" name="" value="Login" />
             <a href="register">Register</a>
             </form>
-<% } %>
+			<% } %>
 
 
         </div>
