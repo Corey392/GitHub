@@ -82,7 +82,7 @@ public class MaintainModuleElementsServlet extends HttpServlet {
             } else if (addCriteriaElementID != null) {
                 Element selectedElement = elementIO.getByID(selectedModule.getModuleID(), Integer.parseInt(addCriteriaElementID));
                 CriterionIO criterionIO = new CriterionIO(user.role);
-                selectedElement.setCriteria(criterionIO.getList(selectedElement.getElementID(), selectedElement.getModuleID()));
+                selectedElement.setCriteria(criterionIO.getList(selectedElement.getElementID()));
                 session.setAttribute("selectedElement", selectedElement);
                 
                 url = RPLServlet.MAINTAIN_ELEMENT_CRITERIA_SERVLET.relativeAddress;

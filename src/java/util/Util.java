@@ -96,7 +96,7 @@ public final class Util {
         ElementIO elementIO = new ElementIO(role);
         CriterionIO criterionIO = new CriterionIO(role);
         Element element = elementIO.getByID(moduleID, elementID);
-        ArrayList<Criterion> criteria = criterionIO.getList(elementID, moduleID);
+        ArrayList<Criterion> criteria = criterionIO.getList(elementID);
         element.setCriteria(criteria);
         
         return element;
@@ -117,7 +117,7 @@ public final class Util {
         if (module == null) return new Module();
         module.setElements(elementIO.getList(moduleID));
         for (Element e : module.getElements()) {
-            e.setCriteria(criterionIO.getList(e.getElementID(), moduleID));
+            e.setCriteria(criterionIO.getList(e.getElementID()));
         }
         return module;
     }

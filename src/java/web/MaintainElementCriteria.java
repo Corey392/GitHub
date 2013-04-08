@@ -58,7 +58,7 @@ public class MaintainElementCriteria extends HttpServlet {
             // Event handling:
             if (addNewCriterion != null) {
                 String newCriterionText = request.getParameter("newCriterionText");
-                Criterion criterion = new Criterion(selectedElement.getElementID(), selectedElement.getModuleID(), newCriterionText);
+                Criterion criterion = new Criterion(selectedElement.getElementID(), newCriterionText);
                 try {
                     criterionIO.insert(criterion);
                 } catch (SQLException ex) {
@@ -69,7 +69,6 @@ public class MaintainElementCriteria extends HttpServlet {
                 Criterion c = new Criterion();
                 c.setCriterionID(Integer.parseInt(updateCriterionID));
                 c.setElementID(selectedElement.getElementID());
-                c.setModuleID(selectedElement.getModuleID());
                 c.setDescription(updateCriterionText);
                 try {
                     criterionIO.update(c);
@@ -83,7 +82,7 @@ public class MaintainElementCriteria extends HttpServlet {
                 url = RPLServlet.MAINTAIN_MODULE_ELEMENTS_SERVLET.relativeAddress;
             }
             
-            selectedElement.setCriteria(criterionIO.getList(selectedElement.getElementID(), selectedElement.getModuleID()));
+            selectedElement.setCriteria(criterionIO.getList(selectedElement.getElementID()));
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request,response);
         } finally {            
