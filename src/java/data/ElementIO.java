@@ -71,9 +71,11 @@ public class ElementIO extends RPL_IO <Element> {
      */
     public void delete(Element element) throws SQLException {
         Integer elementID = element.getElementID();
-        String sql = "SELECT fn_DeleteElement(?)";
+        String moduleID = element.getModuleID();
+        String sql = "SELECT fn_DeleteElement(?,?)";
         SQLParameter p1 = new SQLParameter(elementID);
-        super.doPreparedStatement(sql, p1);
+        SQLParameter p2 = new SQLParameter(moduleID);
+        super.doPreparedStatement(sql, p1, p2);
     }
     
     /**
