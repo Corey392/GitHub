@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package data;
 
 import domain.Claim;
@@ -77,7 +81,7 @@ public class ClaimIO extends RPL_IO <Claim> {
     /**
      * Updates a claim with new claim data. Different
      * users have different priviliges so this works
-     * differently depending on their user's role.
+     * differently depending on ther user's role.
      * @param claim the claim containing new claim data
      * @throws SQLException 
      */
@@ -100,7 +104,12 @@ public class ClaimIO extends RPL_IO <Claim> {
         Boolean assessorApproved = claim.getAssessorApproved();
         Boolean delegateApproved = claim.getDelegateApproved();
         Option option = claim.getOption();
-        Character optionValue = option != null ? option.value : Option.OTHER_PROVIDER.value;
+        Character optionValue = null;
+        if (option != null) {
+            optionValue = option.value;
+        } else {
+            optionValue = Option.OTHER_PROVIDER.value;
+        }
         Boolean requestComp = claim.getRequestCompletion();
         Date dateResolved = claim.getDateResolved();
         String assessorID = claim.getAssessorID();
@@ -127,6 +136,7 @@ public class ClaimIO extends RPL_IO <Claim> {
                 p3 = new SQLParameter(campusID);
                 p4 = new SQLParameter(disciplineID);
                 super.doPreparedStatement(sql, p1, p2, p3, p4, p7, p12);
+            default: return;
         }        
     }
     
@@ -208,24 +218,39 @@ public class ClaimIO extends RPL_IO <Claim> {
      * @throws SQLException if database threw an exception, check SQLState for vendor error code.
      */
     private Claim getClaimFromRS(ResultSet rs) throws SQLException {
+        int claimID = 0;
+        String studentID = null;
+        String campusID = null;
+        String courseID = null;
+        Integer disciplineID = null;
+        String assessorID = null;
+        String delegateID = null;
+        Boolean assessorApproved = null;
+        Boolean delegateApproved = null;
+        Option option = null;
+        Status status = null;
+        ClaimType claimType = null;
+        Date dateMade = null;
+        Date dateResolved = null;
+        Boolean requestCompletion = null;
         
-        int claimID = rs.getInt(Field.CLAIM_ID.name);
-        String studentID = rs.getString(Field.STUDENT_ID.name);
-        boolean assessorApproved = rs.getBoolean(Field.ASSESSOR_APPROVED.name);
-        boolean delegateApproved = rs.getBoolean(Field.DELEGATE_APPROVED.name);
-        String campusID = rs.getString(Field.CAMPUS_ID.name);
-        String courseID = rs.getString(Field.COURSE_ID.name); 
-        int disciplineID = rs.getInt(Field.DISCIPLINE_ID.name);
-        String assessorID = rs.getString(Field.ASSESSOR_ID.name);
-        String delegateID = rs.getString(Field.DELEGATE_ID.name);                 
+        claimID = rs.getInt(Field.CLAIM_ID.name);
+        studentID = rs.getString(Field.STUDENT_ID.name);
+        assessorApproved = rs.getBoolean(Field.ASSESSOR_APPROVED.name);
+        delegateApproved = rs.getBoolean(Field.DELEGATE_APPROVED.name);
+        campusID = rs.getString(Field.CAMPUS_ID.name);
+        courseID = rs.getString(Field.COURSE_ID.name); 
+        disciplineID = rs.getInt(Field.DISCIPLINE_ID.name);
+        assessorID = rs.getString(Field.ASSESSOR_ID.name);
+        delegateID = rs.getString(Field.DELEGATE_ID.name);                 
         String opt = rs.getString(Field.OPTION.name);
-        Option option = opt != null ? Option.getFromChar(opt.charAt(0)) : null;
+        if (opt != null) option = Option.getFromChar(opt.charAt(0));
 System.out.println("===>" + Field.STATUS.name);        
-        Status status = Status.getFromInt(rs.getInt(Field.STATUS.name));
-        ClaimType claimType = ClaimType.getFromBool(rs.getBoolean(Field.CLAIM_TYPE.name)); 
-        Date dateMade = rs.getDate(Field.DATE_MADE.name);
-        Date dateResolved = rs.getDate(Field.DATE_RESOLVED.name);
-        boolean requestCompletion = rs.getBoolean(Field.REQUEST_COMPLETION.name);
+        status = Status.getFromInt(rs.getInt(Field.STATUS.name));
+        claimType = ClaimType.getFromBool(rs.getBoolean(Field.CLAIM_TYPE.name)); 
+        dateMade = rs.getDate(Field.DATE_MADE.name);
+        dateResolved = rs.getDate(Field.DATE_RESOLVED.name);
+        requestCompletion = rs.getBoolean(Field.REQUEST_COMPLETION.name);
         
         return new Claim(
                         claimID, 

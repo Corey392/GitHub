@@ -24,6 +24,7 @@ public enum FieldError {
     DISCIPLINE_NAME("Invalid discipline name"),
     COURSE_ID("Course ID must be 5 digits only"),
     COURSE_NAME("Invalid course name"),
+    COURSE_GUIDE_FILE_ADDRESS("Invalid guide file address for course"),
     COURSE_UNIQUE("Course ID must be unique"),
     MODULE_UNIQUE("Module ID must be unique"),
     MODULE_ID("Module ID must be 9-10 characters long"),

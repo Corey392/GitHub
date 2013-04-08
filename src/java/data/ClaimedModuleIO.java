@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package data;
 
 import domain.ClaimedModule;
@@ -15,16 +19,13 @@ import java.util.logging.Logger;
 public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
     
     private enum Field {
-        CLAIM_ID("claimID"),
-        STUDENT_ID("studentID"),
         MODULE_ID("moduleID"),
+        CLAIM_ID("claimID"),
         APPROVED("approved"),
         ARRANGEMENT_NO("arrangementNo"),
         FUNCTIONAL_CODE("functionalCode"),
         OVERSEAS_EVIDENCE("overseasEvidence"),
-        RECOGNITION("recognition"),
-        NAME("name"),
-        INSTRUCTIONS("instructions");
+        RECOGNITION("recognition");
 
         public final String name;
         
@@ -130,7 +131,6 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
             ClaimedModule module;
             while (rs.next()) {
                 claimID = rs.getInt(Field.CLAIM_ID.name);
-                studentID = rs.getString(Field.STUDENT_ID.name);
                 moduleID = rs.getString(Field.MODULE_ID.name);
                 approved = rs.getBoolean(Field.APPROVED.name);
                 arrangementNo = rs.getString(Field.ARRANGEMENT_NO.name);
@@ -138,14 +138,8 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
                 overseasEvidence = rs.getBoolean(Field.OVERSEAS_EVIDENCE.name);
                 if (rs.getString(Field.RECOGNITION.name) != null) {
                     recognition = rs.getString(Field.RECOGNITION.name).charAt(0);
-                } else {
-                    recognition = ' ';
-                }
-                name = rs.getString(Field.NAME.name);
-                instructions = rs.getString(Field.INSTRUCTIONS.name);
+                } else recognition = ' ';
                 module = new ClaimedModule(claimID, studentID, moduleID);
-                module.setName(name);
-                module.setInstructions(instructions);
                 module.setApproved(approved);
                 module.setArrangementNo(arrangementNo);
                 module.setFunctionalCode(functionalCode);

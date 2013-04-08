@@ -17,6 +17,7 @@ public class Course implements Comparable<Course> {
     
     private String courseID;
     private String name;
+    private String guideFileAddress;
     private ArrayList<Module> coreModules;
     private ArrayList<Module> electiveModules;
     private ArrayList<User> assessors;
@@ -27,44 +28,36 @@ public class Course implements Comparable<Course> {
     }
     
     public Course(String courseID) {
-        this(courseID, "");
+        this(courseID, "", "");
     }
     
-    public Course(String courseID, String name) {
+    public Course(String courseID, String name, String guideFileAddress) {
         this.courseID = courseID;
         this.name = name;
+        this.guideFileAddress = guideFileAddress;
         this.coreModules = new ArrayList<Module>();
         this.electiveModules = new ArrayList<Module>();
     }
     
-    /**
-     * Defines fields that require validation.
-     */
-    public enum Field {
-        ID("^[0-9]{5}$", FieldError.COURSE_ID),
-        NAME("^.+$", FieldError.COURSE_NAME);
-        
-        public final String pattern;
-        public final FieldError fieldError;
-        
-        Field(String pattern, FieldError fieldError) {
-            this.pattern = pattern;
-            this.fieldError = fieldError;
-        }
-        
-        public FieldError validateField(String value) {
-            return value.matches(pattern) ? null : fieldError;
-        }
+    public String getGuideFileAddress() {
+        return guideFileAddress;
     }
     
+    public void setGuideFileAddress(String guideFileAddress) {
+        this.guideFileAddress = guideFileAddress;
+    }
+
     public ArrayList<FieldError> validate() {
         ArrayList<FieldError> errors = new ArrayList<FieldError>();
         FieldError courseIDError = Field.ID.validateField(courseID);
         FieldError nameError = Field.NAME.validateField(name);
+        FieldError guideFileAddressError = Field.GUIDE_FILE_ADDRESS.validateField(guideFileAddress);
         if (courseIDError != null) {
             errors.add(courseIDError);
         } if (nameError != null) {
             errors.add(nameError);
+        } if (guideFileAddressError != null)    {
+            errors.add(guideFileAddressError);
         }
         return errors;
     }
@@ -109,11 +102,11 @@ public class Course implements Comparable<Course> {
         this.electiveModules = electiveModules;
     }
 
-    public String getName() {
+        public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+        public void setName(String name) {
         this.name = name;
     }
 
@@ -141,5 +134,26 @@ public class Course implements Comparable<Course> {
         list.addAll(this.coreModules);
         list.addAll(this.electiveModules);
         return list;
+    }
+    
+    /**
+     * Defines fields that require validation.
+     */
+    public enum Field {
+        ID("^[0-9]{5}$", FieldError.COURSE_ID),
+        NAME("^.+$", FieldError.COURSE_NAME),
+        GUIDE_FILE_ADDRESS("", FieldError.COURSE_GUIDE_FILE_ADDRESS);
+        
+        public final String pattern;
+        public final FieldError fieldError;
+        
+        Field(String pattern, FieldError fieldError) {
+            this.pattern = pattern;
+            this.fieldError = fieldError;
+        }
+        
+        public FieldError validateField(String value) {
+            return value.matches(pattern) ? null : fieldError;
+        }
     }
 }

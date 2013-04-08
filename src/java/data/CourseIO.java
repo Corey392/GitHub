@@ -78,7 +78,8 @@ public class CourseIO extends RPL_IO<Course> {
         try {
             String courseID = rs.getString("courseID");
             String name = rs.getString("name");
-            return new Course(courseID, name);
+            String guideFileAddress = rs.getString("guideFileAddress");
+            return new Course(courseID, name, guideFileAddress);
         } catch (SQLException ex) {
             Logger.getLogger(CourseIO.class.getName()).log(Level.SEVERE, null, ex);
         }
