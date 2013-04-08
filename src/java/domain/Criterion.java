@@ -12,19 +12,21 @@ import util.Util;
 public class Criterion implements Comparable<Criterion> {
     private int criterionID;
     private int elementID;
+    private String moduleID;
     private String description;
     
     public Criterion(){
-        this(Util.INT_ID_EMPTY,Util.INT_ID_EMPTY,"");
+        this(Util.INT_ID_EMPTY,Util.INT_ID_EMPTY,"","");
     }
 
-    public Criterion(int elementID, String description) {
-        this(0, elementID, description);
+    public Criterion(int elementID, String moduleID, String description) {
+        this(0, elementID, moduleID, description);
     }
     
-    public Criterion(int criterionID, int elementID, String description) {
+    public Criterion(int criterionID, int elementID, String moduleID, String description) {
         this.criterionID = criterionID;
         this.elementID = elementID;
+        this.moduleID = moduleID;
         this.description = description;
     }
 
@@ -50,6 +52,14 @@ public class Criterion implements Comparable<Criterion> {
 
     public void setElementID(int elementID) {
         this.elementID = elementID;
+    }
+
+    public String getModuleID() {
+        return moduleID;
+    }
+
+    public void setModuleID(String moduleID) {
+        this.moduleID = moduleID;
     }
 
     /**
