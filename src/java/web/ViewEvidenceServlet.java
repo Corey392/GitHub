@@ -66,7 +66,7 @@ public class ViewEvidenceServlet extends HttpServlet {
                         EvidenceIO evidenceIO = new EvidenceIO(user.role);
                         
                         for (int i = 0; i < selectedValues.length; i++) {
-                            Evidence evidence = Util.getCompleteEvidence(claimID, studentID, moduleID, selectedValues[i], user.role);
+                            Evidence evidence = Util.getCompleteEvidence(claimID, moduleID, selectedValues[i], user.role);
                             evidence.setApproved(true);
                             try {
                                 evidenceIO.update(evidence);
