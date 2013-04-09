@@ -810,6 +810,25 @@ CREATE FUNCTION fn_listclaimsbyteacher(teacherid text) RETURNS SETOF "Claim"
     SELECT * FROM "Claim" WHERE "assessorID" = $1 OR "delegateID" = $1;
 $_$;
 
+--
+-- Name: fn_listcores(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fn_listcores(courseid text) RETURNS SETOF "CourseModule"
+    LANGUAGE sql
+    AS $_$
+    SELECT * FROM "CourseModule" WHERE "courseID" = courseid AND "elective" = false;
+$_$;
+
+--
+-- Name: fn_listelectives(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fn_listelectives(courseid text) RETURNS SETOF "CourseModule"
+    LANGUAGE sql
+    AS $_$
+    SELECT * FROM "CourseModule" WHERE "courseID" = courseid AND "elective" = true;
+$_$;
 
 --
 -- Name: fn_listcourses(); Type: FUNCTION; Schema: public; Owner: -
