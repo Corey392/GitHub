@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import domain.Campus;
@@ -17,19 +13,19 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * UserIO is for IO of users. Whatever subclass of user the user is,
- * the student level connection will be used to connect to the database.
- * 
- * @author Adam Shortall
+/**	@author     Adam Shortall, Todd Wiggins
+ *  @version    1.1
+ *	Created:    ?
+ *	Modified:   09/04/2013
+ *	Change Log: 1.1: TW: Updated to match current version of database.
+ *	Purpose:    UserIO is for IO of all user types. Whatever subclass of user the user is, the student level connection will be used to connect to the database.
  */
 public class UserIO extends RPL_IO<User> {
-    
     public static final char ADMIN_CODE = 'A';
     public static final char CLERICAL_CODE = 'C';
     public static final char STUDENT_CODE = 'S';
     public static final char TEACHER_CODE = 'T';
-    
+
     public enum Field {
         USER_ID("userID"),
         ROLE("role"),
@@ -40,9 +36,9 @@ public class UserIO extends RPL_IO<User> {
         STUDENT_ID("studentID"),
         TEACHER_ID("teacherID"),
         COURSE_COORDINATOR("courseCoordinator");
-        
+
         public final String name;
-        
+
         Field(String name) {
             this.name = name;
         }
@@ -58,36 +54,54 @@ public class UserIO extends RPL_IO<User> {
 
     /**
      * Inserts the user into the database.
-     * 
+     *
      * @param user the user to insert
      */
     public void insert(User user) throws SQLException{
         String userID = user.getUserID();
+        String email = user.getEmail();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
-        String email = user.getEmail();
-        String password = user.getPassword();
         String sql = null;
-        SQLParameter p1, p2, p3, p4, p5;
+        SQLParameter p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13;
         ResultSet rs;
         switch (user.role) {
             case CLERICAL:
-                sql = "SELECT fn_InsertUser(?,?)";
+                sql = "SELECT fn_InsertClerical(?)";
                 p1 = new SQLParameter(userID);
-                p2 = new SQLParameter(user.role.code);
-                rs = super.doPreparedStatement(sql, p1, p2);
+                rs = super.doPreparedStatement(sql, p1);
                 if (rs.next()) {
                     user.setPassword(rs.getString(1)); // Randomly generated password
                 }
                 break;
             case STUDENT:
-                sql = "SELECT fn_InsertStudent(?,?,?,?,?)";
+				//Student Values Only
+				String otherName = user.getOtherName();
+				String addressLine1 = user.getAddress()[0];
+				String addressLine2 = user.getAddress()[1];
+				String town = user.getTown();
+				String state = user.getState();
+				String postcode = user.getPostCode();
+				String phoneNumber = user.getPhoneNumber();
+				String studentID = user.getStudentID();
+				boolean staff = user.isStaff();
+
+                sql = "SELECT fn_InsertStudent(?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 p1 = new SQLParameter(userID);
-                p2 = new SQLParameter(firstName);
-                p3 = new SQLParameter(lastName);
-                p4 = new SQLParameter(email);
-                p5 = new SQLParameter(password);
+                p2 = new SQLParameter(email);
+                p3 = new SQLParameter(firstName);
+                p4 = new SQLParameter(lastName);
+				p5 = new SQLParameter(otherName);
+				p6 = new SQLParameter(addressLine1);
+				p7 = new SQLParameter(addressLine2);
+				p8 = new SQLParameter(town);
+                p9 = new SQLParameter(state);
+                p10 = new SQLParameter(postcode);
+				p11 = new SQLParameter(phoneNumber);
+				p12 = new SQLParameter(studentID);
+				p13 = new SQLParameter(staff);
                 super.doPreparedStatement(sql, p1, p2, p3, p4, p5);
+				//Returns a generated password
                 break;
             case ADMIN: // same as TEACHER
             case TEACHER:
@@ -105,7 +119,7 @@ public class UserIO extends RPL_IO<User> {
                 throw new IllegalArgumentException("Invalid role for user");
         }
     }
-    
+
     /**
      * Updates an existing user. Since a user's ID can be changed, the updated ID is expected
      * to be in the user parameter, while the previous ID is provided in the oldID parameter.
@@ -128,7 +142,7 @@ public class UserIO extends RPL_IO<User> {
             Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
         }
         switch (user.role) {
-            case ADMIN: 
+            case ADMIN:
                 sql = "SELECT fn_UpdateUser(?,?,?)";
                 p1 = new SQLParameter(oldID);
                 p2 = new SQLParameter(userID);
@@ -159,11 +173,11 @@ public class UserIO extends RPL_IO<User> {
                 throw new IllegalArgumentException("Invalid role for user");
         }
     }
-    
+
     /**
      * Deletes a user, and every record that depended on that user record.
      * @param user The user to delete.
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void delete(User user) throws SQLException {
         String sql = null;
@@ -184,12 +198,12 @@ public class UserIO extends RPL_IO<User> {
         }
         super.doPreparedStatement(sql, p1);
     }
-    
+
     /**
      * Verifies whether a user, with the current username and password
      * set, matches a user in the database. If a match is found, the
      * user's role is returned, otherwise null is returned.
-     * 
+     *
      * @param user the user to verify
      * @return the verified user's Role, else null
      */
@@ -201,7 +215,7 @@ public class UserIO extends RPL_IO<User> {
         p1 = new SQLParameter(userID);
         p2 = new SQLParameter(password);
         try {
-            
+
             ResultSet rs = super.doPreparedStatement(sql, p1, p2);
             if(rs.next()) {
                 String codeString = rs.getString(1);
@@ -226,7 +240,7 @@ public class UserIO extends RPL_IO<User> {
         }
         return null;
     }
-   
+
     /**
      * @return a list of clerical and teacher/admin users.
      */
@@ -241,13 +255,13 @@ public class UserIO extends RPL_IO<User> {
             return new ArrayList<User>();
         }
     }
-    
+
     /**
-     * Gets a user by ID, by calling the appropriate function in the DB 
+     * Gets a user by ID, by calling the appropriate function in the DB
      * and returning the user object. The user parameter should contain
      * the user's ID and role.
-     * 
-     * @param user the user object with an ID to try to match in the DB, 
+     *
+     * @param user the user object with an ID to try to match in the DB,
      * and with a defined role.
      * @return the user object, updated with data from the DB.
      */
@@ -260,16 +274,16 @@ public class UserIO extends RPL_IO<User> {
             case ADMIN:
             case TEACHER:
                 return this.getTeacher(userID);
-            default: 
+            default:
                 throw new IllegalArgumentException("Invalid role for user in User.getByID(User)");
-        } 
+        }
     }
-    
+
     /**
      * Returns a list of delegates for a specified discipline.
      * @param campus
      * @param discipline
-     * @return 
+     * @return
      */
     public ArrayList<User> getListOfDelegates(Campus campus, Discipline discipline) {
         ArrayList<User> list = null;
@@ -294,13 +308,13 @@ public class UserIO extends RPL_IO<User> {
         }
         return list;
     }
-    
+
     /**
      * Returns a list of assessors for a specified course.
      * @param campus
      * @param discipline
      * @param course
-     * @return 
+     * @return
      */
     public ArrayList<User> getListOfAssessors(Campus campus, Discipline discipline, Course course) {
         ArrayList<User> list = null;
@@ -310,7 +324,7 @@ public class UserIO extends RPL_IO<User> {
         String sql = "SELECT * FROM fn_ListAssessors(?,?,?)";
         SQLParameter p1 = new SQLParameter(campusID);
         SQLParameter p2 = new SQLParameter(disciplineID);
-        SQLParameter p3 = new SQLParameter(courseID);        
+        SQLParameter p3 = new SQLParameter(courseID);
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1, p2, p3);
             list = new ArrayList<User>();
@@ -329,11 +343,11 @@ public class UserIO extends RPL_IO<User> {
         }
         return list;
     }
-    
+
     /**
      * Returns a student user from the database.
      * @param userID
-     * @return 
+     * @return
      */
     private User getStudent(String userID) {
         return new User(userID, Role.STUDENT);
@@ -353,7 +367,7 @@ public class UserIO extends RPL_IO<User> {
             return null;
         }*/
     }
-    
+
     /**
      * Kyoungho Lee
      */
@@ -373,13 +387,13 @@ public class UserIO extends RPL_IO<User> {
             Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-    }    
-    
+    }
+
     /**
      * Returns a teacher user from the database; note that the
      * teacher may be an admin user.
      * @param userID
-     * @return 
+     * @return
      */
     private User getTeacher(String userID) {
         String sql = "SELECT * FROM fn_GetTeacherUser(?)";
@@ -401,7 +415,7 @@ public class UserIO extends RPL_IO<User> {
             return null;
         }
     }
-    
+
     /**
      * Kyoungho Lee
      */
@@ -424,8 +438,8 @@ public class UserIO extends RPL_IO<User> {
             Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-    }    
-    
+    }
+
     /**
      * Creates a list of users from a ResultSet.
      * @param rs set of user records from the database.
@@ -433,11 +447,11 @@ public class UserIO extends RPL_IO<User> {
      */
     private ArrayList<User> getListFromResultSet(ResultSet rs) {
         ArrayList<User> list = new ArrayList<User>();
-        try {            
+        try {
             while (rs.next()) {
                 String id = rs.getString(Field.USER_ID.name);
                 String codeString = rs.getString(Field.ROLE.name);
-                
+
                 char code = codeString.charAt(0);
                 Role role = Role.roleFromChar(code);
                 list.add(new User(id, role));
@@ -447,7 +461,7 @@ public class UserIO extends RPL_IO<User> {
         }
         return list;
     }
-    
+
     /**
      * Resets a user's password to a new randomly generated password.
      * @param userID identifies the user.
