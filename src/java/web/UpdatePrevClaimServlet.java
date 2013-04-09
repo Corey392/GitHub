@@ -31,29 +31,21 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Initialises all variables as null.
-        Claim claim = null;
-        ArrayList<Module> modules = null;
-        ArrayList<Provider> providers = null;
-        Module selectedModule = null;
-        ArrayList<Evidence> evidence = null;
-        ArrayList<Provider> selectedProviders = null;
 
-        // Initialises the url for the next page as an empty string, and gets 
-        // the session and the current user.
-        String url = "";
+        // Gets the session and the current user.
+        String url;
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
         // Gets the current claim from the session.
-        claim = (Claim) session.getAttribute("claim");
+        Claim claim = (Claim) session.getAttribute("claim");
         
         // Initialises the module and provider lists, as well as retrieveing the
         // selectedModule and the evidence for each claimed module.
-        modules = this.initialiseModuleList(user, claim);
-        providers = this.initialiseProviderList(user);
-        selectedModule = this.getSelectedModule(request, user, modules);
-        evidence = this.getEvidence(request, user, claim, selectedModule); 
+        ArrayList<Module> modules = this.initialiseModuleList(user, claim);
+        ArrayList<Provider> providers = this.initialiseProviderList(user);
+        Module selectedModule = this.getSelectedModule(request, user, modules);
+        ArrayList<Evidence> evidence = this.getEvidence(request, user, claim, selectedModule); 
 
         // If the request came from the reviewClaimPrev jsp page then depending
         // on the button pressed new or updated evidence will be saved, the 
@@ -69,7 +61,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
             claim = this.submitClaim(user, claim);
             url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
         } else if (request.getParameter("addModule") != null) {
-            selectedProviders = this.getSelectedProviders(request, providers);
+            ArrayList<Provider> selectedProviders = this.getSelectedProviders(request, providers);
             if (selectedProviders.size() < 1 || selectedProviders.size() > 3){
                 request.setAttribute("moduleError", 
                         new RPLError("Please select 1-3 providers"));
@@ -236,7 +228,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
             evidence = new ArrayList<Evidence>();
         } else {
             evidence = new ArrayList<Evidence>();
-            evidence.add(new Evidence(claim.getClaimID(), user.getUserID(), 
+            evidence.add(new Evidence(claim.getClaimID(), 
                     selectedModule.getModuleID(), evidenceDesc));
         }
         return evidence;
@@ -344,7 +336,6 @@ public class UpdatePrevClaimServlet extends HttpServlet {
                 newEvidence.add(  
                         new Evidence( 
                             claim.getClaimID(), 
-                            user.getUserID(), 
                             cm.getModuleID(), 
                             evidenceDesc));
                 cm.setEvidence(newEvidence);
