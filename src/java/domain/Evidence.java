@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import util.Util;
@@ -13,7 +9,7 @@ import util.Util;
  * @author Adam Shortall
  */
 public class Evidence {
-    private String studentID;
+    
     private int claimID;
     /** elementID == 0 when Evidence is for a module rather than an element */
     private Integer elementID;
@@ -27,53 +23,46 @@ public class Evidence {
      * Creates a new evidence object.
      */
     public Evidence() {
-        this(Util.INT_ID_EMPTY, "", "", "");
+        this(Util.INT_ID_EMPTY, "", "");
     }
     
-    public Evidence(int claimID, String studentID, String moduleID) {
-        this(claimID, studentID, moduleID, "");
+    public Evidence(int claimID, String moduleID) {
+        this(claimID, moduleID, "");
     }
     
     /**
      * Inserts a 'Previous Studies' evidence with description.
      * @param claimID
-     * @param studentID
      * @param moduleID
      * @param description 
      */
-    public Evidence(int claimID, String studentID, String moduleID, String description) {
+    public Evidence(int claimID, String moduleID, String description) {
+        
         this.claimID = claimID;
-        this.studentID = studentID;
         this.moduleID = moduleID;
         this.elementID = Util.INT_ID_EMPTY;
         this.approved = false;
         this.assessorNote = "";
         this.description = description;
+        
     }
     
    /**
      * Inserts an 'RPL' evidence with description and associated elementID.
      * @param claimID
-     * @param studentID
      * @param moduleID
      * @param description
      * @param elementID 
      */
-    public Evidence(int claimID, String studentID, String moduleID, String description, int elementID) {
+    public Evidence(int claimID, String moduleID, String description, int elementID) {
+        
         this.claimID = claimID;
-        this.studentID = studentID;
         this.moduleID = moduleID;
         this.elementID = elementID;
         this.approved = false;
         this.assessorNote = "";
         this.description = description;
-    }
-
-    /**
-     * @return the studentID
-     */
-    public String getStudentID() {
-        return studentID;
+        
     }
 
     /**
@@ -116,13 +105,6 @@ public class Evidence {
      */
     public String getAssessorNote() {
         return assessorNote;
-    }
-
-    /**
-     * @param studentID the studentID to set
-     */
-    public void setStudentID(String studentID) {
-        this.studentID = studentID;
     }
 
     /**
