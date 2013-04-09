@@ -100,17 +100,18 @@ public class UserIO extends RPL_IO<User> {
 				p11 = new SQLParameter(phoneNumber);
 				p12 = new SQLParameter(studentID);
 				p13 = new SQLParameter(staff);
-                super.doPreparedStatement(sql, p1, p2, p3, p4, p5);
+                super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
 				//Returns a generated password
                 break;
             case ADMIN: // same as TEACHER
             case TEACHER:
-                sql = "SELECT fn_InsertTeacher(?,?,?,?)";
-                p1 = new SQLParameter(userID);
-                p2 = new SQLParameter(firstName);
-                p3 = new SQLParameter(lastName);
-                p4 = new SQLParameter(email);
-                rs = super.doPreparedStatement(sql, p1, p2, p3, p4);
+                sql = "SELECT fn_InsertTeacher(?,?,?,?,?)";
+				p1 = new SQLParameter(userID);
+                p2 = new SQLParameter(userID);
+                p3 = new SQLParameter(firstName);
+                p4 = new SQLParameter(lastName);
+                p5 = new SQLParameter(email);
+                rs = super.doPreparedStatement(sql, p1, p2, p3, p4, p5);
                 if (rs.next()) {
                     user.setPassword(rs.getString(1)); // Randomly generated password
                 }
