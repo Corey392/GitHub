@@ -39,12 +39,11 @@ public class AddEvidenceServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Initialises all required variables as null, empty or false.
-        Claim claim = null;
-        Integer addEvidenceTo = null;
+        Claim claim;
+        Integer addEvidenceTo;
         ClaimedModule module = null;
-        String moduleID = null;
-        ArrayList<ClaimedModule> claimedModules = 
-                new ArrayList<ClaimedModule>();
+        String moduleID;
+        ArrayList<ClaimedModule> claimedModules;
         boolean error = false;
         
         // Initialises the url for the next page as an empty string. Gets the
@@ -173,7 +172,6 @@ public class AddEvidenceServlet extends HttpServlet {
                 if (description != null){
                     Evidence e = new Evidence(
                             claim.getClaimID(),
-                            user.getUserID(),
                             module.getModuleID(),
                             description,
                             element.getElementID());
@@ -194,7 +192,6 @@ public class AddEvidenceServlet extends HttpServlet {
             if (description != null){
                 Evidence e = new Evidence(
                             claim.getClaimID(),
-                            user.getUserID(),
                             module.getModuleID(),
                             description);
                 evidence.add(e);
