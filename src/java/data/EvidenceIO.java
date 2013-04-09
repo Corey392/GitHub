@@ -37,7 +37,7 @@ public class EvidenceIO extends RPL_IO<Evidence> {
 
     public void insert(Evidence evidence) throws SQLException {
         
-        String sql = "SELECT fn_InsertEvidence(?,?,?,?,?)";
+        String sql = "SELECT fn_InsertEvidence(?,?,?,?)";
         
         int claimID = evidence.getClaimID();
         Integer elementID = evidence.getElementID();
@@ -77,10 +77,10 @@ public class EvidenceIO extends RPL_IO<Evidence> {
         SQLParameter p5 = new SQLParameter(assessorNote);
         
         if (elementID == Util.INT_ID_EMPTY) { // Determines claim type
-            sql = "SELECT fn_UpdateEvidence(?,?,?,?,?,?)";
+            sql = "SELECT fn_UpdateEvidence(?,?,?,?,?)";
             super.doPreparedStatement(sql, p1, p2, p3, p4, p5);
         } else {
-            sql = "SELECT fn_UpdateEvidence(?,?,?,?,?,?,?)";
+            sql = "SELECT fn_UpdateEvidence(?,?,?,?,?,?)";
             SQLParameter p6 = new SQLParameter(elementID);
             super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6);
         }
@@ -94,7 +94,7 @@ public class EvidenceIO extends RPL_IO<Evidence> {
      */
     public Evidence getByID(int claimID, String moduleID, Integer elementID) {
         
-        String sql = "SELECT * FROM fn_GetEvidence(?,?,?,?)";
+        String sql = "SELECT * FROM fn_GetEvidence(?,?,?)";
         
         SQLParameter p1 = new SQLParameter(claimID);
         SQLParameter p2 = new SQLParameter(moduleID);
@@ -128,7 +128,7 @@ public class EvidenceIO extends RPL_IO<Evidence> {
      */
     public ArrayList<Evidence> getList(int claimID, String moduleID) {
         
-        String sql = "SELECT * FROM fn_ListEvidence(?,?,?)";
+        String sql = "SELECT * FROM fn_ListEvidence(?,?)";
         
         SQLParameter p1 = new SQLParameter(claimID);
         SQLParameter p2 = new SQLParameter(moduleID);
