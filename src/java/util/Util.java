@@ -126,15 +126,14 @@ public final class Util {
     /**
      * Returns an Evidence record with completed element & criteria
      * @param claimID
-     * @param studentID
      * @param moduleID
      * @param elementID
      * @param role
      * @return 
      */
-    public static Evidence getCompleteEvidence(int claimID, String studentID, String moduleID, Integer elementID, Role role) {
+    public static Evidence getCompleteEvidence(int claimID, String moduleID, Integer elementID, Role role) {
         EvidenceIO evidenceIO = new EvidenceIO(role);
-        Evidence evidence = evidenceIO.getByID(claimID, studentID, moduleID, elementID);
+        Evidence evidence = evidenceIO.getByID(claimID, moduleID, elementID);
         if (!(elementID == null || elementID == Util.INT_ID_EMPTY)) {
             evidence.setElement(Util.getCompleteElement(elementID, moduleID, role));
         }
@@ -144,15 +143,14 @@ public final class Util {
     /**
      * Returns a list of all Evidence for a claimed module, completed with elements and criteria.
      * @param claimID
-     * @param studentID
      * @param moduleID
      * @param role
      * @return 
      */
-    public static ArrayList<Evidence> getCompleteEvidenceList(int claimID, String studentID, String moduleID, Role role) {
+    public static ArrayList<Evidence> getCompleteEvidenceList(int claimID, String moduleID, Role role) {
         ArrayList<Evidence> list;
         EvidenceIO evidenceIO = new EvidenceIO(role);
-        list = evidenceIO.getList(claimID, studentID, moduleID);
+        list = evidenceIO.getList(claimID, moduleID);
         for (Evidence e : list) {
             e.setElement(Util.getCompleteElement(e.getElementID(), moduleID, role));
         }
@@ -184,14 +182,14 @@ public final class Util {
      * @return 
      */
     public static ArrayList<ClaimedModule> getCompleteClaimedModuleList(int claimID, String studentID, Role role) {
-        ArrayList<ClaimedModule> claimedModules = new ArrayList<ClaimedModule>();
+        
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(role);
         ProviderIO providerIO = new ProviderIO(role);
-        claimedModules = claimedModuleIO.getList(claimID, studentID);
+        ArrayList<ClaimedModule> claimedModules = claimedModuleIO.getList(claimID, studentID);
         if (claimedModules != null) {
             for (ClaimedModule cm : claimedModules) {
                 cm.setProviders(providerIO.getList(claimID, studentID, cm.getModuleID()));
-                cm.setEvidence(Util.getCompleteEvidenceList(claimID, studentID, cm.getModuleID(), role));   
+                cm.setEvidence(Util.getCompleteEvidenceList(claimID, cm.getModuleID(), role));   
             }
         } else {
             claimedModules = new ArrayList<ClaimedModule>();
