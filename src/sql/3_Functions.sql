@@ -817,7 +817,7 @@ $_$;
 CREATE FUNCTION fn_listcores(courseid text) RETURNS SETOF "CourseModule"
     LANGUAGE sql
     AS $_$
-    SELECT * FROM "CourseModule" WHERE "courseID" = courseid AND "elective" = false;
+    SELECT * FROM "CourseModule" WHERE "courseID" = $1 AND "elective" = false;
 $_$;
 
 --
@@ -827,7 +827,7 @@ $_$;
 CREATE FUNCTION fn_listelectives(courseid text) RETURNS SETOF "CourseModule"
     LANGUAGE sql
     AS $_$
-    SELECT * FROM "CourseModule" WHERE "courseID" = courseid AND "elective" = true;
+    SELECT * FROM "CourseModule" WHERE "courseID" = $1 AND "elective" = true;
 $_$;
 
 --
