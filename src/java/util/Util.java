@@ -22,29 +22,29 @@ import javax.servlet.http.HttpServletRequest;
  * @author Adam Shortall
  */
 public final class Util {
-    
+
     public static final int INT_ID_EMPTY = 0;
-    
+
     private Util() {}
-    
+
     /**
      * Returns an integer value (probably representing an ID field) from a jsp where
      * the parameter name has a particular prefix followed by a colon.
      * @param request
      * @param prefix
-     * @return 
+     * @return
      */
     public static Integer getPageIntID(HttpServletRequest request, String prefix) {
         String stringID = getPageStringID(request, prefix);
         return stringID == null ? null : Integer.parseInt(stringID);
     }
-    
+
     /**
      * Returns a String value (probably representing an ID field) from a jsp
      * where the parameter name has a particular prefix followed by a colon.
      * @param request
      * @param prefix
-     * @return 
+     * @return
      */
     public static String getPageStringID(HttpServletRequest request, String prefix) {
         Enumeration<String> requestParameters = request.getParameterNames();
@@ -58,9 +58,9 @@ public final class Util {
         }
         return null;
     }
-    
+
     /**
-     * 
+     *
      * @param campusID
      * @param disciplineID
      * @param courseID
@@ -68,25 +68,25 @@ public final class Util {
      * @return A course with all elective and core modules set
      */
     public static Course getCourseWithModules(String campusID, int disciplineID, String courseID, Role role) {
-        CourseIO courseIO = new CourseIO(role);      
+        CourseIO courseIO = new CourseIO(role);
         Course course = courseIO.getByID(courseID);
-        
+
         if (campusID == null || campusID.isEmpty() || disciplineID == Util.INT_ID_EMPTY) {
             return course;
         }
-        
+
         ModuleIO moduleIO = new ModuleIO(role);
         course.setCoreModules(moduleIO.getListOfCores(courseID));
         course.setElectiveModules(moduleIO.getListOfElectives(courseID));
         return course;
     }
-    
+
     /**
      * Returns an Element with all of its criteria set.
      * @param elementID
      * @param moduleID
      * @param role
-     * @return 
+     * @return
      */
     public static Element getCompleteElement(int elementID, String moduleID, Role role) {
         ElementIO elementIO = new ElementIO(role);
@@ -94,38 +94,40 @@ public final class Util {
         Element element = elementIO.getByID(moduleID, elementID);
         ArrayList<Criterion> criteria = criterionIO.getList(elementID);
         element.setCriteria(criteria);
-        
+
         return element;
     }
     /**
-     * 
+     *
      * @param moduleID
      * @param role
-     * @return 
+     * @return
      */
     public static Module getCompleteModule(String moduleID, Role role) {
         ElementIO elementIO = new ElementIO(role);
         CriterionIO criterionIO = new CriterionIO(role);
         ModuleIO moduleIO = new ModuleIO(role);
-        
+
         Module module = moduleIO.getByID(moduleID);
         
-        if (module == null) {return new Module()};
+        if (module == null) {
+			return new Module();
+		}
         module.setElements(elementIO.getList(moduleID));
         for (Element e : module.getElements()) {
             e.setCriteria(criterionIO.getList(e.getElementID()));
         }
         return module;
     }
-    
-    
+
+
     /**
      * Returns an Evidence record with completed element & criteria
      * @param claimID
      * @param moduleID
      * @param elementID
      * @param role
-     * @return 
+     * @return
      */
     public static Evidence getCompleteEvidence(int claimID, String moduleID, Integer elementID, Role role) {
         EvidenceIO evidenceIO = new EvidenceIO(role);
@@ -135,16 +137,16 @@ public final class Util {
         }
         return evidence;
     }
-    
+
     /**
      * Returns a list of all Evidence for a claimed module, completed with elements and criteria.
      * @param claimID
      * @param moduleID
      * @param role
-     * @return 
+     * @return
      */
     public static ArrayList<Evidence> getCompleteEvidenceList(int claimID, String moduleID, Role role) {
-        
+
         EvidenceIO evidenceIO = new EvidenceIO(role);
         ArrayList<Evidence> list = evidenceIO.getList(claimID, moduleID);
         for (Evidence e : list) {
@@ -154,12 +156,12 @@ public final class Util {
     }
 
     /**
-     * 
+     *
      * @param courseID
      * @param role
      * @param campus
      * @param discipline
-     * @return 
+     * @return
      */
     public static Course getCompleteCourse(String courseID, Role role, String campusID, int disciplineID) {
         Course completeCourse = Util.getCourseWithModules(campusID, disciplineID, courseID, role);
@@ -169,41 +171,41 @@ public final class Util {
         }
         return completeCourse;
     }
-    
+
     /**
-     * 
+     *
      * @param claimID
      * @param studentID
      * @param role
-     * @return 
+     * @return
      */
     public static ArrayList<ClaimedModule> getCompleteClaimedModuleList(int claimID, String studentID, Role role) {
-        
+
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(role);
         ProviderIO providerIO = new ProviderIO(role);
         ArrayList<ClaimedModule> claimedModules = claimedModuleIO.getList(claimID, studentID);
         if (claimedModules != null) {
             for (ClaimedModule cm : claimedModules) {
                 cm.setProviders(providerIO.getList(claimID, studentID, cm.getModuleID()));
-                cm.setEvidence(Util.getCompleteEvidenceList(claimID, cm.getModuleID(), role));   
+                cm.setEvidence(Util.getCompleteEvidenceList(claimID, cm.getModuleID(), role));
             }
         } else {
             claimedModules = new ArrayList<ClaimedModule>();
         }
-        return claimedModules;        
+        return claimedModules;
     }
-    
+
     /**
-     * 
+     *
      * @param studentID
      * @param claimID
      * @param role
-     * @return A claim with all claimedModules which each contain evidence, elements 
+     * @return A claim with all claimedModules which each contain evidence, elements
      * and criteria, where applicable.
      */
     public static Claim getCompleteClaim(String studentID, int claimID, Role role) {
         ClaimIO claimIO = new ClaimIO(role);
-        UserIO userIO = new UserIO(role);     
+        UserIO userIO = new UserIO(role);
         CampusIO campusIO = new CampusIO(role);
         DisciplineIO disciplineIO = new DisciplineIO(role);
         CourseIO courseIO = new CourseIO(role);
@@ -217,7 +219,7 @@ public final class Util {
             claim.setDelegateID("");
         }
         if (claim.getCampusID() != null) {
-            claim.setCampus(campusIO.getByID(claim.getCampusID()));    
+            claim.setCampus(campusIO.getByID(claim.getCampusID()));
         }
         if (claim.getDisciplineID() != null) {
             claim.setDiscipline(disciplineIO.getByID(claim.getDisciplineID()));
@@ -226,12 +228,12 @@ public final class Util {
             claim.setCourse(courseIO.getByID(claim.getCourseID()));
         }
         claim.setClaimedModules(Util.getCompleteClaimedModuleList(claimID, studentID, role));
-        
+
         return claim;
     }
-    
+
     /**
-     * 
+     *
      * @param campusID
      * @param role
      * @return A campus with all disciplines and courses, courses do not have modules set
@@ -247,51 +249,51 @@ public final class Util {
         }
         return campus;
     }
-    
+
     /**
      * Takes a claim that has it's object references set (i.e. ClaimedModule list and
      * Evidence objects for each ClaimedModule record in that list) and updates everyting
      * in the database.
-     * @param claim 
+     * @param claim
      */
 //    public static void updateCompleteClaim(Claim claim, Role role) {
 //        ClaimIO claimIO = new ClaimIO(role);
 //        ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(role);
 //        EvidenceIO evidenceIO = new EvidenceIO(role);
 //        ProviderIO providerIO = new ProviderIO(role);
-//        
+//
 //    }
-    
+
     public static ClaimRecord getCompleteClaimRecord(ClaimRecord pClaimRecord, Role role) {
 
         UserIO oUserIO = new UserIO(role); // for viewer
         User oUser = oUserIO.getStudentInfo(pClaimRecord.getStudentID());
         pClaimRecord.setStudentName(oUser.getFirstName() + oUser.getLastName());
-        
+
         oUser = oUserIO.getStudentInfo(pClaimRecord.getWorkerID());
         if (oUser == null) {
             oUser = oUserIO.getTeacherInfo(pClaimRecord.getWorkerID());
         }
         pClaimRecord.setWorkerName(oUser.getFirstName() + oUser.getLastName());
-        
+
         if (pClaimRecord.getWorkTime().length() > 18) {
             pClaimRecord.setWorkTime(pClaimRecord.getWorkTime().substring(0, 19));
         }
-        
+
         // campus
         CampusIO oCampusIO = new CampusIO(role);
         Campus oCampus = oCampusIO.getByID(pClaimRecord.getCampusID());
         if (oCampus != null) {
             pClaimRecord.setCampusName(oCampus.getName());
         }
-        
+
         // course
         CourseIO oCourseIO = new CourseIO(role);
         Course oCourse = oCourseIO.getByID(pClaimRecord.getCourseID());
         if(oCourse != null) {
             pClaimRecord.setCourseName(oCourse.getCourseID() + ":" + oCourse.getName());
         }
-        
+
         return pClaimRecord;
-    }    
+    }
 }

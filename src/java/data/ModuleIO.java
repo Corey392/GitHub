@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *  
+ *
  * @author James, Adam Shortall
  */
 public class ModuleIO extends RPL_IO<Module> {
@@ -18,18 +18,18 @@ public class ModuleIO extends RPL_IO<Module> {
         MODULE_ID("moduleID"),
         NAME("name"),
         INSTRUCTIONS("instructions");
-        
+
         public final String name;
-        
+
         Field(String name) {
             this.name = name;
         }
     }
-    
+
     public ModuleIO(Role role) {
         super(role);
     }
-    
+
     /**
      * Inserts a module.
      * @param module The module to insert
@@ -67,7 +67,7 @@ public class ModuleIO extends RPL_IO<Module> {
     /**
      * Deletes a module and all dependent elements etc.
      * @param module the module to delete
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void delete(Module module) throws SQLException {
         String moduleID = module.getModuleID();
@@ -75,14 +75,14 @@ public class ModuleIO extends RPL_IO<Module> {
         SQLParameter p1 = new SQLParameter(moduleID);
         super.doPreparedStatement(sql, p1);
     }
-    
+
     /**
      * Gets a Module by its ID.
      * @param moduleID the ID of the module
      * @return the module that was found or an empty module
      */
     public Module getByID(String moduleID){
-        
+
         String sql = "SELECT * FROM fn_GetModuleByID(?)";
         SQLParameter p1 = new SQLParameter(moduleID);
         try {
@@ -97,50 +97,50 @@ public class ModuleIO extends RPL_IO<Module> {
         }
         return null;
     }
-    
+
     /**
-     * 
+     *
      * @param courseID
-     * @return 
+     * @return
      */
     public ArrayList<Module> getListOfCores(String courseID) {
-        
+
         String sql = "SELECT * FROM fn_ListCores(?)";
         SQLParameter p1 = new SQLParameter(courseID);
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
-            return this.getListFromResultSet(rs);            
-        } catch (SQLException ex) {
-            Logger.getLogger(ModuleIO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }   
-    
-    /**
-     * 
-     * @param courseID
-     * @return 
-     */
-    public ArrayList<Module> getListOfElectives(String courseID) {
-        
-        String sql = "SELECT * FROM fn_ListElectives(?)";
-        SQLParameter p1 = new SQLParameter(courseID);
-        
-        try {
-            ResultSet rs = super.doPreparedStatement(sql, p1, p2, p3);
             return this.getListFromResultSet(rs);
         } catch (SQLException ex) {
             Logger.getLogger(ModuleIO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
+    /**
+     *
+     * @param courseID
+     * @return
+     */
+    public ArrayList<Module> getListOfElectives(String courseID) {
+
+        String sql = "SELECT * FROM fn_ListElectives(?)";
+        SQLParameter p1 = new SQLParameter(courseID);
+        
+        try {
+            ResultSet rs = super.doPreparedStatement(sql, p1);
+            return this.getListFromResultSet(rs);
+        } catch (SQLException ex) {
+            Logger.getLogger(ModuleIO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     /**
      * Returns a list of all modules in the database.
      * @return all modules.
      */
     public ArrayList<Module> getList() {
-        
+
         String sql = "SELECT * FROM fn_ListModules();";
         try {
             ResultSet rs = super.doQuery(sql);
@@ -150,15 +150,15 @@ public class ModuleIO extends RPL_IO<Module> {
         }
         return null;
     }
-    
+
     /**
      * Returns a list of modules that are not in the course, i.e. that are not
      * either Core modules or Elective modules of that course.
      * @param courseID
-     * @return 
+     * @return
      */
     public ArrayList<Module> getListNotInCourse(String courseID) {    // fn_ListModulesNotInCourse(courseID text)
-        
+
         String sql = "SELECT * FROM fn_ListModulesNotInCourse(?)";
         SQLParameter p1 = new SQLParameter(courseID);
         try {
@@ -169,47 +169,47 @@ public class ModuleIO extends RPL_IO<Module> {
         }
         return null;
     }
-    
+
     /**
      * Returns a list of modules that are not core modules of the course.
      * They may be elective modules of the course.
      * @param courseID
-     * @return 
+     * @return
      */
     public ArrayList<Module> getListNotCoreInCourse(String courseID) {
-        
+
         String sql = "SELECT * FROM fn_ListModulesNotCoreInCourse(?)";
         SQLParameter p1 = new SQLParameter(courseID);
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
-            return this.getListFromResultSet(rs);            
+            return this.getListFromResultSet(rs);
         } catch (SQLException ex) {
             Logger.getLogger(ModuleIO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
     /**
      * Adds a core module to a course.
-     * @param moduleID 
+     * @param moduleID
      * @throws SQLException the module cannot be added as a core to the course.
      */
     public void addCore(String courseID, String moduleID) throws SQLException {
-        
+
         String sql = "SELECT fn_AddCore(?,?)";
         SQLParameter p1 = new SQLParameter(courseID);
         SQLParameter p2 = new SQLParameter(moduleID);
 
         super.doPreparedStatement(sql, p1, p2);
     }
-    
+
     /**
      * Adds an elective module to a campus-discipline-course
      * @param campusID
      * @param disciplineID
      * @param courseID
      * @param moduleID
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void addElective(String campusID, int disciplineID, String courseID, String moduleID) throws SQLException {
 
@@ -218,17 +218,17 @@ public class ModuleIO extends RPL_IO<Module> {
         SQLParameter p2 = new SQLParameter(disciplineID);
         SQLParameter p3 = new SQLParameter(courseID);
         SQLParameter p4 = new SQLParameter(moduleID);
-        
+
         super.doPreparedStatement(sql, p1, p2, p3, p4);
     }
-    
+
     /**
      * Removes a module as an elective module for a specified course at a campus-discipline.
      * @param campusID
      * @param disciplineID
      * @param courseID
      * @param moduleID
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void removeElective(String campusID, int disciplineID, String courseID, String moduleID) throws SQLException {
 
@@ -237,10 +237,10 @@ public class ModuleIO extends RPL_IO<Module> {
         SQLParameter p2 = new SQLParameter(disciplineID);
         SQLParameter p3 = new SQLParameter(courseID);
         SQLParameter p4 = new SQLParameter(moduleID);
-        
+
         super.doPreparedStatement(sql, p1, p2, p3, p4);
     }
-    
+
     /**
      * Removes a core module from a course.
      * @param courseID the course to remove a core module from
@@ -248,27 +248,27 @@ public class ModuleIO extends RPL_IO<Module> {
      * @throws SQLException if core specified does not exist
      */
     public void removeCore(String courseID, String moduleID) throws SQLException {
-        
+
         String sql = "SELECT fn_RemoveCore(?,?)";
         SQLParameter p1 = new SQLParameter(courseID);
         SQLParameter p2 = new SQLParameter(moduleID);
-        
+
         super.doPreparedStatement(sql, p1, p2);
     }
-    
+
     /**
      * Takes a ResultSet of Modules and returns them in a list.
      * @param rs
      * @return list of Module objects
-     * @throws SQLException 
+     * @throws SQLException
      */
     private ArrayList<Module> getListFromResultSet(ResultSet rs) throws SQLException {
-        
+
         ArrayList<Module> list = new ArrayList<Module>();
         String moduleID;
         String name;
         String guide;
-        
+
         while (rs.next()) {
             moduleID = rs.getString(Field.MODULE_ID.name);
             name = rs.getString(Field.NAME.name);
