@@ -14,10 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**	@author     Adam Shortall, Todd Wiggins
- *  @version    1.1
+ *  @version    1.2
  *	Created:    ?
  *	Modified:   09/04/2013
  *	Change Log: 1.1: TW: Updated to match current version of database.
+ *				1.2: TW: Corrected data type for postcode.
  *	Purpose:    UserIO is for IO of all user types. Whatever subclass of user the user is, the student level connection will be used to connect to the database.
  */
 public class UserIO extends RPL_IO<User> {
@@ -81,7 +82,7 @@ public class UserIO extends RPL_IO<User> {
 				String addressLine2 = user.getAddress()[1];
 				String town = user.getTown();
 				String state = user.getState();
-				String postcode = user.getPostCode();
+				int postcode = user.getPostCode();
 				String phoneNumber = user.getPhoneNumber();
 				String studentID = user.getStudentID();
 				boolean staff = user.isStaff();
@@ -222,7 +223,6 @@ public class UserIO extends RPL_IO<User> {
                 String codeString = rs.getString(1);
                 if (codeString == null) { return null; }
                 char code = codeString.charAt(0);
-                System.out.println(code);
                 switch (code) {
                     case ADMIN_CODE:
                         return Role.ADMIN;
