@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.PostgreError;
@@ -21,12 +17,20 @@ import util.FieldError;
 import util.RPLError;
 import util.RPLPage;
 
+/**    @author     Adam Shortall, Todd Wiggins
+ *  @version    1.1
+ *	Created:    ?
+ *	Modified:   10/04/2013
+ *	Change Log: 1.1: TW: Added meaningful location to exception messages. Made changes to actually allow a user to register with the updates.
+ *				1.2: TW: (NOT DONE YET) Add remaining input fields from form into the 'student' variable.
+ *	Purpose:    Sends user to the student registration page. When
+ *				a user has attempted to register there, this servlet
+ *				receives the form data and attempts to create a
+ *				student in the database.
+ */
 /**
- * Sends user to the student registration page. When 
- * a user has attempted to register there, this servlet
- * receives the form data and attempts to create a 
- * student in the database.
- * 
+ *
+ *
  * @author Adam Shortall
  */
 public class RegisterServlet extends HttpServlet implements SingleThreadModel {
@@ -34,8 +38,8 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
     HttpSession session;
     String url;
     User student;
-    
-    /** 
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -52,44 +56,48 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
             session = request.getSession();
             // Check to see if there is any form data, then validate:
             request = this.registerStudent(request);
-            
+
             session.setAttribute("user", student);
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request, response);
         } catch(Exception e) {
-            System.err.println(e.getMessage());
-        } finally {            
+            System.out.println("RegisterServlet: processRequest: Exception: "+e.getMessage());
+        } finally {
             out.close();
         }
     }
-    
+
     /**
      * Registers a student user with the database. Will set
      * error messages in the request and return the request.
      * @param request
-     * @return 
+     * @return
      */
     private HttpServletRequest registerStudent(HttpServletRequest request) {
         if (request.getParameter("userID") != null) {
             String passwordConfirm;
             student = (User) session.getAttribute("user");
+			if (student == null) {
+				student = new User();
+			}
             student.setEmail(request.getParameter("email"));
             student.setFirstName(request.getParameter("firstName"));
             student.setLastName(request.getParameter("lastName"));
             student.setPassword(request.getParameter("password"));
             student.setUserID(request.getParameter("userID"));
+			student.setStudentID(request.getParameter("userID"));
             passwordConfirm = request.getParameter("passwordConfirm");
 
-            boolean isValid = true;                
+            boolean isValid = true;
 
             if (!student.validateField(User.Field.EMAIL)) {
                 request.setAttribute("emailError", new RPLError(FieldError.STUDENT_EMAIL));
                 isValid = false;
-            } 
+            }
             if (!student.validateField(User.Field.USER_ID)) {
                 request.setAttribute("userIDError", new RPLError(FieldError.STUDENT_ID));
                 isValid = false;
-            } 
+            }
             if (!student.validateField(User.Field.FIRST_NAME)) {
                 request.setAttribute("firstNameError", new RPLError(FieldError.NAME));
                 isValid = false;
@@ -97,11 +105,11 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
             if (!student.validateField(User.Field.LAST_NAME)) {
                 request.setAttribute("lastNameError", new RPLError(FieldError.NAME));
                 isValid = false;
-            } 
+            }
             if (!student.validateField(User.Field.PASSWORD)) {
                 request.setAttribute("passwordError", new RPLError(FieldError.PASSWORD_COMPLEXITY));
                 isValid = false;
-            } 
+            }
             if (!student.getPassword().equals(passwordConfirm)) {
                 request.setAttribute("passwordConfirmError", new RPLError(FieldError.PASSWORD_CONFIRM));
                 isValid = false;
@@ -112,12 +120,13 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
                     student.logIn();
                     url = RPLPage.REGISTER_CONFIRM.relativeAddress;
                 } catch (SQLException e) {
-                    if (e.getSQLState().equals(PostgreError.UNIQUE_VIOLATION.code)) {                        
+					System.out.println("RegisterServlet: registerStudent: SQLException: "+e.getMessage());
+                    if (e.getSQLState().equals(PostgreError.UNIQUE_VIOLATION.code)) {
                         request.setAttribute("studentUniqueError", new RPLError(FieldError.STUDENT_UNIQUE));
                         url = RPLPage.REGISTER.relativeAddress;
                     }
                 } catch (Exception e) {
-                    System.err.println(e.getMessage());
+                    System.out.println("RegisterServlet: registerStudent: Exception: "+e.getMessage());
                     url = RPLPage.REGISTER.relativeAddress;
                 }
             } else {
@@ -130,7 +139,7 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -143,7 +152,7 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -156,7 +165,7 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
