@@ -42,7 +42,9 @@ public enum RPLPage {
     TEACHER_LIST_CLAIM_RECORDS("View Claim Status", "/teachers/listClaimRecords.jsp"),  // Kyoungho Lee
     STUDENT_LIST_CLAIM_RECORDS("View Claim Status", "/students/listClaimRecords.jsp"),   // Kyoungho Lee
     LIST_ERRORS("View Errors", "/admins/listErrors.jsp"),  // Kyoungho Lee
-    ADMIN_ACCESS_HISTORY("View Access History", "/admins/accessHistory.jsp");  // Ben
+    ADMIN_ACCESS_HISTORY("View Access History", "/admins/accessHistory.jsp"),  // Ben
+    TERMS_AND_CONDITIONS("Terms And Conditions", "/legal/terms.jsp"), //Todd Wiggins
+	PRIVACY_POLICY("Privacy Policy", "/legal/privacy.jsp"); //Todd Wiggins
 
     /** The name of the website, should match the name of the directory on the server. */
     public final static String ROOT = "/RPL2013";
