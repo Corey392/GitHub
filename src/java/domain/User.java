@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**	@author     Adam Shortall, Todd Wiggins
- *  @version    1.1
+ *  @version    1.2
  *	Created:    ?
- *	Modified:   09/04/2013
+ *	Modified:   10/04/2013
  *	Change Log: 1.1: TW: Updated to match current version of database.
+ *				1.2: TW: Corrected data type for postcode to match database. Updated constructors for all elements/db columns.
  *	Purpose:    Represents a user of the system. A user can have one
  *				of four roles, and has a unique username, an encrypted
  *				password, firstName, lastName and email address. Students
@@ -25,7 +26,7 @@ public class User implements Comparable<User> {
 	private String address2;
 	private String town;
 	private String state;
-	private String postCode;
+	private int postCode;
 	private String phone;
     private String email;
     private String studentID;
@@ -49,11 +50,6 @@ public class User implements Comparable<User> {
 
     /**
      * Constructor for a user without a specified password.
-     * @param userID
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param role
      */
     public User(
             String userID,
@@ -75,14 +71,7 @@ public class User implements Comparable<User> {
     }
 
     /**
-     * Constructor for a user loaded form the database.
-     * @param userID
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param role
-     * @param password
-     * @param status
+     * Old Constructor for a user loaded form the database.
      */
     public User(
             String userID,
@@ -92,10 +81,42 @@ public class User implements Comparable<User> {
             Role role,
             String password,
             boolean courseCoordinator) {
+        this(userID, firstName, lastName, "", "", "", "", "", 0, "", email, "", courseCoordinator, role, password);
+    }
+
+    /**
+     * Constructor for a user loaded form the database.
+     */
+    public User(
+            String userID,
+            String firstName,
+            String lastName,
+			String otherName,
+			String address1,
+			String address2,
+			String town,
+			String state,
+			int postCode,
+			String phone,
+			String email,
+			String studentID,
+			boolean staff,
+            Role role,
+			String password) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
+		this.otherName = otherName;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.town = town;
+		this.state = state;
+		this.postCode = postCode;
+		this.phone = phone;
         this.email = email;
+		this.studentID = studentID;
+		this.staff = staff;
+		this.password = password;
         this.role = role;
         this.status = Status.NOT_LOGGED_IN;
     }
@@ -349,14 +370,14 @@ public class User implements Comparable<User> {
 	/**
 	 * @param postCode the users address field for postCode
 	 */
-	public void setPostCode(String postCode) {
+	public void setPostCode(int postCode) {
 		this.postCode = postCode;
 	}
 
 	/**
 	 * @return postCode the users address field for postCode
 	 */
-	public String getPostCode() {
+	public int getPostCode() {
 		return this.postCode;
 	}
 
