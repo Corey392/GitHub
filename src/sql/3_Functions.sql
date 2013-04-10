@@ -1,10 +1,12 @@
 /* Purpose:  	Adds the Functions to the database.
  * Authors:		Ryan,Kelly,Bryce,Todd
- * Created:		
- * Version:		v3
- * Modified:	09/04/2013
- * Change Log:	v2: Bryce: 
- *				v3: Todd: Updated 'fn_insertstudent' to incorporate all columns that have been added
+ * Created:
+ * Version:		v3.2
+ * Modified:	10/04/2013
+ * Change Log:	v2.0: Bryce:
+ *				v3.0: Todd: Updated 'fn_insertstudent' to incorporate all columns that have been added
+				v3.1: Todd: Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
+				v3.2: Mitch: Fixed a mistake I made earlier in fn_listcores and fn_listelectives. Both have been tested and work now.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -39,7 +41,7 @@ CREATE FUNCTION fn_approveclaim(claimid integer, studentid text, delapproved boo
     LANGUAGE plpgsql
     AS $_$
 BEGIN
-	IF (SELECT "assApproved" WHERE "claimID" = $1 AND "studentID" = $2) IS NULL THEN 
+	IF (SELECT "assApproved" WHERE "claimID" = $1 AND "studentID" = $2) IS NULL THEN
 		RETURN FALSE;
 	ELSE
 		UPDATE "Claim" SET("delApproved", "delegateID", "status") = ($3, $4, 4);
@@ -58,7 +60,7 @@ CREATE FUNCTION fn_assessclaim(claimid integer, studentid text, requestcomp bool
     AS $_$
 BEGIN
 	IF NULL IN(
-		SELECT "approved" FROM "ClaimedModule" 
+		SELECT "approved" FROM "ClaimedModule"
 			WHERE "ClaimedModule"."claimID" = claimID
 			AND "ClaimedModule"."studentID" = studentID
 	) THEN RETURN false;
@@ -78,7 +80,7 @@ $_$;
 CREATE FUNCTION fn_assessevidence("studentID" text, "claimID" integer, "moduleID" text, approved boolean, "assessorNote" text) RETURNS void
     LANGUAGE sql
     AS $_$
-	UPDATE "Evidence" SET ("approved","assessorNote") = ($4,$5) 
+	UPDATE "Evidence" SET ("approved","assessorNote") = ($4,$5)
 		WHERE "claimID" = $2 AND "moduleID" = $3;
 $_$;
 
@@ -93,7 +95,7 @@ CREATE FUNCTION fn_assessmodule("moduleID" text, "studentID" text, "claimID" int
 BEGIN
 	UPDATE "ClaimedModule" SET("approved", "arrangementNo", "functionalCode", "overseasEvidence", "recognition") = ($4,$5,$6,$7,$8)
 		WHERE "moduleID" = $1 AND "studentID" = $2 AND "claimID" = $3;
-		
+
 	FOR i IN array_lower($9)..array_lower($9) + 2 LOOP
 		IF $9[i] IS NOT NULL THEN
 			PERFORM fn_AssignProvider($2,$3,$1,$9[i]);
@@ -144,7 +146,7 @@ $_$;
 
 CREATE FUNCTION fn_assigndiscipline("campusID" text, "disciplineID" integer) RETURNS void
     LANGUAGE sql
-    AS $_$	
+    AS $_$
 	INSERT INTO "CampusDiscipline"("campusID", "disciplineID")
 	VALUES($1,$2)
 $_$;
@@ -186,7 +188,7 @@ $$;
 CREATE FUNCTION fn_deletecampus("campusID" text) RETURNS void
     LANGUAGE sql
     AS $_$
-    DELETE FROM "Campus" WHERE "campusID" = $1;	
+    DELETE FROM "Campus" WHERE "campusID" = $1;
 $_$;
 
 
@@ -209,8 +211,8 @@ $_$;
 CREATE FUNCTION fn_deleteclaimedmodule(claimid integer, moduleid text) RETURNS void
     LANGUAGE sql
     AS $_$
-    DELETE FROM "ClaimedModule" 
-    WHERE   
+    DELETE FROM "ClaimedModule"
+    WHERE
         "claimID" = $1
     AND "moduleID" = $2;
 $_$;
@@ -234,10 +236,10 @@ $_$;
 CREATE FUNCTION fn_deletecriterion(criterionid integer, elementid integer) RETURNS void
     LANGUAGE sql
     AS $_$
-    DELETE FROM "Criterion" 
+    DELETE FROM "Criterion"
     WHERE "criterionID" = $1
     AND "elementID" = $2;
-    
+
     UPDATE "Criterion"
     SET "criterionID" = "criterionID" - 1
     WHERE "elementID" = $2
@@ -267,8 +269,8 @@ CREATE FUNCTION fn_deleteelement(elementid integer, moduleid text) RETURNS void
     LANGUAGE sql
     AS $_$
     DELETE FROM "Element" WHERE "elementID" = $1 AND "moduleID" = $2;
-    UPDATE "Element" 
-    SET "elementID" = "elementID" - 1 
+    UPDATE "Element"
+    SET "elementID" = "elementID" - 1
     WHERE "moduleID" = $2
     AND "elementID" > $1;
 $_$;
@@ -367,7 +369,7 @@ $_$;
 CREATE FUNCTION fn_getcriteria(elementid integer) RETURNS SETOF "Criterion"
     LANGUAGE sql
     AS $_$
-    SELECT * FROM "Criterion" 
+    SELECT * FROM "Criterion"
     WHERE "Criterion"."elementID" = $1;
 $_$;
 
@@ -466,7 +468,7 @@ $_$;
 CREATE FUNCTION fn_getteacheruser("teacherID" text) RETURNS SETOF "vw_TeacherUser"
     LANGUAGE sql
     AS $_$
-SELECT * 
+SELECT *
 FROM "vw_TeacherUser"
 WHERE "teacherID" = $1;
 $_$;
@@ -508,7 +510,7 @@ $_$;
 CREATE FUNCTION fn_insertuser(text, text, character, text,text, text) RETURNS void
     LANGUAGE sql
     AS $_$
-	INSERT INTO "User"("userID", "password", "role", "email", "firstName", "lastName") 
+	INSERT INTO "User"("userID", "password", "role", "email", "firstName", "lastName")
 	VALUES($1, md5($2)::bytea, $3, $4, $5, $6)
 $_$;
 
@@ -586,13 +588,13 @@ CREATE FUNCTION fn_insertclaim(studentid text, campusid text, disciplineid integ
     DECLARE claimID int;
     BEGIN
         claimID := MAX("claimID") FROM "Claim" WHERE "studentID" = $1;
-        IF claimID IS NULL 
+        IF claimID IS NULL
             THEN claimID := 1;
         ELSE
             claimID := claimID + 1;
         END IF;
-        
-	INSERT INTO "Claim"("claimID", "studentID", "campusID", "disciplineID", "courseID", "claimType", "dateMade", "status", "submitted") 
+
+	INSERT INTO "Claim"("claimID", "studentID", "campusID", "disciplineID", "courseID", "claimType", "dateMade", "status", "submitted")
 	VALUES(claimID,$1,$2,$3,$4,$5,DEFAULT,DEFAULT,DEFAULT);
     END;
 $_$;
@@ -618,7 +620,7 @@ CREATE FUNCTION fn_insertclerical("userID" text) RETURNS text
     LANGUAGE plpgsql
     AS $_$
 	DECLARE pw text;
-	
+
 	BEGIN
 		SELECT INTO pw fn_GeneratePassword();
 		PERFORM fn_InsertUser($1, md5(pw)::bytea, 'C');
@@ -722,8 +724,8 @@ $_$;
 
 CREATE FUNCTION fn_insertmodule(text, text, text) RETURNS void
     LANGUAGE sql
-    AS $_$	
-	INSERT INTO "Module"("moduleID", "name", "instructions") 
+    AS $_$
+	INSERT INTO "Module"("moduleID", "name", "instructions")
 	VALUES($1, $2, $3);
         INSERT INTO "Element"("moduleID", "elementID", "description")
         VALUES($1, 0, ' ');
@@ -747,11 +749,16 @@ $_$;
 --
 
 CREATE FUNCTION fn_insertstudent("userID" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) RETURNS text
-    LANGUAGE sql
+    LANGUAGE plpgsql
     AS $_$
-	INSERT INTO "Student"("userID", "otherName", "addressLine1", "addressLine2", "state", "phoneNumber", "postCode", "staff", "studentID","town")
-	VALUES($1, $5, $6, $7, $9, $11, $10, $13, $12, $8);
-	SELECT fn_InsertUser($1, 'S', $2, $3, $4);
+    DECLARE pw TEXT;
+
+    BEGIN
+		SELECT INTO pw fn_InsertUser($1, 'S', $2, $3, $4);
+		INSERT INTO "Student"("userID", "otherName", "addressLine1", "addressLine2", "town", "state", "postCode", "phoneNumber", "studentID", "staff")
+			VALUES($1, $5, $6, $7, $8, $9, $10, $11, $12, $13);
+		RETURN pw;
+    END;
 $_$;
 
 
@@ -784,7 +791,7 @@ CREATE FUNCTION fn_listcampuses() RETURNS SETOF "Campus"
 CREATE FUNCTION fn_listclaimedmodules(claimid integer) RETURNS SETOF "vw_ClaimedModule_Module"
     LANGUAGE sql
     AS $_$
-    SELECT * FROM "vw_ClaimedModule_Module" 
+    SELECT * FROM "vw_ClaimedModule_Module"
     WHERE "claimID" = $1;
 $_$;
 
@@ -848,7 +855,7 @@ $$;
 CREATE FUNCTION fn_listcourses("campusID" text, "disciplineID" integer) RETURNS SETOF "Course"
     LANGUAGE sql
     AS $_$SELECT "Course".* FROM "Course", "CampusDisciplineCourse"
-    WHERE "campusID" = $1 
+    WHERE "campusID" = $1
     AND "disciplineID" = $2
     AND "Course"."courseID" = "CampusDisciplineCourse"."courseID";$_$;
 
@@ -864,7 +871,7 @@ CREATE FUNCTION fn_listcoursesnotindiscipline(campusid text, disciplineid intege
     FROM "Course"
     WHERE "Course"."courseID" NOT IN
     (
-        SELECT "courseID" 
+        SELECT "courseID"
         FROM "CampusDisciplineCourse"
         WHERE "campusID" = $1 AND "disciplineID" = $2
     );
@@ -889,12 +896,12 @@ $_$;
 CREATE FUNCTION fn_listdelegates("campusID" text, "disciplineID" integer) RETURNS SETOF "Teacher"
     LANGUAGE sql
     AS $_$
-    SELECT 
+    SELECT
         "Teacher"."teacherID",
         "Teacher"."userID"
     FROM
         "Teacher", "Delegate"
-    WHERE 
+    WHERE
         "Teacher"."teacherID" = "Delegate"."teacherID"
     AND
         "Delegate"."campusID" = $1
@@ -932,7 +939,7 @@ CREATE FUNCTION fn_listdisciplines("campusID" text) RETURNS SETOF "Discipline"
 CREATE FUNCTION fn_listdisciplinesnotincampus(campusid text) RETURNS SETOF "Discipline"
     LANGUAGE sql
     AS $_$
-    SELECT DISTINCT "Discipline".* 
+    SELECT DISTINCT "Discipline".*
     FROM "Discipline"
     WHERE "Discipline"."disciplineID" NOT IN
     (
@@ -951,7 +958,7 @@ $_$;
 CREATE FUNCTION fn_listevidence( claimid integer, moduleid text) RETURNS SETOF "Evidence"
     LANGUAGE sql
     AS $_$
-    SELECT * FROM "Evidence" 
+    SELECT * FROM "Evidence"
     WHERE
 	"claimID" = $1
     AND "moduleID" = $2;
@@ -1014,7 +1021,7 @@ CREATE FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid intege
     AS $_$
     DELETE FROM "CampusDisciplineCourse"
     WHERE
-        "campusID" = $1 
+        "campusID" = $1
     AND "disciplineID" = $2
     AND "courseID" = $3;
 $_$;
@@ -1033,7 +1040,7 @@ CREATE FUNCTION fn_resetpassword(userid text) RETURNS text
         SELECT INTO newPassword fn_GeneratePassword();
         UPDATE "User" SET "password" = md5(newPassword)::bytea WHERE "userID" = $1;
         RETURN newPassword;
-    END;    
+    END;
 $_$;
 
 
@@ -1075,7 +1082,7 @@ CREATE FUNCTION fn_updateclaim(claimid integer, studentid text, campusid text, d
     AS $_$
     UPDATE "Claim"
     SET
-        "campusID" = $3, 
+        "campusID" = $3,
         "disciplineID" = $4,
         "option" = $5
     WHERE
@@ -1149,9 +1156,9 @@ $_$;
 CREATE FUNCTION fn_updatecriterion(criterionid integer, elementid integer, description text) RETURNS void
     LANGUAGE sql
     AS $_$
-    UPDATE "Criterion" 
+    UPDATE "Criterion"
     SET "description" = $3
-    WHERE 
+    WHERE
         "criterionID" = $1
     AND "elementID" = $2
 $_$;
@@ -1186,9 +1193,9 @@ $_$;
 CREATE FUNCTION fn_updateevidence( claimid integer, moduleid text, description text, approved boolean, assessornote text) RETURNS void
     LANGUAGE sql
     AS $_$
-    UPDATE "Evidence" 
-    SET 
-        "description" = $3, 
+    UPDATE "Evidence"
+    SET
+        "description" = $3,
         "approved" = $4,
         "assessorNote" = $5
     WHERE
@@ -1222,10 +1229,10 @@ CREATE FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastnam
     LANGUAGE sql
     AS $_$
     UPDATE "Student"
-    SET 
+    SET
         "studentID" = $2
-        
-    WHERE 
+
+    WHERE
         "Student"."studentID" = $1;
 
     UPDATE "User"
@@ -1235,7 +1242,7 @@ CREATE FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastnam
 	"firstName" = $3,
         "lastName" = $4,
         "email" = $5
-    WHERE 
+    WHERE
 	"User"."userID" = $1
 $_$;
 
@@ -1248,10 +1255,10 @@ CREATE FUNCTION fn_updateteacher(oldid text, newid text, firstname text, lastnam
     LANGUAGE sql
     AS $_$
     UPDATE "Teacher"
-    SET 
+    SET
         "teacherID" = $2
-        
-    WHERE 
+
+    WHERE
         "Teacher"."teacherID" = $1;
 
     UPDATE "User"
@@ -1261,7 +1268,7 @@ CREATE FUNCTION fn_updateteacher(oldid text, newid text, firstname text, lastnam
 	"firstName" = $3,
         "lastName" = $4,
         "email" = $5
-    WHERE 
+    WHERE
 	"User"."userID" = $1
 $_$;
 
@@ -1273,7 +1280,7 @@ $_$;
 CREATE FUNCTION fn_updateuser(oldid text, newid text, password text) RETURNS void
     LANGUAGE sql
     AS $_$
-    UPDATE "User" 
+    UPDATE "User"
     SET
         "userID" = $2,
         "password" = md5($3)::bytea
@@ -1294,9 +1301,9 @@ CREATE FUNCTION fn_verifylogin("userID" text, password text) RETURNS character
 	BEGIN
 		SELECT INTO pw "User"."password" FROM "User"
 			WHERE "User"."userID" = $1;
-			
+
 		IF pw IS null THEN RETURN null; END IF;
-		
+
 		SELECT INTO role "User"."role" FROM "User"
 			WHERE "User"."userID" = $1;
 		IF pw = md5($2)::bytea THEN RETURN ROLE;
@@ -1329,7 +1336,7 @@ CREATE FUNCTION fn_listmodulesnotinacourse("courseID" text) RETURNS SETOF "Modul
     SELECT "Module".*
     FROM "Module", "CourseModule"
     WHERE "CourseModule"."courseID" <> $1
-$_$; 
+$_$;
 
 --
 -- Name: fn_listmodulesnotincourse(); Type: FUNCTION; Schema: public; Owner: -
@@ -1342,7 +1349,7 @@ CREATE FUNCTION fn_listmodulesnotinanycourse() RETURNS SETOF "Module"
     SELECT "Module".*
     FROM "Module", "CourseModule"
     WHERE "CourseModule"."moduleID" <> "Module"."moduleID"
-$_$; 
+$_$;
 
 
 
