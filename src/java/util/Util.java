@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package util;
 
 import data.CampusIO;
@@ -81,7 +77,7 @@ public final class Util {
         
         ModuleIO moduleIO = new ModuleIO(role);
         course.setCoreModules(moduleIO.getListOfCores(courseID));
-        course.setElectiveModules(moduleIO.getListOfElectives(campusID, disciplineID, courseID));
+        course.setElectiveModules(moduleIO.getListOfElectives(courseID));
         return course;
     }
     
@@ -114,7 +110,7 @@ public final class Util {
         
         Module module = moduleIO.getByID(moduleID);
         
-        if (module == null) return new Module();
+        if (module == null) {return new Module()};
         module.setElements(elementIO.getList(moduleID));
         for (Element e : module.getElements()) {
             e.setCriteria(criterionIO.getList(e.getElementID()));
@@ -148,9 +144,9 @@ public final class Util {
      * @return 
      */
     public static ArrayList<Evidence> getCompleteEvidenceList(int claimID, String moduleID, Role role) {
-        ArrayList<Evidence> list;
+        
         EvidenceIO evidenceIO = new EvidenceIO(role);
-        list = evidenceIO.getList(claimID, moduleID);
+        ArrayList<Evidence> list = evidenceIO.getList(claimID, moduleID);
         for (Evidence e : list) {
             e.setElement(Util.getCompleteElement(e.getElementID(), moduleID, role));
         }
@@ -273,19 +269,19 @@ public final class Util {
         pClaimRecord.setStudentName(oUser.getFirstName() + oUser.getLastName());
         
         oUser = oUserIO.getStudentInfo(pClaimRecord.getWorkerID());
-        if(oUser == null) {
+        if (oUser == null) {
             oUser = oUserIO.getTeacherInfo(pClaimRecord.getWorkerID());
         }
         pClaimRecord.setWorkerName(oUser.getFirstName() + oUser.getLastName());
         
-        if(pClaimRecord.getWorkTime().length() > 18) {
+        if (pClaimRecord.getWorkTime().length() > 18) {
             pClaimRecord.setWorkTime(pClaimRecord.getWorkTime().substring(0, 19));
         }
         
         // campus
         CampusIO oCampusIO = new CampusIO(role);
         Campus oCampus = oCampusIO.getByID(pClaimRecord.getCampusID());
-        if(oCampus != null) {
+        if (oCampus != null) {
             pClaimRecord.setCampusName(oCampus.getName());
         }
         
