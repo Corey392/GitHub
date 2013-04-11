@@ -17,24 +17,18 @@ import util.FieldError;
 import util.RPLError;
 import util.RPLPage;
 
-/**    @author     Adam Shortall, Todd Wiggins
- *  @version    1.1
+/** @author     Adam Shortall, Todd Wiggins
+ *  @version    1.11
  *	Created:    ?
  *	Modified:   10/04/2013
- *	Change Log: 1.1: TW: Added meaningful location to exception messages. Made changes to actually allow a user to register with the updates.
- *				1.2: TW: (NOT DONE YET) Add remaining input fields from form into the 'student' variable.
+ *	Change Log: 1.10: TW: Added meaningful location to exception messages. Made changes to actually allow a user to register with the updates.
+ *				1.11: TW: Added remaining input fields from form into the 'student' variable. Validates the user has agreed to T&C and Privacy policy.
  *	Purpose:    Sends user to the student registration page. When
  *				a user has attempted to register there, this servlet
  *				receives the form data and attempts to create a
  *				student in the database.
  */
-/**
- *
- *
- * @author Adam Shortall
- */
 public class RegisterServlet extends HttpServlet implements SingleThreadModel {
-
     HttpSession session;
     String url;
     User student;
@@ -52,7 +46,7 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
         PrintWriter out = response.getWriter();
         student = new User();
         try {
-            url = null; // Address of next jsp to load
+            url = RPLPage.REGISTER.relativeAddress; // Address of next jsp to load, by default return the register page, if successful change URL
             session = request.getSession();
             // Check to see if there is any form data, then validate:
             request = this.registerStudent(request);
@@ -73,68 +67,70 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
      * @param request
      * @return
      */
-    private HttpServletRequest registerStudent(HttpServletRequest request) {
-        if (request.getParameter("userID") != null) {
-            String passwordConfirm;
-            student = (User) session.getAttribute("user");
+	private HttpServletRequest registerStudent(HttpServletRequest request) {
+		if (request.getParameter("userID") != null) {
+			String passwordConfirm;
+			student = (User) session.getAttribute("user");
 			if (student == null) {
 				student = new User();
 			}
-            student.setEmail(request.getParameter("email"));
-            student.setFirstName(request.getParameter("firstName"));
-            student.setLastName(request.getParameter("lastName"));
-            student.setPassword(request.getParameter("password"));
-            student.setUserID(request.getParameter("userID"));
+			student.setUserID(request.getParameter("userID"));
 			student.setStudentID(request.getParameter("userID"));
-            passwordConfirm = request.getParameter("passwordConfirm");
-
-            boolean isValid = true;
-
-            if (!student.validateField(User.Field.EMAIL)) {
-                request.setAttribute("emailError", new RPLError(FieldError.STUDENT_EMAIL));
-                isValid = false;
-            }
-            if (!student.validateField(User.Field.USER_ID)) {
-                request.setAttribute("userIDError", new RPLError(FieldError.STUDENT_ID));
-                isValid = false;
-            }
-            if (!student.validateField(User.Field.FIRST_NAME)) {
-                request.setAttribute("firstNameError", new RPLError(FieldError.NAME));
-                isValid = false;
-            }
-            if (!student.validateField(User.Field.LAST_NAME)) {
-                request.setAttribute("lastNameError", new RPLError(FieldError.NAME));
-                isValid = false;
-            }
-            if (!student.validateField(User.Field.PASSWORD)) {
-                request.setAttribute("passwordError", new RPLError(FieldError.PASSWORD_COMPLEXITY));
-                isValid = false;
-            }
-            if (!student.getPassword().equals(passwordConfirm)) {
-                request.setAttribute("passwordConfirmError", new RPLError(FieldError.PASSWORD_CONFIRM));
-                isValid = false;
-            }
-            if(isValid) {
-                try {
-                    new UserIO(student.role).insert(student);
-                    student.logIn();
-                    url = RPLPage.REGISTER_CONFIRM.relativeAddress;
-                } catch (SQLException e) {
+			student.setFirstName(request.getParameter("firstName"));
+			student.setOtherName(request.getParameter("otherName"));
+			student.setLastName(request.getParameter("lastName"));
+			student.setEmail(request.getParameter("email"));
+			student.setAddress(request.getParameter("address1"),request.getParameter("address2"));
+			student.setTown(request.getParameter("town"));
+			student.setState(request.getParameter("state"));
+			student.setPostCode(Integer.parseInt(request.getParameter("postCode")));
+			student.setPassword(request.getParameter("password"));
+			passwordConfirm = request.getParameter("passwordConfirm");
+			student.setStaff(request.getParameter("staff") != null && request.getParameter("staff").equals("yes") ? true : false);
+			boolean isValid = true;
+			if (!student.validateField(User.Field.EMAIL)) {
+				request.setAttribute("emailError", new RPLError(FieldError.STUDENT_EMAIL));
+				isValid = false;
+			}
+			if (!student.validateField(User.Field.USER_ID)) {
+				request.setAttribute("userIDError", new RPLError(FieldError.STUDENT_ID));
+				isValid = false;
+			}
+			if (!student.validateField(User.Field.FIRST_NAME)) {
+				request.setAttribute("firstNameError", new RPLError(FieldError.NAME));
+				isValid = false;
+			}
+			if (!student.validateField(User.Field.LAST_NAME)) {
+				request.setAttribute("lastNameError", new RPLError(FieldError.NAME));
+				isValid = false;
+			}
+			if (!student.validateField(User.Field.PASSWORD)) {
+				request.setAttribute("passwordError", new RPLError(FieldError.PASSWORD_COMPLEXITY));
+				isValid = false;
+			}
+			if (!student.getPassword().equals(passwordConfirm)) {
+				request.setAttribute("passwordConfirmError", new RPLError(FieldError.PASSWORD_CONFIRM));
+				isValid = false;
+			}
+			if ((request.getParameter("acceptTerms") == null || !request.getParameter("acceptTerms").equals("yes")) && (request.getParameter("acceptPrivacy") == null || !request.getParameter("acceptPrivacy").equals("yes"))) {
+				request.setAttribute("termsAndCondError", new RPLError(FieldError.TERMS_AND_COND));
+				isValid = false;
+			}
+			if(isValid) {
+				try {
+					new UserIO(student.role).insert(student);
+					student.logIn();
+					url = RPLPage.REGISTER_CONFIRM.relativeAddress;
+				} catch (SQLException e) {
 					System.out.println("RegisterServlet: registerStudent: SQLException: "+e.getMessage());
-                    if (e.getSQLState().equals(PostgreError.UNIQUE_VIOLATION.code)) {
-                        request.setAttribute("studentUniqueError", new RPLError(FieldError.STUDENT_UNIQUE));
-                        url = RPLPage.REGISTER.relativeAddress;
-                    }
-                } catch (Exception e) {
-                    System.out.println("RegisterServlet: registerStudent: Exception: "+e.getMessage());
-                    url = RPLPage.REGISTER.relativeAddress;
-                }
-            } else {
-                url = RPLPage.REGISTER.relativeAddress;
-            }
-        } else {
-            url = RPLPage.REGISTER.relativeAddress;
-        }
+					if (e.getSQLState().equals(PostgreError.UNIQUE_VIOLATION.code)) {
+						request.setAttribute("studentUniqueError", new RPLError(FieldError.STUDENT_UNIQUE));
+					}
+				} catch (Exception e) {
+					System.out.println("RegisterServlet: registerStudent: Exception: "+e.getMessage());
+				}
+			}
+		}
         return request;
     }
 
