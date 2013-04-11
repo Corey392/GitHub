@@ -9,6 +9,7 @@ public enum RPLPage {
     HOME("RPL Homepage", "/index.jsp"),
     REGISTER("RPL Student Registration", "/studentRegister.jsp"),
     REGISTER_CONFIRM("RPL Registration Confirmed", "/students/registerConfirm.jsp"),
+	RESET_PASSWORD("Reset Password", "/resetPassword.jsp"),//Added by: Todd Wiggins
     STUDENT_HOME("Student Homepage", "/students/index.jsp"),
     CREATE_CLAIM("Create Claim", "/students/createClaim.jsp"),
     REVIEW_CLAIM_PREV("Review Claim", "/students/reviewClaimPrev.jsp"),
@@ -43,8 +44,8 @@ public enum RPLPage {
     STUDENT_LIST_CLAIM_RECORDS("View Claim Status", "/students/listClaimRecords.jsp"),   // Kyoungho Lee
     LIST_ERRORS("View Errors", "/admins/listErrors.jsp"),  // Kyoungho Lee
     ADMIN_ACCESS_HISTORY("View Access History", "/admins/accessHistory.jsp"),  // Ben
-    TERMS_AND_CONDITIONS("Terms And Conditions", "/legal/terms.jsp"), //Todd Wiggins
-	PRIVACY_POLICY("Privacy Policy", "/legal/privacy.jsp"); //Todd Wiggins
+    TERMS_AND_CONDITIONS("Terms And Conditions", "/legal/terms.jsp"),//Added by: Todd Wiggins
+	PRIVACY_POLICY("Privacy Policy", "/legal/privacy.jsp");//Added by: Todd Wiggins
 
     /** The name of the website, should match the name of the directory on the server. */
     public final static String ROOT = "/RPL2013";

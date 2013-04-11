@@ -1,12 +1,13 @@
 /* Purpose:  	Adds the Functions to the database.
  * Authors:		Ryan,Kelly,Bryce,Todd
  * Created:
- * Version:		v3.2
+ * Version:		v3.3
  * Modified:	10/04/2013
  * Change Log:	v2.0: Bryce:
  *				v3.0: Todd: Updated 'fn_insertstudent' to incorporate all columns that have been added
 				v3.1: Todd: Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
 				v3.2: Mitch: Fixed a mistake I made earlier in fn_listcores and fn_listelectives. Both have been tested and work now.
+				v3.3: Todd: Added fn_doesUserExist: Allows you to search for a user by their ID or email and will return their email address.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1349,6 +1350,22 @@ CREATE FUNCTION fn_listmodulesnotinanycourse() RETURNS SETOF "Module"
     SELECT "Module".*
     FROM "Module", "CourseModule"
     WHERE "CourseModule"."moduleID" <> "Module"."moduleID"
+$_$;
+
+
+-- Added 11/04/2013
+CREATE OR REPLACE FUNCTION fn_doesUserExist(userID_OR_email text) RETURNS text
+	LANGUAGE plpgsql
+	AS $_$
+	DECLARE data TEXT;
+BEGIN
+	SELECT INTO data "email" FROM "User" WHERE "userID" = $1 OR "email" = $1;
+	IF (data) IS NULL THEN
+		RETURN '';
+	ELSE
+		RETURN data;
+	END IF;
+END;
 $_$;
 
 

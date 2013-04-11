@@ -29,7 +29,8 @@ import util.RPLPage;
  *				student in the database.
  */
 public class RegisterServlet extends HttpServlet implements SingleThreadModel {
-    HttpSession session;
+	
+	HttpSession session;
     String url;
     User student;
 

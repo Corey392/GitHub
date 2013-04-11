@@ -475,8 +475,24 @@ public class UserIO extends RPL_IO<User> {
             rs.next();
             return rs.getString(1);
         } catch (SQLException ex) {
-            Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, "resetPassword()", ex);
             return null;
         }
     }
+
+	/**Validates a users ID or email address if they already exist in the database.
+	 * @param userIdOrEmail A String being either the users ID (eg. studentID) or email address allowing the use for teachers/admin/assessors.
+	 * @return A String containing the users email address if they exist or an empty string "" if they were not found.
+	 */
+	public String validateUserIdOrEmail(String userIdOrEmail) {
+		String sql = "SELECT fn_doesUserExist(?)";
+		try {
+			ResultSet rs = super.doPreparedStatement(sql, p(userIdOrEmail));
+			rs.next();
+			return rs.getString(1);
+		} catch (SQLException ex) {
+            Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, "validateUserIdOrEmail()", ex);
+            return "";
+		}
+	}
 }
