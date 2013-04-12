@@ -29,7 +29,7 @@ import util.RPLPage;
  *				student in the database.
  */
 public class RegisterServlet extends HttpServlet implements SingleThreadModel {
-	
+
 	HttpSession session;
     String url;
     User student;
@@ -85,6 +85,7 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
 			student.setTown(request.getParameter("town"));
 			student.setState(request.getParameter("state"));
 			student.setPostCode(Integer.parseInt(request.getParameter("postCode")));
+			student.setPhoneNumber(request.getParameter("phone"));
 			student.setPassword(request.getParameter("password"));
 			passwordConfirm = request.getParameter("passwordConfirm");
 			student.setStaff(request.getParameter("staff") != null && request.getParameter("staff").equals("yes") ? true : false);
