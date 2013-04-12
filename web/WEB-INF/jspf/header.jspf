@@ -72,7 +72,8 @@
             Username: <input type="text" name="userID" value="teacher" /><br />
             Password: <input type="password" name="password" value="password" />
             <input type="submit" name="" value="Login" />
-            <a href="register">Register</a>
+            <a href="register">Register</a><br/>
+			<a href="<%= RPLPage.RESET_PASSWORD %>">Reset Password</a>
             </form>
 			<% } %>
         </div>
