@@ -1,14 +1,15 @@
 /* Purpose:  	Adds the Functions to the database.
  * Authors:		Ryan,Kelly,Bryce,Todd
  * Created:
- * Version:		v3.4
+ * Version:		v3.5
  * Modified:	12/04/2013
  * Change Log:	v2.0: Bryce:
  *				v3.0: Todd: Updated 'fn_insertstudent' to incorporate all columns that have been added
-				v3.1: Todd: Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
-				v3.2: Mitch: Fixed a mistake I made earlier in fn_listcores and fn_listelectives. Both have been tested and work now.
-				v3.3: Todd: Added fn_doesUserExist: Allows you to search for a user by their ID or email and will return their email address.
-				v3.4: Todd: Updated 'fn_updatestudent' to incorporate all columns that have been added.
+ *				v3.1: Todd: Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
+ *				v3.2: Mitch: Fixed a mistake I made earlier in fn_listcores and fn_listelectives. Both have been tested and work now.
+ *				v3.3: Todd: Added fn_doesUserExist: Allows you to search for a user by their ID or email and will return their email address.
+ *				v3.4: Todd: Updated 'fn_updatestudent' to incorporate all columns that have been added.
+ *				v3.5: Todd: Added 'fn_changePassword' to allow you to change a users current password to one supplied.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1026,6 +1027,26 @@ CREATE FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid intege
         "campusID" = $1
     AND "disciplineID" = $2
     AND "courseID" = $3;
+$_$;
+
+
+--
+-- Name: fn_changePassword(text, text, text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE OR REPLACE FUNCTION fn_changePassword(userid text, oldPw text, newPw text) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $_$
+    DECLARE pw bytea;
+    BEGIN
+	SELECT INTO pw "password" FROM "User" WHERE "User"."userID" = $1;
+	IF md5($2)::bytea = pw THEN
+		UPDATE "User" SET "password" = md5($3)::bytea WHERE "userID" = $1;
+		RETURN true;
+	ELSE
+		RETURN false;
+	END IF;
+    END;
 $_$;
 
 
@@ -2582,6 +2603,18 @@ GRANT ALL ON FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid 
 GRANT ALL ON FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid integer, courseid text) TO clerical;
 GRANT ALL ON FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid integer, courseid text) TO teacher;
 GRANT ALL ON FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid integer, courseid text) TO student;
+
+--
+-- Name: fn_changePassword("userid" text, "oldPw" text, "newPw" text); Type: ACL; Schema: public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION fn_changePassword("userid" text, "oldPw" text, "newPw" text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_changePassword("userid" text, "oldPw" text, "newPw" text) FROM postgres;
+GRANT ALL ON FUNCTION fn_changePassword("userid" text, "oldPw" text, "newPw" text) TO postgres;
+GRANT ALL ON FUNCTION fn_changePassword("userid" text, "oldPw" text, "newPw" text) TO admin;
+GRANT ALL ON FUNCTION fn_changePassword("userid" text, "oldPw" text, "newPw" text) TO clerical;
+GRANT ALL ON FUNCTION fn_changePassword("userid" text, "oldPw" text, "newPw" text) TO teacher;
+GRANT ALL ON FUNCTION fn_changePassword("userid" text, "oldPw" text, "newPw" text) TO student;
 
 --
 -- Name: fn_resetpassword(text); Type: ACL; Schema: public; Owner: -

@@ -1,8 +1,9 @@
 <%-- @author     Adam Shortall, Todd Wiggins
-     @version    1.1
+     @version    1.11
 	 Created:    9/05/2011, 10:19 PM
-	 Modified:   03/04/2013
-	 Change Log: 1.1: TW: Moved user level navigation to header from each users index pages.
+	 Modified:   12/04/2013
+	 Change Log: 1.1:  TW: Moved user level navigation to header from each users index pages.
+				 1.11: TW: Added 'Manage My Details' to Student and 'Change My Password' to all users.
 	 Purpose:    Header code, sets up page, ensures consistency, reduced code.
 --%>
 <%@page import="domain.User.Role"%>
@@ -61,6 +62,7 @@
 					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Course">Add/Modify Courses or course core modules</a></li>
 					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Module">Add/Modify Modules, Elements and Criteria</a></li>
 			<%	} %>
+				<li><a href="<%= RPLPage.CHANGE_PW %>">Change My Password</a></li>
                 <li><a href="<%= RPLPage.ROOT %>/logout">Log Out</a></li>
 			<%
 			} else { %>
@@ -73,8 +75,6 @@
             <a href="register">Register</a>
             </form>
 			<% } %>
-
-
         </div>
     </div>
     <div id="content">

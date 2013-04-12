@@ -9,10 +9,11 @@ public enum RPLPage {
     HOME("RPL Homepage", "/index.jsp"),
     REGISTER("RPL Student Registration", "/studentRegister.jsp"),
     REGISTER_CONFIRM("RPL Registration Confirmed", "/students/registerConfirm.jsp"),
+	CHANGE_PW("Change My Password", "/changePassword.jsp"),//Added by: Todd Wiggins
 	RESET_PASSWORD("Reset Password", "/resetPassword.jsp"),//Added by: Todd Wiggins
     STUDENT_HOME("Student Homepage", "/students/index.jsp"),
 	STUDENT_DETAILS("Manage My Details", "/students/myDetails.jsp"),//Added by: Todd Wiggins
-	CREATE_CLAIM("Create Claim", "/students/createClaim.jsp"),
+    CREATE_CLAIM("Create Claim", "/students/createClaim.jsp"),
     REVIEW_CLAIM_PREV("Review Claim", "/students/reviewClaimPrev.jsp"),
     REVIEW_CLAIM_RPL("Review Claim", "/students/reviewClaimRPL.jsp"),
     ADD_RPL_EVIDENCE("Add Evidence", "/students/addRPLEvidence.jsp"),

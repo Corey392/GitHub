@@ -14,11 +14,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**	@author     Adam Shortall, Todd Wiggins
- *  @version    1.2
+ *  @version    1.3
  *	Created:    ?
- *	Modified:   09/04/2013
+ *	Modified:   12/04/2013
  *	Change Log: 1.1: TW: Updated to match current version of database.
  *				1.2: TW: Corrected data type for postcode.
+ *				1.3: TW: Updated getStudent(), resetPassword(), added validateUserIdOrEmail(), changePassword(), removed getStudentInfo().
  *	Purpose:    UserIO is for IO of all user types. Whatever subclass of user the user is, the student level connection will be used to connect to the database.
  */
 public class UserIO extends RPL_IO<User> {
@@ -138,7 +139,6 @@ public class UserIO extends RPL_IO<User> {
      * @throws SQLException if the updated ID or email address is not unique
      */
     public void update(User user, String oldID) throws SQLException {
-		System.out.println("user: "+user);
         String userID = user.getUserID();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
@@ -379,7 +379,6 @@ public class UserIO extends RPL_IO<User> {
      * @return A domain.User object with all fields filled out from the database.
      */
     private User getStudent(String userID) {
-		System.out.println("USERID: "+userID);
         String sql = "SELECT * FROM fn_GetStudentUser(?)";
         SQLParameter p1 = new SQLParameter(userID);
         try {
@@ -398,9 +397,7 @@ public class UserIO extends RPL_IO<User> {
 				String studentID = rs.getString(Field.STUDENT_ID.name);
 				boolean staff = rs.getBoolean(Field.STAFF.name);
 				String password = rs.getBytes(Field.PASSWORD.name).toString();
-				System.out.println("Password: "+password);
 				User user = new User(userID, firstName, lastName, otherName, address1, address2, town, state, postCode, phone, email, studentID, staff, Role.STUDENT, password);
-				System.out.println("User: "+user);
                 return user;
             }
             return null;
@@ -501,6 +498,7 @@ public class UserIO extends RPL_IO<User> {
     }
 
 	/**Validates a users ID or email address if they already exist in the database.
+	 * @author Todd Wiggins
 	 * @param userIdOrEmail A String being either the users ID (eg. studentID) or email address allowing the use for teachers/admin/assessors.
 	 * @return A String containing the users email address if they exist or an empty string "" if they were not found.
 	 */
@@ -513,6 +511,31 @@ public class UserIO extends RPL_IO<User> {
 		} catch (SQLException ex) {
             Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, "validateUserIdOrEmail()", ex);
             return "";
+		}
+	}
+
+	/**Performs a change password action on the user supplied.
+	 * @author Todd Wiggins
+	 * Pre-conditions: New password validation should be done before using this method.
+	 * @param user The user attempting to change password, needs to contain the UserID and old password.
+	 * @param newPW The new password to be assigned to the user.
+	 * @return 'true' if password was successfully changed in the database or 'false' if the old password was incorrect.
+	 */
+	public boolean changePassword(User user, String newPW) {
+		String sql = "SELECT fn_changePassword(?,?,?)";
+		SQLParameter p1, p2, p3;
+		p1 = new SQLParameter(user.getUserID());
+		p2 = new SQLParameter(user.getPassword());
+		p3 = new SQLParameter(newPW);
+		try {
+			ResultSet rs = super.doPreparedStatement(sql, p1, p2, p3);
+			rs.next();
+			boolean result = rs.getBoolean(1);
+			System.out.println("RESULT: "+result);
+			return result;
+		} catch (SQLException ex) {
+            Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, "changePassword()", ex);
+            return false;
 		}
 	}
 }

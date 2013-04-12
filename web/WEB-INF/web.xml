@@ -147,6 +147,10 @@
         <servlet-name>UpdateStudentServlet</servlet-name>
         <servlet-class>web.UpdateStudentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>web.ChangePasswordServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -276,6 +280,10 @@
     <servlet-mapping>
         <servlet-name>UpdateStudentServlet</servlet-name>
         <url-pattern>/students/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/ChangePassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
