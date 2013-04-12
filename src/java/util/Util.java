@@ -109,7 +109,7 @@ public final class Util {
         ModuleIO moduleIO = new ModuleIO(role);
 
         Module module = moduleIO.getByID(moduleID);
-        
+
         if (module == null) {
 			return new Module();
 		}
@@ -267,10 +267,9 @@ public final class Util {
     public static ClaimRecord getCompleteClaimRecord(ClaimRecord pClaimRecord, Role role) {
 
         UserIO oUserIO = new UserIO(role); // for viewer
-        User oUser = oUserIO.getStudentInfo(pClaimRecord.getStudentID());
+        User oUser = oUserIO.getByID(pClaimRecord.getStudentID());
         pClaimRecord.setStudentName(oUser.getFirstName() + oUser.getLastName());
 
-        oUser = oUserIO.getStudentInfo(pClaimRecord.getWorkerID());
         if (oUser == null) {
             oUser = oUserIO.getTeacherInfo(pClaimRecord.getWorkerID());
         }

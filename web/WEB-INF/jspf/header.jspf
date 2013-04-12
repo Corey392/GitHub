@@ -40,6 +40,7 @@
 					<li><a href="<%= RPLServlet.CREATE_CLAIM_SERVLET %>?createClaim=true">Create Claim</a></li>
 					<li><a href="<%= RPLServlet.LIST_CLAIMS_STUDENT_SERVLET %>?List%20Claims=true">List Claims</a></li>
 					<li><a href="<%= RPLServlet.STUDENT_LIST_CLAIM_RECORDS %>?view=View%20Claim%20Status">View Claim Status</a></li>
+					<li><a href="<%= RPLPage.STUDENT_DETAILS %>">Manage My Details</a></li>
 			<%	} else if (user.getRole() == Role.TEACHER) {%>
 					<li><a href="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET %>?List%20Claims=true">List Available Claims</a></li>
 					<li><a href="<%= RPLServlet.TEACHER_LIST_CLAIM_RECORDS %>?view=View%20Claim%20Status">View Claim History</a></li>

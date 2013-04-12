@@ -13,7 +13,7 @@ public enum FieldError {
     PASSWORD_CONFIRM("Passwords didn't match"),
     STUDENT_ID("Student number must be 9 digits"),
     STUDENT_UNIQUE("This student number and/or email address is already registered"),
-    PASSWORD_COMPLEXITY("Password must contain at least one letter and one number, and be 8-16 characters long"),
+    PASSWORD_COMPLEXITY("Password must contain at least one letter, one number, and be 8-16 characters long"),
     STUDENT_EMAIL("You must use your TAFE email address, e.g. Your.Name@tafensw.net.au"),
 	TERMS_AND_COND("You must agree to the Terms & Conditions, and Privacy Policy to use the RPL Assist service."),//Added by: Todd Wiggins
     CAMPUS_ID("Campus ID can only be 3 integers (e.g. '803')"),
@@ -29,7 +29,9 @@ public enum FieldError {
     TEACHER_ID("Teacher ID/email  must follow the pattern: First.Last@tafe.nsw.edu.au"),
     TEACHER_UNIQUE("This teacher ID is already in the system, account has not been created."),
 	RESET_FAILED("The Student Number or Email address you provided was unable to be found. Please verify your details and try again."),//Added by: Todd Wiggins
-	RESET_SENT("Your new password has been sent to your TAFE email address on record.");//Added by: Todd Wiggins
+	RESET_SENT("Your new password has been sent to your TAFE email address on record."),//Added by: Todd Wiggins
+	PASSWORD_INCORRECT("The password you supplied was incorrect, remember your Password must contain at least one letter, one number, and be 8-16 characters long."),//Added by: Todd Wiggins
+	SUCCESSFUL_UPDATE("Your details have been successfully updated.");//Added by: Todd Wiggins
 
     public String message;
 

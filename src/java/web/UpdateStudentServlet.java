@@ -2,6 +2,7 @@ package web;
 
 import data.UserIO;
 import domain.User;
+import domain.User.Role;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
@@ -35,9 +36,7 @@ public class UpdateStudentServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		User student = (User) session.getAttribute("user");
-		System.out.println(student.toString());
 		String oldId = student.getUserID();
-		System.out.println("FIRSTNAME: "+student.getFirstName());
 
 		if (request.getParameter("userID") != null) {
 			student = (User) session.getAttribute("user");
@@ -45,9 +44,10 @@ public class UpdateStudentServlet extends HttpServlet {
 				student = new User();
 			}
 			student.setUserID(request.getParameter("userID"));
+			student.setPassword(request.getParameter("password"));
+
 			student.setStudentID(request.getParameter("userID"));
 			student.setFirstName(request.getParameter("firstName"));
-			System.out.println("FIRSTNAME: "+student.getFirstName());
 			student.setOtherName(request.getParameter("otherName"));
 			student.setLastName(request.getParameter("lastName"));
 			student.setAddress(request.getParameter("address1"),request.getParameter("address2"));
@@ -55,13 +55,8 @@ public class UpdateStudentServlet extends HttpServlet {
 			student.setState(request.getParameter("state"));
 			student.setPostCode(Integer.parseInt(request.getParameter("postCode")));
 			student.setPhoneNumber(request.getParameter("phone"));
-//			student.setPassword(request.getParameter("password"));
 			student.setStaff(request.getParameter("staff") != null && request.getParameter("staff").equals("yes") ? true : false);
 			boolean isValid = true;
-			if (!student.validateField(User.Field.EMAIL)) {
-				request.setAttribute("emailError", new RPLError(FieldError.STUDENT_EMAIL));
-				isValid = false;
-			}
 			if (!student.validateField(User.Field.USER_ID)) {
 				request.setAttribute("userIDError", new RPLError(FieldError.STUDENT_ID));
 				isValid = false;
@@ -74,13 +69,16 @@ public class UpdateStudentServlet extends HttpServlet {
 				request.setAttribute("lastNameError", new RPLError(FieldError.NAME));
 				isValid = false;
 			}
-//			if (!student.validateField(User.Field.PASSWORD)) {
-//				request.setAttribute("passwordError", new RPLError(FieldError.PASSWORD_COMPLEXITY));
-//				isValid = false;
-//			}
 			if(isValid) {
 				try {
-					new UserIO(student.role).update(student, oldId);
+					UserIO userIO = new UserIO(student.role);
+					Role userRole = userIO.verifyLogin(student);
+					if (userRole != null && userRole == Role.STUDENT) {
+						userIO.update(student, oldId);
+						request.setAttribute("successfulMSG", new RPLError(FieldError.SUCCESSFUL_UPDATE));
+					} else {
+						request.setAttribute("passwordError", new RPLError(FieldError.PASSWORD_INCORRECT));
+					}
 				} catch (SQLException e) {
 					System.out.println("UpdateStudentServlet: processRequest: SQLException: "+e.getMessage());
 				} catch (Exception e) {

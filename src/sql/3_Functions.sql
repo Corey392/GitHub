@@ -1,13 +1,14 @@
 /* Purpose:  	Adds the Functions to the database.
  * Authors:		Ryan,Kelly,Bryce,Todd
  * Created:
- * Version:		v3.3
- * Modified:	10/04/2013
+ * Version:		v3.4
+ * Modified:	12/04/2013
  * Change Log:	v2.0: Bryce:
  *				v3.0: Todd: Updated 'fn_insertstudent' to incorporate all columns that have been added
 				v3.1: Todd: Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
 				v3.2: Mitch: Fixed a mistake I made earlier in fn_listcores and fn_listelectives. Both have been tested and work now.
 				v3.3: Todd: Added fn_doesUserExist: Allows you to search for a user by their ID or email and will return their email address.
+				v3.4: Todd: Updated 'fn_updatestudent' to incorporate all columns that have been added.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1226,27 +1227,29 @@ $_$;
 -- Name: fn_updatestudent(text, text, text, text, text, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastname text, email text, password text) RETURNS void
+CREATE FUNCTION fn_updatestudent("oldid" text, "newid" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) RETURNS void
     LANGUAGE sql
     AS $_$
     UPDATE "Student"
-    SET
-        "studentID" = $2
-
-    WHERE
-        "Student"."studentID" = $1;
+    SET "userID" = $2,
+		"otherName" = $6,
+		"addressLine1" = $7,
+		"addressLine2" = $8,
+		"town" = $9,
+		"state" = $10,
+		"postCode" = $11,
+		"phoneNumber" = $12,
+		"studentID" = $13,
+		"staff" = $14
+    WHERE "Student"."userID" = $1;
 
     UPDATE "User"
-    SET
-	"userID" = $2,
-	"password" = md5($6)::bytea,
-	"firstName" = $3,
-        "lastName" = $4,
-        "email" = $5
-    WHERE
-	"User"."userID" = $1
+    SET "userID" = $2,
+		"email" = $3,
+		"firstName" = $4,
+		"lastName" = $5
+    WHERE "User"."userID" = $1
 $_$;
-
 
 --
 -- Name: fn_updateteacher(text, text, text, text, text, text); Type: FUNCTION; Schema: public; Owner: -
@@ -2740,13 +2743,13 @@ GRANT ALL ON FUNCTION fn_updatemodule(oldid text, moduleid text, name text, inst
 -- Name: fn_updatestudent(text, text, text, text, text, text); Type: ACL; Schema: public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastname text, email text, password text) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastname text, email text, password text) FROM postgres;
-GRANT ALL ON FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastname text, email text, password text) TO postgres;
-GRANT ALL ON FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastname text, email text, password text) TO admin;
-GRANT ALL ON FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastname text, email text, password text) TO clerical;
-GRANT ALL ON FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastname text, email text, password text) TO teacher;
-GRANT ALL ON FUNCTION fn_updatestudent(oldid text, newid text, firstname text, lastname text, email text, password text) TO student;
+REVOKE ALL ON FUNCTION fn_updatestudent("oldid" text, "newid" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_updatestudent("oldid" text, "newid" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) FROM postgres;
+GRANT ALL ON FUNCTION fn_updatestudent("oldid" text, "newid" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) TO postgres;
+GRANT ALL ON FUNCTION fn_updatestudent("oldid" text, "newid" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) TO admin;
+GRANT ALL ON FUNCTION fn_updatestudent("oldid" text, "newid" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) TO clerical;
+GRANT ALL ON FUNCTION fn_updatestudent("oldid" text, "newid" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) TO teacher;
+GRANT ALL ON FUNCTION fn_updatestudent("oldid" text, "newid" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) TO student;
 
 
 --

@@ -38,8 +38,7 @@
 		<span>${lastNameError.message}</span>
 	</div>
     <div>
-		<span><label for="email">TAFE email address:</label></span>
-		<span><p>${user.email}</p></span>
+		<span><label>TAFE email address:</label> ${user.email}</span>
 	</div>
     <div>
 		<span><label for="address1">Address Line 1:</label></span>
@@ -89,6 +88,7 @@
     <%-- http://download.oracle.com/docs/cd/E12840_01/wls/docs103/dvspisec/servlet.html --%>
         <input type="submit" value="Submit"/> <a href="../home">Cancel</a>
 	</div>
+	<p>${successfulMSG.message}</p>
 </div>
 </form>
 

@@ -31,9 +31,17 @@ public class UserIO extends RPL_IO<User> {
         USER_ID("userID"),
         ROLE("role"),
         PASSWORD("password"),
-        FIRST_NAME("firstName"),
-        LAST_NAME("lastName"),
         EMAIL("email"),
+        FIRST_NAME("firstName"),
+		OTHER_NAME("otherName"),
+        LAST_NAME("lastName"),
+		ADDRESS_LINE1("addressLine1"),
+		ADDRESS_LINE2("addressLine2"),
+		TOWN("town"),
+		STATE("state"),
+		POSTCODE("postCode"),
+		PHONE("phoneNumber"),
+		STAFF("staff"),
         STUDENT_ID("studentID"),
         TEACHER_ID("teacherID"),
         COURSE_COORDINATOR("courseCoordinator");
@@ -130,13 +138,14 @@ public class UserIO extends RPL_IO<User> {
      * @throws SQLException if the updated ID or email address is not unique
      */
     public void update(User user, String oldID) throws SQLException {
+		System.out.println("user: "+user);
         String userID = user.getUserID();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         String email = user.getEmail();
         String password = user.getPassword();
         String sql = null;
-        SQLParameter p1, p2, p3, p4, p5, p6;
+        SQLParameter p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14;
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("MD5");
@@ -152,14 +161,33 @@ public class UserIO extends RPL_IO<User> {
                 super.doPreparedStatement(sql, p1, p2, p3);
                 break;
             case STUDENT:
-                sql = "SELECT fn_UpdateStudent(?,?,?,?,?,?)";
+                //Student Values Only
+				String otherName = user.getOtherName();
+				String addressLine1 = user.getAddress()[0];
+				String addressLine2 = user.getAddress()[1];
+				String town = user.getTown();
+				String state = user.getState();
+				int postcode = user.getPostCode();
+				String phoneNumber = user.getPhoneNumber();
+				String studentID = user.getStudentID();
+				boolean staff = user.isStaff();
+
+                sql = "SELECT fn_UpdateStudent(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 p1 = new SQLParameter(oldID);
-                p2 = new SQLParameter(userID);
-                p3 = new SQLParameter(firstName);
-                p4 = new SQLParameter(lastName);
-                p5 = new SQLParameter(email);
-                p6 = new SQLParameter(password);
-                super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6);
+				p2 = new SQLParameter(userID);
+                p3 = new SQLParameter(email);
+                p4 = new SQLParameter(firstName);
+                p5 = new SQLParameter(lastName);
+				p6 = new SQLParameter(otherName);
+				p7 = new SQLParameter(addressLine1);
+				p8 = new SQLParameter(addressLine2);
+				p9 = new SQLParameter(town);
+                p10 = new SQLParameter(state);
+                p11 = new SQLParameter(postcode);
+				p12 = new SQLParameter(phoneNumber);
+				p13 = new SQLParameter(studentID);
+				p14 = new SQLParameter(staff);
+                super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
                 break;
             case TEACHER:
                 sql = "SELECT fn_UpdateTeacher(?,?,?,?,?,?)";
@@ -346,42 +374,34 @@ public class UserIO extends RPL_IO<User> {
     }
 
     /**
-     * Returns a student user from the database.
-     * @param userID
-     * @return
+     * Returns all personal data about a student user from the database.
+     * @param userID The UserID for the student (what they login with).
+     * @return A domain.User object with all fields filled out from the database.
      */
     private User getStudent(String userID) {
-        return new User(userID, Role.STUDENT);
-        /*String sql = "SELECT * FROM fn_GetStudentUser(?)";
-        SQLParameter p1 = new SQLParameter(userID);
-        try {
-            ResultSet rs = super.doPreparedStatement(sql, p1);
-            if (rs.next()) {
-                String firstName = rs.getString(Field.FIRST_NAME.name);
-                String lastName = rs.getString(Field.LAST_NAME.name);
-                String email = rs.getString(Field.EMAIL.name);
-                return new User(userID, firstName, lastName, email, Role.STUDENT);
-            }
-            return null;
-        } catch (SQLException ex) {
-            Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }*/
-    }
-
-    /**
-     * Kyoungho Lee
-     */
-    public User getStudentInfo(String userID) {
+		System.out.println("USERID: "+userID);
         String sql = "SELECT * FROM fn_GetStudentUser(?)";
         SQLParameter p1 = new SQLParameter(userID);
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
             if (rs.next()) {
-                String firstName = rs.getString(Field.FIRST_NAME.name);
-                String lastName = rs.getString(Field.LAST_NAME.name);
                 String email = rs.getString(Field.EMAIL.name);
-                return new User(userID, firstName, lastName, email, Role.STUDENT);
+                String firstName = rs.getString(Field.FIRST_NAME.name);
+				String otherName = rs.getString(Field.OTHER_NAME.name);
+                String lastName = rs.getString(Field.LAST_NAME.name);
+				String address1 = rs.getString(Field.ADDRESS_LINE1.name);
+				String address2 = rs.getString(Field.ADDRESS_LINE2.name);
+				String town = rs.getString(Field.TOWN.name);
+				String state = rs.getString(Field.STATE.name);
+				int postCode = rs.getInt(Field.POSTCODE.name);
+				String phone = rs.getString(Field.PHONE.name);
+				String studentID = rs.getString(Field.STUDENT_ID.name);
+				boolean staff = rs.getBoolean(Field.STAFF.name);
+				String password = rs.getBytes(Field.PASSWORD.name).toString();
+				System.out.println("Password: "+password);
+				User user = new User(userID, firstName, lastName, otherName, address1, address2, town, state, postCode, phone, email, studentID, staff, Role.STUDENT, password);
+				System.out.println("User: "+user);
+                return user;
             }
             return null;
         } catch (SQLException ex) {

@@ -12,7 +12,7 @@ public enum RPLPage {
 	RESET_PASSWORD("Reset Password", "/resetPassword.jsp"),//Added by: Todd Wiggins
     STUDENT_HOME("Student Homepage", "/students/index.jsp"),
 	STUDENT_DETAILS("Manage My Details", "/students/myDetails.jsp"),//Added by: Todd Wiggins
-    CREATE_CLAIM("Create Claim", "/students/createClaim.jsp"),
+	CREATE_CLAIM("Create Claim", "/students/createClaim.jsp"),
     REVIEW_CLAIM_PREV("Review Claim", "/students/reviewClaimPrev.jsp"),
     REVIEW_CLAIM_RPL("Review Claim", "/students/reviewClaimRPL.jsp"),
     ADD_RPL_EVIDENCE("Add Evidence", "/students/addRPLEvidence.jsp"),

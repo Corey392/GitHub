@@ -1,11 +1,12 @@
 /* Purpose:  	Adds the Views to the database.
- * Authors:		Ryan,Kelly,v2-Todd
- * Created:		
- * Version:		4
+ * Authors:		Ryan,Kelly,Todd
+ * Created:
+ * Version:		4.1
  * Modified:	08/04/2013
- * Change Log:	v2: Todd: Added required GRANT statement for the 'vw_TeacherUser' for a 'Teacher' to actually be able to access it.
- * 				v3: Ryan: 
- * 				v4: Todd: Corrected DROP VIEW statements, added IF EXISTS, and added to other views where it was not.
+ * Change Log:	v2:   Todd: Added required GRANT statement for the 'vw_TeacherUser' for a 'Teacher' to actually be able to access it.
+ * 				v3:   Ryan:
+ * 				v4:   Todd: Corrected DROP VIEW statements, added IF EXISTS, and added to other views where it was not.
+ *				v4.1: Todd: Update "vw_StudentUser" to extract all information on Students based on the new data structure.
  * Pre-conditions: Must be run after database tables have been created
  */
 --
@@ -14,8 +15,8 @@
 DROP VIEW IF EXISTS "vw_AssessorDetails";
 
 CREATE VIEW "vw_AssessorDetails" AS
-    SELECT "User"."firstName", "User"."lastName", "User".email, "Teacher"."teacherID", "Assessor"."courseCoordinator", "Assessor"."campusID", "Assessor"."disciplineID", "Assessor"."courseID" 
-	FROM "User", "Teacher", "Assessor" 
+    SELECT "User"."firstName", "User"."lastName", "User".email, "Teacher"."teacherID", "Assessor"."courseCoordinator", "Assessor"."campusID", "Assessor"."disciplineID", "Assessor"."courseID"
+	FROM "User", "Teacher", "Assessor"
 	WHERE ("Teacher"."teacherID" = ("Assessor"."teacherID")::text) AND ("Teacher"."userID" = ("User"."userID")::text);
 
 
@@ -24,10 +25,11 @@ CREATE VIEW "vw_AssessorDetails" AS
 --
 DROP VIEW IF EXISTS "vw_StudentUser";
 
-CREATE VIEW "vw_StudentUser" AS
-    SELECT  "User"."userID", "User"."lastName", "User"."firstName", "User".role, "User".password, "User".email 
-	FROM "User", "Student" 
-	WHERE (("Student"."studentID")::text = "User"."userID");
+CREATE "vw_StudentUser" AS
+ SELECT "u"."userID", "u"."role", "u"."password", "u"."email", "u"."firstName", "s"."otherName", "u"."lastName",
+	"s"."addressLine1", "s"."addressLine2", "s"."town", "s"."state", "s"."postCode", "s"."phoneNumber", "s"."studentID", "s"."staff"
+   FROM "User" AS "u"
+   INNER JOIN "Student" AS "s" ON "u"."userID" = "s"."userID";
 
 --
 -- Name: VIEW "vw_StudentUser"; Type: COMMENT; Schema: public; Owner: -
@@ -42,8 +44,8 @@ COMMENT ON VIEW "vw_StudentUser" IS 'Combines student and user tables for easier
 DROP VIEW IF EXISTS "vw_TeacherUser";
 
 CREATE VIEW "vw_TeacherUser" AS
-    SELECT "Teacher"."teacherID", "User".email, "User"."lastName", "User"."firstName", "User".password, "User".role, "User"."userID" 
-	FROM "User", "Teacher" 
+    SELECT "Teacher"."teacherID", "User".email, "User"."lastName", "User"."firstName", "User".password, "User".role, "User"."userID"
+	FROM "User", "Teacher"
 	WHERE ("User"."userID" = "Teacher"."teacherID");
 
 --
@@ -59,8 +61,8 @@ COMMENT ON VIEW "vw_TeacherUser" IS 'Combines teacher and user tables';
 DROP VIEW IF EXISTS "vw_ClaimedModule_Module";
 
 CREATE VIEW "vw_ClaimedModule_Module" AS
-    SELECT "ClaimedModule"."moduleID",  "ClaimedModule"."claimID", "ClaimedModule".approved, "ClaimedModule"."arrangementNo", "ClaimedModule"."functionalCode", "ClaimedModule"."overseasEvidence", "ClaimedModule".recognition, "Module".name, "Module".instructions 
-	FROM "ClaimedModule", "Module" 
+    SELECT "ClaimedModule"."moduleID",  "ClaimedModule"."claimID", "ClaimedModule".approved, "ClaimedModule"."arrangementNo", "ClaimedModule"."functionalCode", "ClaimedModule"."overseasEvidence", "ClaimedModule".recognition, "Module".name, "Module".instructions
+	FROM "ClaimedModule", "Module"
 	WHERE (("ClaimedModule"."moduleID")::text = ("Module"."moduleID")::text);
 
 --
@@ -70,8 +72,8 @@ DROP VIEW IF EXISTS "vw_StudentWithClaims";
 
 CREATE VIEW "vw_StudentWithClaims" AS
     SELECT "User"."firstName", "User"."lastName", "User".email, "User".role, "User".password, "Student"."studentID", "Claim"."claimID", "Claim"."dateMade", "Claim"."dateResolved", "Claim"."claimType", "Claim"."courseID", "Claim"."campusID", "Claim"."disciplineID", "Claim"."assApproved", "Claim"."delApproved", "Claim"
-	.option, "Claim"."requestComp", "Claim".submitted, "Claim".status, "Campus".name AS "campusName", "Discipline".name AS "disciplineName", "Course".name AS "courseName", "ClaimedModule"."moduleID", "ClaimedModule".approved AS "claimedModuleApproved", "Provider"."providerID", "Provider".name AS "providerName", "Evidence".approved AS "evidenceApproved", "Evidence"."assessorNote", "Evidence".description AS "evidenceDescription", "Element".description AS "elementDescription", "Criterion".description AS "criterionDescription", "Criterion"."criterionID", "Element"."elementID" 
-	FROM "Student", "User", "Claim", "Campus", "Discipline", "Course", "ClaimedModule", "ClaimedModuleProvider", "Provider", "Evidence", "Element", "Criterion" 
+	.option, "Claim"."requestComp", "Claim".submitted, "Claim".status, "Campus".name AS "campusName", "Discipline".name AS "disciplineName", "Course".name AS "courseName", "ClaimedModule"."moduleID", "ClaimedModule".approved AS "claimedModuleApproved", "Provider"."providerID", "Provider".name AS "providerName", "Evidence".approved AS "evidenceApproved", "Evidence"."assessorNote", "Evidence".description AS "evidenceDescription", "Element".description AS "elementDescription", "Criterion".description AS "criterionDescription", "Criterion"."criterionID", "Element"."elementID"
+	FROM "Student", "User", "Claim", "Campus", "Discipline", "Course", "ClaimedModule", "ClaimedModuleProvider", "Provider", "Evidence", "Element", "Criterion"
 	WHERE (((((((((((("Student"."studentID")::text = "User"."userID") AND ("Claim"."studentID" = "Student"."studentID")) AND ("Claim"."campusID" = "Campus"."campusID")) AND ("Claim"."disciplineID" = "Discipline"."disciplineID")) AND ("Claim"."courseID" = "Course"."courseID")) AND ("ClaimedModule"."claimID" = "Claim"."claimID")) AND (("ClaimedModule"."moduleID")::text = ("Evidence"."moduleID")::text)) AND (("ClaimedModuleProvider"."moduleID")::text = ("ClaimedModule"."moduleID")::text)) AND ("Provider"."providerID" = "ClaimedModuleProvider"."providerID")) AND ("Evidence"."elementID" = "Element"."elementID")) AND ("Element"."elementID" = "Criterion"."elementID"));
 
 
