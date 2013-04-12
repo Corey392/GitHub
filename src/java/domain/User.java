@@ -448,7 +448,7 @@ public class User implements Comparable<User> {
 
     @Override
     public String toString() {
-        return this.userID;
+        return this.userID+","+this.userID+","+this.firstName+","+this.lastName+","+this.otherName+","+this.address1+","+this.address2+","+this.town+","+this.state+","+this.postCode+","+this.phone+","+this.email+","+this.studentID+","+this.staff+","+this.password+","+this.status;
     }
 
     @Override
