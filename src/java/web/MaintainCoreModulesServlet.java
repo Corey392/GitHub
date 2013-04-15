@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.ModuleIO;
@@ -54,8 +50,6 @@ public class MaintainCoreModulesServlet extends HttpServlet {
             
             String addCoreModule = request.getParameter("addCoreModule");
             String removeAsCoreIndex = Util.getPageStringID(request, "removeAsCore");
-            
-            selectedCourse = (Course) session.getAttribute("selectedCourse");
                         
             // Event handling:
             if (addCoreModule != null) {
