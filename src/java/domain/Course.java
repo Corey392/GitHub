@@ -129,10 +129,18 @@ public class Course implements Comparable<Course> {
         ArrayList<Module> list = new ArrayList<Module>();
         
         if (this.coreModules != null){
-            list.addAll(this.coreModules);
+            for (Module module : this.coreModules){
+                if (module != null){
+                    list.add(module);                    
+                }
+            }
         }
         if (this.electiveModules != null){
-            list.addAll(this.electiveModules);
+            for (Module module : this.electiveModules){
+                if (module != null){
+                    list.add(module);                    
+                }
+            }
         }
         
         return list;
