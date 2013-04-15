@@ -266,15 +266,46 @@ public class ModuleIO extends RPL_IO<Module> {
 
         ArrayList<Module> list = new ArrayList<Module>();
         String moduleID;
-        String name;
-        String guide;
 
         while (rs.next()) {
             moduleID = rs.getString(Field.MODULE_ID.name);
-            name = rs.getString(Field.NAME.name);
-            guide = rs.getString(Field.INSTRUCTIONS.name);
-            list.add(new Module(moduleID, name, guide));
+            list.add(getModuleById(moduleID));
         }
         return list;
     }
+    
+    /**
+     * Gets a module from the database by its ID
+     * @param moduleID Unique ID of a module
+     * @return Module with corresponding ID
+     */
+    private Module getModuleById(String moduleID){
+        
+        
+        String sql = "SELECT * FROM fn_getmodulebyid(?)";
+        SQLParameter p1 = new SQLParameter(moduleID);
+        try {
+            ResultSet rs = super.doPreparedStatement(sql, p1);
+            return this.getModuleFromResultSet(rs);
+        } catch (SQLException ex) {
+            Logger.getLogger(ModuleIO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+        
+    }
+    
+    /**
+     * Gets a module from a dataset
+     * @param rs ResultSet to retrieve the Module from
+     * @return Module within ResultSet passed in
+     */
+    private Module getModuleFromResultSet(ResultSet rs) throws SQLException {
+
+        String moduleID = rs.getString(Field.MODULE_ID.name);
+        String name = rs.getString(Field.NAME.name);
+        String guide = rs.getString(Field.INSTRUCTIONS.name);
+        return new Module(moduleID, name, guide);
+        
+    }
+    
 }
