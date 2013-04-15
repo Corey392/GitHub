@@ -76,7 +76,7 @@ public class CreateClaimServlet extends HttpServlet {
         // claim. Depending on the button pressed the claim will either be RPL 
         // or Previous Studies.
         ClaimIO claimIO = new ClaimIO(user.getRole()); 
-        ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
+        //ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         if (!claim.getCampusID().equals("") 
                 && claim.getDisciplineID() != Util.INT_ID_EMPTY 
                 && !claim.getCourseID().equals("")){
@@ -86,7 +86,8 @@ public class CreateClaimServlet extends HttpServlet {
                     claim.setAssessorID("123456789");
                     claimIO.insert(claim);
                     //Email.send(user.getEmail(), "Regarding your claim", "<b>Your claim is successfully created!</b>");
-                    claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
+                    //claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
+                    //TODO: uncomment claimRecordIO lines above when ClaimRecordIO class has been updated
                     claim.setClaimID(claimIO.getList(user).size());
                     //Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "Your claim is successfully created!!");
                 } catch (SQLException sqlEx) {
@@ -100,7 +101,8 @@ public class CreateClaimServlet extends HttpServlet {
                     
                     claimIO.insert(claim);
                     //Email.send(user.getEmail(), "Regarding your claim", "<b>Your claim is successfully created!</b>");
-                    claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
+                    //claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
+                    //TODO: uncomment claimRecordIO lines above when ClaimRecordIO class has been updated
                     claim.setClaimID(claimIO.getList(user).size());
                     //Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "Your claim is successfully created!!");
                 } catch (SQLException sqlEx) {
