@@ -20,7 +20,7 @@
         <tr>
             <th>Campus:</th>
             <td colspan="2">
-        <select name="campus" id="cmbCampus" style="width: 100%;" onchange="document.createClaimForm.submit()">
+        <select name="campus" id="cmbCampus" style="width: 100%;" onchange="document.createClaimForm.submit();">
         <c:forEach var="aCampus" items="${campuses}">
             <c:choose>
                 <c:when test="${aCampus.campusID == claim.campusID}">
@@ -40,7 +40,7 @@
         <tr>
             <th>Discipline:</th>
             <td colspan="2">
-        <select name="discipline" id="cmbDiscipline" style="width: 100%;" onchange="document.createClaimForm.submit()">
+        <select name="discipline" id="cmbDiscipline" style="width: 100%;" onchange="document.createClaimForm.submit();">
         <c:forEach var="aDiscipline" items="${disciplines}">
             <c:choose>
                 <c:when test="${aDiscipline.disciplineID == claim.disciplineID}">
