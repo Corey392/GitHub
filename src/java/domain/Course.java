@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import java.util.ArrayList;
@@ -131,8 +127,14 @@ public class Course implements Comparable<Course> {
      */
     public ArrayList<Module> getAllModules() {
         ArrayList<Module> list = new ArrayList<Module>();
-        list.addAll(this.coreModules);
-        list.addAll(this.electiveModules);
+        
+        if (this.coreModules != null){
+            list.addAll(this.coreModules);
+        }
+        if (this.electiveModules != null){
+            list.addAll(this.electiveModules);
+        }
+        
         return list;
     }
     
