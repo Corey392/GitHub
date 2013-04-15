@@ -81,52 +81,53 @@ public class ClaimIO extends RPL_IO <Claim> {
      * @throws SQLException 
      */
     public void update(Claim claim) throws SQLException {
-        String sql;
-        switch (super.role) {
-            case ADMIN:
-            case TEACHER:
-                sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?,?,?)";
-                break;
-            case STUDENT:
-                sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?)";
-                break;
-            default: return;
+        
+        Role role = super.role;
+        
+        if (!(role == Role.ADMIN || role == Role.TEACHER || role == Role.STUDENT)){
+            return;
         }
+        
+        String sql;
         int claimID = claim.getClaimID();
         String studentID = claim.getStudentID();
-        String campusID = claim.getCampus().getCampusID();
-        int disciplineID = claim.getDiscipline().getDisciplineID();
-        Boolean assessorApproved = claim.getAssessorApproved();
-        Boolean delegateApproved = claim.getDelegateApproved();
         Option option = claim.getOption();
         Character optionValue = (option != null) ? option.value : Option.OTHER_PROVIDER.value;
-        Boolean requestComp = claim.getRequestCompletion();
-        Date dateResolved = claim.getDateResolved();
-        String assessorID = claim.getAssessorID();
-        String delegateID = claim.getDelegateID();
         
         SQLParameter p1 = new SQLParameter(claimID);
-        SQLParameter p2 = new SQLParameter(studentID);        
-        SQLParameter p7 = new SQLParameter(optionValue);
-        SQLParameter p12 = new SQLParameter(claim.getStatus().code);
+        SQLParameter p2 = new SQLParameter(studentID);
+        SQLParameter p3;
+        SQLParameter p4;
+        SQLParameter p5 = new SQLParameter(optionValue);
         
-        switch (super.role) {
-            case ADMIN:
-            case TEACHER:
-                SQLParameter p5 = new SQLParameter(assessorApproved);
-                SQLParameter p6 = new SQLParameter(delegateApproved);
-                SQLParameter p8 = new SQLParameter(requestComp);
-                SQLParameter p9 = new SQLParameter(dateResolved);
-                SQLParameter p10 = new SQLParameter(assessorID);
-                SQLParameter p11 = new SQLParameter(delegateID);
-                super.doPreparedStatement(sql, p1, p2, p5, p6, p7, p8, p9, p10, p11, p12);
-                break;
-            case STUDENT:
-                SQLParameter p3 = new SQLParameter(campusID);
-                SQLParameter p4 = new SQLParameter(disciplineID);
-                super.doPreparedStatement(sql, p1, p2, p3, p4, p7, p12);
-            default: return;
-        }        
+        if (role == Role.STUDENT) {
+            sql = "SELECT fn_UpdateClaim(?,?,?,?,?)";
+            String campusID = claim.getCampus().getCampusID();
+            int disciplineID = claim.getDiscipline().getDisciplineID();
+                
+            p3 = new SQLParameter(campusID);
+            p4 = new SQLParameter(disciplineID);
+                
+            super.doPreparedStatement(sql, p1, p2, p3, p4, p5);
+        }else {
+            sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?,?)";
+            Boolean assessorApproved = claim.getAssessorApproved();
+            Boolean delegateApproved = claim.getDelegateApproved();
+            Boolean requestComp = claim.getRequestCompletion();
+            Date dateResolved = claim.getDateResolved();
+            String assessorID = claim.getAssessorID();
+            String delegateID = claim.getDelegateID();
+                
+            p3 = new SQLParameter(assessorApproved);
+            p4 = new SQLParameter(delegateApproved);
+            SQLParameter p6 = new SQLParameter(requestComp);
+            SQLParameter p7 = new SQLParameter(dateResolved);
+            SQLParameter p8 = new SQLParameter(assessorID);
+            SQLParameter p9 = new SQLParameter(delegateID);
+                
+            super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+        }
+           
     }
     
     /**
