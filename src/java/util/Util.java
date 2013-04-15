@@ -210,6 +210,7 @@ public final class Util {
         DisciplineIO disciplineIO = new DisciplineIO(role);
         CourseIO courseIO = new CourseIO(role);
         Claim claim = claimIO.getByID(claimID, studentID);
+        if (claim == null){return null;}
         if (claim.getAssessorID() != null) {
             claim.setAssessor(userIO.getByID(claim.getAssessorID()));
         }
