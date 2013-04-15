@@ -286,7 +286,9 @@ public class ModuleIO extends RPL_IO<Module> {
         SQLParameter p1 = new SQLParameter(moduleID);
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
-            return this.getModuleFromResultSet(rs);
+            if (rs.next()){
+                return this.getModuleFromResultSet(rs);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ModuleIO.class.getName()).log(Level.SEVERE, null, ex);
         }
