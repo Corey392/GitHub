@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import domain.ClaimedModule;
@@ -118,16 +114,17 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
      */
     public ArrayList<ClaimedModule> getList(int claimID, String studentID) {
         ArrayList<ClaimedModule> list = null;
-        String sql = "SELECT * FROM fn_ListClaimedModules(?,?)";
+        String sql = "SELECT * FROM fn_ListClaimedModules(?)";
         SQLParameter p1 = new SQLParameter(claimID);
-        SQLParameter p2 = new SQLParameter(studentID);
         
         try {
-            ResultSet rs = super.doPreparedStatement(sql, p1, p2);
+            ResultSet rs = super.doPreparedStatement(sql, p1);
             list = new ArrayList<ClaimedModule>();
             boolean approved, overseasEvidence;
             char recognition;
-            String moduleID, arrangementNo, functionalCode, name, instructions;
+            String moduleID;
+            String arrangementNo;
+            String functionalCode;
             ClaimedModule module;
             while (rs.next()) {
                 claimID = rs.getInt(Field.CLAIM_ID.name);
