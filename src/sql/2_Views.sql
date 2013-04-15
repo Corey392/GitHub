@@ -25,7 +25,7 @@ CREATE VIEW "vw_AssessorDetails" AS
 --
 DROP VIEW IF EXISTS "vw_StudentUser";
 
-CREATE "vw_StudentUser" AS
+CREATE VIEW "vw_StudentUser" AS
  SELECT "u"."userID", "u"."role", "u"."password", "u"."email", "u"."firstName", "s"."otherName", "u"."lastName",
 	"s"."addressLine1", "s"."addressLine2", "s"."town", "s"."state", "s"."postCode", "s"."phoneNumber", "s"."studentID", "s"."staff"
    FROM "User" AS "u"
