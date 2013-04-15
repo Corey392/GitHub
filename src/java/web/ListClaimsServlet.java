@@ -1,9 +1,9 @@
 package web;
 
 import data.ClaimIO;
-import data.ClaimRecordIO;
+//import data.ClaimRecordIO;
 import domain.Claim;
-import domain.ClaimRecord;
+//import domain.ClaimRecord;
 import domain.User;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -167,13 +167,15 @@ public class ListClaimsServlet extends HttpServlet {
      */
     private HttpServletRequest deleteClaim(HttpServletRequest request, User user){
         ClaimIO claimIO = new ClaimIO(user.getRole());
-        ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
+        //ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
+        //TODO: uncomment line above when ClaimRecordIO has been updated 
         Claim selectedClaim = this.setSelectedClaim(request, user);
         
         try {
             if (selectedClaim.getStatus() == Claim.Status.DRAFT){
                 claimIO.delete(selectedClaim);
-                claimRecordIO.insert(new ClaimRecord(selectedClaim.getClaimID(), selectedClaim.getStudentID(), 0, user.getUserID(), "", 3, 0, selectedClaim.getCampusID(), selectedClaim.getCourseID(), selectedClaim.getClaimType().desc)); //  Update - Kyoungho Lee
+                //claimRecordIO.insert(new ClaimRecord(selectedClaim.getClaimID(), selectedClaim.getStudentID(), 0, user.getUserID(), "", 3, 0, selectedClaim.getCampusID(), selectedClaim.getCourseID(), selectedClaim.getClaimType().desc)); //  Update - Kyoungho Lee
+                //TODO: uncomment line above when ClaimRecordIO has been updated 
              } else {
                 RPLError error = new RPLError("You can only remove Draft claims");
                 request.setAttribute("error", error);
