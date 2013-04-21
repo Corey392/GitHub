@@ -33,29 +33,20 @@ public class UpdateRPLClaimServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Initialises all variables as null.
-        Claim claim = null;
-        ArrayList<Module> modules = null;
-        ArrayList<Provider> providers = null;
-        Module selectedModule = null;
-        ArrayList<Provider> selectedProviders = null;
-        Integer addEvidenceTo = null;
-        Integer remove = null;
-        
-        // Initialises the url for the next page as an empty string, and gets 
-        // the session and the current user.
-        String url = "";
+
+        // Gets the session and the current user.
+        String url;
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         
         // Gets the current claim from the session.
-        claim = (Claim) session.getAttribute("claim");
+        Claim claim = (Claim) session.getAttribute("claim");
         
         // Initialises the module and provider lists, as well as retrieveing the
         // selectedModule.
-        modules = this.initialiseModuleList(user, claim);
-        providers = this.initialiseProviderList(user);
-        selectedModule = this.getSelectedModule(request, user, modules);
+        ArrayList<Module> modules = this.initialiseModuleList(user, claim);
+        ArrayList<Provider> providers = this.initialiseProviderList(user);
+        Module selectedModule = this.getSelectedModule(request, user, modules);
 
         // If the request came from the reviewClaimRPL page then depending on 
         // the button pressed the claim will be submitted, a module will be 
@@ -65,7 +56,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
             claim = this.submitClaim(user, claim);
             url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
         } else if (request.getParameter("addModule") != null) {
-            selectedProviders = this.getSelectedProviders(request, providers);
+            ArrayList<Provider> selectedProviders = this.getSelectedProviders(request, providers);
             if (selectedProviders.size() < 1 || selectedProviders.size() > 3){
                 request.setAttribute("moduleError", 
                         new RPLError("Please select 1-3 providers"));
@@ -77,7 +68,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
                 url = RPLPage.REVIEW_CLAIM_RPL.relativeAddress;
             }
         } else if (request.getParameter("removeModule") != null) {
-            remove = this.getSelectedRadioButton(request);
+            Integer remove = this.getSelectedRadioButton(request);
             if (remove != null){
                 claim = this.removeModule(claim, user, remove);
             } else {
@@ -88,7 +79,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
             modules = this.initialiseModuleList(user, claim);
             url = RPLPage.REVIEW_CLAIM_RPL.relativeAddress;
         } else if (request.getParameter("editEvidence") != null) {
-            addEvidenceTo = this.getSelectedRadioButton(request);
+            Integer addEvidenceTo = this.getSelectedRadioButton(request);
             if (addEvidenceTo != null){
                 request.setAttribute("addEvidenceTo", addEvidenceTo);
             } else {
@@ -143,8 +134,9 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         try {
             claimedModuleIO.insert(claimedModule);
             for (Provider provider : selectedProviders){
-                claimedModuleIO.addProvider(user.getUserID(), 
-                        claim.getClaimID(), claimedModule.getModuleID(), 
+                claimedModuleIO.addProvider( 
+                        claim.getClaimID(), 
+                        claimedModule.getModuleID(), 
                         provider.getProviderID());
             }
         } catch (SQLException ex) {
