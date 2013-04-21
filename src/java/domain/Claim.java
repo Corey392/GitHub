@@ -3,6 +3,7 @@ package domain;
 import java.sql.Date;
 import java.util.ArrayList;
 import util.Util;
+import java.io.Serializable;
 
 /**
  * A Claim is made by a Student
