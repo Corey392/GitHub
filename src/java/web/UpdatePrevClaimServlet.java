@@ -129,8 +129,9 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         try {
             claimedModuleIO.insert(claimedModule);
             for (Provider provider : selectedProviders){
-                claimedModuleIO.addProvider(user.getUserID(), 
-                        claim.getClaimID(), claimedModule.getModuleID(), 
+                claimedModuleIO.addProvider(
+                        claim.getClaimID(), 
+                        claimedModule.getModuleID(), 
                         provider.getProviderID());
             }
             evidenceIO.insert(evidence.get(0));
@@ -347,11 +348,12 @@ public class UpdatePrevClaimServlet extends HttpServlet {
             }
             newClaimedModules.add(cm);
         }
-        try {
+        /*try {
             claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); //  Update - Kyoungho Lee
         } catch (SQLException ex) {
             Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
+        //TODO: The above should be uncommented when ClaimRecordIO has been updated, assuming it will be implemented
         claim.setClaimedModules(newClaimedModules);
         return claim;
     }
@@ -365,11 +367,12 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      */
     private Claim submitClaim(User user, Claim claim) {
         ClaimIO claimIO = new ClaimIO(user.getRole());
-        ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
+        //ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         claim.setStatus(Claim.Status.SUBMITTED);
         try {
             claimIO.update(claim);
-            claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Update - Kyoungho Lee
+            //claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Update - Kyoungho Lee
+            //TODO: The above should be uncommented when ClaimRecordIO has been updated, assuming it will be implemented
             Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "This claim is successfully updated!!");
         } catch (SQLException ex) {
             Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
