@@ -45,17 +45,15 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
      * @throws SQLException if data is wrong.
      */
     public void insert(ClaimedModule claimedModule) throws SQLException {
-        String sql = "SELECT fn_InsertClaimedModule(?,?,?)";
+        String sql = "SELECT fn_InsertClaimedModule(?,?)";
         String moduleID = claimedModule.getModuleID();
-        String studentID = claimedModule.getStudentID();
         int claimID = claimedModule.getClaimID();
         
-        SQLParameter p1, p2, p3;
+        SQLParameter p1, p2;
         p1 = new SQLParameter(moduleID);
-        p2 = new SQLParameter(studentID);
-        p3 = new SQLParameter(claimID);
+        p2 = new SQLParameter(claimID);
         
-        super.doPreparedStatement(sql, p1, p2, p3);
+        super.doPreparedStatement(sql, p1, p2);
     }
 
     /**
@@ -152,20 +150,18 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
     
     /**
      * Add provider to a claimed module.
-     * @param studentID
      * @param claimID
      * @param moduleID
      * @param provider
      */
-    public void addProvider(String studentID, int claimID, String moduleID, char providerID) throws SQLException {
-        String sql = "SELECT fn_AddProviderToClaimedModule(?,?,?,?)";
+    public void addProvider(int claimID, String moduleID, char providerID) throws SQLException {
+        String sql = "SELECT fn_AddProviderToClaimedModule(?,?,?)";
         
-        SQLParameter p1, p2, p3, p4;
-        p1 = new SQLParameter(studentID);
-        p2 = new SQLParameter(claimID);
-        p3 = new SQLParameter(moduleID);
-        p4 = new SQLParameter(providerID);
+        SQLParameter p1, p2, p3;
+        p1 = new SQLParameter(claimID);
+        p2 = new SQLParameter(moduleID);
+        p3 = new SQLParameter(providerID);
         
-        super.doPreparedStatement(sql, p1, p2, p3, p4);
+        super.doPreparedStatement(sql, p1, p2, p3);
     }
 }
