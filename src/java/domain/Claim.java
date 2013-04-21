@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import java.sql.Date;
@@ -13,7 +9,7 @@ import util.Util;
  * @author Adam Shortall
  * @author David Gibbins
  */
-public class Claim {
+public class Claim implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Enumeration Classes">
     public enum Status {
