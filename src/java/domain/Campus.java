@@ -1,18 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import java.util.ArrayList;
 import util.FieldError;
+import java.io.Serializable;
 
 /**
  *
  * @author David Gibbins
  * @author Adam Shortall
  */
-public class Campus implements Comparable<Campus> {    
+public class Campus implements Comparable<Campus>, Serializable {    
     
     public enum Field {
         ID("^[0-9]{3}$", FieldError.CAMPUS_ID), 
