@@ -10,22 +10,20 @@ package util;
  * @author Adam Shortall
  */
 public enum RPLServlet {
-    ADD_TEACHER("/admins/addTeacher?" + web.FormAddTeacher.ROLE + "=" + web.FormAddTeacher.teacherRole),
+    /* Non-Specific Servlets */
+    LOGIN_SERVLET("/home"),
+    LOGOUT_SERVLET("/logout"),
+    REGISTER_SERVLET("/register"),
+    /* Admin Servlets */
     ADD_ADMIN("/admins/addTeacher?" + web.FormAddTeacher.ROLE + "=" + web.FormAddTeacher.adminRole),
     ADD_CLERICAL("/admins/addTeacher?" + web.FormAddTeacher.ROLE + "=" + web.FormAddTeacher.clericalRole),
+    ADD_TEACHER("/admins/addTeacher?" + web.FormAddTeacher.ROLE + "=" + web.FormAddTeacher.teacherRole),
+    ADMIN_LIST_ACCOUNTS("/admins/listAccounts"),
+    LIST_ERRORS("/admins/listErrors"), // Kyoungho Lee
+    ADMIN_LIST_UNASSIGNED_CLAIMS("/admins/listUnassignedClaims"),
+    ADMIN_MODIFY_ACCOUNT("/admins/modifyAccount"),
+    /* Clerical Admin Servlets */
     MAINTAIN_ELEMENT_CRITERIA_SERVLET("/maintenance/elementCriteria"),
-    REGISTER_SERVLET("/register"),
-    CREATE_CLAIM_SERVLET("/students/createClaim"),
-    UPDATE_PREV_CLAIM_SERVLET("/students/updatePrevClaim"),
-    UPDATE_RPL_CLAIM_SERVLET("/students/updateRPLClaim"),
-    ADD_EVIDENCE_SERVLET("/students/addEvidence"),
-    LOGIN_SERVLET("/home"),
-    LIST_CLAIMS_STUDENT_SERVLET("/students/listClaims"),
-    ASSESS_CLAIM_RPL_SERVLET("/teachers/AssessRPLClaim"),
-    VIEW_TEACHER_CLAIM_SERVLET("/teachers/ViewTeacherClaims"),
-    VIEW_EVIDENCE_SERVLET("/teachers/ViewEvidence"),
-    MAINTAIN_TABLE_SERVLET("/maintenance/maintainTable"),
-    LOGOUT_SERVLET("/logout"),
     MAINTAIN_CAMPUS_SERVLET("/maintenance/maintainCampus"),
     MAINTAIN_DISCIPLINE_SERVLET("/maintenance/maintainDiscipline"),
     MAINTAIN_COURSE_SERVLET("/maintenance/maintainCourse"),
@@ -36,12 +34,19 @@ public enum RPLServlet {
     MAINTAIN_CORE_MODULES_SERVLET("/maintenance/coreModules"),  
     MAINTAIN_COURSE_ELECTIVES_SERVLET("/maintenance/courseElectives"),
     MAINTAIN_MODULE_ELEMENTS_SERVLET("/maintenance/moduleElements"),
-    ADMIN_LIST_ACCOUNTS("/admins/listAccounts"),
-    ADMIN_MODIFY_ACCOUNT("/admins/modifyAccount"),
-    ADMIN_LIST_UNASSIGNED_CLAIMS("/admins/listUnassignedClaims"),
+    MAINTAIN_TABLE_SERVLET("/maintenance/maintainTable"),
+    /* Student Servlets */
+    ADD_EVIDENCE_SERVLET("/students/addEvidence"),
+    CREATE_CLAIM_SERVLET("/students/createClaim"),
     STUDENT_LIST_CLAIM_RECORDS("/students/listClaimRecords"), // Kyoungho Lee
-    TEACHER_LIST_CLAIM_RECORDS("/teachers/listClaimRecords"), // Kyoungho Lee  
-    LIST_ERRORS("/admin/listErrors"); // Kyoungho Lee
+    LIST_CLAIMS_STUDENT_SERVLET("/students/listClaims"),
+    UPDATE_PREV_CLAIM_SERVLET("/students/updatePrevClaim"),
+    UPDATE_RPL_CLAIM_SERVLET("/students/updateRPLClaim"),
+    /* Teacher Servlets */
+    ASSESS_CLAIM_RPL_SERVLET("/teachers/AssessRPLClaim"),
+    TEACHER_LIST_CLAIM_RECORDS("/teachers/listClaimRecords"),
+    VIEW_EVIDENCE_SERVLET("/teachers/ViewEvidence"),
+    VIEW_TEACHER_CLAIM_SERVLET("/teachers/ViewTeacherClaims"); // Kyoungho Lee
     
     public final String relativeAddress;
     public final String absoluteAddress;
