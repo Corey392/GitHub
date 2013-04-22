@@ -10,6 +10,7 @@
  *				v3.3: Todd: Added fn_doesUserExist: Allows you to search for a user by their ID or email and will return their email address.
  *				v3.4: Todd: Updated 'fn_updatestudent' to incorporate all columns that have been added.
  *				v3.5: Todd: Added 'fn_changePassword' to allow you to change a users current password to one supplied.
+ *                             v3.51: Bryce: Changed the generated-password overload of 'fn_insertUser' to use a CHARACTER for Role instead of TEXT.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -492,7 +493,7 @@ $_$;
 -- Name: fn_insertuser(text, text, text, text, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_insertuser("userID" text, role text, "email" text, "firstName" text, "lastName" text) RETURNS text
+CREATE FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) RETURNS text
     LANGUAGE plpgsql
     AS $_$
     DECLARE pw TEXT;
@@ -2298,13 +2299,13 @@ GRANT ALL ON FUNCTION fn_insertteacher("teacherID" text, "userID" text, "firstNa
 -- Name: fn_insertuser(text, text); Type: ACL; Schema: public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION fn_insertuser("userID" text, role text, "email" text, "firstName" text, "lastName" text) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_insertuser("userID" text, role text, "email" text, "firstName" text, "lastName" text) FROM postgres;
-GRANT ALL ON FUNCTION fn_insertuser("userID" text, role text, "email" text, "firstName" text, "lastName" text) TO postgres;
-GRANT ALL ON FUNCTION fn_insertuser("userID" text, role text, "email" text, "firstName" text, "lastName" text) TO admin;
-GRANT ALL ON FUNCTION fn_insertuser("userID" text, role text, "email" text, "firstName" text, "lastName" text) TO clerical;
-GRANT ALL ON FUNCTION fn_insertuser("userID" text, role text, "email" text, "firstName" text, "lastName" text) TO teacher;
-GRANT ALL ON FUNCTION fn_insertuser("userID" text, role text, "email" text, "firstName" text, "lastName" text) TO student;
+REVOKE ALL ON FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) FROM postgres;
+GRANT ALL ON FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) TO postgres;
+GRANT ALL ON FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) TO admin;
+GRANT ALL ON FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) TO clerical;
+GRANT ALL ON FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) TO teacher;
+GRANT ALL ON FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) TO student;
 
 
 --
