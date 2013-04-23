@@ -57,10 +57,10 @@
 					<li><a href="<%= RPLServlet.LIST_ERRORS %>?view=">Manage Error Codes</a></li>
 					<li><a href="">View Access History [REMOVED 2/4/13]</a></li>
 			<%	} else if (user.getRole() == Role.CLERICAL) {%>
-                    <li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Campus">Add/Modify Campuses or campus-sepcific data</a></li>
-					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Discipline">Add/Modify Disciplines (will be available to add to any campus)</a></li>
-					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Course">Add/Modify Courses or course core modules</a></li>
-					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=Module">Add/Modify Modules, Elements and Criteria</a></li>
+                    <li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=">Data Maintenance</a></li>
+					<li><a href="">Manage Teachers</a></li>
+					<li><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>?selectedTable=Course">Manage Courses</a></li>
+					<li><a href="">Manage Users</a></li>
 			<%	} %>
 				<li><a href="<%= RPLPage.CHANGE_PW %>">Change My Password</a></li>
                 <li><a href="<%= RPLPage.ROOT %>/logout">Log Out</a></li>
