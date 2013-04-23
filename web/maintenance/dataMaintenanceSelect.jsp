@@ -13,25 +13,26 @@
 <div class="body">
         
     <form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.absoluteAddress %>" name="form" id="form">
+        <p>Please select an area to maintain:<br></p>
     <table cellspacing="5" cellpadding="5" border="1">
         <tr>
-            <td align="center">Campus</td>
-            <td align="center">CampusDiscipline</td>
-            <td align="center">CampusDisciplineCourse</td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>">Campus</a></td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_CAMPUS_DISCIPLINE_SERVLET %>">CampusDiscipline</a></td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_COURSES_SERVLET %>">CampusDisciplineCourse</a></td>
         </tr>
         <tr>
-            <td align="center">ClaimedModule</td>
-            <td align="center">ClaimedModuleProvider</td>
-            <td align="center">Course</td>
+            <td align="center"><a href="#">ClaimedModule</a></td>
+            <td align="center"><a href="#">ClaimedModuleProvider</a></td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Course</a></td>
         </tr>
         <tr>
-            <td align="center">Criterion</td>
-            <td align="center">Discipline</td>
-            <td align="center">Element</td>
+            <td align="center"><a href="#">Criterion</a></td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>">Discipline</a></td>
+            <td align="center"><a href="#">Element</a></td>
         </tr>
         <tr>
-            <td align="center">Module</td>
-            <td align="center">Provider</td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></td>
+            <td align="center"><a href="#">Provider</a></td>
         </tr>
     </table>
     </form>
