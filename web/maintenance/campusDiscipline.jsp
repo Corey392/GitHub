@@ -33,7 +33,7 @@
         <tr>
         <c:choose>
             <c:when test="${noDisciplinesLeft}">
-                <td colspan="3">There are no more disicplines to add to this campus</td>
+                <td colspan="3">There are no more disciplines to add to this campus</td>
             </c:when>
             <c:otherwise>
                 <td>
