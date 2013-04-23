@@ -6,7 +6,6 @@
 <%! RPLPage thisPage = RPLPage.CLERICAL_DISCIPLINE; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 
-<%@include file="../WEB-INF/jspf/maintenanceOptions.jspf" %>
 
 <jsp:useBean id="disciplines" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="invalidNameError" scope="request" class="util.RPLError"/>

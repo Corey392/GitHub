@@ -7,7 +7,6 @@
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
-<%@include file="../WEB-INF/jspf/maintenanceOptions.jspf" %>
 
 <jsp:useBean id="course" scope="request" class="domain.Course"/>
 <jsp:useBean id="campuses" scope="request" class="java.util.ArrayList"/>

@@ -7,7 +7,6 @@
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
-<%@include file="../WEB-INF/jspf/maintenanceOptions.jspf" %>
 
 <c:if test="${requestScope.campuses == null}">
     <c:redirect url="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET.relativeAddress %>" />

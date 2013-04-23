@@ -7,7 +7,6 @@
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
-<%@include file="../WEB-INF/jspf/maintenanceOptions.jspf" %>
 
 <c:if test="${sessionScope.selectedElement == null}">
     <c:redirect url="<%= RPLServlet.MAINTAIN_MODULE_ELEMENTS_SERVLET.relativeAddress %>"/>
