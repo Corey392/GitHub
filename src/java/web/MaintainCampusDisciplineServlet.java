@@ -38,7 +38,7 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws SQLException, ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
@@ -86,10 +86,9 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
                     session.setAttribute("selectedDiscipline", selectedDiscipline);
                     url = RPLServlet.MAINTAIN_DISCIPLINE_COURSES_SERVLET.relativeAddress;
                 } else if(removeDisciplineID != null) {
-                    /*Discipline remove = disciplineIO.getByID(Integer.parseInt(removeDisciplineID));
-                    int index = selectedCampus.getDisciplines().indexOf(remove);
-                    selectedCampus.getDisciplines().remove(index);*/
-                    
+                    Discipline remove = disciplineIO.getByID(Integer.parseInt(removeDisciplineID));
+                    int index = selectedCampus.getDisciplines().indexOf(remove); //TODO: Figure out why it can't match remove to its entry in the campus' discipline list
+                    selectedCampus.getDisciplines().remove(index);                    
                 }
             } else {
                 url = RPLPage.CLERICAL_HOME.relativeAddress;
@@ -115,7 +114,11 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(MaintainCampusDisciplineServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 
@@ -128,7 +131,11 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(MaintainCampusDisciplineServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 
