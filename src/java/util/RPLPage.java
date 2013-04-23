@@ -25,6 +25,7 @@ public enum RPLPage {
     CLERICAL_CAMPUS("Campus Table Maintenance", "/maintenance/campus.jsp"),
     CLERICAL_DISCIPLINE("Discipline Table Maintenance", "/maintenance/discipline.jsp"),
     CLERICAL_COURSE("Course Table Maintenance", "/maintenance/course.jsp"),
+    CLERICAL_MAINTENANCE_SELECT("Data Maintenance Table Selection", "/maintenance/dataMaintenanceSelect.jsp"),
     CLERICAL_MODULE("Module Table Maintenance", "/maintenance/module.jsp"),
     ASSESS_CLAIM_PREV("Assess Claim", "/teachers/assessClaimPrev.jsp"),
     ASSESS_CLAIM_RPL("Assess Claim", "/teachers/assessClaimRPL.jsp"),

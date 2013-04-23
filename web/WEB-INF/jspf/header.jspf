@@ -57,7 +57,7 @@
 					<li><a href="<%= RPLServlet.LIST_ERRORS %>?view=">Manage Error Codes</a></li>
 					<li><a href="">View Access History [REMOVED 2/4/13]</a></li>
 			<%	} else if (user.getRole() == Role.CLERICAL) {%>
-                    <li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>?selectedTable=">Data Maintenance</a></li>
+                    <li><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT %>">Data Maintenance</a></li>
 					<li><a href="">Manage Teachers</a></li>
 					<li><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>?selectedTable=Course">Manage Courses</a></li>
 					<li><a href="">Manage Users</a></li>
