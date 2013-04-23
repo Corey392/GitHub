@@ -29,9 +29,12 @@ import util.RPLServlet;
  * @author Adam Shortall
  */
 public class MaintainCampusDisciplineServlet extends HttpServlet {
-    
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP
+     * <code>GET</code> and
+     * <code>POST</code> methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -50,28 +53,34 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
             Campus selectedCampus = (Campus) session.getAttribute("selectedCampus");
             Discipline selectedDiscipline = (Discipline) request.getAttribute("selectedDiscipline");
             ArrayList<Discipline> disciplines = (ArrayList<Discipline>) request.getAttribute("disciplines");
-                        
+
             String disciplineID = request.getParameter("disciplineID");
-            
+
             String removeDisciplineID = request.getParameter("removeDiscipline");
-            
+
             String back = request.getParameter("backToCampusDiscipline");
             if (back != null) {
                 url = RPLPage.CLERICAL_CAMPUS.relativeAddress;
             }
-            
+
             if (request.getParameter("addDisciplineToCampus") != null) {
                 String selectedDisciplineID = request.getParameter("selectedDiscipline");
                 selectedDiscipline = disciplineIO.getByID(Integer.parseInt(selectedDisciplineID));
+            } else if (removeDisciplineID != null) {
+                Discipline remove = disciplineIO.getByID(Integer.parseInt(removeDisciplineID));
+                int index = selectedCampus.getDisciplines().indexOf(remove);
+                campusIO.removeDiscipline(selectedCampus.getCampusID(), Integer.parseInt(removeDisciplineID));
+                selectedCampus.getDisciplines().remove(index);
+                disciplines = disciplineIO.getListNotInCampus(selectedCampus.getCampusID());
             } else {
                 selectedDiscipline = null;
             }
-                                    
+
             // Check that a campus has been selected from maintain campus page:
             if (selectedCampus != null) {
                 // Fill list of disciplines for drop-down box on jsp:
                 disciplines = disciplineIO.getListNotInCampus(selectedCampus.getCampusID());
-                
+
                 // Handle events on the jsp:
                 if (selectedDiscipline != null) {   // Selected a discipline from the drop-down box
                     try {
@@ -85,27 +94,25 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
                     selectedDiscipline = disciplineIO.getByID(Integer.parseInt(disciplineID));
                     session.setAttribute("selectedDiscipline", selectedDiscipline);
                     url = RPLServlet.MAINTAIN_DISCIPLINE_COURSES_SERVLET.relativeAddress;
-                } else if(removeDisciplineID != null) {
-                    Discipline remove = disciplineIO.getByID(Integer.parseInt(removeDisciplineID));
-                    int index = selectedCampus.getDisciplines().indexOf(remove); //TODO: Figure out why it can't match remove to its entry in the campus' discipline list
-                    selectedCampus.getDisciplines().remove(index);                    
                 }
             } else {
                 url = RPLPage.CLERICAL_HOME.relativeAddress;
-            }            
-            
+            }
+
             request.setAttribute("disciplines", disciplines);
             request.setAttribute("selectedCampus", selectedCampus);
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request, response);
-        } finally {            
+        } finally {
             out.close();
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
+    /**
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -121,8 +128,10 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
         }
     }
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
+    /**
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -138,8 +147,9 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
         }
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

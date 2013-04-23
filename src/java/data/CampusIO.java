@@ -131,5 +131,13 @@ public class CampusIO extends RPL_IO<Campus> {
         p2 = new SQLParameter(disciplineID);
         super.doPreparedStatement(sql, p1, p2);
     }
+
+    public void removeDiscipline(String campusID, int removeDisciplineID) throws SQLException   {
+        String sql = "SELECT fn_removedisciplinefromcampus(?, ?)";
+        SQLParameter p1, p2;
+        p1 = new SQLParameter(campusID);
+        p2 = new SQLParameter(removeDisciplineID);
+        super.doPreparedStatement(sql, p1, p2);
+    }
     
 }

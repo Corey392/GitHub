@@ -1032,6 +1032,19 @@ $_$;
 
 
 --
+-- Name: fn_removedisciplinefromcampus(text, integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fn_removedisciplinefromcampus("campusID" text, "disciplineID" integer) RETURNS void
+    LANGUAGE sql
+    AS $_$
+	DELETE FROM "CampusDiscipline"
+        WHERE
+            "campusID" = $1
+        AND "disciplineID" = $2;
+$_$;
+
+--
 -- Name: fn_changePassword(text, text, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -2604,6 +2617,19 @@ GRANT ALL ON FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid 
 GRANT ALL ON FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid integer, courseid text) TO clerical;
 GRANT ALL ON FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid integer, courseid text) TO teacher;
 GRANT ALL ON FUNCTION fn_removecoursefromdiscipline(campusid text, disciplineid integer, courseid text) TO student;
+
+--
+-- Name: fn_removedisciplinefromcampus(text, integer, text); Type: ACL; Schema: public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION fn_removedisciplinefromcampus(campusid text, disciplineid integer) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_removedisciplinefromcampus(campusid text, disciplineid integer) FROM postgres;
+GRANT ALL ON FUNCTION fn_removedisciplinefromcampus(campusid text, disciplineid integer) TO postgres;
+GRANT ALL ON FUNCTION fn_removedisciplinefromcampus(campusid text, disciplineid integer) TO admin;
+GRANT ALL ON FUNCTION fn_removedisciplinefromcampus(campusid text, disciplineid integer) TO clerical;
+GRANT ALL ON FUNCTION fn_removedisciplinefromcampus(campusid text, disciplineid integer) TO teacher;
+GRANT ALL ON FUNCTION fn_removedisciplinefromcampus(campusid text, disciplineid integer) TO student;
+
 
 --
 -- Name: fn_changePassword("userid" text, "oldPw" text, "newPw" text); Type: ACL; Schema: public; Owner: -

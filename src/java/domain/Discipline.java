@@ -81,6 +81,19 @@ public class Discipline implements Comparable<Discipline> {
         Collator collator = Collator.getInstance();
         return collator.compare(this.name, that.name);
     }
+    
+    /**
+     * Compares two Discipline objects' disciplineIDs.
+     * @param obj
+     * @return false if disciplineIDs are different or if argument is not of type Discipline
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() == Discipline.class && ((Discipline)obj).getDisciplineID() == this.getDisciplineID()) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @return the courses
