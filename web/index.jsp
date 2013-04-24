@@ -29,8 +29,8 @@
                     <option value="355273971;password">STUDENT: Ryan</option>
                     <option value="366688315;password">STUDENT: Kelly</option>
                     <option value="teacher;password">TEACHER</option>
-                    <option value="assessor;password">ASSESSOR</option>
-                    <option value="admin;password">ADMIN</option>
+                    <option value="assessor;password">ADMIN</option>
+                    <option value="admin;password">CLERICAL ADMIN</option>
                 </select>
 
             </td>
