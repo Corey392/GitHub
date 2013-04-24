@@ -17,7 +17,13 @@ import java.util.logging.Logger;
  * Handles I/O for Claim made by the Student 
  * and assessed by assessors.
  * 
- * @author Adam Shortall
+ * @author Adam Shortall, Bryce Carr
+ * @version 1.02
+ * <b>Created:</b>  Unknown
+ * <b>Modified:</b> 24/04/2013
+ * <b>Change Log:</b>  08/04/2013:   Made small changes to incorporate the guideFileAddress DB field.
+ *              24/04/2013:   Added header comments to match code conventions.
+ * <b>Purpose:</b>  Controller class for interaction between application and database's Claim table. 
  */
 public class ClaimIO extends RPL_IO <Claim> {
 

@@ -1,9 +1,12 @@
-<%-- @author     Adam Shortall, Todd Wiggins
-     @version    1.11
+<%-- @author     Adam Shortall, Todd Wiggins, Bryce Carr
+     @version    1.2
 	 Created:    9/05/2011, 10:19 PM
-	 Modified:   12/04/2013
+	 Modified:   24/04/2013
 	 Change Log: 1.1:  TW: Moved user level navigation to header from each users index pages.
-				 1.11: TW: Added 'Manage My Details' to Student and 'Change My Password' to all users.
+				 1.11:  TW: Added 'Manage My Details' to Student and 'Change My Password' to all users.
+                                 1.12:  BC: Begun cleanup of Clerical/Admin links to match new storyboards.
+                                 1.2:   BC: Added link to new Data Maintenance page and finalised link names in Clerical Admin's sidebar.
+                                 1.2:   BC: Added header comments to (sort of) match code conventions. Some inconsistency with comments throughout project, needs to be agreed-upon.
 	 Purpose:    Header code, sets up page, ensures consistency, reduced code.
 --%>
 <%@page import="domain.User.Role"%>

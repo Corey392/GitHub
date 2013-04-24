@@ -16,7 +16,13 @@ import java.util.logging.Logger;
  * Handles I/O for Course updates by the Clerical Admins
  * 
  * 
- * @author David Gibbins, Adam Shortall
+ * @author David Gibbins, Adam Shortall * 
+ * @version 1.02
+ * <b>Created:</b>  Unknown
+ * <b>Modified:</b> 24/04/2013
+ * <b>Change Log:</b>  08/04/2013: Made small changes to incorporate guideFileAddress DB field.
+ *                  24/04/2013: Added header comments to match code conventions.
+ * <b>Purpose:</b>  Controller class for interaction with database's Course table.
  */
 public class CourseIO extends RPL_IO<Course> {
 

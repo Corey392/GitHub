@@ -10,8 +10,13 @@ import util.FieldError;
 
 /**
  *
- * @author David Gibbins, James
- * @author Adam Shortall
+ * @author David Gibbins, James, Adam Shortall, Bryce Carr
+ * @version 1.1
+ * <b>Created:</b>  Unknown<br/>
+ * <b>Modified:</b> 24/04/2013<br/>
+ * <b>Change Log:</b>  23/04/2013:  Bryce Carr: Overrode super.equals() function to compare Disciplines by their disciplineID.<br/>
+ *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
+ * <b>Purpose:</b>  Model class for database's Discipline table.
  */
 public class Discipline implements Comparable<Discipline> {
     

@@ -11,8 +11,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Handles IO for Criteria.
- * @author Adam Shortall
+ * @author Adam Shortall, Bryce Carr
+ * @version 1.02
+ * <b>Created:</b>  Unknown<br/>
+ * <b>Modified:</b> 24/04/2013<br/>
+ * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Removed code to account for removal of moduleID field from DB table.<br/>
+ *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
+ * <b>Purpose:</b>  Controller for interaction with database's Criterion table.
  */
 public class CriterionIO extends RPL_IO<Criterion> {
 

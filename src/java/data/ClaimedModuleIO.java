@@ -10,7 +10,13 @@ import java.util.logging.Logger;
 
 /**
  * Handles IO for ClaimedModule objects.
- * @author Adam Shortall
+ * @author Adam Shortall, Bryce Carr
+ * @version 1.02
+ * <b>Created:</b> Unknown 
+ * <b>Modified:</b> 24/04/2013
+ * <b>Change Log:</b>  08/04/2013: Made small changes to incorporate guideFileAddress DB field.
+ *                  24/04/2013: Added header comments to match code conventions.
+ * <b>Purpose:</b>  Controller class for interaction with database's ClaimedModule table.
  */
 public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
     

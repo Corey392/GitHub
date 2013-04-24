@@ -2,6 +2,11 @@
     Document   : dataMaintenanceSelect
     Created on : 23/04/2013, 12:16:31 PM
     Author     : Bryce
+    Version:    1
+    Modified:    24/04/2013
+    Change Log: 23/04/2013: Bryce Carr: Created page, added links to servlets that exist (even if they don't actually work).
+                24/04/2013: Bryce Carr: Added header comments to (sort of) match code conventions.
+    Purpose:    Displays links to data maintenance pages for Clerical Admin.
 --%>
 
 <%! RPLPage thisPage = RPLPage.CLERICAL_MAINTENANCE_SELECT; %>

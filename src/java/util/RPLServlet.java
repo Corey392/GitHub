@@ -1,13 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package util;
 
 /**
- * Servlet urls are stored here.
- * 
- * @author Adam Shortall
+ * @author Adam Shortall, Kyoungho Lee, Bryce Carr
+ * @version 1.02
+ * <b>Created:</b>  Unknown<br/>
+ * <b>Modified:</b> 24/04/2013<br/>
+ * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Re-ordered enums for servlet URLs in a more logical fashion.<br/>
+ *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
+ * <b>Purpose:</b>  Servlet urls are stored here.
  */
 public enum RPLServlet {
     /* Non-Specific Servlets */

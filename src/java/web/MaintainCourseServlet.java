@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.CourseIO;
@@ -30,7 +26,14 @@ import util.Util;
 
 /**
  *
- * @author Adam Shortall
+ * @author Adam Shortall, Bryce Carr
+ * @version 1.02
+ * <b>Created:</b> Unknown <br/>
+ * <b>Modified:</b> 24/04/2013 <br/>
+ * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Made small changes to incorporate guideFileAddress DB field.<br/>
+ *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.
+ *                  
+ * <b>Purpose:</b>  
  */
 public class MaintainCourseServlet extends HttpServlet {
     

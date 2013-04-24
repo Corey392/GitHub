@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.CampusIO;
@@ -26,7 +22,13 @@ import util.RPLServlet;
 
 /**
  *
- * @author Adam Shortall
+ * @author Adam Shortall, Bryce Carr
+ * @version 1.1
+ * <b>Created:</b>  Unknown<br/>
+ * <b>Modified:</b> 24/04/2013<br/>
+ * <b>Change Log:</b>  23/04/2013:  Bryce Carr: Implemented removal of Disciplines from Campus'.<br/>
+ *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
+ * <b>Purpose:</b>  Clerical Admin page for adding/removing Disciplines from Campus'.
  */
 public class MaintainCampusDisciplineServlet extends HttpServlet {
 

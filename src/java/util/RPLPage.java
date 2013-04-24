@@ -1,9 +1,14 @@
 package util;
 
 /**
- * Stores values for names and addresses of pages for
- * the RPL website.
- * @author Adam Shortall
+ * 
+ * @author Adam Shortall, Todd Wiggins, Bryce Carr
+ * @version 1.02
+ * <b>Created:</b>  Unknown<br/>
+ * <b>Modified:</b> 24/04/2013<br/>
+ * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Added reference to new Data Maintenance page (dataMaintenanceSelect.jsp).<br/>
+ *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
+ * <b>Purpose:</b>  Stores values for names and addresses of pages for the RPL website.
  */
 public enum RPLPage {
     HOME("RPL Homepage", "/index.jsp"),

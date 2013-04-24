@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import domain.Element;
@@ -14,7 +10,13 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author James, Adam Shortall
+ * @author James, Adam Shortall, Bryce Carr
+ * @version 1.02
+ * <b>Created:</b>  Unknown<br/>
+ * <b>Modified:</b> 24/04/2013<br/>
+ * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Added code to incorporate moduleID DB field.<br/>
+ *                  24/04/2013: Bryce Carr  Added header comments to match code conventions.<br/>
+ * <b>Purpose:</b>  Controller class for interaction with database's Element table.
  */
 public class ElementIO extends RPL_IO <Element> {
     

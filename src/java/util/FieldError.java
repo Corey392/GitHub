@@ -1,11 +1,14 @@
 package util;
 
 /**
- * Defines error messages for different input fields on pages in the
- * RPL website. These messages are displayed to the user next to the
- * fields that they are associated with.
- * @author Adam Shortall
- * Modified: 11/04/2013: Todd Wiggins: Added messages: TERMS_AND_COND, RESET_FAILED, RESET_SENT.
+ * @author Adam Shortall, Bryce Carr, Todd Wiggins
+ * @version: 1.03
+ * Modified:    08/04/2013: Bryce Carr: Added message: COURSE_GUIDE_FILE_ADDRESS.
+ *              11/04/2013: Todd Wiggins: Added messages: TERMS_AND_COND, RESET_FAILED, RESET_SENT.
+ *              24/04/2013: Bryce Carr: Added header comments to match code conventions.
+ * <b>Purpose:</b>  Defines error messages for different input fields on pages in the
+ * RPL website. These messages are displayed to the user next to the fields that 
+ * they are associated with.
  */
 public enum FieldError {
     NONE(""),
