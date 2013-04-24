@@ -98,7 +98,10 @@ public class ClaimIO extends RPL_IO <Claim> {
         int claimID = claim.getClaimID();
         String studentID = claim.getStudentID();
         Option option = claim.getOption();
-        Character optionValue = (option != null) ? option.value : Option.OTHER_PROVIDER.value;
+        //Character optionValue = (option != null) ? option.value : Option.OTHER_PROVIDER.value;
+        Boolean optionValue = (option != null && option.value != Option.OTHER_PROVIDER.value) ? true : false;
+        //Mitch: Our new DB uses a boolean value rather than a Char for the 5th element.
+        //I've commented out the original line and replaced it with a boolean value that may not necessarily be correct
         
         SQLParameter p1 = new SQLParameter(claimID);
         SQLParameter p2 = new SQLParameter(studentID);
