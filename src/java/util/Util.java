@@ -191,7 +191,7 @@ public final class Util {
         ArrayList<ClaimedModule> claimedModules = claimedModuleIO.getList(claimID, studentID);
         if (claimedModules != null) {
             for (ClaimedModule cm : claimedModules) {
-                cm.setProviders(providerIO.getList(claimID, studentID, cm.getModuleID()));
+                cm.setProviders(providerIO.getList(claimID, cm.getModuleID()));
                 cm.setEvidence(Util.getCompleteEvidenceList(claimID, cm.getModuleID(), role));
             }
         } else {
