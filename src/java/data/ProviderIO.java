@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import domain.Provider;
@@ -86,20 +82,17 @@ public class ProviderIO extends RPL_IO<Provider> {
     
     /**
      * Returns a list of providers for a claimed module.
-     * @param claim 
-     * @param student
-     * @param module
+     * @param claimID
+     * @param moduleID
      * @return 
      */
-    public ArrayList<Provider> getList(int claimID, String studentID, String moduleID) {
+    public ArrayList<Provider> getList(int claimID, String moduleID) {
         ArrayList<Provider> list = null;
-        String sql = "SELECT * FROM fn_ListProviders(?,?,?)";
-        SQLParameter p1, p2, p3;
-        p1 = new SQLParameter(claimID);
-        p2 = new SQLParameter(studentID);
-        p3 = new SQLParameter(moduleID);
+        String sql = "SELECT * FROM fn_ListProviders(?,?)";
+        SQLParameter p1 = new SQLParameter(claimID);
+        SQLParameter p2 = new SQLParameter(moduleID);
         try {
-            ResultSet rs = super.doPreparedStatement(sql, p1, p2, p3);
+            ResultSet rs = super.doPreparedStatement(sql, p1, p2);
             list = new ArrayList<Provider>();
             char providerID;
             String name;
