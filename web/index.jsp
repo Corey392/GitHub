@@ -1,9 +1,10 @@
 <%-- @author     Adam Shortall, Todd Wiggins
 	 @version    1.2
 	 Created:    09/05/2011, 6:46:17 PM
-	 Modified:   03/04/2013
-	 Change Log: 1.1: TW: Added our usernames into the drop down box to match the DB create script we are using.
-	             1.2: TW: Removed default Username and Password (was a user that does not have access in our DB) and changed default value in drop down box to 'Select a User'. Added auto focus on page load to drop down box. Minor code clean up.
+	 Modified:   25/04/2013
+	 Change Log: 1.010: TW: Added our usernames into the drop down box to match the DB create script we are using.
+	             1.011: TW: Removed default Username and Password (was a user that does not have access in our DB) and changed default value in drop down box to 'Select a User'. Added auto focus on page load to drop down box. Minor code clean up.
+                     1.012: BC: Changed names of "Assessor" and "ADMIN" to match their actual user level.
 	 Purpose:    This is the "HOME" page for a non-logged in user. The first/index page when a vistor navigates to the domain.
 --%>
 <%@page import="util.RPLPage" %>
