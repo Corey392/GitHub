@@ -10,7 +10,7 @@
  *				v3.3: Todd: Added fn_doesUserExist: Allows you to search for a user by their ID or email and will return their email address.
  *				v3.4: Todd: Updated 'fn_updatestudent' to incorporate all columns that have been added.
  *				v3.5: Todd: Added 'fn_changePassword' to allow you to change a users current password to one supplied.
- *                             v3.51: Bryce: Changed the generated-password overload of 'fn_insertUser' to use a CHARACTER for Role instead of TEXT.
+ *				v3.51: Bryce: Changed the generated-password overload of 'fn_insertUser' to use a CHARACTER for Role instead of TEXT.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
