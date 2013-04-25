@@ -15,23 +15,23 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import util.*;
 
-/**
- * Handles the adding and removing of modules from a Previous Studies claim as 
- * well as the adding and editing of evidence for the modules.
- * @author James Purves
+/** @author     James Purves, Todd Wiggins
+ *  @version    1.01
+ *	Created:    ?
+ *	Modified:	25/04/2013
+ *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module.
+ *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
-    
-    /** 
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Gets the session and the current user.
         String url;
         HttpSession session = request.getSession();
@@ -39,69 +39,69 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 
         // Gets the current claim from the session.
         Claim claim = (Claim) session.getAttribute("claim");
-        
+
         // Initialises the module and provider lists, as well as retrieveing the
         // selectedModule and the evidence for each claimed module.
         ArrayList<Module> modules = this.initialiseModuleList(user, claim);
         ArrayList<Provider> providers = this.initialiseProviderList(user);
         Module selectedModule = this.getSelectedModule(request, user, modules);
-        ArrayList<Evidence> evidence = this.getEvidence(request, user, claim, selectedModule); 
 
-        // If the request came from the reviewClaimPrev jsp page then depending
-        // on the button pressed new or updated evidence will be saved, the 
-        // claim will be submitted, or a module will be added or removed. The 
-        // url is set to point back to the reviewClaimPrev page unless the claim
-        // was submitted or the user clicked back, in which case the url is set 
-        // to the ListClaimsServlet.
-        if (request.getParameter("saveEvidence") != null) {
-            claim = this.setEvidence(request, user, claim);
-            url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
-        } else if (request.getParameter("submitClaim") != null) {
-            claim = this.setEvidence(request, user, claim);
-            claim = this.submitClaim(user, claim);
-            url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
-        } else if (request.getParameter("addModule") != null) {
-            ArrayList<Provider> selectedProviders = this.getSelectedProviders(request, providers);
-            if (selectedProviders.size() < 1 || selectedProviders.size() > 3){
-                request.setAttribute("moduleError", 
-                        new RPLError("Please select 1-3 providers"));
-                url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
-            } else {
-                claim = this.addModule(claim, user, selectedModule, evidence, 
-                    selectedProviders);
-                modules = this.initialiseModuleList(user, claim);
-                url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
-            }
-        } else if (request.getParameter("removeModule") != null) {
-            String remove = request.getParameter("removeModule");
+		// If the request came from the reviewClaimPrev jsp page then depending
+		// on the button pressed new or updated evidence will be saved, the
+		// claim will be submitted, or a module will be added or removed. The
+		// url is set to point back to the reviewClaimPrev page unless the claim
+		// was submitted or the user clicked back, in which case the url is set
+		// to the ListClaimsServlet.
+		if (request.getParameter("saveEvidence") != null) {
+			claim = this.setEvidence(request, user, claim);
+			url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
+		} else if (request.getParameter("submitClaim") != null) {
+			claim = this.setEvidence(request, user, claim);
+			claim = this.submitClaim(user, claim);
+			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
+		} else if (request.getParameter("addModule") != null) {
+			if (selectedModule == null) {
+				url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
+				request.setAttribute("moduleError", new RPLError("Please choose a module from the list provided."));
+			} else {
+				ArrayList<Provider> selectedProviders = this.getSelectedProviders(request, providers);
+				if (selectedProviders.size() < 1 || selectedProviders.size() > 3){
+					request.setAttribute("moduleError", new RPLError("Please select 1-3 providers"));
+					url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
+				} else {
+					ArrayList<Evidence> evidence = this.getEvidence(request, user, claim, selectedModule);
+					claim = this.addModule(claim, user, selectedModule, evidence, selectedProviders);
+					modules = this.initialiseModuleList(user, claim);
+					url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
+				}
+			}
+		} else if (request.getParameter("removeModule") != null) {
+			String remove = request.getParameter("removeModule");
+			if (remove != null){
+				claim = this.removeModule(claim, user, Integer.valueOf(remove));
+			} else {
+				request.setAttribute("selectError", new RPLError("Please select a module using the radio button beside it."));
+			}
+			modules = this.initialiseModuleList(user, claim);
+			url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
+		} else if (request.getParameter("back") != null) {
+			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
+		} else {
+			url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
+		}
 
-            if (remove != null){
-                claim = this.removeModule(claim, user, Integer.valueOf(remove));
-            } else {
-                request.setAttribute("selectError", 
-                        new RPLError("Please select a module using the radio "
-                        + "button beside it."));
-            }
-            modules = this.initialiseModuleList(user, claim);
-            url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
-        } else if (request.getParameter("back") != null) {
-            url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
-        } else {
-            url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
-        }
-        
-        // Sets the required attributes and forwards the request to the given 
-        // url.
-        session.setAttribute("claim", claim);
-        request.setAttribute("selectedModule", selectedModule);
-        request.setAttribute("modules", modules);
-        request.setAttribute("providers", providers);
+		// Sets the required attributes and forwards the request to the given
+		// url.
+		session.setAttribute("claim", claim);
+		request.setAttribute("selectedModule", selectedModule);
+		request.setAttribute("modules", modules);
+		request.setAttribute("providers", providers);
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);
     }
 
     /**
-     * Adds the selected module to the database as a claimed module. 
+     * Adds the selected module to the database as a claimed module.
      * (Claimed modules are modules associated with claims).
      * @param claim the claim to add the module to
      * @param user the current user
@@ -110,8 +110,8 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      * @param selectedProviders the providers for the module
      * @return the updated claim
      */
-    private Claim addModule(Claim claim, User user, Module selectedModule, 
-            ArrayList<Evidence> evidence, 
+    private Claim addModule(Claim claim, User user, Module selectedModule,
+            ArrayList<Evidence> evidence,
             ArrayList<Provider> selectedProviders){
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(user.role);
         EvidenceIO evidenceIO = new EvidenceIO(user.role);
@@ -131,8 +131,8 @@ public class UpdatePrevClaimServlet extends HttpServlet {
                 claimedModuleIO.insert(claimedModule);
                 for (Provider provider : selectedProviders){
                     claimedModuleIO.addProvider(
-                            claim.getClaimID(), 
-                            claimedModule.getModuleID(), 
+                            claim.getClaimID(),
+                            claimedModule.getModuleID(),
                             provider.getProviderID());
                 }
             }
@@ -142,7 +142,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         }
         return claim;
     }
-    
+
     /**
      * Removes a claimed module from the database and the current claim.
      * @param claim the claim to remove the module from
@@ -168,7 +168,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         claim.setClaimedModules(claimedModules);
         return claim;
     }
-    
+
     /**
      * Gets the module selected by the user using the module combobox.
      * @param request the request
@@ -176,29 +176,30 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      * @param modules the list of modules to get the selected module from
      * @return the selected module
      */
-    private Module getSelectedModule(HttpServletRequest request, User user, 
-            ArrayList<Module> modules) {
+    private Module getSelectedModule(HttpServletRequest request, User user, ArrayList<Module> modules) {
         Module selectedModule;
         String moduleIDX = request.getParameter("module");
         if (moduleIDX == null){
-            selectedModule = new Module();
+            return new Module();
         } else {
-            int index = Integer.valueOf(moduleIDX);
-            Module module = modules.get(index);
-            selectedModule = Util.getCompleteModule(module.getModuleID(), 
-                    user.getRole());
-        }
-        return selectedModule;
+			int index = Integer.valueOf(moduleIDX);
+			if (index > 0) {	//The 0'th index is a blank row, 1+ are the actual modules.
+				Module module = modules.get(index);
+				selectedModule = Util.getCompleteModule(module.getModuleID(), user.getRole());
+				return selectedModule;
+			} else {
+				return null;
+			}
+	    }
     }
-    
+
     /**
      * Gets the providers selected by the user.
      * @param request the request
      * @param providers the list of providers to get the selected providers from
      * @return the selected providers
      */
-    private ArrayList<Provider> getSelectedProviders(HttpServletRequest request, 
-            ArrayList<Provider> providers) {
+    private ArrayList<Provider> getSelectedProviders(HttpServletRequest request, ArrayList<Provider> providers) {
         ArrayList<Provider> selectedProviders;
         String[] providersIDXArray = request.getParameterValues("provider");
         if (providersIDXArray == null){
@@ -213,8 +214,8 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         }
         return selectedProviders;
     }
-    
-    
+
+
     /**
      * Gets the evidence for the module to be added to the claim.
      * @param request the request
@@ -223,20 +224,19 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      * @param selectedModule the selected module
      * @return the evidence array
      */
-    private ArrayList<Evidence> getEvidence(HttpServletRequest request, 
-            User user, Claim claim, Module selectedModule) {
+    private ArrayList<Evidence> getEvidence(HttpServletRequest request, User user, Claim claim, Module selectedModule) {
         ArrayList<Evidence> evidence;
         String evidenceDesc = request.getParameter("evidence");
         if (evidenceDesc == null){
             evidence = new ArrayList<Evidence>();
         } else {
             evidence = new ArrayList<Evidence>();
-            evidence.add(new Evidence(claim.getClaimID(), 
+            evidence.add(new Evidence(claim.getClaimID(),
                     selectedModule.getModuleID(), evidenceDesc));
         }
         return evidence;
     }
-    
+
     /**
      * Gets a list of modules that haven't already been added to the claim. This
      * is used to populate the combobox that the user can use to add modules.
@@ -249,13 +249,11 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         String campusID = claim.getCampusID();
         int disciplineID = claim.getDisciplineID();
         String courseID = claim.getCourseID();
-        
-        if ((campusID == null || campusID.equals("")) || disciplineID == 0 
-                || (courseID == null || courseID.equals(""))){
+
+        if ((campusID == null || campusID.equals("")) || disciplineID == 0 || (courseID == null || courseID.equals(""))){
             modules = new ArrayList<Module>();
         } else {
-            Course currentCourse = Util.getCompleteCourse(courseID, 
-                    user.getRole(), campusID, disciplineID);
+            Course currentCourse = Util.getCompleteCourse(courseID, user.getRole(), campusID, disciplineID);
             modules = currentCourse.getAllModules();
             ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();
             for (ClaimedModule cm : claimedModules){
@@ -267,10 +265,10 @@ public class UpdatePrevClaimServlet extends HttpServlet {
             }
         }
         modules.add(0, new Module());
-        
+
         return modules;
     }
-    
+
     /**
      * Gets a list of possible providers from the database.
      * @param user the current user
@@ -284,7 +282,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -297,7 +295,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -310,7 +308,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
@@ -318,7 +316,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     /**
      * Saves the evidence for all claimed modules to the database. Only used
      * when the user clicks the saveEvidence button.
@@ -336,10 +334,10 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         for (ClaimedModule cm : claimedModules){
             String evidenceDesc = request.getParameter(cm.getModuleID());
             if (evidenceDesc != null){
-                newEvidence.add(  
-                        new Evidence( 
-                            claim.getClaimID(), 
-                            cm.getModuleID(), 
+                newEvidence.add(
+                        new Evidence(
+                            claim.getClaimID(),
+                            cm.getModuleID(),
                             evidenceDesc));
                 cm.setEvidence(newEvidence);
                 try {
@@ -359,7 +357,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         claim.setClaimedModules(newClaimedModules);
         return claim;
     }
-    
+
     /**
      * Changes the status of the claim in the database to submitted. Which flags
      * it as ready to be assessed by a teacher.

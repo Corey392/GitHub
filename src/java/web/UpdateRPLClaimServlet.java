@@ -18,63 +18,67 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import util.*;
 
-/**
- * Handles the adding and removing of modules from a RPL claim.
- * @author Adam Shortall, James Purves
+/** @author     Adam Shortall, James Purves, Todd Wiggins
+ *  @version    1.01
+ *	Created:    ?
+ *	Modified:	25/04/2013
+ *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module.
+ *	Purpose:    Handles the adding and removing of modules from a RPL claim.
  */
 public class UpdateRPLClaimServlet extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // Gets the session and the current user.
         String url;
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        
+
         // Gets the current claim from the session.
         Claim claim = (Claim) session.getAttribute("claim");
-        
+
         // Initialises the module and provider lists, as well as retrieveing the
         // selectedModule.
         ArrayList<Module> modules = this.initialiseModuleList(user, claim);
         ArrayList<Provider> providers = this.initialiseProviderList(user);
         Module selectedModule = this.getSelectedModule(request, user, modules);
 
-        // If the request came from the reviewClaimRPL page then depending on 
-        // the button pressed the claim will be submitted, a module will be 
-        // added or removed, or the request will be sent to the 
+        // If the request came from the reviewClaimRPL page then depending on
+        // the button pressed the claim will be submitted, a module will be
+        // added or removed, or the request will be sent to the
         // AddEvidenceServlet with the selected module as an attribute.
         if (request.getParameter("submitClaim") != null) {
             claim = this.submitClaim(user, claim);
             url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
         } else if (request.getParameter("addModule") != null) {
-            ArrayList<Provider> selectedProviders = this.getSelectedProviders(request, providers);
-            if (selectedProviders.size() < 1 || selectedProviders.size() > 3){
-                request.setAttribute("moduleError", 
-                        new RPLError("Please select 1-3 providers"));
-                url = RPLPage.REVIEW_CLAIM_RPL.relativeAddress;
-            } else {
-                claim = this.addModule(claim, user, selectedModule, 
-                    selectedProviders);
-                modules = this.initialiseModuleList(user, claim);
-                url = RPLPage.REVIEW_CLAIM_RPL.relativeAddress;
-            }
+			if (selectedModule == null) {
+				url = RPLPage.REVIEW_CLAIM_RPL.relativeAddress;
+				request.setAttribute("moduleError", new RPLError("Please choose a module from the list provided."));
+			} else {
+				ArrayList<Provider> selectedProviders = this.getSelectedProviders(request, providers);
+				if (selectedProviders.size() < 1 || selectedProviders.size() > 3){
+					request.setAttribute("moduleError", new RPLError("Please select 1-3 providers"));
+					url = RPLPage.REVIEW_CLAIM_RPL.relativeAddress;
+				} else {
+					claim = this.addModule(claim, user, selectedModule,
+						selectedProviders);
+					modules = this.initialiseModuleList(user, claim);
+					url = RPLPage.REVIEW_CLAIM_RPL.relativeAddress;
+				}
+			}
         } else if (request.getParameter("removeModule") != null) {
             Integer remove = this.getSelectedRadioButton(request);
             if (remove != null){
                 claim = this.removeModule(claim, user, remove);
             } else {
-                request.setAttribute("selectError", 
-                        new RPLError("Please select a module using the radio "
-                        + "button beside it."));
+                request.setAttribute("selectError", new RPLError("Please select a module using the radio button beside it."));
             }
             modules = this.initialiseModuleList(user, claim);
             url = RPLPage.REVIEW_CLAIM_RPL.relativeAddress;
@@ -83,9 +87,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
             if (addEvidenceTo != null){
                 request.setAttribute("addEvidenceTo", addEvidenceTo);
             } else {
-                request.setAttribute("selectError", 
-                        new RPLError("Please select a module using the radio "
-                        + "button beside it."));
+                request.setAttribute("selectError", new RPLError("Please select a module using the radio button beside it."));
             }
             url = RPLServlet.ADD_EVIDENCE_SERVLET.relativeAddress;
         } else if (request.getParameter("back") != null) {
@@ -97,8 +99,8 @@ public class UpdateRPLClaimServlet extends HttpServlet {
             }
             url = RPLPage.REVIEW_CLAIM_RPL.relativeAddress;
         }
-        
-        // Sets the required attributes and forwards the request to the given 
+
+        // Sets the required attributes and forwards the request to the given
         // url.
         session.setAttribute("claim", claim);
         request.setAttribute("selectedModule", selectedModule);
@@ -109,7 +111,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
     }
 
     /**
-     * Adds the selected module to the database as a claimed module. 
+     * Adds the selected module to the database as a claimed module.
      * (Claimed modules are modules associated with claims).
      * @param claim the claim to add the module to
      * @param user the current user
@@ -117,8 +119,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
      * @param selectedProviders the providers for the module
      * @return the updated claim
      */
-    private Claim addModule(Claim claim, User user, Module selectedModule, 
-            ArrayList<Provider> selectedProviders){
+    private Claim addModule(Claim claim, User user, Module selectedModule, ArrayList<Provider> selectedProviders){
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(user.role);
         ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         ClaimedModule claimedModule = new ClaimedModule();
@@ -134,15 +135,15 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         try {
             claimedModuleIO.insert(claimedModule);
             for (Provider provider : selectedProviders){
-                claimedModuleIO.addProvider( 
-                        claim.getClaimID(), 
-                        claimedModule.getModuleID(), 
+                claimedModuleIO.addProvider(
+                        claim.getClaimID(),
+                        claimedModule.getModuleID(),
                         provider.getProviderID());
             }
         } catch (SQLException ex) {
             Logger.getLogger(UpdateRPLClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         try {
             claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); //  Update - Kyoungho Lee
         } catch (SQLException ex) {
@@ -150,7 +151,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         }
         return claim;
     }
-    
+
     /**
      * Removes a claimed module from the database and the current claim.
      * @param claim the claim to remove the module from
@@ -169,7 +170,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
             Logger.getLogger(UpdateRPLClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         claim.setClaimedModules(claimedModules);
-        
+
         try {
             claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); //  Update - Kyoungho Lee
         } catch (SQLException ex) {
@@ -177,7 +178,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         }
         return claim;
     }
-    
+
     /**
      * Gets the module selected by the user using the module combobox.
      * @param request the request
@@ -185,29 +186,29 @@ public class UpdateRPLClaimServlet extends HttpServlet {
      * @param modules the list of modules to get the selected module from
      * @return the selected module
      */
-    private Module getSelectedModule(HttpServletRequest request, User user,
-            ArrayList<Module> modules) {
+    private Module getSelectedModule(HttpServletRequest request, User user, ArrayList<Module> modules) {
         Module selectedModule;
         String moduleIDX = request.getParameter("module");
         if (moduleIDX == null){
-            selectedModule = new Module();
+            return new Module();
         } else {
             int index = Integer.valueOf(moduleIDX);
-            Module module = modules.get(index);
-            selectedModule = Util.getCompleteModule(module.getModuleID(), 
-                    user.getRole());
+			if (index > 0) {
+				Module module = modules.get(index);
+				return Util.getCompleteModule(module.getModuleID(), user.getRole());
+			} else {
+				return null;
+			}
         }
-        return selectedModule;
     }
-    
+
     /**
      * Gets the providers selected by the user.
      * @param request the request
      * @param providers the list of providers to get the selected providers from
      * @return the selected providers
      */
-    private ArrayList<Provider> getSelectedProviders(HttpServletRequest request, 
-            ArrayList<Provider> providers) {
+    private ArrayList<Provider> getSelectedProviders(HttpServletRequest request, ArrayList<Provider> providers) {
         ArrayList<Provider> selectedProviders;
         String[] providersIDXArray = request.getParameterValues("provider");
         if (providersIDXArray == null){
@@ -222,9 +223,9 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         }
         return selectedProviders;
     }
-    
+
     /**
-     * Gets the radio button that is selected on the form. This is used to 
+     * Gets the radio button that is selected on the form. This is used to
      * determine which module the user wants to remove or add/edit evidence for.
      * @param request the request
      * @return the selected radio button
@@ -240,7 +241,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         }
         return selectedRadioButton;
     }
-    
+
     /**
      * Gets a list of modules that haven't already been added to the claim. This
      * is used to populate the combobox that the user can use to add modules.
@@ -253,13 +254,11 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         String campusID = claim.getCampusID();
         int disciplineID = claim.getDisciplineID();
         String courseID = claim.getCourseID();
-        
-        if ((campusID == null || campusID.equals("")) || disciplineID == 0 
-                || (courseID == null || courseID.equals(""))){
+
+        if ((campusID == null || campusID.equals("")) || disciplineID == 0 || (courseID == null || courseID.equals(""))){
             modules = new ArrayList<Module>();
         } else {
-            Course currentCourse = Util.getCompleteCourse(courseID, 
-                    user.getRole(), campusID, disciplineID);
+            Course currentCourse = Util.getCompleteCourse(courseID, user.getRole(), campusID, disciplineID);
             modules = currentCourse.getAllModules();
             ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();
             for (ClaimedModule cm : claimedModules){
@@ -271,10 +270,10 @@ public class UpdateRPLClaimServlet extends HttpServlet {
             }
         }
         modules.add(0, new Module());
-        
+
         return modules;
     }
-    
+
     /**
      * Gets a list of possible providers from the database.
      * @param user the current user
@@ -288,7 +287,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -301,7 +300,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -314,7 +313,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
