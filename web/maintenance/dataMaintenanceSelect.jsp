@@ -2,10 +2,11 @@
     Document   : dataMaintenanceSelect
     Created on : 23/04/2013, 12:16:31 PM
     Author     : Bryce
-    Version:    1
-    Modified:    24/04/2013
+    Version:    1.001
+    Modified:   26/04/2013
     Change Log: 23/04/2013: Bryce Carr: Created page, added links to servlets that exist (even if they don't actually work).
                 24/04/2013: Bryce Carr: Added header comments to (sort of) match code conventions.
+                26/04/2013: Bryce Carr: Commented out ClaimedModule and ClaimedModuleProvider awaiting decision regarding removal from Deb Spindler.
     Purpose:    Displays links to data maintenance pages for Clerical Admin.
 --%>
 
@@ -36,8 +37,6 @@
             <td align="center"><a href="#">Element</a></td>
             <td align="center"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></td>
             <td align="center"><a href="#">Provider</a></td>
-        </tr>
-        <tr>
         </tr>
     </table>
     </form>
