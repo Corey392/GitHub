@@ -5,8 +5,8 @@ import domain.Course;
 import domain.Discipline;
 import domain.User;
 import domain.User.Role;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+//import java.security.MessageDigest;
+//import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,63 +72,58 @@ public class UserIO extends RPL_IO<User> {
         String email = user.getEmail();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
-        String sql = null;
-        SQLParameter p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13;
+        String sql;
         ResultSet rs;
-        switch (user.role) {
-            case CLERICAL:
+        if (user.role == User.Role.CLERICAL) {
                 sql = "SELECT fn_InsertClerical(?)";
-                p1 = new SQLParameter(userID);
+                SQLParameter p1 = new SQLParameter(userID);
                 rs = super.doPreparedStatement(sql, p1);
                 if (rs.next()) {
                     user.setPassword(rs.getString(1)); // Randomly generated password
                 }
-                break;
-            case STUDENT:
-				//Student Values Only
-				String otherName = user.getOtherName();
-				String addressLine1 = user.getAddress()[0];
-				String addressLine2 = user.getAddress()[1];
-				String town = user.getTown();
-				String state = user.getState();
-				int postcode = user.getPostCode();
-				String phoneNumber = user.getPhoneNumber();
-				String studentID = user.getStudentID();
-				boolean staff = user.isStaff();
+        }else if(user.role == User.Role.STUDENT){
+		//Student Values Only
+		String otherName = user.getOtherName();
+		String addressLine1 = user.getAddress()[0];
+		String addressLine2 = user.getAddress()[1];
+		String town = user.getTown();
+		String state = user.getState();
+		int postcode = user.getPostCode();
+		String phoneNumber = user.getPhoneNumber();
+		String studentID = user.getStudentID();
+		boolean staff = user.isStaff();
 
                 sql = "SELECT fn_InsertStudent(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                p1 = new SQLParameter(userID);
-                p2 = new SQLParameter(email);
-                p3 = new SQLParameter(firstName);
-                p4 = new SQLParameter(lastName);
-				p5 = new SQLParameter(otherName);
-				p6 = new SQLParameter(addressLine1);
-				p7 = new SQLParameter(addressLine2);
-				p8 = new SQLParameter(town);
-                p9 = new SQLParameter(state);
-                p10 = new SQLParameter(postcode);
-				p11 = new SQLParameter(phoneNumber);
-				p12 = new SQLParameter(studentID);
-				p13 = new SQLParameter(staff);
+                SQLParameter p1 = new SQLParameter(userID);
+                SQLParameter p2 = new SQLParameter(email);
+                SQLParameter p3 = new SQLParameter(firstName);
+                SQLParameter p4 = new SQLParameter(lastName);
+		SQLParameter p5 = new SQLParameter(otherName);
+		SQLParameter p6 = new SQLParameter(addressLine1);
+		SQLParameter p7 = new SQLParameter(addressLine2);
+		SQLParameter p8 = new SQLParameter(town);
+                SQLParameter p9 = new SQLParameter(state);
+                SQLParameter p10 = new SQLParameter(postcode);
+		SQLParameter p11 = new SQLParameter(phoneNumber);
+		SQLParameter p12 = new SQLParameter(studentID);
+		SQLParameter p13 = new SQLParameter(staff);
                 super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
 				//Returns a generated password
-                break;
-            case ADMIN: // same as TEACHER
-            case TEACHER:
+        }else if(user.role == User.Role.ADMIN || user.role == User.Role.TEACHER){
                 sql = "SELECT fn_InsertTeacher(?,?,?,?,?)";
-				p1 = new SQLParameter(userID);
-                p2 = new SQLParameter(userID);
-                p3 = new SQLParameter(firstName);
-                p4 = new SQLParameter(lastName);
-                p5 = new SQLParameter(email);
+		SQLParameter p1 = new SQLParameter(userID);
+                SQLParameter p2 = new SQLParameter(userID);
+                SQLParameter p3 = new SQLParameter(firstName);
+                SQLParameter p4 = new SQLParameter(lastName);
+                SQLParameter p5 = new SQLParameter(email);
                 rs = super.doPreparedStatement(sql, p1, p2, p3, p4, p5);
                 if (rs.next()) {
                     user.setPassword(rs.getString(1)); // Randomly generated password
                 }
-                break;
-            default:
+        }else{
                 throw new IllegalArgumentException("Invalid role for user");
         }
+        
     }
 
     /**
@@ -144,55 +139,50 @@ public class UserIO extends RPL_IO<User> {
         String lastName = user.getLastName();
         String email = user.getEmail();
         String password = user.getPassword();
-        String sql = null;
-        SQLParameter p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14;
-        MessageDigest md = null;
+        String sql;
+        SQLParameter p1 = new SQLParameter(oldID);
+        SQLParameter p2 = new SQLParameter(userID);
+        /*MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         switch (user.role) {
             case ADMIN:
                 sql = "SELECT fn_UpdateUser(?,?,?)";
-                p1 = new SQLParameter(oldID);
-                p2 = new SQLParameter(userID);
-                p3 = new SQLParameter(password);
+                SQLParameter p3 = new SQLParameter(password);
                 super.doPreparedStatement(sql, p1, p2, p3);
                 break;
             case STUDENT:
                 //Student Values Only
-				String otherName = user.getOtherName();
-				String addressLine1 = user.getAddress()[0];
-				String addressLine2 = user.getAddress()[1];
-				String town = user.getTown();
-				String state = user.getState();
-				int postcode = user.getPostCode();
-				String phoneNumber = user.getPhoneNumber();
-				String studentID = user.getStudentID();
-				boolean staff = user.isStaff();
+		String otherName = user.getOtherName();
+		String addressLine1 = user.getAddress()[0];
+		String addressLine2 = user.getAddress()[1];
+		String town = user.getTown();
+		String state = user.getState();
+		int postcode = user.getPostCode();
+		String phoneNumber = user.getPhoneNumber();
+		String studentID = user.getStudentID();
+		boolean staff = user.isStaff();
 
                 sql = "SELECT fn_UpdateStudent(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                p1 = new SQLParameter(oldID);
-				p2 = new SQLParameter(userID);
                 p3 = new SQLParameter(email);
-                p4 = new SQLParameter(firstName);
-                p5 = new SQLParameter(lastName);
-				p6 = new SQLParameter(otherName);
-				p7 = new SQLParameter(addressLine1);
-				p8 = new SQLParameter(addressLine2);
-				p9 = new SQLParameter(town);
-                p10 = new SQLParameter(state);
-                p11 = new SQLParameter(postcode);
-				p12 = new SQLParameter(phoneNumber);
-				p13 = new SQLParameter(studentID);
-				p14 = new SQLParameter(staff);
+                SQLParameter p4 = new SQLParameter(firstName);
+                SQLParameter p5 = new SQLParameter(lastName);
+		SQLParameter p6 = new SQLParameter(otherName);
+		SQLParameter p7 = new SQLParameter(addressLine1);
+		SQLParameter p8 = new SQLParameter(addressLine2);
+		SQLParameter p9 = new SQLParameter(town);
+                SQLParameter p10 = new SQLParameter(state);
+                SQLParameter p11 = new SQLParameter(postcode);
+		SQLParameter p12 = new SQLParameter(phoneNumber);
+		SQLParameter p13 = new SQLParameter(studentID);
+		SQLParameter p14 = new SQLParameter(staff);
                 super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
                 break;
             case TEACHER:
                 sql = "SELECT fn_UpdateTeacher(?,?,?,?,?,?)";
-                p1 = new SQLParameter(oldID);
-                p2 = new SQLParameter(userID);
                 p3 = new SQLParameter(firstName);
                 p4 = new SQLParameter(lastName);
                 p5 = new SQLParameter(email);
@@ -241,9 +231,8 @@ public class UserIO extends RPL_IO<User> {
         String userID = user.getUserID();
         String password = user.getPassword();
         String sql = "SELECT fn_VerifyLogin(?,?)";
-        SQLParameter p1, p2;
-        p1 = new SQLParameter(userID);
-        p2 = new SQLParameter(password);
+        SQLParameter p1 = new SQLParameter(userID);
+        SQLParameter p2 = new SQLParameter(password);
         try {
 
             ResultSet rs = super.doPreparedStatement(sql, p1, p2);
@@ -274,10 +263,9 @@ public class UserIO extends RPL_IO<User> {
      * @return a list of clerical and teacher/admin users.
      */
     public ArrayList<User> getListOfTeacherAndAdminUsers() {
-        ResultSet rs;
         try {
             String sql = "SELECT * FROM fn_ListTeacherAndAdminUsers()";
-            rs = super.doQuery(sql);
+            ResultSet rs = super.doQuery(sql);
             return this.getListFromResultSet(rs);
         } catch (SQLException ex) {
             Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
@@ -315,7 +303,7 @@ public class UserIO extends RPL_IO<User> {
      * @return
      */
     public ArrayList<User> getListOfDelegates(Campus campus, Discipline discipline) {
-        ArrayList<User> list = null;
+        ArrayList<User> list = new ArrayList<User>();
         String campusID = campus.getCampusID();
         int disciplineID = discipline.getDisciplineID();
         String sql = "SELECT * FROM fn_ListDelegates(?,?)";
@@ -323,7 +311,6 @@ public class UserIO extends RPL_IO<User> {
         SQLParameter p2 = new SQLParameter(disciplineID);
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1, p2);
-            list = new ArrayList<User>();
             String teacherID, email, firstName, lastName;
             while (rs.next()) {
                 teacherID = rs.getString(Field.TEACHER_ID.name);
@@ -346,7 +333,7 @@ public class UserIO extends RPL_IO<User> {
      * @return
      */
     public ArrayList<User> getListOfAssessors(Campus campus, Discipline discipline, Course course) {
-        ArrayList<User> list = null;
+        ArrayList<User> list = new ArrayList<User>();
         String campusID = campus.getCampusID();
         int disciplineID = discipline.getDisciplineID();
         String courseID = course.getCourseID();
@@ -356,7 +343,6 @@ public class UserIO extends RPL_IO<User> {
         SQLParameter p3 = new SQLParameter(courseID);
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1, p2, p3);
-            list = new ArrayList<User>();
             String teacherID, email, firstName, lastName;
             boolean courseCoordinator;
             while (rs.next()) {
@@ -386,25 +372,26 @@ public class UserIO extends RPL_IO<User> {
             if (rs.next()) {
                 String email = rs.getString(Field.EMAIL.name);
                 String firstName = rs.getString(Field.FIRST_NAME.name);
-				String otherName = rs.getString(Field.OTHER_NAME.name);
+		String otherName = rs.getString(Field.OTHER_NAME.name);
                 String lastName = rs.getString(Field.LAST_NAME.name);
-				String address1 = rs.getString(Field.ADDRESS_LINE1.name);
-				String address2 = rs.getString(Field.ADDRESS_LINE2.name);
-				String town = rs.getString(Field.TOWN.name);
-				String state = rs.getString(Field.STATE.name);
-				int postCode = rs.getInt(Field.POSTCODE.name);
-				String phone = rs.getString(Field.PHONE.name);
-				String studentID = rs.getString(Field.STUDENT_ID.name);
-				boolean staff = rs.getBoolean(Field.STAFF.name);
-				String password = rs.getBytes(Field.PASSWORD.name).toString();
-				User user = new User(userID, firstName, lastName, otherName, address1, address2, town, state, postCode, phone, email, studentID, staff, Role.STUDENT, password);
+		String address1 = rs.getString(Field.ADDRESS_LINE1.name);
+		String address2 = rs.getString(Field.ADDRESS_LINE2.name);
+		String town = rs.getString(Field.TOWN.name);
+		String state = rs.getString(Field.STATE.name);
+		int postCode = rs.getInt(Field.POSTCODE.name);
+		String phone = rs.getString(Field.PHONE.name);
+		String studentID = rs.getString(Field.STUDENT_ID.name);
+		boolean staff = rs.getBoolean(Field.STAFF.name);
+		String password = rs.getBytes(Field.PASSWORD.name).toString();
+		User user = new User(userID, firstName, lastName, otherName, 
+                        address1, address2, town, state, postCode, phone, email, 
+                        studentID, staff, Role.STUDENT, password);
                 return user;
             }
-            return null;
         } catch (SQLException ex) {
             Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -427,11 +414,10 @@ public class UserIO extends RPL_IO<User> {
                 Role role = Role.roleFromChar(code);
                 return new User(userID, firstName, lastName, email, role);
             }
-            return null;
         } catch (SQLException ex) {
             Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -451,11 +437,10 @@ public class UserIO extends RPL_IO<User> {
                 Role role = Role.roleFromChar(code);
                 return new User(userID, firstName, lastName, email, role);
             }
-            return null;
         } catch (SQLException ex) {
             Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -503,15 +488,15 @@ public class UserIO extends RPL_IO<User> {
 	 * @return A String containing the users email address if they exist or an empty string "" if they were not found.
 	 */
 	public String validateUserIdOrEmail(String userIdOrEmail) {
-		String sql = "SELECT fn_doesUserExist(?)";
-		try {
-			ResultSet rs = super.doPreparedStatement(sql, p(userIdOrEmail));
-			rs.next();
-			return rs.getString(1);
-		} catch (SQLException ex) {
-            Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, "validateUserIdOrEmail()", ex);
-            return "";
-		}
+            String sql = "SELECT fn_doesUserExist(?)";
+            try {
+                ResultSet rs = super.doPreparedStatement(sql, p(userIdOrEmail));
+                rs.next();
+                return rs.getString(1);
+            } catch (SQLException ex) {
+                Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, "validateUserIdOrEmail()", ex);
+                return "";
+            }
 	}
 
 	/**Performs a change password action on the user supplied.
@@ -522,20 +507,20 @@ public class UserIO extends RPL_IO<User> {
 	 * @return 'true' if password was successfully changed in the database or 'false' if the old password was incorrect.
 	 */
 	public boolean changePassword(User user, String newPW) {
-		String sql = "SELECT fn_changePassword(?,?,?)";
-		SQLParameter p1, p2, p3;
-		p1 = new SQLParameter(user.getUserID());
-		p2 = new SQLParameter(user.getPassword());
-		p3 = new SQLParameter(newPW);
-		try {
-			ResultSet rs = super.doPreparedStatement(sql, p1, p2, p3);
-			rs.next();
-			boolean result = rs.getBoolean(1);
-			System.out.println("RESULT: "+result);
-			return result;
-		} catch (SQLException ex) {
-            Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, "changePassword()", ex);
-            return false;
-		}
+            String sql = "SELECT fn_changePassword(?,?,?)";
+            SQLParameter p1, p2, p3;
+            p1 = new SQLParameter(user.getUserID());
+            p2 = new SQLParameter(user.getPassword());
+            p3 = new SQLParameter(newPW);
+            try {
+            	ResultSet rs = super.doPreparedStatement(sql, p1, p2, p3);
+            	rs.next();
+            	boolean result = rs.getBoolean(1);
+            	System.out.println("RESULT: "+result);
+            	return result;
+            } catch (SQLException ex) {
+                Logger.getLogger(UserIO.class.getName()).log(Level.SEVERE, "changePassword()", ex);
+                return false;
+            }
 	}
 }
