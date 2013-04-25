@@ -1,5 +1,5 @@
 /* Purpose:  	Adds the Functions to the database.
- * Authors:		Ryan,Kelly,Bryce,Todd
+ * Authors:		Ryan,Kelly,Bryce,Todd,Mitch
  * Created:
  * Version:		v3.5
  * Modified:	21/04/2013
@@ -11,6 +11,7 @@
  *				v3.4: Todd: Updated 'fn_updatestudent' to incorporate all columns that have been added.
  *				v3.5: Todd: Added 'fn_changePassword' to allow you to change a users current password to one supplied.
  *				v3.51: Bryce: Changed the generated-password overload of 'fn_insertUser' to use a CHARACTER for Role instead of TEXT.
+ *				v3.6: Mitch: Updated 'fn_insertclaim' to work with our current database.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -591,7 +592,7 @@ CREATE FUNCTION fn_insertclaim(studentid text, campusid text, disciplineid integ
     AS $_$
     DECLARE claimID int;
     BEGIN
-        claimID := MAX("claimID") FROM "Claim" WHERE "studentID" = $1;
+        claimID := MAX("claimID") FROM "Claim";
         IF claimID IS NULL
             THEN claimID := 1;
         ELSE
