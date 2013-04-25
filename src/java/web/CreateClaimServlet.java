@@ -1,5 +1,12 @@
 package web;
 
+/**
+ * @author ?, Todd Wiggins
+ * @version: 1.01
+ * Created:	?
+ * Modified: 25/04/2013: TW: Added validation for all 4 fields and now returns an error message for each.
+ * <b>Purpose:</b>  Processes the 'Create Claim' form for Students.
+ */
 import data.*;
 import domain.*;
 import java.io.IOException;
@@ -13,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
+import util.FieldError;
+import util.RPLError;
 import util.RPLPage;
 import util.RPLServlet;
 import util.Util;
@@ -24,28 +33,27 @@ import util.Util;
  */
 public class CreateClaimServlet extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {  
-        
-        String url; 
-        //Mitchell: There is currently no path on which this variable is not 
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String url;
+        //Mitchell: There is currently no path on which this variable is not
         //initialized, so it doesn't need a default variable. This will change only
         //if the current if/else structure below is altered
-        
+
         // Gets the session and the current user.
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        
+
         // Gets the current claim from the session. There should only be a claim
-        // if the servlet is being called by the createClaim jsp page. If the 
-        // claim is null or there is a claim and the request has come from the 
+        // if the servlet is being called by the createClaim jsp page. If the
+        // claim is null or there is a claim and the request has come from the
         // student home page then set the claim to a new, empty claim.
         Claim claim = (Claim) session.getAttribute("claim");
         if (claim == null || request.getParameter("createClaim") != null){
@@ -59,8 +67,8 @@ public class CreateClaimServlet extends HttpServlet {
             claim.setCourseID("");
             claim.setClaimedModules(new ArrayList<ClaimedModule>());
         }
-        
-        // Gets the campus, discipline and course lists and sets the claim's 
+
+        // Gets the campus, discipline and course lists and sets the claim's
         // campus, discipline and course.
         ArrayList<Campus> campuses = this.getCampusList(user);
         claim.setCampus(this.getSelectedCampus(request, campuses));
@@ -71,15 +79,36 @@ public class CreateClaimServlet extends HttpServlet {
         ArrayList<Course> courses = this.getCourseList(user, claim);
         claim.setCourse(this.getSelectedCourse(request, courses));
         claim.setCourseID(claim.getCourse().getCourseID());
-        
-        // If a campus discipline and course were selected it will create a 
-        // claim. Depending on the button pressed the claim will either be RPL 
+
+        // If a campus discipline and course were selected it will create a
+        // claim. Depending on the button pressed the claim will either be RPL
         // or Previous Studies.
-        ClaimIO claimIO = new ClaimIO(user.getRole()); 
+        ClaimIO claimIO = new ClaimIO(user.getRole());
         //ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
-        if (!claim.getCampusID().equals("") 
-                && claim.getDisciplineID() != Util.INT_ID_EMPTY 
-                && !claim.getCourseID().equals("")){
+
+		//TW: Validate all the fields have been supplied, and return an error if not.
+		boolean valid = true;
+		if (claim.getCampusID().equals("")) {
+			request.setAttribute("errorCampusID", new RPLError(FieldError.CAMPUS_NOT_SELECTED));
+			valid = false;
+		} else {
+			if (claim.getDisciplineID() == Util.INT_ID_EMPTY) {
+				request.setAttribute("errorDisciplineID", new RPLError(FieldError.DISCIPLINE_NOT_SELECTED));
+				valid = false;
+			} else {
+				if (claim.getCourseID().equals("")) {
+					request.setAttribute("errorCourseID", new RPLError(FieldError.COURSE_NOT_SELECTED));
+					valid = false;
+				} else {
+					if (request.getParameter("claimType") == null) {
+						request.setAttribute("errorClaimType", new RPLError(FieldError.CLAIM_TYPE_NOT_SELECTED));
+						valid = false;
+					}
+				}
+			}
+		}
+
+        if (valid){
             if (request.getParameter("claimType").equals("prevStudies")) {
                 claim.setClaimType(Claim.ClaimType.PREVIOUS_STUDIES);
                 try {
@@ -98,7 +127,7 @@ public class CreateClaimServlet extends HttpServlet {
                 claim.setClaimType(Claim.ClaimType.RPL);
                 try {
                     claim.setAssessorID("123456789");
-                    
+
                     claimIO.insert(claim);
                     //Email.send(user.getEmail(), "Regarding your claim", "<b>Your claim is successfully created!</b>");
                     //claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
@@ -112,8 +141,7 @@ public class CreateClaimServlet extends HttpServlet {
             } else if (request.getParameter("back") != null) {
                 url = RPLPage.STUDENT_HOME.relativeAddress;
             } else {
-                /*request.setAttribute("claimError", 
-                        new RPLError("Please select a Claim Type!!!"));*/
+                /*request.setAttribute("claimError", new RPLError("Please select a Claim Type!!!"));*/
                 url = RPLPage.CREATE_CLAIM.relativeAddress;
             }
         } else if (request.getParameter("back") != null) {
@@ -121,9 +149,8 @@ public class CreateClaimServlet extends HttpServlet {
         } else {
             url = RPLPage.CREATE_CLAIM.relativeAddress;
         }
-        
-        // Sets the session and request attributes and forwards the request to
-        // the next url.
+
+        // Sets the session and request attributes and forwards the request to the next url.
         session.setAttribute("claim", claim);
         request.setAttribute("campuses", campuses);
         request.setAttribute("disciplines", disciplines);
@@ -133,7 +160,7 @@ public class CreateClaimServlet extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -146,7 +173,7 @@ public class CreateClaimServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -159,7 +186,7 @@ public class CreateClaimServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
@@ -167,16 +194,15 @@ public class CreateClaimServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     /**
-     * Returns the campus selected in the campus combobox on the createClaim 
+     * Returns the campus selected in the campus combobox on the createClaim
      * page, if there was one selected.
      * @param request the request
      * @param campuses the list of campuses to get the campus from
      * @return the selected campus
      */
-    private Campus getSelectedCampus(HttpServletRequest request, 
-            ArrayList<Campus> campuses){
+    private Campus getSelectedCampus(HttpServletRequest request, ArrayList<Campus> campuses){
         String campusID = request.getParameter("campus");
         if (campusID != null){
             String id = campusID;
@@ -188,16 +214,15 @@ public class CreateClaimServlet extends HttpServlet {
         }
         return new Campus();
     }
-    
+
     /**
-     * Returns the discipline selected in the discipline combobox on the 
+     * Returns the discipline selected in the discipline combobox on the
      * createClaim page, if there was one selected.
      * @param request the request
      * @param disciplines the list of disciplines to get the discipline from
      * @return the selected discipline
      */
-    private Discipline getSelectedDiscipline(HttpServletRequest request, 
-            ArrayList<Discipline> disciplines){
+    private Discipline getSelectedDiscipline(HttpServletRequest request, ArrayList<Discipline> disciplines){
         String disciplineID = request.getParameter("discipline");
         if (disciplineID != null){
             int id = Integer.valueOf(disciplineID);
@@ -209,16 +234,15 @@ public class CreateClaimServlet extends HttpServlet {
         }
         return new Discipline();
     }
-    
+
     /**
-     * Returns the course selected in the course combobox on the createClaim 
+     * Returns the course selected in the course combobox on the createClaim
      * page, if there was one selected.
      * @param request the request
      * @param courses the list of courses to get the course from
      * @return the selected course
      */
-    private Course getSelectedCourse(HttpServletRequest request, 
-            ArrayList<Course> courses) {
+    private Course getSelectedCourse(HttpServletRequest request, ArrayList<Course> courses) {
         String courseID = request.getParameter("course");
         if (courseID != null){
             String id = courseID;
@@ -230,7 +254,7 @@ public class CreateClaimServlet extends HttpServlet {
         }
         return new Course();
     }
-    
+
     /**
      * Retrieves a list of campuses from the database.
      * @param user the current user
@@ -242,7 +266,7 @@ public class CreateClaimServlet extends HttpServlet {
         campuses.add(0, new Campus());
         return campuses;
     }
-    
+
     /**
      * Returns a list of disciplines for a given campus.
      * @param user the current user
@@ -253,7 +277,7 @@ public class CreateClaimServlet extends HttpServlet {
         DisciplineIO disciplineIO = new DisciplineIO(user.role);
         ArrayList<Discipline> disciplines;
         String campusID = claim.getCampusID();
-        
+
         if (campusID == null || campusID.equals("")){
             disciplines = new ArrayList<Discipline>();
         } else {
@@ -262,7 +286,7 @@ public class CreateClaimServlet extends HttpServlet {
         disciplines.add(0, new Discipline());
         return disciplines;
     }
-    
+
     /**
      * Returns a list of courses for a given campus and discipline.
      * @param user the current user
@@ -274,7 +298,7 @@ public class CreateClaimServlet extends HttpServlet {
         ArrayList<Course> courses;
         String campusID = claim.getCampusID();
         int disciplineID = claim.getDisciplineID();
-        
+
         if ((campusID == null || campusID.equals("")) && disciplineID == 0){
             courses = new ArrayList<Course>();
         } else {

@@ -2,12 +2,13 @@ package util;
 
 /**
  * @author Adam Shortall, Bryce Carr, Todd Wiggins
- * @version: 1.03
+ * @version: 1.04
  * Modified:    08/04/2013: Bryce Carr: Added message: COURSE_GUIDE_FILE_ADDRESS.
  *              11/04/2013: Todd Wiggins: Added messages: TERMS_AND_COND, RESET_FAILED, RESET_SENT.
  *              24/04/2013: Bryce Carr: Added header comments to match code conventions.
+ *				25/04/2013: Todd Wiggins: Added 4 x 'NOT_SELECTED' error messages.
  * <b>Purpose:</b>  Defines error messages for different input fields on pages in the
- * RPL website. These messages are displayed to the user next to the fields that 
+ * RPL website. These messages are displayed to the user next to the fields that
  * they are associated with.
  */
 public enum FieldError {
@@ -34,7 +35,11 @@ public enum FieldError {
 	RESET_FAILED("The Student Number or Email address you provided was unable to be found. Please verify your details and try again."),//Added by: Todd Wiggins
 	RESET_SENT("Your new password has been sent to your TAFE email address on record."),//Added by: Todd Wiggins
 	PASSWORD_INCORRECT("The password you supplied was incorrect, remember your Password must contain at least one letter, one number, and be 8-16 characters long."),//Added by: Todd Wiggins
-	SUCCESSFUL_UPDATE("Your details have been successfully updated.");//Added by: Todd Wiggins
+	SUCCESSFUL_UPDATE("Your details have been successfully updated."),//Added by: Todd Wiggins
+	CAMPUS_NOT_SELECTED("A campus was not selected, please select a Campus from the list."),//Added by: Todd Wiggins
+	DISCIPLINE_NOT_SELECTED("A discipline was not selected, please select a Discipline from the list."),//Added by: Todd Wiggins
+	COURSE_NOT_SELECTED("A course was not selected, please select a Course from the list."),//Added by: Todd Wiggins
+	CLAIM_TYPE_NOT_SELECTED("A claim type was not selected, please select a Claim Type from the list.");//Added by: Todd Wiggins
 
     public String message;
 

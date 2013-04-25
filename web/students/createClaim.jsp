@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : createClaim
     Created on : 14/05/2011, 5:06:19 PM
     Author     : James Purves
@@ -35,6 +35,7 @@
             </c:choose>
         </c:forEach>
         </select>
+		<span>${errorCampusID.message}</span>
             </td>
         </tr>
         <tr>
@@ -56,12 +57,13 @@
             </c:choose>
         </c:forEach>
         </select>
+		<span>${errorDisciplineID.message}</span>
             </td>
          </tr>
          <tr>
             <th>Course:</th>
             <td colspan="2">
-        <select name="course" style="width: 100%;" id="cmbCourse">
+        <select name="course" style="width: 100%;" onchange="document.createClaimForm.submit();" id="cmbCourse">
         <c:forEach var="aCourse" items="${courses}">
             <c:choose>
                 <c:when test="${aCourse.courseID == claim.courseID}">
@@ -77,6 +79,7 @@
             </c:choose>
         </c:forEach>
         </select>
+		<span>${errorCourseID.message}</span>
             </td>
     </tr>
     <tr>
@@ -85,6 +88,9 @@
         <td><input type="radio" name="claimType" value="prevStudies" />Previous Studies</td>
         <td><input type="radio" name="claimType" value="rpl" />Recognition of Prior Learning</td>
     </tr>
+	<tr>
+		<td colspan="3">${errorClaimType.message}</td>
+	</tr>
     <tr>
         <td><input type="submit" value="Create Claim" /></td>
     </tr>
