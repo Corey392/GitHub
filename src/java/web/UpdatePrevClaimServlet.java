@@ -16,10 +16,10 @@ import javax.servlet.ServletException;
 import util.*;
 
 /** @author     James Purves, Todd Wiggins
- *  @version    1.01
+ *  @version    1.02
  *	Created:    ?
  *	Modified:	25/04/2013
- *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module.
+ *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module. Updated remove module error message.
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -80,7 +80,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 			if (remove != null){
 				claim = this.removeModule(claim, user, Integer.valueOf(remove));
 			} else {
-				request.setAttribute("selectError", new RPLError("Please select a module using the radio button beside it."));
+				request.setAttribute("selectError", new RPLError("An error has occurred while processing trying to remove this module. Please try again."));
 			}
 			modules = this.initialiseModuleList(user, claim);
 			url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;

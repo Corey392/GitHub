@@ -1,11 +1,12 @@
 /* Purpose:  	Adds the Views to the database.
- * Authors:		Ryan,Kelly,v2-Todd
- * Created:		
- * Version:		3
- * Modified:	09/04/2013
+ * Authors:		Ryan,Kelly,Todd
+ * Created:
+ * Version:		4.01
+ * Modified:	25/04/2013
  * Change Log:	v2: Todd: Added new users into User, Student, Teacher and Assessor tables.
- * 				v3: Ryan: 
-				v4: Todd: Updated Student inserts to match new table structure
+ * 				v3: Ryan:
+				09/04/2013: Todd: Updated Student inserts to match new table structure
+				25/04/2013: Todd: Added more insert statements for CourseModule
  * Pre-conditions: Must be run after all other setup database scripts.
  */
  --
@@ -86,9 +87,9 @@ INSERT INTO "CampusDiscipline" VALUES ('656', 2);
 
 --
 -- Data for Name: Delegate; Type: TABLE DATA; Schema: public; Owner: -
--- 
+--
 -- disciplineID, campusID, teacherID
-INSERT INTO "Delegate" VALUES (1, '011', 'deb.spindler'); 
+INSERT INTO "Delegate" VALUES (1, '011', 'deb.spindler');
 
 --
 -- Data for Name: Module; Type: TABLE DATA; Schema: public; Owner: -
@@ -217,3 +218,7 @@ INSERT INTO "ClaimedModuleProvider" VALUES ( 2, 'ICAA5151B', '5');
 -- courseID, ModuleID
 INSERT INTO "CourseModule" VALUES ('19003', 'ICAA5151B',true);
 INSERT INTO "CourseModule" VALUES ('19010', 'ICAA5158B',false);
+INSERT INTO "CourseModule" ("courseID","moduleID","elective") VALUES
+	('19010','ICAA5151B',true),
+	('19010','ICAA5139B',true),
+	('19010','ICAA5046B',true);
