@@ -127,12 +127,14 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         claimedModules.add(claimedModule);
         claim.setClaimedModules(claimedModules);
         try {
-            claimedModuleIO.insert(claimedModule);
-            for (Provider provider : selectedProviders){
-                claimedModuleIO.addProvider(
-                        claim.getClaimID(), 
-                        claimedModule.getModuleID(), 
-                        provider.getProviderID());
+            if (!claimedModule.getModuleID().equals("")){
+                claimedModuleIO.insert(claimedModule);
+                for (Provider provider : selectedProviders){
+                    claimedModuleIO.addProvider(
+                            claim.getClaimID(), 
+                            claimedModule.getModuleID(), 
+                            provider.getProviderID());
+                }
             }
             evidenceIO.insert(evidence.get(0));
         } catch (SQLException ex) {
