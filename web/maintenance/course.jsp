@@ -25,7 +25,7 @@
 
 ${courseIDError}${updateSuccess} ${courseNameError}
 ${invalidNameError}${disciplineUpdatedMessage}
-<%--<table class="inputtable">
+<table class="inputtable">
     <thead>
         <tr>
             <th>Course ID</th>
@@ -49,7 +49,7 @@ ${invalidNameError}${disciplineUpdatedMessage}
     </tbody>
 </table>
 <input type="submit" value="Save Courses" name="saveCourses" style="width:150px" />
-</form>--%>
+</form>
 
 
 <%@include file="../WEB-INF/jspf/footer.jspf" %>
