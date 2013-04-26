@@ -27,8 +27,8 @@ INSERT INTO "User" VALUES ('a.b', 'T', '\\x6534653164666561316138343333323863663
 SELECT fn_insertuser('374371959','password','S','todd.wiggins3@tafensw.net.au','Todd','Wiggins');
 SELECT fn_insertuser('365044651','password','S','mitch________@tafensw.net.au','Mitch','Carr');
 SELECT fn_insertuser('366796436','password','S','bryce________@tafensw.net.au','Bryce','Carr');
-SELECT fn_insertuser('355273971','password','S','ryan_________@tafensw.net.au','Ryan','Donaldson');
-SELECT fn_insertuser('366688315','password','S','kelly________@tafensw.net.au','Kelly','Bayliss');
+SELECT fn_insertuser('355273971','password','S','ryan.donaldson3@tafensw.net.au','Ryan','Donaldson');
+SELECT fn_insertuser('366688315','password','S','kelly.bayliss3@tafensw.net.au','Kelly','Bayliss');
 -- 02/04/2013, (Todd Wiggins): Other roles -- All password = password
 SELECT fn_insertuser('teacher','password','T','email@teacher','Teacher','Teacher');
 SELECT fn_insertuser('assessor','password','A','email@assessor','Assessor','Assessor');
