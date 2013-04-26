@@ -30,7 +30,7 @@ ${invalidNameError}${disciplineUpdatedMessage}
         <tr>
             <th>Course ID</th>
             <th>Name</th>
-            <th></th>
+            <th>Disciplines</th>
         </tr>
     </thead>
     <tbody>
