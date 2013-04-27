@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.CampusIO;
@@ -28,8 +24,12 @@ import util.RPLServlet;
 import util.Util;
 
 /**
- *
- * @author Adam Shortall
+ * @author Adam Shortall, Bryce Carr
+ * @version 1.010
+ * <b>Created:</b>  Unknown<br/>
+ * <b>Modified:</b> 27/04/2013<br/>
+ * <b>Change Log:</b>	27/04/2013: Bryce Carr:	Begun implementation of Campus deletion. Fixed update and add campus messages so that they display.
+ * <b>Purpose:</b>  Handles requests from Data Maintenance: Campus page.
  */
 public class MaintainCampusServlet extends HttpServlet {
 
@@ -49,13 +49,14 @@ public class MaintainCampusServlet extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             
-            // Have either pressed 'Save Campuses' or 'Update Campus' or 'Back'
-            if (request.getParameter("saveCampuses") != null) {
-                //updateCampus(request, response);
+            // Have either pressed 'Save Campuses', 'Add New Campus', 'Delete Campus' or 'View or Modify Disciplines'
+            if (request.getParameter("saveCampuses") != null)	{
                 saveCampuses(request, response);
-            } else if (request.getParameter("addNewCampus") != null) {
+            } else if (request.getParameter("addNewCampus") != null)	{
                 this.addNewCampus(request, response);
-            } else if (request.getParameter("viewDisciplines") != null) { 
+            } else if (request.getParameter("deleteCampus") != null)	{		
+                this.deleteCampus(request, response);
+            } else if (request.getParameter("viewDisciplines") != null)	{
                 String campusID = request.getParameter("viewDisciplines");
                 
                 Campus selectedCampus = Util.getCampusWithDisciplinesAndCourses(campusID, user.role);
@@ -101,8 +102,7 @@ public class MaintainCampusServlet extends HttpServlet {
             try {
                 CampusIO campusIO = new CampusIO(user.role);
                 campusIO.insert(campus);
-                RPLError updateMessage = new RPLError("Campus successfully updated");
-                request.setAttribute("updateMessage", updateMessage);
+                request.setAttribute("campusUpdatedMessage", "Campus successfully added");
             } catch (SQLException e) {
                 if (e.getSQLState().equals(PostgreError.UNIQUE_VIOLATION.code)) {
                     request.setAttribute("uniqueIDMessage", new RPLError(FieldError.CAMPUS_UNIQUE));
@@ -120,6 +120,29 @@ public class MaintainCampusServlet extends HttpServlet {
                 }
             }
         }
+        this.fillCampusList(request, user.role);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+        dispatcher.forward(request, response);
+    }
+    
+    private void deleteCampus(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException	{
+	//TODO: Give warning if Campus has disciplines assigned to it
+	
+	HttpSession session = request.getSession();
+	User user = (User)session.getAttribute("user");
+	String url = RPLPage.CLERICAL_CAMPUS.relativeAddress;
+	
+	String campusID = request.getParameter("deleteCampus");		
+	Campus deleteCampus = Util.getCampusWithDisciplinesAndCourses(campusID, user.role);
+	
+	CampusIO campusIO = new CampusIO(user.role);
+	try {
+	    campusIO.delete(deleteCampus);
+	    request.setAttribute("campusUpdatedMessage", "Campus successfully deleted");
+	} catch (SQLException e) {
+	    Logger.getLogger(MaintainCampusServlet.class.getName()).log(Level.SEVERE, null, e);
+	}
+        
         this.fillCampusList(request, user.role);
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
         dispatcher.forward(request, response);

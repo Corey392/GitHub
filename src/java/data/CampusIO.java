@@ -1,3 +1,4 @@
+//TODO: Create method that returns list of disciplines associated with a specific Campus
 package data;
 
 import domain.Campus;
@@ -14,8 +15,8 @@ import java.util.logging.Logger;
  * @version 1.1
  * <b>Created:</b>  Unknown<br/>
  * <b>Modified:</b> 24/04/2013<br/>
- * <b>Change Log:</b>  23/04/2013:  Bryce Carr: Added function removeDiscipline(String, int).<br/>
- *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
+ * <b>Change Log:</b>	23/04/2013: Bryce Carr: Added function removeDiscipline(String, int).<br/>
+ *			24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
  * <b>Purpose:</b>  Controller class for interaction with database's Campus table.
  */
 public class CampusIO extends RPL_IO<Campus> {

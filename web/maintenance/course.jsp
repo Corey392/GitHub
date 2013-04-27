@@ -1,7 +1,11 @@
 <%-- 
-    Document   : course
-    Created on : 28/05/2011, 4:26:26 PM
-    Author     : Adam Shortall
+    Document:	course.jsp
+    Created on:	28/05/2011, 4:26:26 PM
+    Modified:	27/04/2013
+    Authors:	Adam Shortall, Bryce Carr
+    
+    Changelog:
+	27/04/2013: BC:	Added header label for Modules.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_COURSE; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
@@ -30,7 +34,7 @@ ${invalidNameError}${disciplineUpdatedMessage}
         <tr>
             <th>Course ID</th>
             <th>Name</th>
-            <th>Disciplines</th>
+            <th>Modules</th>
         </tr>
     </thead>
     <tbody>
