@@ -1,22 +1,26 @@
 <%-- 
-    Document   : courseElectives
-    Created on : 03/06/2011, 1:51:17 PM
-    Author     : Adam Shortall
+    Document:	courseElectives
+    Created on:	03/06/2011, 1:51:17 PM
+    Modified:	28/04/2013
+    Authors:	Adam Shortall, Bryce Carr
+    Version:	1.001
+    Changelog:	28/04/2013: BC:	Moved test for null variables so that it comes after the assignment of said variables.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_COURSE_ELECTIVES; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 
-<c:if test="${requestScope.modules == null || sessionScope.selectedCourse == null 
-              || sessionScope.selectedDiscipline == null || sessionScope.selectedCampus == null}">
-    <c:redirect url="<%= RPLServlet.MAINTAIN_TABLE_SERVLET.relativeAddress %>" />
-</c:if>
 
 <jsp:useBean id="selectedCampus" scope="session" class="domain.Campus"/>
 <jsp:useBean id="selectedDiscipline" scope="session" class="domain.Discipline"/>
 <jsp:useBean id="selectedCourse" scope="session" class="domain.Course"/>
 <jsp:useBean id="modules" scope="request" class="java.util.ArrayList"/>
+
+<c:if test="${requestScope.modules == null || sessionScope.selectedCourse == null 
+              || sessionScope.selectedDiscipline == null || sessionScope.selectedCampus == null}">
+    <c:redirect url="<%= RPLServlet.MAINTAIN_TABLE_SERVLET.relativeAddress %>" />
+</c:if>
 
 <c:if var="noModulesLeft" scope="page" test="${fn:length(modules) == 0}"/>
 

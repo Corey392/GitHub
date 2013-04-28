@@ -1,14 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.CourseIO;
 import data.DisciplineIO;
+import data.ModuleIO;
 import domain.Campus;
 import domain.Course;
 import domain.Discipline;
+import domain.Module;
 import domain.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,7 +27,13 @@ import util.Util;
 
 /**
  *
- * @author Adam Shortall
+ * @author Adam Shortall, Bryce Carr
+ * @version 1.001
+ * Created:	Unknown
+ * Modified:	28/04/2013
+ * 
+ * Changelog:	28/04/2013: BC:	Commented out code relating to separate handling of Core and Elective management.
+ *				Added code for unified handling of Module management.
  */
 public class MaintainDisciplineCoursesServlet extends HttpServlet {
 
@@ -60,8 +64,9 @@ public class MaintainDisciplineCoursesServlet extends HttpServlet {
             
             // Get user input:
             String addCourseToDiscipline = request.getParameter("addCourseToDiscipline");
-            String modifyElectivesCourseID = Util.getPageStringID(request, "modifyElectivesCourseID");
-            String modifyCoresCourseID = Util.getPageStringID(request, "modifyCoresCourseID");
+            //String modifyElectivesCourseID = request.getParameter("modifyCourseElectives");
+            //String modifyCoresCourseID = request.getParameter("modifyCourseCores");
+	    String modifyModulesCourseID = request.getParameter("modifyCourseModules");
             String removeCourseFromDisciplineID = request.getParameter("removeCourseFromDiscipline");
             String back = request.getParameter("back");
             DisciplineIO disciplineIO = new DisciplineIO(user.role);
@@ -74,15 +79,11 @@ public class MaintainDisciplineCoursesServlet extends HttpServlet {
                 } catch (SQLException ex) {
                     Logger.getLogger(MaintainDisciplineCoursesServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } else if (modifyElectivesCourseID != null) {
-                Course course = Util.getCourseWithModules(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), modifyElectivesCourseID, user.role);
+            } else if (modifyModulesCourseID != null)	{
+		Course course = Util.getCourseWithModules(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), modifyModulesCourseID, user.role);
                 session.setAttribute("selectedCourse", course);
-                url = RPLServlet.MAINTAIN_COURSE_ELECTIVES_SERVLET.relativeAddress;
-            } else if (modifyCoresCourseID != null) {
-                Course course = Util.getCourseWithModules(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), modifyCoresCourseID, user.role);
-                session.setAttribute("selectedCourse", course);
-                url = RPLServlet.MAINTAIN_CORE_MODULES_SERVLET.relativeAddress;
-            } else if (removeCourseFromDisciplineID != null) {
+                url = RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.relativeAddress;
+	    } else if (removeCourseFromDisciplineID != null) {
                 try {
                     disciplineIO.removeCourse(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), removeCourseFromDisciplineID);
                 } catch (SQLException ex) {
@@ -99,11 +100,17 @@ public class MaintainDisciplineCoursesServlet extends HttpServlet {
             Collections.sort(courses);
             selectedDiscipline.setCourses(courses);            
             
-            // Get courses not in selected CampudDiscipline:
+            // Get courses not in selected CampusDiscipline:
             courses = courseIO.getListNotInDiscipline(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID());
             Collections.sort(courses);
             request.setAttribute("courses", courses);
-            
+	    
+	    // Get modules not in selected CampusDisciplineCourse:
+            ModuleIO moduleIO = new ModuleIO(user.role);
+	    if (session.getAttribute("selectedCourse") != null)	{
+		String selectedCourseID = ((Course)session.getAttribute("selectedCourse")).getCourseID();
+		ArrayList<Module> modules = moduleIO.getListNotInCourse(selectedCourseID);
+	    }
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request, response);
         } finally {            

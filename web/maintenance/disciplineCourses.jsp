@@ -1,7 +1,12 @@
 <%-- 
-    Document   : campusDisciplineCourse
-    Created on : 03/06/2011, 12:58:04 AM
-    Author     : Adam Shortall
+    Document:	disciplineCourses.jsp
+    Created on:	03/06/2011, 12:58:04 AM
+    Modified:	28/04/2013
+    Version:	1.001
+    Author:	Adam Shortall, Bryce Carr
+
+    Changelog:	28/04/2013: Bryce Carr:	Separated 'name' and 'value' attributes of module buttons.
+					Scrapped separate 'Core' and 'Elective' buttons, added 'Module' button.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_CAMPUS_DISCIPLINE; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
@@ -71,8 +76,11 @@
         <c:forEach var="course" items="${selectedDiscipline.courses}">
             <tr>
                 <td>${course}</td>
-                <td><input type="submit" value="Modify Electives" name="modifyElectivesCourseID:${course.courseID}" /></td>
-                <td><input type="submit" value="Modify Cores" name="modifyCoresCourseID:${course.courseID}" /></td>
+		<%--
+                <td><button type="submit" name="modifyCourseElectives" value="${course.courseID}">Modify Electives</td></td>
+                <td><button type="submit" name="modifyCourseCores" value="${course.courseID}">Modify Cores</td></td>
+		--%>
+		<td><button type="submit" name="modifyCourseModules" value="${course.courseID}">Modify Modules</button></td>
                 <td><button type="submit" name="removeCourseFromDiscipline" value="${course.courseID}">Remove from Discipline</button></td>
 
             </tr>
