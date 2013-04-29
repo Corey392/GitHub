@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import util.RPLPage;
+import util.RPLServlet;
 import util.Util;
 
 /**
@@ -30,6 +31,7 @@ import util.Util;
  * 
  * Changelog:	28/04/2013: BC:	Re-implemented file in project by uncommenting it, fixed a couple of minor things like a servlet address and a method call
  *		29/04/2013: BC:	Fixed session.getAttribute() call for selectedCourse. Requests the right attribute now. Might be worth using enums for that kind of thing.
+ *				Fixed 'back' button.
  */
 public class MaintainCourseModulesServlet extends HttpServlet {
 
@@ -123,9 +125,11 @@ public class MaintainCourseModulesServlet extends HttpServlet {
             
             String removeCoreID = Util.getPageStringID(request, "removeCore");
             String removeElectiveID = Util.getPageStringID(request, "removeElective");
-
-            url = RPLPage.CLERICAL_COURSE_MODULES.relativeAddress;
-
+	    if (request.getParameter("back") == null)	{
+		url = RPLPage.CLERICAL_COURSE_MODULES.relativeAddress;
+	    } else  {
+		url = RPLServlet.MAINTAIN_CAMPUS_DISCIPLINE_SERVLET.relativeAddress;
+	    }
             /**
              * Request parameters that can get here:
              * selectedCampus (drop down list)

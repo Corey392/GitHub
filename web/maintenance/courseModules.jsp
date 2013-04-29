@@ -1,7 +1,11 @@
 <%-- 
-    Document   : courseModules
-    Created on : 28/05/2011, 10:47:14 PM
-    Author     : Adam Shortall
+    Document:	courseModules
+    Created on:	28/05/2011, 10:47:14 PM
+    Modified:	29/04/2013
+    Author:	Adam Shortall, Bryce Carr
+    Version:	1.001
+    Changelog:	29/04/2013: BC:	Fixed 'back' button.
+
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_COURSE_MODULES; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
@@ -64,7 +68,7 @@
             <tr>
                 <td width="50"><input type="submit" value="Add as Core" name="addCore" /></td>
                 <td width="500"><input type="submit" value="Add as Elective" name="addElective" /></td>
-                <td><input type="submit" value="Back" name="backHome" /></td>
+                <td><input type="submit" value="Back" name="back" /></td>
             </tr>
             <tr><th colspan="3"><hr/></th></tr>
             <tr><th colspan="3">Core Modules</th></tr>

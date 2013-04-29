@@ -12,6 +12,7 @@
  *				v3.5: Todd: Added 'fn_changePassword' to allow you to change a users current password to one supplied.
  *				v3.51: Bryce: Changed the generated-password overload of 'fn_insertUser' to use a CHARACTER for Role instead of TEXT.
  *				v3.6: Mitch: Updated 'fn_insertclaim' to work with our current database.
+ *				v3.7:	Bryce:	Updated comments on fn_listmodulesnotinacourse and fn_listmodulesnotinanycourse to match name
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1366,7 +1367,7 @@ $_$;
 
 
 --
--- Name: fn_listmodulesnotincourse(text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_listmodulesnotinacourse(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
 
@@ -1379,7 +1380,7 @@ CREATE FUNCTION fn_listmodulesnotinacourse("courseID" text) RETURNS SETOF "Modul
 $_$;
 
 --
--- Name: fn_listmodulesnotincourse(); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_listmodulesnotinanycourse(); Type: FUNCTION; Schema: public; Owner: -
 --
 
 

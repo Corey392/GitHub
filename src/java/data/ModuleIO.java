@@ -10,7 +10,11 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author James, Adam Shortall
+ * @author James, Adam Shortall, Bryce Carr
+ * @version 1.001
+ * Created: Unknown
+ * Modified:	29/04/2013
+ * Changelog:	29/04/2013: BC:	Fixed SQL SELECT statement calling fn_listmodulesnotinacourse (function name was wrong)
  */
 public class ModuleIO extends RPL_IO<Module> {
 
@@ -159,7 +163,7 @@ public class ModuleIO extends RPL_IO<Module> {
      */
     public ArrayList<Module> getListNotInCourse(String courseID) {    // fn_ListModulesNotInCourse(courseID text)
 
-        String sql = "SELECT * FROM fn_ListModulesNotInCourse(?)";
+        String sql = "SELECT * FROM fn_ListModulesNotInACourse(?)";
         SQLParameter p1 = new SQLParameter(courseID);
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
