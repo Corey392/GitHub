@@ -29,6 +29,7 @@ import util.Util;
  * Modified:	28/04/2013
  * 
  * Changelog:	28/04/2013: BC:	Re-implemented file in project by uncommenting it, fixed a couple of minor things like a servlet address and a method call
+ *		29/04/2013: BC:	Fixed session.getAttribute() call for selectedCourse. Requests the right attribute now. Might be worth using enums for that kind of thing.
  */
 public class MaintainCourseModulesServlet extends HttpServlet {
 
@@ -75,13 +76,13 @@ public class MaintainCourseModulesServlet extends HttpServlet {
             ArrayList<Campus> campuses = campusIO.getList();
             campuses.add(0, new Campus());
             ArrayList<Module> modules;
-            Campus selectedCampus;
-            Discipline selectedDiscipline;
-            Course selectedCourse;
+            Campus selectedCampus = (Campus)session.getAttribute("selectedCampus");
+            Discipline selectedDiscipline = (Discipline)session.getAttribute("selectedDiscipline");
+            Course selectedCourse = (Course)session.getAttribute("selectedCourse");
             
             // Get selectedCampusID & selectedDisciplineID from jsp
-            String selectedCampusID = request.getParameter("selectedCampus");
-            String selectedDisciplineID = request.getParameter("selectedDiscipline");
+            String selectedCampusID = selectedCampus.getCampusID();
+            String selectedDisciplineID = String.valueOf(selectedDiscipline.getDisciplineID());
             
             // Handle changing of campus drop-down box
             if (selectedCampusID != null) {
@@ -105,7 +106,7 @@ public class MaintainCourseModulesServlet extends HttpServlet {
                         
             // Set the course that was selected for this page. If no course was
             // selected, send back to MaintainTableServlet
-            selectedCourse = (Course) request.getAttribute("course");
+            selectedCourse = (Course) session.getAttribute("selectedCourse");
             if (selectedCourse == null) {
                 url = RPLPage.CLERICAL_MAINTENANCE_SELECT.relativeAddress;
                 RequestDispatcher dispatcher = request.getRequestDispatcher(url);
@@ -113,7 +114,7 @@ public class MaintainCourseModulesServlet extends HttpServlet {
             }
             
             // Now get electives & cores for the selected course
-            selectedCourse = Util.getCourseWithModules(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), url, User.Role.ADMIN);
+            selectedCourse = Util.getCourseWithModules(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), selectedCourse.getCourseID(), User.Role.ADMIN);
             request.setAttribute("course", selectedCourse);
             
             // Now get/set the list of modules to display
