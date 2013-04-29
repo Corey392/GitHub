@@ -18,17 +18,20 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
 import util.RPLError;
 import util.RPLPage;
-import util.RPLServlet; 
+import util.RPLServlet;
 import util.Util;
 
-/**
- * This servlet populates the list of claims for the student's listClaims page
- * and redirects any requests from that page.
- * @author James Purves
+/** Populates the list of claims for the student's listClaims page and redirects any requests from that page.
+ *  @author     James Purves, Todd Wiggins
+ *  @version    1.02
+ *	Created:    ?
+ *	Modified:   29/04/2013
+ *	Change Log: 1.01: TW: Updated URL when deleting to return to the list of claims instead of a 404.
+ *	            1.02: TW: Now claim is removed from the list of claims displayed on page.
  */
 public class ListClaimsServlet extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -37,18 +40,18 @@ public class ListClaimsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Initialises the list of claims and error as null and the url as an 
+        // Initialises the list of claims and error as null and the url as an
         // empty string.
         RPLError error;
-        String url = "";
-        
+        String url;
+
         // Gets the session and the current user.
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        
+
         // Gets the list of claims for the current user.
         ArrayList<Claim> claims = this.populateClaimList(user);
-        
+
         // Sets the url to the next page and sets the error if there was any.
         if (request.getParameter("view") != null){
             Claim selectedClaim = this.setSelectedClaim(request, user);
@@ -71,13 +74,20 @@ public class ListClaimsServlet extends HttpServlet {
             }
         } else if (request.getParameter("delete") != null) {
             request = this.deleteClaim(request, user);
+            url = RPLPage.LIST_CLAIMS_STUDENT.relativeAddress;
+			int claimID = Integer.parseInt(request.getParameter("selectedClaim"));
+			for (int i = 0; i < claims.size(); i++) {
+				if (claims.get(i).getClaimID() == claimID) {
+					claims.remove(i);
+				}
+			}
         } else if (request.getParameter("back") != null){
             url = RPLPage.STUDENT_HOME.relativeAddress;
         } else {
             url = RPLPage.LIST_CLAIMS_STUDENT.relativeAddress;
         }
-        
-        // Sets the claims attribute to the list of claims and forwards the 
+
+        // Sets the claims attribute to the list of claims and forwards the
         // request.
         session.setAttribute("claims", claims);
         RequestDispatcher dispatcher = request.getRequestDispatcher(url);
@@ -85,7 +95,7 @@ public class ListClaimsServlet extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -98,7 +108,7 @@ public class ListClaimsServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -111,7 +121,7 @@ public class ListClaimsServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
@@ -119,7 +129,7 @@ public class ListClaimsServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     /**
      * Gets a list of claims for the current user.
      * @param request the request
@@ -132,7 +142,7 @@ public class ListClaimsServlet extends HttpServlet {
         try {
             ArrayList<Claim> claims = claimIO.getList(user);
             for (Claim claim : claims){
-                Claim c = Util.getCompleteClaim(user.getUserID(), 
+                Claim c = Util.getCompleteClaim(user.getUserID(),
                         claim.getClaimID(), user.role);
                 completeClaims.add(c);
             }
@@ -141,7 +151,7 @@ public class ListClaimsServlet extends HttpServlet {
         }
         return completeClaims;
     }
-    
+
     /**
      * Gets the claim that the user has selected from the list.
      * @param request the request
@@ -157,7 +167,7 @@ public class ListClaimsServlet extends HttpServlet {
         }
         return selectedClaim;
     }
-    
+
     /**
      * Deletes the currently selected claim. Raises an error if the user tries
      * to delete a claim that is not a draft.
@@ -168,14 +178,14 @@ public class ListClaimsServlet extends HttpServlet {
     private HttpServletRequest deleteClaim(HttpServletRequest request, User user){
         ClaimIO claimIO = new ClaimIO(user.getRole());
         //ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
-        //TODO: uncomment line above when ClaimRecordIO has been updated 
+        //TODO: uncomment line above when ClaimRecordIO has been updated
         Claim selectedClaim = this.setSelectedClaim(request, user);
-        
+
         try {
             if (selectedClaim.getStatus() == Claim.Status.DRAFT){
                 claimIO.delete(selectedClaim);
                 //claimRecordIO.insert(new ClaimRecord(selectedClaim.getClaimID(), selectedClaim.getStudentID(), 0, user.getUserID(), "", 3, 0, selectedClaim.getCampusID(), selectedClaim.getCourseID(), selectedClaim.getClaimType().desc)); //  Update - Kyoungho Lee
-                //TODO: uncomment line above when ClaimRecordIO has been updated 
+                //TODO: uncomment line above when ClaimRecordIO has been updated
              } else {
                 RPLError error = new RPLError("You can only remove Draft claims");
                 request.setAttribute("error", error);

@@ -9,10 +9,12 @@ import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Defines some fields common to all of the IO classes.
- *
- * @author Adam Shortall
+/** Defines some fields common to all of the IO classes.
+ *  @author     Adam Shortall, Todd Wiggins
+ *  @version    1.10
+ *	Created:    ?
+ *	Modified:   29/04/2013
+ *	Change Log: 1.10: TW: Changed logins to a Singleton pattern instead of logging in and out for each task.
  */
 public abstract class RPL_IO<T> {
 
