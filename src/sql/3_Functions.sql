@@ -1,8 +1,8 @@
 /* Purpose:  	Adds the Functions to the database.
  * Authors:		Ryan,Kelly,Bryce,Todd,Mitch
  * Created:
- * Version:		v3.5
- * Modified:	21/04/2013
+ * Version:		v3.71
+ * Modified:	29/04/2013
  * Change Log:	v2.0: Bryce:
  *				v3.0: Todd: Updated 'fn_insertstudent' to incorporate all columns that have been added
  *				v3.1: Todd: Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
@@ -13,6 +13,7 @@
  *				v3.51: Bryce: Changed the generated-password overload of 'fn_insertUser' to use a CHARACTER for Role instead of TEXT.
  *				v3.6: Mitch: Updated 'fn_insertclaim' to work with our current database.
  *				v3.7:	Bryce:	Updated comments on fn_listmodulesnotinacourse and fn_listmodulesnotinanycourse to match name
+ *				v3.71: Todd: Updated 'fn_deleteClaim' removed the change of Claim ID's (unnecessary and causing issue with check constraint).
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -206,7 +207,6 @@ CREATE FUNCTION fn_deleteclaim(claimid integer, studentid text) RETURNS void
     LANGUAGE sql
     AS $_$
     DELETE FROM "Claim" WHERE "claimID" = $1 AND "studentID" = $2;
-    UPDATE "Claim" SET "claimID" = "claimID" - 1 WHERE "claimID" > $1 AND "studentID" = $2;
 $_$;
 
 
