@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.UserIO;
@@ -61,9 +57,7 @@ public class LoginServlet extends HttpServlet {
                 
                 if (userID != null) {   // Tests that user has attempted to log in
                     try {
-                        System.out.println("before");
                         user = this.logInUser(user, userID, password, session);
-                        System.out.println("after");
                         url = this.getURL(user.role);
                     } catch (IllegalArgumentException e) {
                         RPLError loginError = new RPLError("Username and/or password incorrect");
