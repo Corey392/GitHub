@@ -1,7 +1,10 @@
-<%--
-    Document   : createClaim
-    Created on : 14/05/2011, 5:06:19 PM
-    Author     : James Purves
+<%--A simple student user registration form.
+ *  @author     James Purves, Todd Wiggins
+ *  @version    1.02
+ *  Created:    14/05/2011, 5:06:19 PM
+ *	Modified:   29/04/2013
+ *	Change Log: 1.01: TW: Added error messages from servlet.
+ *              1.02: TW: Moved error messages to central location. Team decision.
 --%>
 
 <%@include file="..\WEB-INF\jspf\header.jspf" %>
@@ -35,7 +38,6 @@
             </c:choose>
         </c:forEach>
         </select>
-		<span>${errorCampusID.message}</span>
             </td>
         </tr>
         <tr>
@@ -57,7 +59,6 @@
             </c:choose>
         </c:forEach>
         </select>
-		<span>${errorDisciplineID.message}</span>
             </td>
          </tr>
          <tr>
@@ -79,7 +80,6 @@
             </c:choose>
         </c:forEach>
         </select>
-		<span>${errorCourseID.message}</span>
             </td>
     </tr>
     <tr>
@@ -89,7 +89,7 @@
         <td><input type="radio" name="claimType" value="rpl" />Recognition of Prior Learning</td>
     </tr>
 	<tr>
-		<td colspan="3">${errorClaimType.message}</td>
+		<td colspan="3">${errorCampusID.message}${errorDisciplineID.message}${errorCourseID.message}${errorClaimType.message}</td>
 	</tr>
     <tr>
         <td><input type="submit" value="Create Claim" /></td>
