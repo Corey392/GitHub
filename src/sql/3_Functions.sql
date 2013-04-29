@@ -1,19 +1,21 @@
-/* Purpose:  	Adds the Functions to the database.
- * Authors:		Ryan,Kelly,Bryce,Todd,Mitch
- * Created:
- * Version:		v3.71
- * Modified:	29/04/2013
- * Change Log:	v2.0: Bryce:
- *				v3.0: Todd: Updated 'fn_insertstudent' to incorporate all columns that have been added
- *				v3.1: Todd: Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
- *				v3.2: Mitch: Fixed a mistake I made earlier in fn_listcores and fn_listelectives. Both have been tested and work now.
- *				v3.3: Todd: Added fn_doesUserExist: Allows you to search for a user by their ID or email and will return their email address.
- *				v3.4: Todd: Updated 'fn_updatestudent' to incorporate all columns that have been added.
- *				v3.5: Todd: Added 'fn_changePassword' to allow you to change a users current password to one supplied.
- *				v3.51: Bryce: Changed the generated-password overload of 'fn_insertUser' to use a CHARACTER for Role instead of TEXT.
- *				v3.6: Mitch: Updated 'fn_insertclaim' to work with our current database.
- *				v3.7:	Bryce:	Updated comments on fn_listmodulesnotinacourse and fn_listmodulesnotinanycourse to match name
- *				v3.71: Todd: Updated 'fn_deleteClaim' removed the change of Claim ID's (unnecessary and causing issue with check constraint).
+﻿/* Purpose:  	Adds the Functions to the database.
+ *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
+ *  Created:
+ *  Version:	v2.080
+ *  Modified:	30/04/2013
+ *  Change Log:	v2.000:	Bryce:
+ *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
+ *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
+ *		v2.021:	Mitch:	Fixed a mistake I made earlier in fn_listcores and fn_listelectives. Both have been tested and work now.
+ *		v2.030:	Todd:	Added fn_doesUserExist: Allows you to search for a user by their ID or email and will return their email address.
+ *		v2.040:	Todd:	Updated 'fn_updatestudent' to incorporate all columns that have been added.
+ *		v2.050:	Todd:	Added 'fn_changePassword' to allow you to change a users current password to one supplied.
+ *		v2.051:	Bryce:	Changed the generated-password overload of 'fn_insertUser' to use a CHARACTER for Role instead of TEXT.
+ *		v2.060:	Mitch:	Updated 'fn_insertclaim' to work with our current database.
+ *		v2.061:	Bryce:	Updated comments on fn_listmodulesnotinacourse and fn_listmodulesnotinanycourse to match name
+ *		v2.070:	Todd:	Updated 'fn_deleteClaim' removed the change of Claim ID's (unnecessary and causing issue with check constraint).
+ *		v2.080:	Bryce:	Added 'fn_insertcoursemodulecore' and 'fn_insertcoursemoduleelective'. Not sure if they actually work as intended yet.
+ *				Fixed version numbers to fir convention, reformatted header comment with proper tab spacing.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1355,14 +1357,25 @@ CREATE FUNCTION fn_verifylogin("userID" text, password text) RETURNS character
 $_$;
 
 --
--- Name: fn_insertCourseModule(text, text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_insertcoursemodulecore(text, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_insertCourseModule("courseID" text, "moduleID" text) RETURNS void
+CREATE FUNCTION fn_insertcoursemodulecore("courseID" text, "moduleID" text) RETURNS void
     LANGUAGE sql
     AS $_$
-    INSERT INTO "CourseModule"("courseID", "moduleID")
-    VALUES($1, $2);
+    INSERT INTO "CourseModule"("courseID", "moduleID", "elective")
+    VALUES($1, $2, false);
+$_$;
+
+--
+-- Name: fn_insertcoursemoduleelective(text, integer, text, text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fn_insertcoursemoduleelective("campusID" text, "disciplineID" integer, "courseID" text,  "moduleID" text) RETURNS void
+    LANGUAGE sql
+    AS $_$
+    INSERT INTO "CourseModule"("courseID", "moduleID", "elective", "campusID", "disciplineID")
+    VALUES($3, $4, true, $1, $2);
 $_$;
 
 

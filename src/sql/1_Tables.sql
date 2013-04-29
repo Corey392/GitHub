@@ -1,9 +1,10 @@
-/* Purpose:  	Adds the Tables to the database.
- * Authors:		Ryan,Kelly,Todd
- * Created:		
- * Version:		v2
- * Modified:	09/04/2013
- * Change Log:	v2: Todd: Updated Student table, datatype for PhoneNumber changed to text
+﻿/* Purpose:  	Adds the Tables to the database.
+ * Authors:	Ryan, Kelly, Todd, Bryce
+ * Created:	Unknown	
+ * Version:	v2.010
+ * Modified:	30/04/2013
+ * Change Log:	v2.000: Todd:	Updated Student table, datatype for PhoneNumber changed to text
+ *		v2.010:	Bryce:	Updated CourseModule table, foreign key for CampusDisciplineCourse electives
  * Pre-conditions: Database must be created, tables must not already exist.
  */
 --------------------------------------------------------------------------------------
@@ -508,11 +509,16 @@ CREATE TABLE "CourseModule" (
     "courseID" character(5) NOT NULL,
     "moduleID" character varying(10) NOT NULL,
     "elective" boolean NOT NULL,
+    "campusID" character(3),
+    "disciplineID" integer,
 	CONSTRAINT "pk_CourseModule" PRIMARY KEY ("courseID", "moduleID"),
 	CONSTRAINT "fk_CourseModule_ModuleID" FOREIGN KEY ("moduleID")
       REFERENCES "Module" ("moduleID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT "fk_Course/Module_CourseID" FOREIGN KEY ("courseID")
-      REFERENCES "Course" ("courseID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE
+      REFERENCES "Course" ("courseID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE,
+        CONSTRAINT "fk_courseModule_CampusDisciplineCourse" FOREIGN KEY ("campusID", "disciplineID", "courseID")
+      REFERENCES "CampusDisciplineCourse" ("campusID", "disciplineID", "courseID") MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
