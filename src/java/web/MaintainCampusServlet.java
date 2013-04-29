@@ -126,7 +126,7 @@ public class MaintainCampusServlet extends HttpServlet {
     }
     
     private void deleteCampus(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException	{
-	//TODO: Give warning if Campus has disciplines assigned to it
+	//TODO: BRYCE: Give warning if Campus has disciplines assigned to it
 	
 	HttpSession session = request.getSession();
 	User user = (User)session.getAttribute("user");

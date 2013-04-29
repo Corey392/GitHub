@@ -169,12 +169,12 @@ public class MaintainCourseModulesServlet extends HttpServlet {
      */
     private HttpServletRequest addCoreModule(HttpServletRequest request) {
         String selectedModuleID = request.getParameter("selectedModule");
-
+	//TODO: addCoreModule
         return request;
     }
 
     private HttpServletRequest addElectiveModule(HttpServletRequest request) {
-
+	//TODO: addElectiveModule
         return request;
     }
 

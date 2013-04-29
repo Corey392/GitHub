@@ -64,7 +64,7 @@ public class MaintainDisciplineCoursesServlet extends HttpServlet {
             
             // Get user input:
             String addCourseToDiscipline = request.getParameter("addCourseToDiscipline");
-            //String modifyElectivesCourseID = request.getParameter("modifyCourseElectives"); //TODO: Remove these lines once Module maintenance is implemented
+            //String modifyElectivesCourseID = request.getParameter("modifyCourseElectives"); //TODO: BRYCE: Remove these lines once Module maintenance is implemented
             //String modifyCoresCourseID = request.getParameter("modifyCourseCores");
 	    String modifyModulesCourseID = request.getParameter("modifyCourseModules");
             String removeCourseFromDisciplineID = request.getParameter("removeCourseFromDiscipline");

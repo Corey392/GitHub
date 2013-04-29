@@ -1,3 +1,4 @@
+//TODO: BRYCE: Sort out adding/removing modules from CampusDisciplineCourses.
 package data;
 
 import domain.Module;
