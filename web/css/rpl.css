@@ -1,9 +1,9 @@
 /* 
-    Document   : rpl
+    Description: CSS for whole site.
+    Author     : James Lee Chin, Todd Wiggins
+    Version    : 1.01
     Created on : Sep 1, 2012, 12:00:00 AM
-    Author     : James Lee Chin
-    Description:
-    Purpose of the stylesheet follows.
+    Modified   : 29/04/2013:  TW: Changed width to 100% (now partially responsive) instead of static 2000px
 */
 
 body {
@@ -13,7 +13,7 @@ body {
     margin-right: 30px;
 }
 #wrapper {
-    min-width: 2000px;
+    width: 100%;
 }
 #side_left {
     float: left;
