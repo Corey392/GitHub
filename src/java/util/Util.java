@@ -18,12 +18,13 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Adam Shortall, Bryce Carr
+ * @author Adam Shortall, Bryce Carr, Mitch Carr
  * @version 1.02
  * <b>Created:</b>  Unknown<br/>
  * <b>Modified:</b> 24/04/2013<br/>
  * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Removed code to account for removal of moduleID field in DB's Criterion table.<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
+ * 		    30/04/2013: Mitch Carr: Removed all instances of ClaimRecord and classes/methods pertaining to it.<br/>
  * <b>Purpose:</b>  Appears to provide reusable access to commonly-used complex interactions with IO classes.
  */
 public final class Util {
@@ -258,7 +259,7 @@ public final class Util {
 
     /**
      * Takes a claim that has it's object references set (i.e. ClaimedModule list and
-     * Evidence objects for each ClaimedModule record in that list) and updates everyting
+     * Evidence objects for each ClaimedModule record in that list) and updates everything
      * in the database.
      * @param claim
      */
@@ -270,35 +271,5 @@ public final class Util {
 //
 //    }
 
-    public static ClaimRecord getCompleteClaimRecord(ClaimRecord pClaimRecord, Role role) {
 
-        UserIO oUserIO = new UserIO(role); // for viewer
-        User oUser = oUserIO.getByID(pClaimRecord.getStudentID());
-        pClaimRecord.setStudentName(oUser.getFirstName() + oUser.getLastName());
-
-        if (oUser == null) {
-            oUser = oUserIO.getTeacherInfo(pClaimRecord.getWorkerID());
-        }
-        pClaimRecord.setWorkerName(oUser.getFirstName() + oUser.getLastName());
-
-        if (pClaimRecord.getWorkTime().length() > 18) {
-            pClaimRecord.setWorkTime(pClaimRecord.getWorkTime().substring(0, 19));
-        }
-
-        // campus
-        CampusIO oCampusIO = new CampusIO(role);
-        Campus oCampus = oCampusIO.getByID(pClaimRecord.getCampusID());
-        if (oCampus != null) {
-            pClaimRecord.setCampusName(oCampus.getName());
-        }
-
-        // course
-        CourseIO oCourseIO = new CourseIO(role);
-        Course oCourse = oCourseIO.getByID(pClaimRecord.getCourseID());
-        if(oCourse != null) {
-            pClaimRecord.setCourseName(oCourse.getCourseID() + ":" + oCourse.getName());
-        }
-
-        return pClaimRecord;
-    }
 }
