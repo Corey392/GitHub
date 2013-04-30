@@ -1,17 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.ClaimIO;
-import data.ClaimRecordIO;
 import domain.*;
 import domain.User.Role;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.SingleThreadModel;
@@ -192,7 +185,6 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
      */
     public void approveClaim(HttpServletRequest request, HttpServletResponse response, Claim claim) {
         ClaimIO cIO = new ClaimIO(Role.TEACHER);
-        ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         String userID = user.getUserID();
         if (claim.getAssessorID() != null) {
             if (claim.getAssessorID().equals(userID)) {
@@ -216,11 +208,6 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         }
         catch(SQLException SQLex) {
             SQLex.getMessage();
-        }
-        try {
-            claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 1, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Approved - Kyoungho Lee
-        } catch (SQLException ex) {
-            Logger.getLogger(AssessClaimRPLServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -266,10 +253,6 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         
     }
     
-    private void completeRequest(HttpServletRequest request) {
-        
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.
