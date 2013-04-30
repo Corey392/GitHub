@@ -7,6 +7,7 @@
 
     Changelog:	28/04/2013: Bryce Carr:	Separated 'name' and 'value' attributes of module buttons.
 					Scrapped separate 'Core' and 'Elective' buttons, added 'Module' button.
+		30/04/2013: Bryce Carr:	Removed commented code.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_CAMPUS_DISCIPLINE; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
@@ -76,13 +77,8 @@
         <c:forEach var="course" items="${selectedDiscipline.courses}">
             <tr>
                 <td>${course}</td>
-		<%--
-                <td><button type="submit" name="modifyCourseElectives" value="${course.courseID}">Modify Electives</td></td>
-                <td><button type="submit" name="modifyCourseCores" value="${course.courseID}">Modify Cores</td></td>
-		--%>
 		<td><button type="submit" name="modifyCourseModules" value="${course.courseID}">Modify Modules</button></td>
                 <td><button type="submit" name="removeCourseFromDiscipline" value="${course.courseID}">Remove from Discipline</button></td>
-
             </tr>
            </c:forEach>
         </c:otherwise>

@@ -29,6 +29,7 @@ import util.Util;
  * <b>Created:</b>  Unknown<br/>
  * <b>Modified:</b> 27/04/2013<br/>
  * <b>Change Log:</b>	27/04/2013: Bryce Carr:	Begun implementation of Campus deletion. Fixed update and add campus messages so that they display.
+ *			30/04/2013: Bryce Carr:	Added return statements after method calls in processRequest() to prevent double request-forwarding.
  * <b>Purpose:</b>  Handles requests from Data Maintenance: Campus page.
  */
 public class MaintainCampusServlet extends HttpServlet {
@@ -52,10 +53,13 @@ public class MaintainCampusServlet extends HttpServlet {
             // Have either pressed 'Save Campuses', 'Add New Campus', 'Delete Campus' or 'View or Modify Disciplines'
             if (request.getParameter("saveCampuses") != null)	{
                 saveCampuses(request, response);
+		return;
             } else if (request.getParameter("addNewCampus") != null)	{
                 this.addNewCampus(request, response);
+		return;
             } else if (request.getParameter("deleteCampus") != null)	{		
                 this.deleteCampus(request, response);
+		return;
             } else if (request.getParameter("viewDisciplines") != null)	{
                 String campusID = request.getParameter("viewDisciplines");
                 
