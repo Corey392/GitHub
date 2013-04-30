@@ -1,7 +1,6 @@
 package web;
 
 import data.ClaimIO;
-import data.ClaimRecordIO;
 import data.ClaimedModuleIO;
 import data.ProviderIO;
 import domain.*;
@@ -122,7 +121,6 @@ public class UpdateRPLClaimServlet extends HttpServlet {
      */
     private Claim addModule(Claim claim, User user, Module selectedModule, ArrayList<Provider> selectedProviders){
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(user.role);
-        ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         ClaimedModule claimedModule = new ClaimedModule();
         claimedModule.setClaimID(claim.getClaimID());
         claimedModule.setStudentID(user.getUserID());
@@ -145,11 +143,6 @@ public class UpdateRPLClaimServlet extends HttpServlet {
             Logger.getLogger(UpdateRPLClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        try {
-            claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); //  Update - Kyoungho Lee
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return claim;
     }
 
@@ -162,7 +155,6 @@ public class UpdateRPLClaimServlet extends HttpServlet {
      */
     private Claim removeModule(Claim claim, User user, Integer selectedModule){
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(user.getRole());
-        ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();
         ClaimedModule removed = claimedModules.remove(selectedModule.intValue());
         try {
@@ -172,11 +164,6 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         }
         claim.setClaimedModules(claimedModules);
 
-        try {
-            claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); //  Update - Kyoungho Lee
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return claim;
     }
 
@@ -188,7 +175,7 @@ public class UpdateRPLClaimServlet extends HttpServlet {
      * @return the selected module
      */
     private Module getSelectedModule(HttpServletRequest request, User user, ArrayList<Module> modules) {
-        Module selectedModule;
+        
         String moduleIDX = request.getParameter("module");
         if (moduleIDX == null){
             return new Module();
@@ -223,24 +210,6 @@ public class UpdateRPLClaimServlet extends HttpServlet {
             }
         }
         return selectedProviders;
-    }
-
-    /**
-     * Gets the radio button that is selected on the form. This is used to
-     * determine which module the user wants to remove or add/edit evidence for.
-     * @param request the request
-     * @return the selected radio button
-     */
-    private Integer getSelectedRadioButton(HttpServletRequest request) {
-        Integer selectedRadioButton;
-        String selectedRadioButtonIDX = request.getParameter("radio");
-        if (selectedRadioButtonIDX == null){
-            selectedRadioButton = null;
-        } else {
-            int index = Integer.valueOf(selectedRadioButtonIDX);
-            selectedRadioButton = new Integer(index);
-        }
-        return selectedRadioButton;
     }
 
     /**
@@ -332,11 +301,9 @@ public class UpdateRPLClaimServlet extends HttpServlet {
      */
     private Claim submitClaim(User user, Claim claim) {
         ClaimIO claimIO = new ClaimIO(user.getRole());
-        ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         claim.setStatus(Claim.Status.SUBMITTED);
         try {
             claimIO.update(claim);
-            claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
             Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "This claim is successfully updated!!");
         } catch (SQLException ex) {
             Logger.getLogger(UpdateRPLClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
