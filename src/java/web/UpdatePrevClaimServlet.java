@@ -15,11 +15,12 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import util.*;
 
-/** @author     James Purves, Todd Wiggins
+/** @author     James Purves, Todd Wiggins, Mitch Carr
  *  @version    1.02
  *	Created:    ?
  *	Modified:	25/04/2013
  *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module. Updated remove module error message.
+ *	            30/04/2013: MC: Removed all ClaimRecord calls, methods, etc.
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -152,16 +153,10 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      */
     private Claim removeModule(Claim claim, User user, Integer selectedModule){
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(user.getRole());
-        ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();
         ClaimedModule removed = claimedModules.remove(selectedModule.intValue());
         try {
             claimedModuleIO.delete(removed);
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); //  Update - Kyoungho Lee
         } catch (SQLException ex) {
             Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -327,7 +322,6 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      */
     private Claim setEvidence(HttpServletRequest request, User user, Claim claim) {
         EvidenceIO evidenceIO = new EvidenceIO(user.role);
-        ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();
         ArrayList<ClaimedModule> newClaimedModules = new ArrayList<ClaimedModule>();
         ArrayList<Evidence> newEvidence = new ArrayList<Evidence>();
