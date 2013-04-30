@@ -2,9 +2,10 @@ package web;
 
 /**
  * @author ?, Todd Wiggins
- * @version: 1.01
+ * @version: 1.10
  * Created:	?
  * Modified: 25/04/2013: TW: Added validation for all 4 fields and now returns an error message for each.
+ *           30/04/2013: TW: Moved to an AJAX method of updating select boxes. Added the 'post' boolean to process request.
  * <b>Purpose:</b>  Processes the 'Create Claim' form for Students.
  */
 import data.*;
@@ -40,7 +41,7 @@ public class CreateClaimServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response, boolean post) throws ServletException, IOException {
 
         String url;
         //Mitchell: There is currently no path on which this variable is not
@@ -73,82 +74,87 @@ public class CreateClaimServlet extends HttpServlet {
         ArrayList<Campus> campuses = this.getCampusList(user);
         claim.setCampus(this.getSelectedCampus(request, campuses));
         claim.setCampusID(claim.getCampus().getCampusID());
-        ArrayList<Discipline> disciplines = this.getDisciplineList(user, claim);
+        ArrayList<Discipline> disciplines = getDisciplineList(user, claim);
         claim.setDiscipline(this.getSelectedDiscipline(request, disciplines));
         claim.setDisciplineID(claim.getDiscipline().getDisciplineID());
-        ArrayList<Course> courses = this.getCourseList(user, claim);
+        ArrayList<Course> courses = getCourseList(user, claim);
         claim.setCourse(this.getSelectedCourse(request, courses));
         claim.setCourseID(claim.getCourse().getCourseID());
 
-        // If a campus discipline and course were selected it will create a
-        // claim. Depending on the button pressed the claim will either be RPL
-        // or Previous Studies.
-        ClaimIO claimIO = new ClaimIO(user.getRole());
-        //ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
+		if (post) {
 
-		//TW: Validate all the fields have been supplied, and return an error if not.
-		boolean valid = true;
-		if (claim.getCampusID().equals("")) {
-			request.setAttribute("errorCampusID", new RPLError(FieldError.CAMPUS_NOT_SELECTED));
-			valid = false;
-		} else {
-			if (claim.getDisciplineID() == Util.INT_ID_EMPTY) {
-				request.setAttribute("errorDisciplineID", new RPLError(FieldError.DISCIPLINE_NOT_SELECTED));
+			// If a campus discipline and course were selected it will create a
+			// claim. Depending on the button pressed the claim will either be RPL
+			// or Previous Studies.
+			ClaimIO claimIO = new ClaimIO(user.getRole());
+			//ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
+
+			//TW: Validate all the fields have been supplied, and return an error if not.
+			boolean valid = true;
+			if (claim.getCampusID().equals("")) {
+				request.setAttribute("errorCampusID", new RPLError(FieldError.CAMPUS_NOT_SELECTED));
 				valid = false;
 			} else {
-				if (claim.getCourseID().equals("")) {
-					request.setAttribute("errorCourseID", new RPLError(FieldError.COURSE_NOT_SELECTED));
+				if (claim.getDisciplineID() == Util.INT_ID_EMPTY) {
+					request.setAttribute("errorDisciplineID", new RPLError(FieldError.DISCIPLINE_NOT_SELECTED));
 					valid = false;
 				} else {
-					if (request.getParameter("claimType") == null) {
-						request.setAttribute("errorClaimType", new RPLError(FieldError.CLAIM_TYPE_NOT_SELECTED));
+					if (claim.getCourseID().equals("")) {
+						request.setAttribute("errorCourseID", new RPLError(FieldError.COURSE_NOT_SELECTED));
 						valid = false;
+					} else {
+						if (request.getParameter("claimType") == null) {
+							request.setAttribute("errorClaimType", new RPLError(FieldError.CLAIM_TYPE_NOT_SELECTED));
+							valid = false;
+						}
 					}
 				}
 			}
+
+			if (valid){
+				if (request.getParameter("claimType").equals("prevStudies")) {
+					claim.setClaimType(Claim.ClaimType.PREVIOUS_STUDIES);
+					try {
+						claim.setAssessorID("123456789");
+						claimIO.insert(claim);
+						//Email.send(user.getEmail(), "Regarding your claim", "<b>Your claim is successfully created!</b>");
+						//claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
+						//TODO: uncomment claimRecordIO lines above when ClaimRecordIO class has been updated
+						claim.setClaimID(claimIO.getList(user).size());
+						//Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "Your claim is successfully created!!");
+					} catch (SQLException sqlEx) {
+						Logger.getLogger(CreateClaimServlet.class.getName()).log(Level.SEVERE, null, sqlEx);
+					}
+					url = RPLServlet.UPDATE_PREV_CLAIM_SERVLET.relativeAddress;
+				} else if (request.getParameter("claimType").equals("rpl")) {
+					claim.setClaimType(Claim.ClaimType.RPL);
+					try {
+						claim.setAssessorID("123456789");
+
+						claimIO.insert(claim);
+						//Email.send(user.getEmail(), "Regarding your claim", "<b>Your claim is successfully created!</b>");
+						//claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
+						//TODO: uncomment claimRecordIO lines above when ClaimRecordIO class has been updated
+						claim.setClaimID(claimIO.getList(user).size());
+						//Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "Your claim is successfully created!!");
+					} catch (SQLException sqlEx) {
+						Logger.getLogger(CreateClaimServlet.class.getName()).log(Level.SEVERE, null, sqlEx);
+					}
+					url = RPLServlet.UPDATE_RPL_CLAIM_SERVLET.relativeAddress;
+				} else if (request.getParameter("back") != null) {
+					url = RPLPage.STUDENT_HOME.relativeAddress;
+				} else {
+					/*request.setAttribute("claimError", new RPLError("Please select a Claim Type!!!"));*/
+					url = RPLPage.CREATE_CLAIM.relativeAddress;
+				}
+			} else if (request.getParameter("back") != null) {
+				url = RPLPage.STUDENT_HOME.relativeAddress;
+			} else {
+				url = RPLPage.CREATE_CLAIM.relativeAddress;
+			}
+		} else {
+			url = RPLPage.CREATE_CLAIM.relativeAddress;
 		}
-
-        if (valid){
-            if (request.getParameter("claimType").equals("prevStudies")) {
-                claim.setClaimType(Claim.ClaimType.PREVIOUS_STUDIES);
-                try {
-                    claim.setAssessorID("123456789");
-                    claimIO.insert(claim);
-                    //Email.send(user.getEmail(), "Regarding your claim", "<b>Your claim is successfully created!</b>");
-                    //claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
-                    //TODO: uncomment claimRecordIO lines above when ClaimRecordIO class has been updated
-                    claim.setClaimID(claimIO.getList(user).size());
-                    //Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "Your claim is successfully created!!");
-                } catch (SQLException sqlEx) {
-                    Logger.getLogger(CreateClaimServlet.class.getName()).log(Level.SEVERE, null, sqlEx);
-                }
-                url = RPLServlet.UPDATE_PREV_CLAIM_SERVLET.relativeAddress;
-            } else if (request.getParameter("claimType").equals("rpl")) {
-                claim.setClaimType(Claim.ClaimType.RPL);
-                try {
-                    claim.setAssessorID("123456789");
-
-                    claimIO.insert(claim);
-                    //Email.send(user.getEmail(), "Regarding your claim", "<b>Your claim is successfully created!</b>");
-                    //claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
-                    //TODO: uncomment claimRecordIO lines above when ClaimRecordIO class has been updated
-                    claim.setClaimID(claimIO.getList(user).size());
-                    //Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "Your claim is successfully created!!");
-                } catch (SQLException sqlEx) {
-                    Logger.getLogger(CreateClaimServlet.class.getName()).log(Level.SEVERE, null, sqlEx);
-                }
-                url = RPLServlet.UPDATE_RPL_CLAIM_SERVLET.relativeAddress;
-            } else if (request.getParameter("back") != null) {
-                url = RPLPage.STUDENT_HOME.relativeAddress;
-            } else {
-                /*request.setAttribute("claimError", new RPLError("Please select a Claim Type!!!"));*/
-                url = RPLPage.CREATE_CLAIM.relativeAddress;
-            }
-        } else if (request.getParameter("back") != null) {
-            url = RPLPage.STUDENT_HOME.relativeAddress;
-        } else {
-            url = RPLPage.CREATE_CLAIM.relativeAddress;
-        }
 
         // Sets the session and request attributes and forwards the request to the next url.
         session.setAttribute("claim", claim);
@@ -170,7 +176,10 @@ public class CreateClaimServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+		//Currently 'GET' requests are sent to the servlet, processed and the user sent the JSP at the url. NOT a 403/402 redirect.
+        //RequestDispatcher dispatcher = request.getRequestDispatcher(RPLPage.CREATE_CLAIM.relativeAddress);
+        //dispatcher.forward(request, response);
+        processRequest(request, response, false);
     }
 
     /**
@@ -183,7 +192,7 @@ public class CreateClaimServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response, true);
     }
 
     /**
@@ -273,7 +282,7 @@ public class CreateClaimServlet extends HttpServlet {
      * @param claim the current claim
      * @return the list of disciplines
      */
-    private ArrayList<Discipline> getDisciplineList(User user, Claim claim){
+    protected static ArrayList<Discipline> getDisciplineList(User user, Claim claim){
         DisciplineIO disciplineIO = new DisciplineIO(user.role);
         ArrayList<Discipline> disciplines;
         String campusID = claim.getCampusID();
@@ -293,7 +302,7 @@ public class CreateClaimServlet extends HttpServlet {
      * @param claim the current claim
      * @return the list of courses
      */
-    private ArrayList<Course> getCourseList(User user, Claim claim){
+    protected static ArrayList<Course> getCourseList(User user, Claim claim){
         CourseIO courseIO = new CourseIO(user.role);
         ArrayList<Course> courses;
         String campusID = claim.getCampusID();
