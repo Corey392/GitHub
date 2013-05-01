@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Removed code to account for removal of moduleID field in DB's Criterion table.<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
  * 		    30/04/2013: Mitch Carr: Removed all instances of ClaimRecord and classes/methods pertaining to it.<br/>
+ * 		    01/05/2013: Mitch Carr: Updated to reflect change made to ClaimIO.getById(Claim)<br/>
  * <b>Purpose:</b>  Appears to provide reusable access to commonly-used complex interactions with IO classes.
  */
 public final class Util {
@@ -215,7 +216,7 @@ public final class Util {
         CampusIO campusIO = new CampusIO(role);
         DisciplineIO disciplineIO = new DisciplineIO(role);
         CourseIO courseIO = new CourseIO(role);
-        Claim claim = claimIO.getByID(claimID, studentID);
+        Claim claim = claimIO.getByID(claimID);
         if (claim == null){return null;}
         if (claim.getAssessorID() != null) {
             claim.setAssessor(userIO.getByID(claim.getAssessorID()));
