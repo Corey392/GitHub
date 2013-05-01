@@ -1389,7 +1389,7 @@ CREATE FUNCTION fn_listmodulesnotinacourse("courseID" text) RETURNS SETOF "Modul
     AS $_$
     SELECT "Module".*
     FROM "Module", "CourseModule"
-    WHERE "CourseModule"."courseID" <> $1
+    WHERE "CourseModule"."moduleID" <> $1 AND "CourseModule"."moduleID" = "Module"."moduleID"
 $_$;
 
 --
