@@ -18,6 +18,7 @@
  *				Fixed version numbers to fir convention, reformatted header comment with proper tab spacing.
  *		v2.090:	Mitch:	Updated both 'fn_updateclaim' functions; removed unnecessary checks and input parameters.
  *		v2.091:	Mitch:	Updated 'fn_deleteclaim' and 'fn_getclaimbyid' in the same manner as 2.090.
+ *		v2.092:	Bryce:	Fixed 'fn_listmodulesnotinacourse' so that it doesn't return a list of length properLength^2, and doesn't return duplicate modules if a module is part of multiple courses.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1387,9 +1388,14 @@ $_$;
 CREATE FUNCTION fn_listmodulesnotinacourse("courseID" text) RETURNS SETOF "Module"
     LANGUAGE sql
     AS $_$
-    SELECT "Module".*
+    SELECT DISTINCT "Module".*
     FROM "Module", "CourseModule"
-    WHERE "CourseModule"."moduleID" <> $1 AND "CourseModule"."moduleID" = "Module"."moduleID"
+    WHERE "CourseModule"."courseID" <> $1 AND "CourseModule"."moduleID" = "Module"."moduleID"
+		AND "CourseModule"."moduleID" NOT IN (
+						SELECT "CourseModule"."moduleID"
+						FROM "CourseModule"
+						WHERE "CourseModule"."courseID" = $1
+						);
 $_$;
 
 --
