@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import util.Util;
 
@@ -12,7 +9,7 @@ import util.Util;
  * @author David
  * @author Adam Shortall
  */
-public final class ClaimedModule extends Module {
+public final class ClaimedModule extends Module implements Serializable{
     
     private int claimID;
     private String studentID;
