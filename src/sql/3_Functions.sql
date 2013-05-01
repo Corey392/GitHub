@@ -17,6 +17,7 @@
  *		v2.080:	Bryce:	Added 'fn_insertcoursemodulecore' and 'fn_insertcoursemoduleelective'. Not sure if they actually work as intended yet.
  *				Fixed version numbers to fir convention, reformatted header comment with proper tab spacing.
  *		v2.090:	Mitch:	Updated both 'fn_updateclaim' functions; removed unnecessary checks and input parameters.
+ *		v2.091:	Mitch:	Updated 'fn_deleteclaim' and 'fn_getclaimbyid' in the same manner as 2.090.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -203,13 +204,13 @@ $_$;
 
 
 --
--- Name: fn_deleteclaim(integer, text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_deleteclaim(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_deleteclaim(claimid integer, studentid text) RETURNS void
+CREATE FUNCTION fn_deleteclaim(claimid integer) RETURNS void
     LANGUAGE sql
     AS $_$
-    DELETE FROM "Claim" WHERE "claimID" = $1 AND "studentID" = $2;
+    DELETE FROM "Claim" WHERE "claimID" = $1;
 $_$;
 
 
@@ -341,13 +342,13 @@ $_$;
 
 
 --
--- Name: fn_getclaimbyid(integer, text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_getclaimbyid(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_getclaimbyid(claimid integer, studentid text) RETURNS SETOF "Claim"
+CREATE FUNCTION fn_getclaimbyid(claimid integer) RETURNS SETOF "Claim"
     LANGUAGE sql
     AS $_$
-    SELECT * FROM "Claim" WHERE "claimID" = $1 AND "studentID" = $2;
+    SELECT * FROM "Claim" WHERE "claimID" = $1;
 $_$;
 
 --
@@ -1602,16 +1603,16 @@ GRANT ALL ON FUNCTION fn_deletecampus("campusID" text) TO student;
 
 
 --
--- Name: fn_deleteclaim(integer, text); Type: ACL; Schema: public; Owner: -
+-- Name: fn_deleteclaim(integer); Type: ACL; Schema: public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION fn_deleteclaim(claimid integer, studentid text) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_deleteclaim(claimid integer, studentid text) FROM postgres;
-GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer, studentid text) TO postgres;
-GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer, studentid text) TO admin;
-GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer, studentid text) TO clerical;
-GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer, studentid text) TO teacher;
-GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer, studentid text) TO student;
+REVOKE ALL ON FUNCTION fn_deleteclaim(claimid integer) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_deleteclaim(claimid integer) FROM postgres;
+GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer) TO postgres;
+GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer) TO admin;
+GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer) TO clerical;
+GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer) TO teacher;
+GRANT ALL ON FUNCTION fn_deleteclaim(claimid integer) TO student;
 
 
 --
@@ -1784,16 +1785,16 @@ GRANT ALL ON TABLE "Claim" TO teacher;
 
 
 --
--- Name: fn_getclaimbyid(integer, text); Type: ACL; Schema: public; Owner: -
+-- Name: fn_getclaimbyid(integer); Type: ACL; Schema: public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION fn_getclaimbyid(claimid integer, studentid text) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_getclaimbyid(claimid integer, studentid text) FROM postgres;
-GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer, studentid text) TO postgres;
-GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer, studentid text) TO admin;
-GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer, studentid text) TO clerical;
-GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer, studentid text) TO teacher;
-GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer, studentid text) TO student;
+REVOKE ALL ON FUNCTION fn_getclaimbyid(claimid integer) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_getclaimbyid(claimid integer) FROM postgres;
+GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer) TO postgres;
+GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer) TO admin;
+GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer) TO clerical;
+GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer) TO teacher;
+GRANT ALL ON FUNCTION fn_getclaimbyid(claimid integer) TO student;
 
 
 --
