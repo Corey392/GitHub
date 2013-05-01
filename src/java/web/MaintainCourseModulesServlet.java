@@ -32,6 +32,7 @@ import util.Util;
  * Changelog:	28/04/2013: BC:	Re-implemented file in project by uncommenting it, fixed a couple of minor things like a servlet address and a method call
  *		29/04/2013: BC:	Fixed session.getAttribute() call for selectedCourse. Requests the right attribute now. Might be worth using enums for that kind of thing.
  *				Fixed 'back' button.
+ *		30/04/2013: BC:	Actually properly fixed 'back' button.
  */
 public class MaintainCourseModulesServlet extends HttpServlet {
 
@@ -76,7 +77,6 @@ public class MaintainCourseModulesServlet extends HttpServlet {
             
             String url = RPLPage.CLERICAL_COURSE_MODULES.relativeAddress;
             ArrayList<Campus> campuses = campusIO.getList();
-            campuses.add(0, new Campus());
             ArrayList<Module> modules;
             Campus selectedCampus = (Campus)session.getAttribute("selectedCampus");
             Discipline selectedDiscipline = (Discipline)session.getAttribute("selectedDiscipline");
@@ -93,6 +93,7 @@ public class MaintainCourseModulesServlet extends HttpServlet {
             } else if (request.getAttribute("selectedCampus") != null) {
                 selectedCampus = (Campus) request.getAttribute("selectedCampus");
             } else {    // Have never selected a campus in this request
+		campuses.add(0, new Campus());
                 selectedCampus = campuses.get(0);
                 selectedDiscipline = new Discipline();
             }
@@ -128,7 +129,7 @@ public class MaintainCourseModulesServlet extends HttpServlet {
 	    if (request.getParameter("back") == null)	{
 		url = RPLPage.CLERICAL_COURSE_MODULES.relativeAddress;
 	    } else  {
-		url = RPLServlet.MAINTAIN_CAMPUS_DISCIPLINE_SERVLET.relativeAddress;
+		url = RPLPage.CLERICAL_CAMPUS_DISCIPLINE.relativeAddress;
 	    }
             /**
              * Request parameters that can get here:
