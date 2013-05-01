@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  * <b>Change Log:</b>  08/04/2013:   Made small changes to incorporate the guideFileAddress DB field.
  *              24/04/2013:   Added header comments to match code conventions.
  *              01/05/2013:   Updated update(Claim) method to reflect change 2.090 to functions.sql
+ *              01/05/2013:   Updated deleteClaim(Claim) and getById(Claim) methods to reflect change 2.091 to functions.sql
  * <b>Purpose:</b>  Controller class for interaction between application and database's Claim table. 
  */
 public class ClaimIO extends RPL_IO <Claim> {
@@ -146,30 +147,26 @@ public class ClaimIO extends RPL_IO <Claim> {
 
     public void delete(Claim claim) throws SQLException {        
         int claimID = claim.getClaimID();
-        String studentID = claim.getStudentID();
-        String sql = "SELECT fn_DeleteClaim(?,?)";
+        String sql = "SELECT fn_DeleteClaim(?)";
         
         SQLParameter p1 = new SQLParameter(claimID);
-        SQLParameter p2 = new SQLParameter(studentID);
         
-        super.doPreparedStatement(sql, p1, p2);
+        super.doPreparedStatement(sql, p1);
     }
     
     /**
      * Gets a claim from the database, identified by a studentID and
      * a claimID.
      * @param claimID
-     * @param studentID
      * @return 
      */
-    public Claim getByID(int claimID, String studentID) {
+    public Claim getByID(int claimID) {
         
-        String sql = "SELECT * FROM fn_GetClaimByID(?,?)";
+        String sql = "SELECT * FROM fn_GetClaimByID(?)";
         SQLParameter p1 = new SQLParameter(claimID);
-        SQLParameter p2 = new SQLParameter(studentID);
         
         try {
-            ResultSet rs = super.doPreparedStatement(sql, p1, p2);
+            ResultSet rs = super.doPreparedStatement(sql, p1);
             
             if (rs.next()) {
                 return this.getClaimFromRS(rs);
