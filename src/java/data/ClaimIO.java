@@ -17,12 +17,13 @@ import java.util.logging.Logger;
  * Handles I/O for Claim made by the Student 
  * and assessed by assessors.
  * 
- * @author Adam Shortall, Bryce Carr
+ * @author Adam Shortall, Bryce Carr, Mitch Carr
  * @version 1.02
  * <b>Created:</b>  Unknown
  * <b>Modified:</b> 24/04/2013
  * <b>Change Log:</b>  08/04/2013:   Made small changes to incorporate the guideFileAddress DB field.
  *              24/04/2013:   Added header comments to match code conventions.
+ *              01/05/2013:   Updated update(Claim) method to reflect change 2.090 to functions.sql
  * <b>Purpose:</b>  Controller class for interaction between application and database's Claim table. 
  */
 public class ClaimIO extends RPL_IO <Claim> {
@@ -96,7 +97,6 @@ public class ClaimIO extends RPL_IO <Claim> {
         
         String sql;
         int claimID = claim.getClaimID();
-        String studentID = claim.getStudentID();
         Option option = claim.getOption();
         //Character optionValue = (option != null) ? option.value : Option.OTHER_PROVIDER.value;
         Boolean optionValue = (option != null && option.value != Option.OTHER_PROVIDER.value) ? true : false;
@@ -104,22 +104,21 @@ public class ClaimIO extends RPL_IO <Claim> {
         //I've commented out the original line and replaced it with a boolean value that may not necessarily be correct
         
         SQLParameter p1 = new SQLParameter(claimID);
-        SQLParameter p2 = new SQLParameter(studentID);
+        SQLParameter p2;
         SQLParameter p3;
-        SQLParameter p4;
-        SQLParameter p5 = new SQLParameter(optionValue);
+        SQLParameter p4 = new SQLParameter(optionValue);
         
         if (role == Role.STUDENT) {
-            sql = "SELECT fn_UpdateClaim(?,?,?,?,?)";
+            sql = "SELECT fn_UpdateClaim(?,?,?,?)";
             String campusID = claim.getCampus().getCampusID();
             int disciplineID = claim.getDiscipline().getDisciplineID();
                 
-            p3 = new SQLParameter(campusID);
-            p4 = new SQLParameter(disciplineID);
+            p2 = new SQLParameter(campusID);
+            p3 = new SQLParameter(disciplineID);
                 
-            super.doPreparedStatement(sql, p1, p2, p3, p4, p5);
+            super.doPreparedStatement(sql, p1, p2, p3, p4);
         }else {
-            sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?,?)";
+            sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?)";
             Boolean assessorApproved = claim.getAssessorApproved();
             Boolean delegateApproved = claim.getDelegateApproved();
             Boolean requestComp = claim.getRequestCompletion();
@@ -127,14 +126,14 @@ public class ClaimIO extends RPL_IO <Claim> {
             String assessorID = claim.getAssessorID();
             String delegateID = claim.getDelegateID();
                 
-            p3 = new SQLParameter(assessorApproved);
-            p4 = new SQLParameter(delegateApproved);
-            SQLParameter p6 = new SQLParameter(requestComp);
-            SQLParameter p7 = new SQLParameter(dateResolved);
-            SQLParameter p8 = new SQLParameter(assessorID);
-            SQLParameter p9 = new SQLParameter(delegateID);
+            p2 = new SQLParameter(assessorApproved);
+            p3 = new SQLParameter(delegateApproved);
+            SQLParameter p5 = new SQLParameter(requestComp);
+            SQLParameter p6 = new SQLParameter(dateResolved);
+            SQLParameter p7 = new SQLParameter(assessorID);
+            SQLParameter p8 = new SQLParameter(delegateID);
                 
-            super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8);
         }
            
     }
