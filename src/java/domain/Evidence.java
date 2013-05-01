@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import util.Util;
 
 /**
@@ -8,7 +9,7 @@ import util.Util;
  * @author David, James
  * @author Adam Shortall
  */
-public class Evidence {
+public class Evidence implements Serializable {
     
     private int claimID;
     /** elementID == 0 when Evidence is for a module rather than an element */
