@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import util.FieldError;
 
@@ -15,7 +16,7 @@ import util.FieldError;
  *		    30/04/2013:	BC: Edited validateField() to account for null field value. Field in database is allowed null, but code didn't previously allow it.
  * <b>Purpose:</b>  Model class for database's Course table.
  */
-public class Course implements Comparable<Course> {
+public class Course implements Comparable<Course>, Serializable {
     
     private String courseID;
     private String name;
