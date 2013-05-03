@@ -1,20 +1,23 @@
 <%-- 
-    Document   : campusDiscipline
-    Created on : 02/06/2011, 12:51:59 AM
-    Author     : Adam Shortall
+    Document:	campusDiscipline
+    Created on:	02/06/2011, 12:51:59 AM
+    Modified:	03/05/2013
+    Author:	Adam Shortall, Bryce Carr
+    Version:	1.010
+    Changelog:	03/05/2013: BC:	Moved if block to below variable declaration (seriously, what is with that?)
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_CAMPUS_DISCIPLINE; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 
-<c:if test="${requestScope.selectedCampus == null || requestScope.disciplines == null}">
-    <c:redirect url="<%= RPLServlet.MAINTAIN_TABLE_SERVLET.relativeAddress %>" />
-</c:if>
-
 <jsp:useBean id="disciplines" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="selectedCampus" scope="request" class="domain.Campus"/>
 <jsp:useBean id="message" scope="request" class="java.lang.String"/>
+
+<c:if test="${requestScope.selectedCampus == null || requestScope.disciplines == null}">
+    <c:redirect url="<%= RPLServlet.MAINTAIN_TABLE_SERVLET.relativeAddress %>" />
+</c:if>
 
 <c:if var="noDisciplinesLeft" scope="page" test="${fn:length(disciplines) == 0}"/>
 <c:if var="campusIsSelected" scope="page" test="${selectedCampus.campusID != ''}" />
