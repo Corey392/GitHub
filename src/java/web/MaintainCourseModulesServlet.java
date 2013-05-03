@@ -84,67 +84,43 @@ public class MaintainCourseModulesServlet extends HttpServlet {
             
             // Get selectedCampusID & selectedDisciplineID from jsp
             String selectedCampusID = selectedCampus.getCampusID();
-            String selectedDisciplineID = String.valueOf(selectedDiscipline.getDisciplineID());
+            int selectedDisciplineID = selectedDiscipline.getDisciplineID();
             
-            // Handle changing of campus drop-down box
-            if (selectedCampusID != null) {
-                selectedCampus = Util.getCampusWithDisciplinesAndCourses(selectedCampusID, user.role);
-                selectedDiscipline = selectedCampus.getDisciplines().get(0);
-            } else if (request.getAttribute("selectedCampus") != null) {
-                selectedCampus = (Campus) request.getAttribute("selectedCampus");
-            } else {    // Have never selected a campus in this request
-		campuses.add(0, new Campus());
-                selectedCampus = campuses.get(0);
-                selectedDiscipline = new Discipline();
-            }
-            
-            // Handle changing of discipline drop-down box
-            if (selectedDisciplineID != null) {
-                int disciplineID = Integer.parseInt(selectedDisciplineID);
-                selectedDiscipline = disciplineIO.getByID(disciplineID);
-                request.setAttribute("selectedDiscipline", selectedDiscipline);
-            } else {
-                selectedDiscipline = selectedCampus.getDisciplines().get(0);       
-            }
-                        
-            // Set the course that was selected for this page. If no course was
-            // selected, send back to MaintainTableServlet
-            selectedCourse = (Course) session.getAttribute("selectedCourse");
-            if (selectedCourse == null) {
-                url = RPLPage.CLERICAL_MAINTENANCE_SELECT.relativeAddress;
-                RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-                dispatcher.forward(request, response);
-            }
             
             // Now get electives & cores for the selected course
-            selectedCourse = Util.getCourseWithModules(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), selectedCourse.getCourseID(), User.Role.ADMIN);
+            selectedCourse = Util.getCourseWithModules(selectedCampusID, selectedDisciplineID, selectedCourse.getCourseID(), User.Role.ADMIN);
             request.setAttribute("course", selectedCourse);
             
             // Now get/set the list of modules to display
             modules = moduleIO.getListNotInCourse(selectedCourse.getCourseID());
             request.setAttribute("modules", modules);
             
+	    // Now get IDs of modules to remove (if any)
             String removeCoreID = Util.getPageStringID(request, "removeCore");
             String removeElectiveID = Util.getPageStringID(request, "removeElective");
-	    if (request.getParameter("back") == null)	{
-		url = RPLPage.CLERICAL_COURSE_MODULES.relativeAddress;
+	    // Now get IDs of modules to add (if any)
+	    String addCoreID = Util.getPageStringID(request, "addCore");
+	    String addElectiveID = Util.getPageStringID(request, "addElective");
+	    
+	    if (request.getParameter("back") != null)	{
+		url = RPLPage.CLERICAL_DISCIPLINE_COURSES.relativeAddress;
+		//request.setAttribute("back", null); // don't know why I have to do this but it persists otherwise and just keeps going back
+		request.setAttribute("courses", courseIO.getList(selectedCampusID, selectedDisciplineID));
 	    } else  {
-		url = RPLPage.CLERICAL_CAMPUS_DISCIPLINE.relativeAddress;
+		url = RPLPage.CLERICAL_COURSE_MODULES.relativeAddress;
 	    }
             /**
              * Request parameters that can get here:
-             * selectedCampus (drop down list)
-             * selectedDiscipline (drop down list)
              * addCore (button)
              * addElective (button)
              * removeCore:${moduleID} (button)
              * removeElective:${moduleID} (button)
              */
-            if (request.getParameter("addCore") != null) {
+            if (addCoreID != null) {
                 request = this.addCoreModule(request);
             }
 
-            if (request.getParameter("addElective") != null) {
+            if (addElectiveID != null) {
                 request = this.addElectiveModule(request);
             }
             if (removeCoreID != null) {

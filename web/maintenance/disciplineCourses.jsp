@@ -1,26 +1,27 @@
 <%-- 
     Document:	disciplineCourses.jsp
     Created on:	03/06/2011, 12:58:04 AM
-    Modified:	28/04/2013
-    Version:	1.001
+    Modified:	03/05/2013
+    Version:	1.002
     Author:	Adam Shortall, Bryce Carr
 
     Changelog:	28/04/2013: Bryce Carr:	Separated 'name' and 'value' attributes of module buttons.
 					Scrapped separate 'Core' and 'Elective' buttons, added 'Module' button.
 		30/04/2013: Bryce Carr:	Removed commented code.
+		03/05/2013: Bryce Carr:	Moved if block to below variable declaration (it just keeps happening).
 --%>
-<%! RPLPage thisPage = RPLPage.CLERICAL_CAMPUS_DISCIPLINE; %>
+<%! RPLPage thisPage = RPLPage.CLERICAL_DISCIPLINE_COURSES; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 
-<c:if test="${requestScope.courses == null || sessionScope.selectedDiscipline.courses == null}">
-    <c:redirect url="<%= RPLServlet.MAINTAIN_TABLE_SERVLET.relativeAddress %>" />
-</c:if>
-
 <jsp:useBean id="selectedCampus" scope="session" class="domain.Campus"/>
 <jsp:useBean id="selectedDiscipline" scope="session" class="domain.Discipline"/>
 <jsp:useBean id="courses" scope="request" class="java.util.ArrayList"/>
+
+<c:if test="${requestScope.courses == null || sessionScope.selectedDiscipline.courses == null}">
+    <c:redirect url="<%= RPLServlet.MAINTAIN_TABLE_SERVLET.relativeAddress %>" />
+</c:if>
 
 <c:if var="noCoursesLeft" scope="page" test="${fn:length(courses) == 0}"/>
 <c:if var="noCoursesInDiscipline" scope="page" test="${fn:length(selectedDiscipline.courses) == 0}" />

@@ -111,6 +111,12 @@ public class MaintainDisciplineCoursesServlet extends HttpServlet {
 		String selectedCourseID = ((Course)session.getAttribute("selectedCourse")).getCourseID();
 		ArrayList<Module> modules = moduleIO.getListNotInCourse(selectedCourseID);
 	    }
+	    
+	    // Set variables for JSP
+	    session.setAttribute("selectedCampus", selectedCampus);
+	    session.setAttribute("selectedDiscipline", selectedDiscipline);
+	    session.setAttribute("courses", courses);
+
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request, response);
         } finally {            
