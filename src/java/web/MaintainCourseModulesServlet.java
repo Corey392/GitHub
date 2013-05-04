@@ -1,8 +1,6 @@
 package web;
 
-import data.CampusIO;
 import data.CourseIO;
-import data.DisciplineIO;
 import data.ModuleIO;
 import domain.Campus;
 import domain.Course;
@@ -22,13 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import util.RPLPage;
-import util.RPLServlet;
 import util.Util;
 
 /**
  *
  * @author Adam Shortall, Bryce Carr
- * @version 1.010
+ * @version 1.020
  * Created:	Unknown
  * Modified:	03/05/2013
  * 
@@ -38,6 +35,8 @@ import util.Util;
  *		30/04/2013: BC:	Actually properly fixed 'back' button.
  *		03/05/2013: BC:	Really fixed it this time.
  *		04/05/2013: BC:	Module addition now implemented.
+ *				Module removal now implemented.
+ *				Removed unnecessary imports.
  */
 public class MaintainCourseModulesServlet extends HttpServlet {
     private HttpSession session;
@@ -60,6 +59,12 @@ public class MaintainCourseModulesServlet extends HttpServlet {
         moduleIO = new ModuleIO(user.role);
 	
 	selectedModule = moduleIO.getByID(request.getParameter("selectedModule"));
+	if (selectedModule == null) {
+	    selectedModule = moduleIO.getByID(Util.getPageStringID(request, "removeCore"));
+	    if (selectedModule == null)	{
+		selectedModule = moduleIO.getByID(Util.getPageStringID(request, "removeElective"));
+	    }
+	}
 	selectedCampus = (Campus)session.getAttribute("selectedCampus");
 	selectedDiscipline = (Discipline)session.getAttribute("selectedDiscipline");
 	selectedCourse = (Course)session.getAttribute("selectedCourse");
@@ -108,11 +113,12 @@ public class MaintainCourseModulesServlet extends HttpServlet {
             
             
 	    // Now get IDs of modules to remove (if any)
-	    String addCoreID = null;
-	    String addElectiveID = null;
             String removeCoreID = Util.getPageStringID(request, "removeCore");
             String removeElectiveID = Util.getPageStringID(request, "removeElective");
 	    // Now get IDs of modules to add (if any)
+	    String addCoreID = null;
+	    String addElectiveID = null;
+
 	    if (request.getParameter("addCore") != null)    {
 		addCoreID = selectedModuleID;
 	    } else if (request.getParameter("addElective") != null) {
@@ -124,23 +130,16 @@ public class MaintainCourseModulesServlet extends HttpServlet {
 	    } else  {
 		url = RPLPage.CLERICAL_COURSE_MODULES.relativeAddress;
 	    }
-            /**
-             * Request parameters that can get here:
-             * addCore (button)
-             * addElective (button)
-             * removeCore:${moduleID} (button)
-             * removeElective:${moduleID} (button)
-             */
+            
+	    // Now remove/add cores/electives
             if (addCoreID != null) {
                 request = this.addCoreModule(request);
-            }
-
-            if (addElectiveID != null) {
+            } else if (addElectiveID != null) {
                 request = this.addElectiveModule(request);
-            }
-            if (removeCoreID != null) {
-            }
-            if (removeElectiveID != null) {
+            } else if (removeCoreID != null) {
+		request = this.removeCoreModule(request);
+            } else if (removeElectiveID != null) {
+		request = this.removeElectiveModule(request);
             }
             
 	    // Set variables for displaying data on page
@@ -181,6 +180,22 @@ public class MaintainCourseModulesServlet extends HttpServlet {
 	
         return request;
     }
+    
+    private HttpServletRequest removeCoreModule(HttpServletRequest request) throws SQLException {
+        this.initialise(request, null);
+	moduleIO.removeCore(selectedCourse.getCourseID(), selectedModule.getModuleID());
+	selectedCourse.getCoreModules().remove(selectedModule);
+        return request;
+    }
+
+    private HttpServletRequest removeElectiveModule(HttpServletRequest request) throws SQLException {
+	this.initialise(request, null);
+	moduleIO.removeElective(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), selectedCourse.getCourseID(), selectedModule.getModuleID());
+	selectedCourse.getElectiveModules().remove(selectedModule);
+	
+        return request;
+    }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

@@ -11,11 +11,12 @@ import java.util.logging.Logger;
 /**
  *
  * @author James, Adam Shortall, Bryce Carr
- * @version 1.001
+ * @version 1.020
  * Created: Unknown
  * Modified:	29/04/2013
  * Changelog:	29/04/2013: BC:	Fixed SQL SELECT statement calling fn_listmodulesnotinacourse (function name was wrong)
  *		30/04/2013: BC:	Updated addCore() and addElective() to call newly-added DB functions
+ *		04/05/2013: BC:	Updated removeCore() and removeElective() to call newly-added DB functions
  */
 public class ModuleIO extends RPL_IO<Module> {
 
@@ -236,8 +237,7 @@ public class ModuleIO extends RPL_IO<Module> {
      * @throws SQLException
      */
     public void removeElective(String campusID, int disciplineID, String courseID, String moduleID) throws SQLException {
-	//TODO: BRYCE: Add DB functionality for removing modules
-        String sql = "SELECT fn_RemoveElective(?,?,?,?)";
+        String sql = "SELECT fn_removemoduleelective(?,?,?,?)";
         SQLParameter p1 = new SQLParameter(campusID);
         SQLParameter p2 = new SQLParameter(disciplineID);
         SQLParameter p3 = new SQLParameter(courseID);
@@ -253,8 +253,7 @@ public class ModuleIO extends RPL_IO<Module> {
      * @throws SQLException if core specified does not exist
      */
     public void removeCore(String courseID, String moduleID) throws SQLException {
-
-        String sql = "SELECT fn_RemoveCore(?,?)";
+        String sql = "SELECT fn_removemodulecore(?,?)";
         SQLParameter p1 = new SQLParameter(courseID);
         SQLParameter p2 = new SQLParameter(moduleID);
 

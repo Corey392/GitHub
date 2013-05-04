@@ -1,7 +1,7 @@
 ﻿/* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:
- *  Version:	v2.080
+ *  Version:	v2.100
  *  Modified:	30/04/2013
  *  Change Log:	v2.000:	Bryce:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
@@ -19,6 +19,7 @@
  *		v2.090:	Mitch:	Updated both 'fn_updateclaim' functions; removed unnecessary checks and input parameters.
  *		v2.091:	Mitch:	Updated 'fn_deleteclaim' and 'fn_getclaimbyid' in the same manner as 2.090.
  *		v2.092:	Bryce:	Fixed 'fn_listmodulesnotinacourse' so that it doesn't return a list of length properLength^2, and doesn't return duplicate modules if a module is part of multiple courses.
+ *		v2.100:	Bryce:	Added 'fn_removemodulecore' and 'fn_removemoduleelective'.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1049,6 +1050,36 @@ CREATE FUNCTION fn_removedisciplinefromcampus("campusID" text, "disciplineID" in
         WHERE
             "campusID" = $1
         AND "disciplineID" = $2;
+$_$;
+
+
+--
+-- Name: fn_removemodulecore(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fn_removemodulecore("courseID" text, "moduleID" text) RETURNS void
+    LANGUAGE sql
+    AS $_$
+	DELETE FROM "CourseModule"
+	WHERE "courseID" = $1 
+	AND "moduleID" = $2 
+	AND "elective" = false;
+$_$;
+
+
+--
+-- Name: fn_removemoduleelective(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fn_removemoduleelective("campusID" text, "disciplineID" integer, "courseID" text, "moduleID" text) RETURNS void
+    LANGUAGE sql
+    AS $_$
+	DELETE FROM "CourseModule"
+	WHERE "campusID" = $1 
+	AND "disciplineID" = $2 
+	AND "courseID" = $3
+	AND "moduleID" = $4
+	AND "elective" = true;
 $_$;
 
 --
