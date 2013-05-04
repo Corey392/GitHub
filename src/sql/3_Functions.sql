@@ -1,8 +1,8 @@
 ﻿/* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:
- *  Version:	v2.100
- *  Modified:	30/04/2013
+ *  Version:	v2.130
+ *  Modified:	04/05/2013
  *  Change Log:	v2.110:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
@@ -21,8 +21,9 @@
  *		v2.092:	Bryce:	Fixed 'fn_listmodulesnotinacourse' so that it doesn't return a list of length properLength^2, and doesn't return duplicate modules if a module is part of multiple courses.
  *		v2.100:	Bryce:	Added 'fn_removemodulecore' and 'fn_removemoduleelective'.
  *      	v2.110: Todd:   Added 'fn_insertstudent' with supplying a password instead of returning a generated password.
- *		v2.120: Mitch: Updated 'fn_deleteclaim' to delete claimed modules associated with the deleted claim.
- *		v2.121: Mitch: Added 'fn_getclaimtotal'
+ *		v2.120: Mitch:	Updated 'fn_deleteclaim' to delete claimed modules associated with the deleted claim.
+ *		v2.121: Mitch:	Added 'fn_getclaimtotal'
+		v2.130:	Bryce:	Added 'fn_listmodulesnotcoreincourse'.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1454,6 +1455,22 @@ CREATE FUNCTION fn_insertcoursemoduleelective("campusID" text, "disciplineID" in
     AS $_$
     INSERT INTO "CourseModule"("courseID", "moduleID", "elective", "campusID", "disciplineID")
     VALUES($3, $4, true, $1, $2);
+$_$;
+
+
+--
+-- Name: fn_listmodulesnotcoreincourse(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+
+CREATE FUNCTION fn_listmodulesnotcoreincourse("courseID" text) RETURNS SETOF "Module"
+    LANGUAGE sql
+    AS $_$
+    SELECT DISTINCT "Module".*
+	FROM "Module"
+		WHERE "moduleID" NOT IN (
+					SELECT "moduleID" FROM fn_listcores($1)
+					)
 $_$;
 
 

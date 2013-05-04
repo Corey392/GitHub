@@ -147,6 +147,10 @@
         <servlet-name>AJAXServlet</servlet-name>
         <servlet-class>web.AJAXServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MaintainCoreModulesServlet</servlet-name>
+        <servlet-class>web.MaintainCoreModulesServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -276,6 +280,10 @@
     <servlet-mapping>
         <servlet-name>AJAXServlet</servlet-name>
         <url-pattern>/AJAX</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaintainCoreModulesServlet</servlet-name>
+        <url-pattern>/maintenance/coreModules</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

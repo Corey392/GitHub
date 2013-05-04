@@ -60,7 +60,7 @@ public class MaintainCourseServlet extends HttpServlet {
             CourseIO courseIO = new CourseIO(user.role);
             ModuleIO moduleIO = new ModuleIO(user.role);
             
-            // Have either pressed 'Add Course', 'Update Course' or 'Back'
+            // Have either pressed 'Add Course', 'Save Courses', 'Update Modules' or 'Back'
             if (request.getParameter("addCourse") != null) {
                 this.addCourse(request);
             } else if (request.getParameter("saveCourses") != null) {

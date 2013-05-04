@@ -1,7 +1,11 @@
 <%-- 
-    Document   : coreModules
-    Created on : 02/06/2011, 7:15:20 PM
-    Author     : Adam Shortall
+    Document:	coreModules
+    Created on:	02/06/2011, 7:15:20 PM
+    Modified:	04/05/2013
+    Authors:	Adam Shortall, Bryce Carr
+    Version:	1.010
+
+    Changelog:	04/05/2013: BC:	Removed/modified page code to fit its new context (as an extension of Maintain Course)
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_CORE_MODULES; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
@@ -9,7 +13,7 @@
 
 
 <c:if test="${sessionScope.selectedCourse == null}">
-    <c:redirect url="<%= RPLServlet.MAINTAIN_TABLE_SERVLET.relativeAddress %>" />
+    <c:redirect url="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET.relativeAddress %>" />
 </c:if>
 
 <jsp:useBean id="selectedCourse" scope="session" class="domain.Course"/>
@@ -42,12 +46,7 @@
                 </td>
             </c:otherwise>
             </c:choose>
-            <c:if test="${sessionScope.selectedDiscipline == null}">
                 <td><input type="submit" value="Back" name="backToCourse" /></td>
-            </c:if>
-            <c:if test="${sessionScope.selectedDiscipline != null}">
-                <td><input type="submit" value="Back" name="backToDisciplineCourse" /></td>
-            </c:if>
             </tr>
             <tr>
                 <c:choose>

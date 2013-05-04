@@ -3,9 +3,8 @@
     Created on:	28/05/2011, 4:26:26 PM
     Modified:	27/04/2013
     Authors:	Adam Shortall, Bryce Carr
-    
-    Changelog:
-	27/04/2013: BC:	Added header label for Modules.
+    Version:	1.001
+    Changelog:	27/04/2013: BC:	Added header label for Modules.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_COURSE; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>

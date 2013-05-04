@@ -22,31 +22,59 @@ import util.Util;
 
 /**
 * Handles the Maintenance/Data-entry page for a course's core modules.
-* @author Adam Shortall
+* @author Adam Shortall, Bryce Carr
+* Created:	Unknown
+* Modified:	04/05/2013
+* Version:	1.010
+* Changelog:	04/05/2013: Bryce Carr:	Deleted/modified code to fit its new context (as an extension to Maintain Course).
+*					Implemented Core adding/removal.
 */
 public class MaintainCoreModulesServlet extends HttpServlet {
-
+private HttpSession session;
+    private User user;
+    private ModuleIO moduleIO;
+    Module selectedModule;
+    Course selectedCourse;
+    
     /**
-* Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-* @param request servlet request
-* @param response servlet response
-* @throws ServletException if a servlet-specific error occurs
-* @throws IOException if an I/O error occurs
-*/
+     * Sets variables for every processRequest
+     */
+    private void initialise(HttpServletRequest request, HttpServletResponse response) {
+        session = request.getSession();
+        user = (User) session.getAttribute("user");
+
+        moduleIO = new ModuleIO(user.role);
+	
+	selectedModule = moduleIO.getByID(request.getParameter("selectedModule"));
+	if (selectedModule == null) {
+	    selectedModule = moduleIO.getByID(Util.getPageStringID(request, "removeCore"));
+	}
+	selectedCourse = (Course)session.getAttribute("selectedCourse");
+    }
+    
+    private void deInitialise()	{
+	session = null;
+	user = null;
+	moduleIO = null;
+	selectedModule = null;
+	selectedCourse = null;
+    }
+    /**
+    * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+    * @param request servlet request
+    * @param response servlet response
+    * @throws ServletException if a servlet-specific error occurs
+    * @throws IOException if an I/O error occurs
+    */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
             String url = RPLPage.CLERICAL_CORE_MODULES.relativeAddress;
-            HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
-            ModuleIO moduleIO = new ModuleIO(user.role);
+            this.initialise(request, response);
             
-            String backToDisciplineCourse = request.getParameter("backToDisciplineCourse");
             String backToCourse = request.getParameter("backToCourse");
-            
-            Course selectedCourse = (Course) request.getAttribute("selectedCourse");
             
             String addCoreModule = request.getParameter("addCoreModule");
             String removeAsCoreIndex = Util.getPageStringID(request, "removeAsCore");
@@ -60,6 +88,7 @@ public class MaintainCoreModulesServlet extends HttpServlet {
                     session.setAttribute("selectedCourse", selectedCourse);
                 } catch (SQLException ex) {
                     Logger.getLogger(MaintainCoreModulesServlet.class.getName()).log(Level.SEVERE, null, ex);
+		    //TODO: BRYCE: How to handle elective/core collisions? Trying to add a core when it's already an elective will be an issue when this is big.
                 }
             } else if (removeAsCoreIndex != null) {
                 Module module = selectedCourse.getCoreModules().get(Integer.parseInt(removeAsCoreIndex));
@@ -69,8 +98,6 @@ public class MaintainCoreModulesServlet extends HttpServlet {
                 } catch (SQLException ex) {
                     Logger.getLogger(MaintainCoreModulesServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } else if (backToDisciplineCourse != null) {
-                url = RPLServlet.MAINTAIN_DISCIPLINE_COURSES_SERVLET.relativeAddress;
             } else if (backToCourse != null) {
                 url = RPLServlet.MAINTAIN_COURSE_SERVLET.relativeAddress;
             }
