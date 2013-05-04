@@ -5,6 +5,7 @@
     Author:	Adam Shortall, Bryce Carr
     Version:	1.010
     Changelog:	03/05/2013: BC:	Moved if block to below variable declaration (seriously, what is with that?)
+		04/05/2013: BC:	Added 'back' button.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_CAMPUS_DISCIPLINE; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
@@ -30,6 +31,7 @@
             <td colspan="1">
                 <h2>${selectedCampus}</h2>                    
             </td>
+	    <td align="right"><input type="submit" value="Back" name="back" /></td>
         </tr>
     </thead>
     <tbody>

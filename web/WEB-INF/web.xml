@@ -79,16 +79,8 @@
         <servlet-class>web.MaintainCampusDisciplineServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>MaintainCoreModulesServlet</servlet-name>
-        <servlet-class>web.MaintainCoreModulesServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>MaintainDisciplineCoursesServlet</servlet-name>
         <servlet-class>web.MaintainDisciplineCoursesServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>MaintainCourseElectivesServlet</servlet-name>
-        <servlet-class>web.MaintainCourseElectivesServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MaintainModuleElementsServlet</servlet-name>
@@ -212,16 +204,8 @@
         <url-pattern>/maintenance/campusDiscipline</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>MaintainCoreModulesServlet</servlet-name>
-        <url-pattern>/maintenance/coreModules</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>MaintainDisciplineCoursesServlet</servlet-name>
         <url-pattern>/maintenance/disciplineCourses</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>MaintainCourseElectivesServlet</servlet-name>
-        <url-pattern>/maintenance/courseElectives</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ListClaimsServlet</servlet-name>

@@ -37,6 +37,7 @@ import util.Util;
  *		04/05/2013: BC:	Module addition now implemented.
  *				Module removal now implemented.
  *				Removed unnecessary imports.
+ *				Changed signature on deInitialise() (didn't actually need arguments)
  */
 public class MaintainCourseModulesServlet extends HttpServlet {
     private HttpSession session;
@@ -70,7 +71,7 @@ public class MaintainCourseModulesServlet extends HttpServlet {
 	selectedCourse = (Course)session.getAttribute("selectedCourse");
     }
     
-    private void deInitialise(HttpServletRequest request, HttpServletResponse response)	{
+    private void deInitialise()	{
 	session = null;
 	user = null;
 	courseIO = null;
@@ -156,7 +157,7 @@ public class MaintainCourseModulesServlet extends HttpServlet {
 	    Logger.getLogger(MaintainCourseModulesServlet.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
             out.close();
-	    deInitialise(request, response);
+	    this.deInitialise();
         }
     }
 

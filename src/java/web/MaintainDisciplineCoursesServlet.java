@@ -28,13 +28,14 @@ import util.Util;
 /**
  *
  * @author Adam Shortall, Bryce Carr
- * @version 1.001
+ * @version 1.003
  * Created:	Unknown
  * Modified:	28/04/2013
  * 
  * Changelog:	28/04/2013: BC:	Commented out code relating to separate handling of Core and Elective management.
  *				Added code for unified handling of Module management.
  *		04/05/2013: BC:	Removed commented-out code.
+ *				Fixed back button functionality.
  */
 public class MaintainDisciplineCoursesServlet extends HttpServlet {
 
@@ -90,7 +91,9 @@ public class MaintainDisciplineCoursesServlet extends HttpServlet {
                 }
             } else if (back != null) {
                 request.setAttribute("selectedDiscipline", selectedDiscipline);
-                url = RPLServlet.MAINTAIN_CAMPUS_DISCIPLINE_SERVLET.relativeAddress;          
+		request.setAttribute("disciplines", disciplineIO.getListNotInCampus(selectedCampus.getCampusID()));
+		request.setAttribute("selectedCampus", selectedCampus);
+                url = RPLPage.CLERICAL_CAMPUS_DISCIPLINE.relativeAddress;          
             }
             
             // Get courses in selected CampusDiscipline:

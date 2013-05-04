@@ -21,14 +21,14 @@ import util.RPLPage;
 import util.RPLServlet;
 
 /**
- *
+ *  Clerical Admin page for adding/removing Disciplines from Campus'.
  * @author Adam Shortall, Bryce Carr
- * @version 1.1
- * <b>Created:</b>  Unknown<br/>
- * <b>Modified:</b> 24/04/2013<br/>
- * <b>Change Log:</b>  23/04/2013:  Bryce Carr: Implemented removal of Disciplines from Campus'.<br/>
- *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
- * <b>Purpose:</b>  Clerical Admin page for adding/removing Disciplines from Campus'.
+ * @version 1.011
+ *  Created:</b>  Unknown<br/>
+ *  Modified:</b> 24/04/2013<br/>
+ *  Change Log:	23/04/2013: Bryce Carr: Implemented removal of Disciplines from Campus'.
+ *		24/04/2013: Bryce Carr: Added header comments to match code conventions.
+ *		04/05/2013: Bryce Carr:	Moved test for 'back' value into other if block for optimisation purposes.
  */
 public class MaintainCampusDisciplineServlet extends HttpServlet {
 
@@ -60,10 +60,8 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
 
             String removeDisciplineID = request.getParameter("removeDiscipline");
 
-            String back = request.getParameter("backToCampusDiscipline");
-            if (back != null) {
-                url = RPLPage.CLERICAL_CAMPUS.relativeAddress;
-            }
+            String back = request.getParameter("back");
+	    
 
             if (request.getParameter("addDisciplineToCampus") != null) {
                 String selectedDisciplineID = request.getParameter("selectedDiscipline");
@@ -74,6 +72,8 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
                 campusIO.removeDiscipline(selectedCampus.getCampusID(), Integer.parseInt(removeDisciplineID));
                 selectedCampus.getDisciplines().remove(index);
                 disciplines = disciplineIO.getListNotInCampus(selectedCampus.getCampusID());
+            } else if (back != null) {
+                url = RPLPage.CLERICAL_CAMPUS.relativeAddress;
             } else {
                 selectedDiscipline = null;
             }
@@ -97,8 +97,6 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
                     session.setAttribute("selectedDiscipline", selectedDiscipline);
                     url = RPLServlet.MAINTAIN_DISCIPLINE_COURSES_SERVLET.relativeAddress;
                 }
-            } else {
-                url = RPLPage.CLERICAL_HOME.relativeAddress;
             }
 
             request.setAttribute("disciplines", disciplines);
