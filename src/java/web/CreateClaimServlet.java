@@ -1,11 +1,12 @@
 package web;
 
 /**
- * @author ?, Todd Wiggins
+ * @author ?, Todd Wiggins, Mitchell Carr
  * @version: 1.10
  * Created:	?
  * Modified: 25/04/2013: TW: Added validation for all 4 fields and now returns an error message for each.
  *           30/04/2013: TW: Moved to an AJAX method of updating select boxes. Added the 'post' boolean to process request.
+ *           04/05/2013: MC: Fixed setClaimID calls
  * <b>Purpose:</b>  Processes the 'Create Claim' form for Students.
  */
 import data.*;
@@ -87,29 +88,20 @@ public class CreateClaimServlet extends HttpServlet {
 			// claim. Depending on the button pressed the claim will either be RPL
 			// or Previous Studies.
 			ClaimIO claimIO = new ClaimIO(user.getRole());
-			//ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
 
 			//TW: Validate all the fields have been supplied, and return an error if not.
-			boolean valid = true;
+			boolean valid = false;
 			if (claim.getCampusID().equals("")) {
 				request.setAttribute("errorCampusID", new RPLError(FieldError.CAMPUS_NOT_SELECTED));
-				valid = false;
+			} else if (claim.getDisciplineID() == Util.INT_ID_EMPTY) {
+                                request.setAttribute("errorDisciplineID", new RPLError(FieldError.DISCIPLINE_NOT_SELECTED));
+                        } else if (claim.getCourseID().equals("")) {
+                                request.setAttribute("errorCourseID", new RPLError(FieldError.COURSE_NOT_SELECTED));
+                        } else if (request.getParameter("claimType") == null) {
+                                request.setAttribute("errorClaimType", new RPLError(FieldError.CLAIM_TYPE_NOT_SELECTED));
 			} else {
-				if (claim.getDisciplineID() == Util.INT_ID_EMPTY) {
-					request.setAttribute("errorDisciplineID", new RPLError(FieldError.DISCIPLINE_NOT_SELECTED));
-					valid = false;
-				} else {
-					if (claim.getCourseID().equals("")) {
-						request.setAttribute("errorCourseID", new RPLError(FieldError.COURSE_NOT_SELECTED));
-						valid = false;
-					} else {
-						if (request.getParameter("claimType") == null) {
-							request.setAttribute("errorClaimType", new RPLError(FieldError.CLAIM_TYPE_NOT_SELECTED));
-							valid = false;
-						}
-					}
-				}
-			}
+                                valid = true;
+                        }
 
 			if (valid){
 				if (request.getParameter("claimType").equals("prevStudies")) {
@@ -118,9 +110,7 @@ public class CreateClaimServlet extends HttpServlet {
 						claim.setAssessorID("123456789");
 						claimIO.insert(claim);
 						//Email.send(user.getEmail(), "Regarding your claim", "<b>Your claim is successfully created!</b>");
-						//claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
-						//TODO: uncomment claimRecordIO lines above when ClaimRecordIO class has been updated
-						claim.setClaimID(claimIO.getList(user).size());
+						claim.setClaimID(claimIO.getTotalClaims());
 						//Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "Your claim is successfully created!!");
 					} catch (SQLException sqlEx) {
 						Logger.getLogger(CreateClaimServlet.class.getName()).log(Level.SEVERE, null, sqlEx);
@@ -133,9 +123,7 @@ public class CreateClaimServlet extends HttpServlet {
 
 						claimIO.insert(claim);
 						//Email.send(user.getEmail(), "Regarding your claim", "<b>Your claim is successfully created!</b>");
-						//claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 0, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Kyoungho Lee
-						//TODO: uncomment claimRecordIO lines above when ClaimRecordIO class has been updated
-						claim.setClaimID(claimIO.getList(user).size());
+						claim.setClaimID(claimIO.getTotalClaims());
 						//Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "Your claim is successfully created!!");
 					} catch (SQLException sqlEx) {
 						Logger.getLogger(CreateClaimServlet.class.getName()).log(Level.SEVERE, null, sqlEx);
