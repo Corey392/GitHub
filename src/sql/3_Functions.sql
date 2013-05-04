@@ -20,7 +20,8 @@
  *		v2.091:	Mitch:	Updated 'fn_deleteclaim' and 'fn_getclaimbyid' in the same manner as 2.090.
  *		v2.092:	Bryce:	Fixed 'fn_listmodulesnotinacourse' so that it doesn't return a list of length properLength^2, and doesn't return duplicate modules if a module is part of multiple courses.
  *		v2.100:	Bryce:	Added 'fn_removemodulecore' and 'fn_removemoduleelective'.
- *      v2.110: Todd:   Added 'fn_insertstudent' with supplying a password instead of returning a generated password.
+ *      	v2.110: Todd:   Added 'fn_insertstudent' with supplying a password instead of returning a generated password.
+ *		v2.120: Mitch: Updated 'fn_deleteclaim' to delete claimed modules associated with the deleted claim.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -213,6 +214,7 @@ $_$;
 CREATE FUNCTION fn_deleteclaim(claimid integer) RETURNS void
     LANGUAGE sql
     AS $_$
+    DELETE FROM "ClaimedModule" WHERE "claimID" = $1;
     DELETE FROM "Claim" WHERE "claimID" = $1;
 $_$;
 
