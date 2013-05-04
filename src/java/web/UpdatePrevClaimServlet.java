@@ -21,6 +21,7 @@ import util.*;
  *	Modified:	25/04/2013
  *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module. Updated remove module error message.
  *	            30/04/2013: MC: Removed all ClaimRecord calls, methods, etc.
+ * 		    04/05/2013: MC: Updated submitClaim method
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -71,7 +72,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 					url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
 				} else {
 					ArrayList<Evidence> evidence = this.getEvidence(request, user, claim, selectedModule);
-					claim = this.addModule(claim, user, selectedModule, evidence, selectedProviders);
+					this.addModule(claim, user, selectedModule, evidence, selectedProviders);
 					modules = this.initialiseModuleList(user, claim);
 					url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
 				}
@@ -111,7 +112,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      * @param selectedProviders the providers for the module
      * @return the updated claim
      */
-    private Claim addModule(Claim claim, User user, Module selectedModule,
+    private void addModule(Claim claim, User user, Module selectedModule,
             ArrayList<Evidence> evidence,
             ArrayList<Provider> selectedProviders){
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(user.role);
@@ -141,7 +142,6 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return claim;
     }
 
     /**
@@ -361,13 +361,18 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      */
     private Claim submitClaim(User user, Claim claim) {
         ClaimIO claimIO = new ClaimIO(user.getRole());
-        //ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
+        ClaimedModuleIO moduleIO = new ClaimedModuleIO(user.getRole());
         claim.setStatus(Claim.Status.SUBMITTED);
         try {
+            for (ClaimedModule m : claim.getClaimedModules()){
+                try{
+                    moduleIO.insert(m);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
             claimIO.update(claim);
-            //claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); // Update - Kyoungho Lee
-            //TODO: The above should be uncommented when ClaimRecordIO has been updated, assuming it will be implemented
-            Email.send(user.getEmail(), "Cliam#:" + claim.getClaimID(), "This claim is successfully updated!!");
+            Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully updated!!");
         } catch (SQLException ex) {
             Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
