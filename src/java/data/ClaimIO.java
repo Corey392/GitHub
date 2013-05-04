@@ -25,6 +25,7 @@ import java.util.logging.Logger;
  *              24/04/2013:   Added header comments to match code conventions.
  *              01/05/2013:   Updated update(Claim) method to reflect change 2.090 to functions.sql
  *              01/05/2013:   Updated deleteClaim(Claim) and getById(Claim) methods to reflect change 2.091 to functions.sql
+ *              04/05/2013:   Implemented getTotalClaims() method
  * <b>Purpose:</b>  Controller class for interaction between application and database's Claim table. 
  */
 public class ClaimIO extends RPL_IO <Claim> {
@@ -83,8 +84,8 @@ public class ClaimIO extends RPL_IO <Claim> {
 
     /**
      * Updates a claim with new claim data. Different
-     * users have different priviliges so this works
-     * differently depending on ther user's role.
+     * users have different privileges so this works
+     * differently depending on their user's role.
      * @param claim the claim containing new claim data
      * @throws SQLException 
      */
@@ -201,6 +202,21 @@ public class ClaimIO extends RPL_IO <Claim> {
             list.add(this.getClaimFromRS(rs));
         }
         return list;
+    }
+    
+    /**
+     * @return total number of claims in DB
+     */
+    public int getTotalClaims() throws SQLException {
+        
+        String sql = "SELECT * FROM fn_GetClaimTotal()";
+        ResultSet rs = super.doPreparedStatement(sql);
+        int total = 0;
+        
+        if (rs.next()) {
+            total = rs.getInt(1);
+        }
+        return total;
     }
     
     /**
