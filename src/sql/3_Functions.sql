@@ -22,6 +22,7 @@
  *		v2.100:	Bryce:	Added 'fn_removemodulecore' and 'fn_removemoduleelective'.
  *      	v2.110: Todd:   Added 'fn_insertstudent' with supplying a password instead of returning a generated password.
  *		v2.120: Mitch: Updated 'fn_deleteclaim' to delete claimed modules associated with the deleted claim.
+ *		v2.121: Mitch: Added 'fn_getclaimtotal'
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -354,6 +355,24 @@ CREATE FUNCTION fn_getclaimbyid(claimid integer) RETURNS SETOF "Claim"
     LANGUAGE sql
     AS $_$
     SELECT * FROM "Claim" WHERE "claimID" = $1;
+$_$;
+
+
+--
+-- Name: fn_getclaimtotal(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fn_getclaimtotal() RETURNS integer
+    LANGUAGE plpgsql
+    AS $_$
+	DECLARE claimtotal int;
+	BEGIN
+		claimtotal := MAX("claimID") FROM "Claim";
+		IF claimtotal IS NULL
+		    THEN claimtotal := 0;
+		END IF;
+		return claimtotal;
+        END
 $_$;
 
 --
