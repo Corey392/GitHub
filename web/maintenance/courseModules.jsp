@@ -3,9 +3,12 @@
     Created on:	28/05/2011, 10:47:14 PM
     Modified:	03/05/2013
     Author:	Adam Shortall, Bryce Carr
-    Version:	1.020
+    Version:	1.030
     Changelog:	29/04/2013: BC:	Fixed 'back' button.
 		03/05/2013: BC:	Removed stuff for campus/discipline/course selection. This isn't a general module maintenance page.
+				Added headers showing current Campus and Discipline underneath current Course.
+		04/05/2013: BC:	Added check for noModulesLeft - now displays message instead of empty Module select
+				Module addition now implemented.
 
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_COURSE_MODULES;%>
@@ -18,6 +21,7 @@
 <jsp:useBean id="modules" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="selectedCampus" scope="request" class="domain.Campus"/>
 <jsp:useBean id="selectedDiscipline" scope="request" class="domain.Discipline"/>
+<c:if var="noModulesLeft" scope="page" test="${fn:length(modules) == 0}"/>
 
 <div class="body">
 
@@ -29,14 +33,21 @@
 	<table>
 	    <thead>
 		<tr>
-		    <td colspan="3">
-			Select module:
-			<select name="selectedModule">
-			    <c:forEach var="module" items="${modules}">                                            
-				<option value="${module.moduleID}">${module}</option>
-			    </c:forEach>
-			</select>
-		    </td>
+		    <c:choose>
+			<c:when test="${noModulesLeft}">
+			    <td colspan="3">There are no more modules to add to this course</td>
+			</c:when>
+			<c:otherwise>
+			    <td colspan="3">
+				Select module:
+				<select name="selectedModule">
+				    <c:forEach var="module" items="${modules}">                                            
+					<option value="${module.moduleID}">${module}</option>
+				    </c:forEach>
+				</select>
+			    </td>
+			</c:otherwise>
+		    </c:choose>
 		</tr>
 		<tr>
 		    <td width="50"><input type="submit" value="Add as Core" name="addCore" /></td>

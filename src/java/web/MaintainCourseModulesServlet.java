@@ -11,7 +11,10 @@ import domain.Module;
 import domain.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,36 +28,54 @@ import util.Util;
 /**
  *
  * @author Adam Shortall, Bryce Carr
- * @version 1.001
+ * @version 1.010
  * Created:	Unknown
- * Modified:	28/04/2013
+ * Modified:	03/05/2013
  * 
  * Changelog:	28/04/2013: BC:	Re-implemented file in project by uncommenting it, fixed a couple of minor things like a servlet address and a method call
  *		29/04/2013: BC:	Fixed session.getAttribute() call for selectedCourse. Requests the right attribute now. Might be worth using enums for that kind of thing.
  *				Fixed 'back' button.
  *		30/04/2013: BC:	Actually properly fixed 'back' button.
+ *		03/05/2013: BC:	Really fixed it this time.
+ *		04/05/2013: BC:	Module addition now implemented.
  */
 public class MaintainCourseModulesServlet extends HttpServlet {
+    private HttpSession session;
+    private User user;
+    private CourseIO courseIO;
+    private ModuleIO moduleIO;
+    Module selectedModule;
+    Campus selectedCampus;
+    Course selectedCourse;
+    Discipline selectedDiscipline;
+    
+    /**
+     * Sets variables for every processRequest
+     */
+    private void initialise(HttpServletRequest request, HttpServletResponse response) {
+        session = request.getSession();
+        user = (User) session.getAttribute("user");
 
+        courseIO = new CourseIO(user.role);
+        moduleIO = new ModuleIO(user.role);
+	
+	selectedModule = moduleIO.getByID(request.getParameter("selectedModule"));
+	selectedCampus = (Campus)session.getAttribute("selectedCampus");
+	selectedDiscipline = (Discipline)session.getAttribute("selectedDiscipline");
+	selectedCourse = (Course)session.getAttribute("selectedCourse");
+    }
     
+    private void deInitialise(HttpServletRequest request, HttpServletResponse response)	{
+	session = null;
+	user = null;
+	courseIO = null;
+	moduleIO = null;
+	selectedModule = null;
+	selectedCampus = null;
+	selectedDiscipline = null;
+	selectedCourse = null;
+    }
     
-//    /**
-//     * Sets variables for every processRequest
-//     */
-//    private void initialise() {
-//        session = request.getSession();
-//        user = (User) session.getAttribute("user");
-//
-//        campusIO = new CampusIO(user.role);
-//        disciplineIO = new DisciplineIO(user.role);
-//        courseIO = new CourseIO(user.role);
-//        moduleIO = new ModuleIO(user.role);
-//
-//        // Initialize list of campuses
-//        campuses = campusIO.getList();
-//        campuses.add(0, new Campus());
-//        request.setAttribute("campuses", campuses);
-//    }
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -67,44 +88,38 @@ public class MaintainCourseModulesServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
+            this.initialise(request, response);
             
-            CampusIO campusIO = new CampusIO(user.role);
-            DisciplineIO disciplineIO = new DisciplineIO(user.role);
-            CourseIO courseIO = new CourseIO(user.role);
-            ModuleIO moduleIO = new ModuleIO(user.role);
-            
-            String url = RPLPage.CLERICAL_COURSE_MODULES.relativeAddress;
-            ArrayList<Campus> campuses = campusIO.getList();
+            String url;
             ArrayList<Module> modules;
-            Campus selectedCampus = (Campus)session.getAttribute("selectedCampus");
-            Discipline selectedDiscipline = (Discipline)session.getAttribute("selectedDiscipline");
-            Course selectedCourse = (Course)session.getAttribute("selectedCourse");
             
-            // Get selectedCampusID & selectedDisciplineID from jsp
+            
+            // Get selectedCampusID, selectedModuleID & selectedDisciplineID from jsp
             String selectedCampusID = selectedCampus.getCampusID();
             int selectedDisciplineID = selectedDiscipline.getDisciplineID();
-            
+	    String selectedModuleID = null;
+	    if (selectedModule != null)	{
+		selectedModuleID = selectedModule.getModuleID();
+	    }
             
             // Now get electives & cores for the selected course
             selectedCourse = Util.getCourseWithModules(selectedCampusID, selectedDisciplineID, selectedCourse.getCourseID(), User.Role.ADMIN);
             request.setAttribute("course", selectedCourse);
             
-            // Now get/set the list of modules to display
-            modules = moduleIO.getListNotInCourse(selectedCourse.getCourseID());
-            request.setAttribute("modules", modules);
             
 	    // Now get IDs of modules to remove (if any)
+	    String addCoreID = null;
+	    String addElectiveID = null;
             String removeCoreID = Util.getPageStringID(request, "removeCore");
             String removeElectiveID = Util.getPageStringID(request, "removeElective");
 	    // Now get IDs of modules to add (if any)
-	    String addCoreID = Util.getPageStringID(request, "addCore");
-	    String addElectiveID = Util.getPageStringID(request, "addElective");
-	    
+	    if (request.getParameter("addCore") != null)    {
+		addCoreID = selectedModuleID;
+	    } else if (request.getParameter("addElective") != null) {
+		addElectiveID = selectedModuleID;
+	    }
 	    if (request.getParameter("back") != null)	{
 		url = RPLPage.CLERICAL_DISCIPLINE_COURSES.relativeAddress;
-		//request.setAttribute("back", null); // don't know why I have to do this but it persists otherwise and just keeps going back
 		request.setAttribute("courses", courseIO.getList(selectedCampusID, selectedDisciplineID));
 	    } else  {
 		url = RPLPage.CLERICAL_COURSE_MODULES.relativeAddress;
@@ -128,13 +143,21 @@ public class MaintainCourseModulesServlet extends HttpServlet {
             if (removeElectiveID != null) {
             }
             
+	    // Set variables for displaying data on page
             request.setAttribute("selectedCampus", selectedCampus);
             request.setAttribute("selectedDiscipline", selectedDiscipline);
+	    request.setAttribute("course", selectedCourse);
+            // Now get/set the list of modules to display
+            modules = moduleIO.getListNotInCourse(selectedCourse.getCourseID());
+            request.setAttribute("modules", modules);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request, response);
-        } finally {
+        } catch (SQLException ex) {
+	    Logger.getLogger(MaintainCourseModulesServlet.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
             out.close();
+	    deInitialise(request, response);
         }
     }
 
@@ -144,14 +167,18 @@ public class MaintainCourseModulesServlet extends HttpServlet {
      * @param request
      * @return 
      */
-    private HttpServletRequest addCoreModule(HttpServletRequest request) {
-        String selectedModuleID = request.getParameter("selectedModule");
-	//TODO: addCoreModule
+    private HttpServletRequest addCoreModule(HttpServletRequest request) throws SQLException {
+        this.initialise(request, null);
+	moduleIO.addCore(selectedCourse.getCourseID(), selectedModule.getModuleID());
+	selectedCourse.getCoreModules().add(selectedModule);
         return request;
     }
 
-    private HttpServletRequest addElectiveModule(HttpServletRequest request) {
-	//TODO: addElectiveModule
+    private HttpServletRequest addElectiveModule(HttpServletRequest request) throws SQLException {
+	this.initialise(request, null);
+	moduleIO.addElective(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), selectedCourse.getCourseID(), selectedModule.getModuleID());
+	selectedCourse.getElectiveModules().add(selectedModule);
+	
         return request;
     }
 

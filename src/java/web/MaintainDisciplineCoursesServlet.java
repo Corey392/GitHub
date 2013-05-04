@@ -34,6 +34,7 @@ import util.Util;
  * 
  * Changelog:	28/04/2013: BC:	Commented out code relating to separate handling of Core and Elective management.
  *				Added code for unified handling of Module management.
+ *		04/05/2013: BC:	Removed commented-out code.
  */
 public class MaintainDisciplineCoursesServlet extends HttpServlet {
 
@@ -64,8 +65,6 @@ public class MaintainDisciplineCoursesServlet extends HttpServlet {
             
             // Get user input:
             String addCourseToDiscipline = request.getParameter("addCourseToDiscipline");
-            //String modifyElectivesCourseID = request.getParameter("modifyCourseElectives"); //TODO: BRYCE: Remove these lines once Module maintenance is implemented
-            //String modifyCoresCourseID = request.getParameter("modifyCourseCores");
 	    String modifyModulesCourseID = request.getParameter("modifyCourseModules");
             String removeCourseFromDisciplineID = request.getParameter("removeCourseFromDiscipline");
             String back = request.getParameter("back");
