@@ -49,6 +49,7 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
         try {
             url = RPLPage.REGISTER.relativeAddress; // Address of next jsp to load, by default return the register page, if successful change URL
             session = request.getSession();
+            session.setAttribute("user", student);
             // Check to see if there is any form data, then validate:
             request = this.registerStudent(request);
 

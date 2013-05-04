@@ -44,7 +44,7 @@ public class ChangePasswordServlet extends HttpServlet {
 				if (newPW.equals(confirmNewPW)) {
 					User temp = new User(Role.STUDENT);
 					temp.setPassword(newPW);
-					if (!user.validateField(User.Field.PASSWORD)) {	//Validate new PW
+					if (!temp.validateField(User.Field.PASSWORD)) {	//Validate new PW
 						request.setAttribute("passwordNewError", new RPLError(FieldError.PASSWORD_COMPLEXITY));
 					} else {
 						try {

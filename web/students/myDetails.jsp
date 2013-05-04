@@ -19,9 +19,8 @@
 <h3>Manage Your Details:</h3>
 <div>
     <div>
-		<span><label for="userID">TAFE Student Number:</label></span>
-		<span><input type="text" name="userID" maxlength="9" size="10" value="${user.userID}"/></span>
-		<span>${userIDError.message}</span>
+		<span>TAFE Student Number: ${user.userID}</span>
+		<input type="hidden" name="userID" value="${user.userID}">
 	</div>
     <div>
 		<span><label for="firstName">First Name:</label></span>

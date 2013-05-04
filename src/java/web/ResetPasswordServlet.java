@@ -57,6 +57,7 @@ public class ResetPasswordServlet extends HttpServlet implements SingleThreadMod
 					String newPassword = userIO.resetPassword(userID);
 
 					//TODO: Send new password via email to user for security reasons.
+					request.setAttribute("status", new RPLError(FieldError.RESET_SENT));
 					System.out.println("New Password: "+newPassword+" (For User: "+email+")");
 				} else {
 					request.setAttribute("status", new RPLError(FieldError.RESET_FAILED));

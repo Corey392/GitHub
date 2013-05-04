@@ -91,8 +91,9 @@ public class UserIO extends RPL_IO<User> {
 			String phoneNumber = user.getPhoneNumber();
 			String studentID = user.getStudentID();
 			boolean staff = user.isStaff();
+			String password = user.getPassword();
 
-			sql = "SELECT fn_InsertStudent(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			sql = "SELECT fn_InsertStudent(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			SQLParameter p1 = new SQLParameter(userID);
 			SQLParameter p2 = new SQLParameter(email);
 			SQLParameter p3 = new SQLParameter(firstName);
@@ -106,7 +107,8 @@ public class UserIO extends RPL_IO<User> {
 			SQLParameter p11 = new SQLParameter(phoneNumber);
 			SQLParameter p12 = new SQLParameter(studentID);
 			SQLParameter p13 = new SQLParameter(staff);
-			super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13);
+			SQLParameter p14 = new SQLParameter(password);
+			super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14);
 			//Returns a generated password
 		} else if (user.role == User.Role.ADMIN || user.role == User.Role.TEACHER) {
 			sql = "SELECT fn_InsertTeacher(?,?,?,?,?)";

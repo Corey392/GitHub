@@ -3,7 +3,7 @@
  *  Created:
  *  Version:	v2.100
  *  Modified:	30/04/2013
- *  Change Log:	v2.000:	Bryce:
+ *  Change Log:	v2.110:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
  *		v2.021:	Mitch:	Fixed a mistake I made earlier in fn_listcores and fn_listelectives. Both have been tested and work now.
@@ -20,6 +20,7 @@
  *		v2.091:	Mitch:	Updated 'fn_deleteclaim' and 'fn_getclaimbyid' in the same manner as 2.090.
  *		v2.092:	Bryce:	Fixed 'fn_listmodulesnotinacourse' so that it doesn't return a list of length properLength^2, and doesn't return duplicate modules if a module is part of multiple courses.
  *		v2.100:	Bryce:	Added 'fn_removemodulecore' and 'fn_removemoduleelective'.
+ *      v2.110: Todd:   Added 'fn_insertstudent' with supplying a password instead of returning a generated password.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -772,6 +773,30 @@ CREATE FUNCTION fn_insertstudent("userID" text, "email" text, "firstName" text, 
 		RETURN pw;
     END;
 $_$;
+
+
+--
+-- Name: fn_insertstudent(text, text, text, text, text, text, text, text, text, integer, text, text, boolean, text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE OR REPLACE FUNCTION fn_insertstudent("userID" text, email text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, town text, state text, "postCode" integer, "phoneNumber" text, "studentID" text, staff boolean, "password" text)
+  RETURNS text AS
+$BODY$
+    BEGIN
+		PERFORM fn_InsertUser($1, $14, 'S', $2, $3, $4);
+		INSERT INTO "Student"("userID", "otherName", "addressLine1", "addressLine2", "town", "state", "postCode", "phoneNumber", "studentID", "staff")
+			VALUES($1, $5, $6, $7, $8, $9, $10, $11, $12, $13);
+		RETURN password;
+    END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE;
+
+ALTER FUNCTION fn_insertstudent(text, text, text, text, text, text, text, text, text, integer, text, text, boolean, text) OWNER TO postgres;
+GRANT EXECUTE ON FUNCTION fn_insertstudent(text, text, text, text, text, text, text, text, text, integer, text, text, boolean, text) TO postgres;
+GRANT EXECUTE ON FUNCTION fn_insertstudent(text, text, text, text, text, text, text, text, text, integer, text, text, boolean, text) TO admin;
+GRANT EXECUTE ON FUNCTION fn_insertstudent(text, text, text, text, text, text, text, text, text, integer, text, text, boolean, text) TO clerical;
+GRANT EXECUTE ON FUNCTION fn_insertstudent(text, text, text, text, text, text, text, text, text, integer, text, text, boolean, text) TO teacher;
+GRANT EXECUTE ON FUNCTION fn_insertstudent(text, text, text, text, text, text, text, text, text, integer, text, text, boolean, text) TO student;
 
 
 --
