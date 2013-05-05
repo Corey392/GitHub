@@ -28,6 +28,7 @@ import util.Util;
 * Version:	1.010
 * Changelog:	04/05/2013: Bryce Carr:	Deleted/modified code to fit its new context (as an extension to Maintain Course).
 *					Implemented Core adding/removal.
+*		05/05/2013: Bryce Carr:	Edited initialise() to reduce calls to database.
 */
 public class MaintainCoreModulesServlet extends HttpServlet {
 private HttpSession session;
@@ -44,10 +45,15 @@ private HttpSession session;
         user = (User) session.getAttribute("user");
 
         moduleIO = new ModuleIO(user.role);
-	
-	selectedModule = moduleIO.getByID(request.getParameter("selectedModule"));
-	if (selectedModule == null) {
-	    selectedModule = moduleIO.getByID(Util.getPageStringID(request, "removeCore"));
+	// Assign moduleID to local variable before querying database (saves performing unnecessary database I/O)
+	String selectedModuleID = request.getParameter("selectedModule");
+	if (selectedModuleID == null)	{
+	    selectedModuleID = Util.getPageStringID(request, "removeCore");
+	}
+	if (selectedModuleID != null)	{
+	    selectedModule = moduleIO.getByID(selectedModuleID);
+	} else	{
+	    selectedModule = null;
 	}
 	selectedCourse = (Course)session.getAttribute("selectedCourse");
     }
