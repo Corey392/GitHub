@@ -27,7 +27,7 @@ import util.Util;
 
 /**
  *
- * @author Adam Shortall, Bryce Carr
+ * @author Adam Shortall, Bryce Carr, Mitchell Carr
  * @version 1.003
  * Created:	Unknown
  * Modified:	28/04/2013
@@ -36,6 +36,7 @@ import util.Util;
  *				Added code for unified handling of Module management.
  *		04/05/2013: BC:	Removed commented-out code.
  *				Fixed back button functionality.
+ *              05/05/2013: MC: Addressed NullPointerException, removed unnecessary assignment
  */
 public class MaintainDisciplineCoursesServlet extends HttpServlet {
 
@@ -54,14 +55,15 @@ public class MaintainDisciplineCoursesServlet extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             String url = RPLPage.CLERICAL_DISCIPLINE_COURSES.relativeAddress;
-            
-            CourseIO courseIO = new CourseIO(user.role);
                 
             Campus selectedCampus = (Campus) session.getAttribute("selectedCampus");
             Discipline selectedDiscipline = (Discipline) session.getAttribute("selectedDiscipline");
             
             if (selectedCampus == null || selectedDiscipline == null) {
                 url = RPLServlet.MAINTAIN_TABLE_SERVLET.relativeAddress;
+                RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+                dispatcher.forward(request, response);
+                return;
             }
             
             // Get user input:
@@ -97,7 +99,7 @@ public class MaintainDisciplineCoursesServlet extends HttpServlet {
             }
             
             // Get courses in selected CampusDiscipline:
-            courseIO = new CourseIO(user.role);
+            CourseIO courseIO = new CourseIO(user.role);
             ArrayList<Course> courses = courseIO.getList(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID());
             Collections.sort(courses);
             selectedDiscipline.setCourses(courses);            
