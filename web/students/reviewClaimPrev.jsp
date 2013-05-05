@@ -27,12 +27,12 @@
 </c:if>
 
 <form action="updatePrevClaim" method="post" name="updateClaimForm">
-    <table border="0" class="datatable" style="min-width:700px">
+    <table border="0" class="datatable">
         <tr>
             <th>Module / Unit Code</th>
             <th>National Module Code</th>
             <th>Module / Unit Name</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
         <c:choose>
             <c:when test="${claim.claimedModules != null && claim.claimedModules.size() != 0}">
@@ -52,6 +52,8 @@
                 </tr>
             </c:otherwise>
         </c:choose>
+	</table>
+	<table class="datatable">
         <% index = 0; %>
         <tbody class="last_row">
         <tr>
