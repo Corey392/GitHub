@@ -43,22 +43,17 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         Claim claim = (Claim) session.getAttribute("claim");
 
         // Initialises the module and provider lists, as well as retrieveing the
-        // selectedModule and the evidence for each claimed module.
+        // selectedModule for each claimed module.
         ArrayList<Module> modules = this.initialiseModuleList(user, claim);
         ArrayList<Provider> providers = this.initialiseProviderList(user);
         Module selectedModule = this.getSelectedModule(request, user, modules);
 
-		// If the request came from the reviewClaimPrev jsp page then depending
-		// on the button pressed new or updated evidence will be saved, the
+		// If the request came from the reviewClaimPrev jsp page the
 		// claim will be submitted, or a module will be added or removed. The
 		// url is set to point back to the reviewClaimPrev page unless the claim
 		// was submitted or the user clicked back, in which case the url is set
 		// to the ListClaimsServlet.
-		if (request.getParameter("saveEvidence") != null) {
-			claim = this.setEvidence(request, user, claim);
-			url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
-		} else if (request.getParameter("submitClaim") != null) {
-			claim = this.setEvidence(request, user, claim);
+		if (request.getParameter("submitClaim") != null) {
 			claim = this.submitClaim(user, claim);
 			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
 		} else if (request.getParameter("addModule") != null) {
@@ -71,8 +66,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 					request.setAttribute("moduleError", new RPLError("Please select 1-3 providers"));
 					url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
 				} else {
-					ArrayList<Evidence> evidence = this.getEvidence(request, user, claim, selectedModule);
-					this.addModule(claim, user, selectedModule, evidence, selectedProviders);
+					this.addModule(claim, user, selectedModule, selectedProviders);
 					modules = this.initialiseModuleList(user, claim);
 					url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
 				}
@@ -108,22 +102,18 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      * @param claim the claim to add the module to
      * @param user the current user
      * @param selectedModule the selected module
-     * @param evidence the evidence provided for the selected module
      * @param selectedProviders the providers for the module
      * @return the updated claim
      */
     private void addModule(Claim claim, User user, Module selectedModule,
-            ArrayList<Evidence> evidence,
             ArrayList<Provider> selectedProviders){
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(user.role);
-        EvidenceIO evidenceIO = new EvidenceIO(user.role);
-        ClaimedModule claimedModule = new ClaimedModule();
-        claimedModule.setClaimID(claim.getClaimID());
-        claimedModule.setStudentID(user.getUserID());
-        claimedModule.setModuleID(selectedModule.getModuleID());
-        claimedModule.setName(selectedModule.getName());
+		ClaimedModule claimedModule = new ClaimedModule(
+				claim.getClaimID(),
+				user.getUserID(),
+				selectedModule.getModuleID(),
+				selectedModule.getName());
         claimedModule.setElements(selectedModule.getElements());
-        claimedModule.setEvidence(evidence);
         claimedModule.setProviders(selectedProviders);
         ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();
         claimedModules.add(claimedModule);
@@ -138,7 +128,6 @@ public class UpdatePrevClaimServlet extends HttpServlet {
                             provider.getProviderID());
                 }
             }
-            evidenceIO.insert(evidence.get(0));
         } catch (SQLException ex) {
             Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -210,28 +199,6 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         return selectedProviders;
     }
 
-
-    /**
-     * Gets the evidence for the module to be added to the claim.
-     * @param request the request
-     * @param user the current user
-     * @param claim the current claim
-     * @param selectedModule the selected module
-     * @return the evidence array
-     */
-    private ArrayList<Evidence> getEvidence(HttpServletRequest request, User user, Claim claim, Module selectedModule) {
-        ArrayList<Evidence> evidence;
-        String evidenceDesc = request.getParameter("evidence");
-        if (evidenceDesc == null){
-            evidence = new ArrayList<Evidence>();
-        } else {
-            evidence = new ArrayList<Evidence>();
-            evidence.add(new Evidence(claim.getClaimID(),
-                    selectedModule.getModuleID(), evidenceDesc));
-        }
-        return evidence;
-    }
-
     /**
      * Gets a list of modules that haven't already been added to the claim. This
      * is used to populate the combobox that the user can use to add modules.
@@ -254,6 +221,8 @@ public class UpdatePrevClaimServlet extends HttpServlet {
             for (ClaimedModule cm : claimedModules){
                 for (int i = 0; i < modules.size(); i++){
                     if (modules.get(i).getModuleID().equals(cm.getModuleID())){
+						cm.setName(modules.get(i).getName());
+						cm.setNationalModuleID(modules.get(i).getNationalModuleID());
                         modules.remove(i);
                     }
                 }
@@ -311,46 +280,6 @@ public class UpdatePrevClaimServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    /**
-     * Saves the evidence for all claimed modules to the database. Only used
-     * when the user clicks the saveEvidence button.
-     * @param request the request
-     * @param user the current user
-     * @param claim the current claim
-     * @return the updated claim
-     */
-    private Claim setEvidence(HttpServletRequest request, User user, Claim claim) {
-        EvidenceIO evidenceIO = new EvidenceIO(user.role);
-        ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();
-        ArrayList<ClaimedModule> newClaimedModules = new ArrayList<ClaimedModule>();
-        ArrayList<Evidence> newEvidence = new ArrayList<Evidence>();
-        for (ClaimedModule cm : claimedModules){
-            String evidenceDesc = request.getParameter(cm.getModuleID());
-            if (evidenceDesc != null){
-                newEvidence.add(
-                        new Evidence(
-                            claim.getClaimID(),
-                            cm.getModuleID(),
-                            evidenceDesc));
-                cm.setEvidence(newEvidence);
-                try {
-                    evidenceIO.update(newEvidence.get(0));
-                } catch (SQLException ex) {
-                    Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            newClaimedModules.add(cm);
-        }
-        /*try {
-            claimRecordIO.insert(new ClaimRecord(claim.getClaimID(), claim.getStudentID(), 0, user.getUserID(), "", 2, 0, claim.getCampusID(), claim.getCourseID(), claim.getClaimType().desc)); //  Update - Kyoungho Lee
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        //TODO: The above should be uncommented when ClaimRecordIO has been updated, assuming it will be implemented
-        claim.setClaimedModules(newClaimedModules);
-        return claim;
-    }
 
     /**
      * Changes the status of the claim in the database to submitted. Which flags

@@ -4,22 +4,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import util.Util;
 
-/**
- *
- * @author David
- * @author Adam Shortall
+/** Domain class for Claimed Modules, an extension of Module.
+ *  @author David, Adam Shortall, Todd Wiggins
+ *  @version    1.10
+ *	Created:    ?
+ *	Modified:	05/05/2013: TW: Added 'Module Name' into constructor, deprecated existing.
  */
 public final class ClaimedModule extends Module implements Serializable{
-    
+
     private int claimID;
     private String studentID;
-    
+
     private boolean approved;
     private String arrangementNo;
     private String functionalCode;
     private boolean overseasEvidence;
     private char recognition;
-    
+
     private ArrayList<Provider> providers;
     private ArrayList<Evidence> evidence;
 
@@ -29,24 +30,38 @@ public final class ClaimedModule extends Module implements Serializable{
     public ClaimedModule() {
         this(Util.INT_ID_EMPTY, "", "");
     }
-    
+
     /**
      * Constructs a ClaimedModule with all mandatory fields.
      * @param claimID
      * @param studentID
-     * @param moduleID 
+     * @param moduleID
      */
+	@Deprecated
     public ClaimedModule(int claimID, String studentID, String moduleID) {
+        this(claimID,studentID,moduleID,"");
+    }
+
+    /**
+     * Constructs a ClaimedModule with all mandatory fields.
+	 * @author Todd Wiggins (added Module Name)
+     * @param claimID Student's Claim ID
+     * @param studentID	Student ID
+     * @param moduleID TAFE Unit / Module Code
+     * @param name Name of Module
+     */
+    public ClaimedModule(int claimID, String studentID, String moduleID, String name) {
         this.setClaimID(claimID);
         this.setStudentID(studentID);
         this.setModuleID(moduleID);
+        this.setName(name);
         this.approved = false;
         this.arrangementNo = "";
         this.functionalCode = "";
         this.overseasEvidence = false;
         this.recognition = ' ';
     }
-    
+
     /**
      * @return the claimID
      */
@@ -172,7 +187,7 @@ public final class ClaimedModule extends Module implements Serializable{
     public void setEvidence(ArrayList<Evidence> evidence) {
         this.evidence = evidence;
     }
-    
+
     @Override
     public String toString() {
         return super.toString();

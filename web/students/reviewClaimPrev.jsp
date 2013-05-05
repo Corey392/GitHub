@@ -1,9 +1,9 @@
-<%-- 
-    Document   : reviewClaimPrev
-    Created on : 18/05/2011, 4:11:01 PM
-    Author     : James Lee Chin
+<%--Purpose:    Allows a student to update their account details.
+ *  @author     James Lee Chin, Todd Wiggins
+ *  @version    1.10
+ *  Created:    18/05/2011, 4:11:01 PM
+ *	Modified:	05/05/2013: TW: Added 'National Module Code' as per Story Boards, Removed 'Evidence' as this is for another page after first review.
 --%>
-
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
 <jsp:useBean id="modules" scope="request" class="java.util.ArrayList"/>
@@ -15,13 +15,13 @@
 
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.REVIEW_CLAIM_PREV; %>
-<% 
+<%
     boolean unsubmitted = (claim.getStatus() == Claim.Status.DRAFT);
 %>
 
 <h2 class="center">Recognition of Previous Studies</h2>
 
-    
+
 <c:if test="${!moduleError.toString().trim().equals('')}">
     <div class="warning">${moduleError}</div>
 </c:if>
@@ -29,9 +29,9 @@
 <form action="updatePrevClaim" method="post" name="updateClaimForm">
     <table border="0" class="datatable" style="min-width:700px">
         <tr>
-            <th>Module&nbsp;ID</th>
-            <th>Module Name</th>
-            <th>Evidence</th>
+            <th>Module / Unit Code</th>
+            <th>National Module Code</th>
+            <th>Module / Unit Name</th>
             <th></th>
         </tr>
         <c:choose>
@@ -39,22 +39,8 @@
                 <c:forEach var="claimedModule" items="${claim.claimedModules}">
                     <tr class="highlight_row" name="highlight_row">
                         <td>${claimedModule.moduleID}</td>
-                        <td>${claimedModule.name}</td>
-                        <c:choose>
-                            <c:when test="<%= unsubmitted %>">
-                                <c:choose>
-                                    <c:when test="${claimedModule.evidence.size() == 0}">
-                                        <td><input type="text" name="${claimedModule.moduleID}"/></td>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <td><input type="text" name="${claimedModule.moduleID}" value="${claimedModule.evidence.get(0).description}"/></td>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:when>
-                            <c:otherwise>
-                                <td>${claimedModule.evidence.get(0).description}</td>
-                            </c:otherwise>
-                        </c:choose>
+						<td>${claimedModule.getNationalModuleID()}</td>
+                        <td>${claimedModule.getName()}</td>
                         <td><button type="submit" name="removeModule" value="<%= index %>">Remove Module</button></td>
                     </tr>
                     <% index = index + 1; %>
@@ -62,7 +48,7 @@
             </c:when>
             <c:otherwise>
                 <tr>
-                    <td colspan="4">You&nbsp;have&nbsp;not&nbsp;added&nbsp;any&nbsp;modules</td>
+                    <td colspan="4">You have not added any modules</td>
                 </tr>
             </c:otherwise>
         </c:choose>
@@ -91,18 +77,16 @@
                 </select>
             </td>
 
-            <td><input type="text" name="evidence" /></td>
             <td><input type="submit" value="Add Module" name="addModule" /></td>
-            
+
         </tr>
         <tr>
             <td colspan="4">
-                <b>Select&nbsp;1&nbsp;-&nbsp;3&nbsp;Providers:</b><br />
+                <b>Select 1 - 3 Providers:</b><br />
             <% index = 0; %>
             <c:forEach var="provider" items="${providers}">
-            
+
                 <input type="checkbox" name="provider" value="<%= index %>">${provider.name}
-                &nbsp;&nbsp;
                 <c:if test="<%= (index + 1) % 3 == 0 %>">
                     <br />
                 </c:if>
@@ -128,5 +112,5 @@
             </c:otherwise>
         </c:choose>
 </form>
-        
+
 <%@include file="../WEB-INF/jspf/footer.jspf" %>

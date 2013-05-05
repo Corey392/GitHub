@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import java.util.ArrayList;
@@ -11,75 +7,86 @@ import util.FieldError;
  * A module is part of a course. Courses have elective modules
  * and core modules, but the modules as defined in this class
  * are the same either way. Each module has a list of elements
- * that list performance criteria for gaining credit for the 
- * module, but the list of elements may be empty. 
- * 
- * @author Adam Shortall
+ * that list performance criteria for gaining credit for the
+ * module, but the list of elements may be empty.
+ * @author Adam Shortall, Todd Wiggins
+ * @version    1.10
+ * Created:    ?
+ * Modified:   05/05/2013: TW: Added 'National Module ID', deprecated existing constructors.
  */
 public class Module implements Comparable<Module> {
-    
-    protected String moduleID;
 
+    protected String moduleID;
+	private String nationalModuleID;
     private String name;
     private String instructions;
-    
+
     private ArrayList<Element> elements;
-    
+
     /**
      * Defines validity of fields in this class.
      */
     public enum Field {
         MODULE_ID("^\\w+$", FieldError.MODULE_ID),
         INSTRUCTIONS("^\\w+$", FieldError.NONE);
-        
+
         public final String pattern;
         public final FieldError error;
-        
+
         Field(String pattern, FieldError error) {
             this.pattern = pattern;
             this.error = error;
         }
-        
+
         public boolean validate(String value) {
             boolean matches = value.matches(pattern);
             return value.matches(pattern);
         }
     }
-    
+
     public Module() {
         this("","","");
     }
-    
+
+	@Deprecated
     public Module(String moduleID) {
         this(moduleID, "", "");
     }
-    
+
+	@Deprecated
     public Module(String moduleID, String name) {
         this(moduleID, name, "");
     }
-    
+
+	@Deprecated
     public Module(String moduleID, String name, String instructions) {
-        this(moduleID, name, instructions, new ArrayList<Element>());
+        this(moduleID, "", name, instructions, new ArrayList<Element>());
     }
-    
+
+	@Deprecated
     public Module(String moduleID, String name, String instructions, ArrayList<Element> elements) {
+        this(moduleID, "", name, instructions, elements);
+    }
+
+    public Module(String moduleID, String nationalModuleID, String name, String instructions, ArrayList<Element> elements) {
         this.elements = elements;
         this.instructions = instructions;
         this.moduleID = moduleID;
-        this.name = name;   
+        this.nationalModuleID = nationalModuleID;
+        this.name = name;
     }
-    
+
     /**
-     * 
+     *
      * @return a list of FieldError, one for each Module.Field in error.
      */
     public ArrayList<FieldError> validate() {
         ArrayList<FieldError> list = new ArrayList<FieldError>();
-        
+
         if (! Field.MODULE_ID.validate(moduleID)) {
             list.add( Field.MODULE_ID.error);
         }
-        
+
         return list;
     }
 
@@ -107,6 +114,14 @@ public class Module implements Comparable<Module> {
         this.moduleID = moduleID;
     }
 
+    public String getNationalModuleID() {
+        return nationalModuleID;
+    }
+
+    public void setNationalModuleID(String nationalModuleID) {
+        this.nationalModuleID = nationalModuleID;
+    }
+
     public String getName() {
         return name;
     }
@@ -126,7 +141,7 @@ public class Module implements Comparable<Module> {
     /**
      * Compares modules by moduleID.
      * @param that
-     * @return 
+     * @return
      */
     @Override
     public int compareTo(Module that) {
