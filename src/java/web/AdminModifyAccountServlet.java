@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.PostgreError;
@@ -27,7 +23,7 @@ import util.RPLServlet;
 /**
  * Handles the page that modifies a non-student account.
  * 
- * @author Adam Shortall
+ * @author Adam Shortall, Mitchell Carr
  */
 public class AdminModifyAccountServlet extends HttpServlet {
 
@@ -47,9 +43,8 @@ public class AdminModifyAccountServlet extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             User selectedUser = (User) session.getAttribute("selectedUser");
-            User modifiedUser = null;
+            User modifiedUser;
             UserIO userIO = new UserIO(user.role);
-            String oldUserID = selectedUser.getUserID();
             
             // Get user inputs:
             String newUserID = request.getParameter(FormAdminModifyAccount.USER_ID);
@@ -61,10 +56,10 @@ public class AdminModifyAccountServlet extends HttpServlet {
             String cancel = request.getParameter(FormAdminModifyAccount.CANCEL);
             
             // Event handling:
-            //boolean isValid = true;
-            //Mitchell: Variable is currently unused, thus commented out,
-            //but may be added again later? I see no use for it right now.
-            if (submit != null && selectedUser != null) {
+            if (selectedUser == null){
+                url = RPLServlet.ADMIN_LIST_ACCOUNTS.relativeAddress;
+            }else if (submit != null) {
+                String oldUserID = selectedUser.getUserID();
                 selectedUser.setUserID(newUserID);
                 if (!selectedUser.validateField(User.Field.USER_ID)) {
                     request.setAttribute(FormAdminModifyAccount.errID, new RPLError(FieldError.TEACHER_ID));
@@ -83,23 +78,28 @@ public class AdminModifyAccountServlet extends HttpServlet {
                 if (isAdmin != null) {
                     if (selectedUser.role != Role.ADMIN) {
                         modifiedUser = new User(newUserID, newFName, newLName, newUserID, Role.ADMIN);
+                    }else{
+                        out.close();
+                        return;
                     }
-                    //TODO: If they are an admin, modifiedUser will remain null,
-                    //causing a NullPointerException at setPassword just below
                 } else {
                     modifiedUser = new User(newUserID, newFName, newLName, newUserID, Role.TEACHER);
                 }
                 if (resetPW != null) {
-                modifiedUser.setPassword(userIO.resetPassword(oldUserID));
-                request.setAttribute(FormAdminModifyAccount.passwordReset, new RPLError(
-                    "New password for user: " + modifiedUser.getPassword() + "<br/>"
-                    + "<a href=\"mailto:" + modifiedUser.getEmail() + "?Subject=Your RPL Account"
-                    + "&body=Your RPL account has been modified. %0A%0A"
-                    + "Your user id: " + modifiedUser.getUserID() + "%0A"
-                    + "Your password: " + modifiedUser.getPassword() + "%0A%0A"
-                    + "You should change your password on the system after you log in.%0A"
-                    + "Log in here: " + RPLPage.URL + "\">"
-                    + "Send email with account details</a>"));
+                    String pass = userIO.resetPassword(oldUserID);
+                    if (pass != null){
+                        modifiedUser.setPassword(pass);
+                    }
+                
+                    request.setAttribute(FormAdminModifyAccount.passwordReset, new RPLError(
+                        "New password for user: " + modifiedUser.getPassword() + "<br/>"
+                        + "<a href=\"mailto:" + modifiedUser.getEmail() + "?Subject=Your RPL Account"
+                        + "&body=Your RPL account has been modified. %0A%0A"
+                        + "Your user id: " + modifiedUser.getUserID() + "%0A"
+                        + "Your password: " + modifiedUser.getPassword() + "%0A%0A"
+                        + "You should change your password on the system after you log in.%0A"
+                        + "Log in here: " + RPLPage.URL + "\">"
+                        + "Send email with account details</a>"));
                 }
                 try {
                     userIO.update(modifiedUser, oldUserID);
@@ -112,8 +112,6 @@ public class AdminModifyAccountServlet extends HttpServlet {
             } else if (cancel != null) {
                 url = RPLServlet.ADMIN_LIST_ACCOUNTS.relativeAddress;
                 session.removeAttribute("selectedUser");
-            } else if (selectedUser == null) {
-                url = RPLServlet.ADMIN_LIST_ACCOUNTS.relativeAddress;
             }
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
