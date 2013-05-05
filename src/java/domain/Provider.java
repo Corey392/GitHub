@@ -4,15 +4,17 @@
  */
 package domain;
 
+import java.io.Serializable;
+
 /**
- * 
+ *
  * @author David, James
  * @author Adam Shortall
  */
-public class Provider implements Comparable<Provider> {
+public class Provider implements Comparable<Provider>, Serializable {
     private char providerID;
     private String name;
-    
+
     public Provider() {
         this(' ',"");
     }
@@ -49,5 +51,5 @@ public class Provider implements Comparable<Provider> {
         if (this.providerID < that.providerID) {
             return -1;
         } return (this.providerID == that.providerID ? 0 : 1);
-    }        
+    }
 }

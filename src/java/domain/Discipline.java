@@ -4,6 +4,7 @@
  */
 package domain;
 
+import java.io.Serializable;
 import java.text.Collator;
 import java.util.ArrayList;
 import util.FieldError;
@@ -18,14 +19,14 @@ import util.FieldError;
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
  * <b>Purpose:</b>  Model class for database's Discipline table.
  */
-public class Discipline implements Comparable<Discipline> {
-    
+public class Discipline implements Comparable<Discipline>, Serializable {
+
     public enum Field {
         NAME("^[\\w+\\s]+$", FieldError.DISCIPLINE_NAME);
-        
+
         public final String pattern;
         public final FieldError fieldError;
-        
+
         Field(String pattern, FieldError fieldError) {
             this.pattern = pattern;
             this.fieldError = fieldError;
@@ -38,16 +39,16 @@ public class Discipline implements Comparable<Discipline> {
     public Discipline() {
         this("");
     }
-    
+
     public Discipline(String name) {
         this.name = name;
     }
-    
+
     public Discipline(int disciplineID, String name) {
         this.disciplineID = disciplineID;
         this.name = name;
     }
-    
+
     public FieldError validate() {
         if (! name.matches(Field.NAME.pattern)) {
             return Field.NAME.fieldError;
@@ -79,14 +80,14 @@ public class Discipline implements Comparable<Discipline> {
     /**
      * For sorting Disciplines in alphabetical order
      * @param that
-     * @return 
+     * @return
      */
     @Override
     public int compareTo(Discipline that) {
         Collator collator = Collator.getInstance();
         return collator.compare(this.name, that.name);
     }
-    
+
     /**
      * Compares two Discipline objects' disciplineIDs.
      * @param obj
