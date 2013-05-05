@@ -9,15 +9,16 @@ import util.FieldError;
  * are the same either way. Each module has a list of elements
  * that list performance criteria for gaining credit for the
  * module, but the list of elements may be empty.
- * @author Adam Shortall, Todd Wiggins
+ * @author Adam Shortall, Todd Wiggins, Mitchell Carr
  * @version    1.10
  * Created:    ?
  * Modified:   05/05/2013: TW: Added 'National Module ID', deprecated existing constructors.
+ * 	       05/05/2013: MC: Removed unnecessary check, minor cleanup
  */
 public class Module implements Comparable<Module> {
 
     protected String moduleID;
-	private String nationalModuleID;
+    private String nationalModuleID;
     private String name;
     private String instructions;
 
@@ -39,7 +40,6 @@ public class Module implements Comparable<Module> {
         }
 
         public boolean validate(String value) {
-            boolean matches = value.matches(pattern);
             return value.matches(pattern);
         }
     }
@@ -150,10 +150,7 @@ public class Module implements Comparable<Module> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if ((obj == null) || (getClass() != obj.getClass())) {
             return false;
         }
         final Module other = (Module) obj;
@@ -166,7 +163,8 @@ public class Module implements Comparable<Module> {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 89 * hash + (this.moduleID != null ? this.moduleID.hashCode() : 0);
+        hash *= 89;
+        hash += this.moduleID != null ? this.moduleID.hashCode() : 0;
         return hash;
     }
 }
