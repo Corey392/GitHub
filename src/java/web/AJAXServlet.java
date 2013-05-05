@@ -18,10 +18,9 @@ import util.Util;
 
 /** Processes AJAX Requests for data to be returned in JSON format.
  *  @author     Todd Wiggins
- *  @version    1.00
+ *  @version    1.001
  *	Created:    30/04/2013
  *	Modified:
- *	Change Log:
  */
 public class AJAXServlet extends HttpServlet {
 	/**
@@ -77,7 +76,6 @@ public class AJAXServlet extends HttpServlet {
 
 				AJAXMessage = "{\"course\":[";
 				AJAXMessage += "{\"id\":0,\"desc\":\"\"}";
-				System.out.println("courses.size(): "+courses.size());
 				if (courses.size() > 1) {
 					AJAXMessage += ",";
 				}
