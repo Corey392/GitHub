@@ -1,17 +1,18 @@
 package util;
 
 /**
- * 
+ *
  * @author Adam Shortall, Todd Wiggins, Bryce Carr
- * @version 1.02
+ * @version 1.021
  * <b>Created:</b>  Unknown<br/>
  * <b>Modified:</b> 24/04/2013<br/>
  * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Added reference to new Data Maintenance page (dataMaintenanceSelect.jsp).<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
+ *                  05/05/2013: TW: Added site title field which is used in the browser on tabs / window title bar.<br/>
  * <b>Purpose:</b>  Stores values for names and addresses of pages for the RPL website.
  */
 public enum RPLPage {
-    HOME("RPL Homepage", "/index.jsp"),
+    HOME("", "/index.jsp"),
     REGISTER("RPL Student Registration", "/studentRegister.jsp"),
     REGISTER_CONFIRM("RPL Registration Confirmed", "/students/registerConfirm.jsp"),
 	CHANGE_PW("Change My Password", "/changePassword.jsp"),//Added by: Todd Wiggins
@@ -60,6 +61,7 @@ public enum RPLPage {
     public final static String URL = "rpl.cccit.info";
 
     public final String title;
+    public final String siteTitle;
     public final String absoluteAddress;
     public final String relativeAddress;
 
@@ -77,7 +79,8 @@ public enum RPLPage {
      * @param relativeAddress address relative to ROOT, beginning with a slash.
      */
     RPLPage(String title, String relativeAddress) {
-        this.title = title;
+		this.title = title;
+		this.siteTitle = title + (title.length() > 0 ? " - " : "") + "RPL Assist";
         this.relativeAddress = relativeAddress;
         this.absoluteAddress = ROOT + relativeAddress;
     }
