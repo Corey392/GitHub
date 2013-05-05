@@ -16,7 +16,7 @@ import util.RPLPage;
 
 /**
  *
- * @author David
+ * @author David, Mitchell Carr
  */
 public class ViewTeacherClaimsServlet extends HttpServlet {
     private HttpSession session;
@@ -37,7 +37,7 @@ public class ViewTeacherClaimsServlet extends HttpServlet {
         session = request.getSession();
         user = (User)session.getAttribute("user");
         
-        ArrayList<Claim> claims = null;
+        ArrayList<Claim> claims = new ArrayList<Claim>();
         
         ClaimIO claimIO = new ClaimIO(user.role);
         try {
