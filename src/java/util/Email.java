@@ -1,7 +1,9 @@
 package util;
 
 import java.util.Properties;
- 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -10,6 +12,13 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/** Purpose:    Handles sending of email messages.
+ *  @author     Unknown, Todd Wiggins
+ *  @version    1.01
+ *	Created:    ?
+ *	Modified:	05/05/2013
+ *	Change Log: 05/05/2013: Added logger to exception. Disabled actual sending of message temporarily.
+ */
 public class Email {
 
 	//DO NOT CHANGE!!!
@@ -37,9 +46,12 @@ public class Email {
 				InternetAddress.parse(toEmail));
 			message.setSubject(subject);
 			message.setText(body);
- 
-			Transport.send(message);
+
+			Logger.getLogger(Email.class.getName()).log(Level.INFO, "Email to send: "+toEmail+", subject: "+subject+", body: "+body);
+			//TODO: Remove comments to get emails to send.
+			//Transport.send(message);
 		} catch (MessagingException e) {
+			Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, e);
 			throw new RuntimeException(e);
 		}
 	}
