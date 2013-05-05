@@ -1,4 +1,4 @@
-<%--A simple student user registration form.
+<%--Create Claim page where you select Campus, Disciple, Course and Claim type.
  *  @author     James Purves, Todd Wiggins
  *  @version    1.02
  *  Created:    14/05/2011, 5:06:19 PM
