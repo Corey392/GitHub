@@ -13,6 +13,7 @@
 		    1.030:  MC: Removed student menu for listing claim status.     
 		    1.031:  MC: Removed other unused links.   
 		    1.032:  BC:	Removed Manage Courses link from Clerical menu (already in Data Maintenance menu).
+				Changed header image to unofficial RPL logo.
 --%>
 <%@page import="domain.User.Role"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -39,7 +40,7 @@
 <body>
 <div id="wrapper">
     <div id="side_left">
-        <img src="<%= RPLPage.ROOT %>/images/UoN_logo_secondary.gif" alt="logo" />
+        <img src="<%= RPLPage.ROOT %>/images/RPL_small.jpg" alt="logo" />
         <div id="menu">
             <ul>
                 <li><a href="<%= RPLPage.ROOT %>/home">Home</a></li>
