@@ -7,6 +7,7 @@ import domain.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -27,6 +28,7 @@ import util.Util;
  * <b>Modified:</b> 24/04/2013<br/>
  * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Removed code to account for removal of field moduleID in DB's Criterion table.<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.
+ *                  05/05/2013: Mitch Carr: Implemented deleteCriterion segment of processRequest
  */
 public class MaintainElementCriteria extends HttpServlet {
 
@@ -78,7 +80,19 @@ public class MaintainElementCriteria extends HttpServlet {
                     Logger.getLogger(MaintainElementCriteria.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else if (deleteCriterionID != null) {
-                // TODO: delete criterion
+                int deleteID = Integer.parseInt(deleteCriterionID);
+                ArrayList<Criterion> criterionArray =  criterionIO.getList(selectedElement.getElementID());
+                for (Criterion c : criterionArray){
+                    if (c.getCriterionID() == deleteID){
+                        try {
+                            criterionIO.delete(c);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(MaintainElementCriteria.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                    }
+                }
+                
             } else if (backToModuleElementsServlet != null) {
                 url = RPLServlet.MAINTAIN_MODULE_ELEMENTS_SERVLET.relativeAddress;
             }
