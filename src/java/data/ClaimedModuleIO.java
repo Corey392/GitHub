@@ -10,12 +10,13 @@ import java.util.logging.Logger;
 
 /**
  * Handles IO for ClaimedModule objects.
- * @author Adam Shortall, Bryce Carr
+ * @author Adam Shortall, Bryce Carr, Mitchell Carr
  * @version 1.02
  * <b>Created:</b> Unknown 
  * <b>Modified:</b> 24/04/2013
  * <b>Change Log:</b>  08/04/2013: Made small changes to incorporate guideFileAddress DB field.
  *                  24/04/2013: Added header comments to match code conventions.
+ *                  05/05/2013: Updated delete to reflect DB
  * <b>Purpose:</b>  Controller class for interaction with database's ClaimedModule table.
  */
 public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
@@ -55,9 +56,8 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         String moduleID = claimedModule.getModuleID();
         int claimID = claimedModule.getClaimID();
         
-        SQLParameter p1, p2;
-        p1 = new SQLParameter(moduleID);
-        p2 = new SQLParameter(claimID);
+        SQLParameter p1 = new SQLParameter(moduleID);
+        SQLParameter p2 = new SQLParameter(claimID);
         
         super.doPreparedStatement(sql, p1, p2);
     }
@@ -78,15 +78,14 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         boolean overseasEvidence = claimedModule.isOverseasEvidence();
         char recognition = claimedModule.getRecognition();
         
-        SQLParameter p1, p2, p3, p4, p5, p6, p7, p8;
-        p1 = new SQLParameter(moduleID);
-        p2 = new SQLParameter(studentID);
-        p3 = new SQLParameter(claimID);
-        p4 = new SQLParameter(approved);
-        p5 = new SQLParameter(arrangementNo);
-        p6 = new SQLParameter(functionalCode);
-        p7 = new SQLParameter(overseasEvidence);
-        p8 = new SQLParameter(recognition);
+        SQLParameter p1 = new SQLParameter(moduleID);
+        SQLParameter p2 = new SQLParameter(studentID);
+        SQLParameter p3 = new SQLParameter(claimID);
+        SQLParameter p4 = new SQLParameter(approved);
+        SQLParameter p5 = new SQLParameter(arrangementNo);
+        SQLParameter p6 = new SQLParameter(functionalCode);
+        SQLParameter p7 = new SQLParameter(overseasEvidence);
+        SQLParameter p8 = new SQLParameter(recognition);
         
         super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8);
     }
@@ -97,18 +96,14 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
      * @throws SQLException 
      */
     public void delete(ClaimedModule claimedModule) throws SQLException {
-        String sql = "SELECT fn_DeleteClaimedModule(?,?,?)";
+        String sql = "SELECT fn_DeleteClaimedModule(?,?)";
         String moduleID = claimedModule.getModuleID();
-        String studentID = claimedModule.getStudentID();
         int claimID = claimedModule.getClaimID();
         
-        SQLParameter p1, p2, p3;
+        SQLParameter p1 = new SQLParameter(moduleID);
+        SQLParameter p2 = new SQLParameter(claimID);
         
-        p1 = new SQLParameter(moduleID);
-        p2 = new SQLParameter(studentID);
-        p3 = new SQLParameter(claimID);
-        
-        super.doPreparedStatement(sql, p1, p2, p3);
+        super.doPreparedStatement(sql, p1, p2);
     }
     
     /**
@@ -139,7 +134,9 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
                 overseasEvidence = rs.getBoolean(Field.OVERSEAS_EVIDENCE.name);
                 if (rs.getString(Field.RECOGNITION.name) != null) {
                     recognition = rs.getString(Field.RECOGNITION.name).charAt(0);
-                } else recognition = ' ';
+                } else {
+                    recognition = ' ';
+                }
                 module = new ClaimedModule(claimID, studentID, moduleID);
                 module.setApproved(approved);
                 module.setArrangementNo(arrangementNo);
@@ -163,10 +160,9 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
     public void addProvider(int claimID, String moduleID, char providerID) throws SQLException {
         String sql = "SELECT fn_AddProviderToClaimedModule(?,?,?)";
         
-        SQLParameter p1, p2, p3;
-        p1 = new SQLParameter(claimID);
-        p2 = new SQLParameter(moduleID);
-        p3 = new SQLParameter(providerID);
+        SQLParameter p1 = new SQLParameter(claimID);
+        SQLParameter p2 = new SQLParameter(moduleID);
+        SQLParameter p3 = new SQLParameter(providerID);
         
         super.doPreparedStatement(sql, p1, p2, p3);
     }
