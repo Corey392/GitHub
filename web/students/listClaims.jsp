@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : listClaims for a Student
     Created on : 15/05/2011, 3:53:01 PM
     Author     : David Gibbins, James Purves
@@ -49,11 +49,24 @@
                 </c:otherwise>
             </c:choose>
         </table>
-        
+
         <div class="bottomButton">
             <input type="submit" value="Delete Draft Claim" name="delete" />
             <input type="submit" value="View Claim" name="view" />
         </div>
     </form>
+
+	<p id="statuses"><strong>Explanation of Statuses:</strong>
+		<ul>
+			<li><strong>Draft:</strong> Your claim has not been submitted, you either saved your claim or your session expired.</li>
+			<li><strong>Preliminary:</strong> Your claim has been received, an assessor will determine if further evidence is required.</li>
+			<li><strong>Attach Evidence:</strong> Your claim has been received, further evidence is required, please see notes in claim from assessor.</li>
+			<li><strong>Awaiting Assessment:</strong> Your claim has been received and is being assessed.</li>
+			<li><strong>Awaiting Approval:</strong> The Assessor has approved your claim and is being reviewed by a Delegate.</li>
+			<li><strong>Submitted:</strong> The claim has been forwarded to the Recognition Centre and approval is pending.</li>
+			<li><strong>Approved:</strong> Has been accepted by Recognition Centre and no further actions required.</li>
+			<li><strong>Declined:</strong> The claim has not been accepted, contact the Assessor if you have further queries.</li>
+		</ul>
+	</p>
 </div>
 <%@include file="../WEB-INF/jspf/footer.jspf" %>
