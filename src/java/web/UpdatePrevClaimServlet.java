@@ -16,12 +16,12 @@ import javax.servlet.ServletException;
 import util.*;
 
 /** @author     James Purves, Todd Wiggins, Mitch Carr
- *  @version    1.02
+ *  @version    1.030
  *	Created:    ?
- *	Modified:	25/04/2013
  *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module. Updated remove module error message.
  *	            30/04/2013: MC: Removed all ClaimRecord calls, methods, etc.
- * 		    04/05/2013: MC: Updated submitClaim method
+ *				04/05/2013: MC: Updated submitClaim method
+ *				05/05/2013: TW: Updated submitClaim method, added boolean Submit for submit or save as draft.
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -54,7 +54,10 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 		// was submitted or the user clicked back, in which case the url is set
 		// to the ListClaimsServlet.
 		if (request.getParameter("submitClaim") != null) {
-			claim = this.submitClaim(user, claim);
+			claim = this.submitClaim(user, claim, true);
+			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
+		} else if (request.getParameter("draftClaim") != null) {
+			claim = this.submitClaim(user, claim, false);
 			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
 		} else if (request.getParameter("addModule") != null) {
 			if (selectedModule == null) {
@@ -286,12 +289,12 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      * it as ready to be assessed by a teacher.
      * @param user the current user
      * @param claim the current claim
+     * @param submit Should this claim be submitted (true) or saved as a draft (false).
      * @return the modified claim
      */
-    private Claim submitClaim(User user, Claim claim) {
+    private Claim submitClaim(User user, Claim claim, boolean submit) {
         ClaimIO claimIO = new ClaimIO(user.getRole());
         ClaimedModuleIO moduleIO = new ClaimedModuleIO(user.getRole());
-        claim.setStatus(Claim.Status.SUBMITTED);
         try {
             for (ClaimedModule m : claim.getClaimedModules()){
                 try{
@@ -301,7 +304,12 @@ public class UpdatePrevClaimServlet extends HttpServlet {
                 }
             }
             claimIO.update(claim);
-            Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully updated!!");
+			if (submit) {
+				Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully submitted.");
+				claim.setStatus(Claim.Status.SUBMITTED);
+			} else {
+				claim.setStatus(Claim.Status.DRAFT);
+			}
         } catch (SQLException ex) {
             Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

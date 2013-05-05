@@ -106,6 +106,7 @@
                     <b>${selectError.message}</b>
                 </c:if>
 
+                <input type="submit" value="Save Draft Claim" name="draftClaim" />
                 <input type="submit" value="Submit Claim" name="submitClaim" />
 
             </c:when>
