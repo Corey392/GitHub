@@ -38,6 +38,7 @@ import util.Util;
  *				Module removal now implemented.
  *				Removed unnecessary imports.
  *				Changed signature on deInitialise() (didn't actually need arguments)
+ *		05/05/2013: BC:	Edited initialise() to reduce calls to database.
  */
 public class MaintainCourseModulesServlet extends HttpServlet {
     private HttpSession session;
@@ -58,14 +59,20 @@ public class MaintainCourseModulesServlet extends HttpServlet {
 
         courseIO = new CourseIO(user.role);
         moduleIO = new ModuleIO(user.role);
-	
-	selectedModule = moduleIO.getByID(request.getParameter("selectedModule"));
-	if (selectedModule == null) {
-	    selectedModule = moduleIO.getByID(Util.getPageStringID(request, "removeCore"));
-	    if (selectedModule == null)	{
-		selectedModule = moduleIO.getByID(Util.getPageStringID(request, "removeElective"));
+	// Assign moduleID to local variable before querying database (saves performing unnecessary database I/O)
+	String selectedModuleID = request.getParameter("selectedModule");
+	if (selectedModuleID == null)	{
+	    selectedModuleID = Util.getPageStringID(request, "removeCore");
+	    if (selectedModuleID == null)	{
+		selectedModuleID = Util.getPageStringID(request, "removeElective");
 	    }
 	}
+	if (selectedModuleID != null)	{
+	    selectedModule = moduleIO.getByID(selectedModuleID);
+	} else	{
+	    selectedModule = null;
+	}
+	
 	selectedCampus = (Campus)session.getAttribute("selectedCampus");
 	selectedDiscipline = (Discipline)session.getAttribute("selectedDiscipline");
 	selectedCourse = (Course)session.getAttribute("selectedCourse");
