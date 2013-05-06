@@ -1,10 +1,11 @@
-﻿/* Purpose:  	Adds the Tables to the database.
+/* Purpose:  	Adds the Tables to the database.
  * Authors:	Ryan, Kelly, Todd, Bryce
  * Created:	Unknown	
  * Version:	v2.010
  * Modified:	30/04/2013
  * Change Log:	v2.000: Todd:	Updated Student table, datatype for PhoneNumber changed to text
  *		v2.010:	Bryce:	Updated CourseModule table, foreign key for CampusDisciplineCourse electives
+		v2.020:	Bryce:	Updated Element, Evidence and Criterion tables. Changed PK of Element to a composite key and changed the others' references to match.
  * Pre-conditions: Database must be created, tables must not already exist.
  */
 --------------------------------------------------------------------------------------
@@ -393,7 +394,7 @@ CREATE TABLE "Element" (
     "elementID" integer NOT NULL,
     "moduleID" character varying(10) NOT NULL,
     "description" text NOT NULL,
-	CONSTRAINT "pk_Element" PRIMARY KEY ("elementID"),
+	CONSTRAINT "pk_Element" PRIMARY KEY ("elementID", "moduleID"),
 	CONSTRAINT "fk_Element_Module" FOREIGN KEY ("moduleID")
       REFERENCES "Module" ("moduleID") MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -422,8 +423,8 @@ CREATE TABLE "Evidence" (
     "approved" boolean,
     "assessorNote" text,
 	CONSTRAINT "pk_Evidence" PRIMARY KEY ("claimID", "moduleID"),
-	CONSTRAINT "fk_Evidence_Element" FOREIGN KEY ("elementID")
-      REFERENCES "Element" ("elementID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT "fk_Evidence_Element" FOREIGN KEY ("elementID", "moduleID")
+      REFERENCES "Element" ("elementID", "moduleID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT "fk_Evidence_ClaimedModule" FOREIGN KEY ("claimID",  "moduleID") 
 	  REFERENCES "ClaimedModule"("claimID", "moduleID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE
 
@@ -447,9 +448,10 @@ CREATE TABLE "Criterion" (
     "criterionID" integer NOT NULL,
     "elementID" integer NOT NULL,
     "description" text NOT NULL,
+    "moduleID" character varying(10) NOT NULL,
 	CONSTRAINT "pk_Criterion" PRIMARY KEY ("criterionID", "elementID"),
-	CONSTRAINT "fk_Criterion_Element" FOREIGN KEY ("elementID")
-	   REFERENCES "Element"("elementID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE
+	CONSTRAINT "fk_Criterion_Element" FOREIGN KEY ("elementID", "moduleID")
+	   REFERENCES "Element"("elementID", "moduleID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 

@@ -26,6 +26,7 @@
 		v2.130:	Bryce:	Added 'fn_listmodulesnotcoreincourse'.
 		v2.140:	Mitch:	Updated both  'fn_updateclaim' methods.
 		v2.150: Todd:   Added 'fn_deletedraftclaim' to reduce read from Database from web server. Ensures only draft claims are deleted.
+		v2.160:	Bryce:	Fixed 'fn_insertelement' so that it increments PK properly.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -757,6 +758,9 @@ CREATE FUNCTION fn_insertelement("moduleID" text, description text) RETURNS void
     DECLARE elementID int;
     BEGIN
         elementID := MAX("Element"."elementID") FROM "Element" WHERE "Element"."moduleID" = $1;
+	IF (elementID IS NULL) THEN
+		elementID := 0;
+	END IF;
         elementID := elementID + 1;
         INSERT INTO "Element"("elementID", "moduleID", "description")
         VALUES(elementID,$1,$2);

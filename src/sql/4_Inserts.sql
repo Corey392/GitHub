@@ -1,12 +1,13 @@
 /* Purpose:  	Adds the Views to the database.
  * Authors:		Ryan,Kelly,Todd
  * Created:
- * Version:		4.01
- * Modified:	25/04/2013
+ * Version:		4.010
+ * Modified:	06/05/2013
  * Change Log:	v2: Todd: Added new users into User, Student, Teacher and Assessor tables.
  * 				v3: Ryan:
-				09/04/2013: Todd: Updated Student inserts to match new table structure
-				25/04/2013: Todd: Added more insert statements for CourseModule
+				09/04/2013: Todd:   Updated Student inserts to match new table structure
+				25/04/2013: Todd:   Added more insert statements for CourseModule
+				06/05/2013: Bryce:  Updated insert statements to match new Element PK system
  * Pre-conditions: Must be run after all other setup database scripts.
  */
  --
@@ -162,32 +163,32 @@ INSERT INTO "ClaimedModule" VALUES ('ICAA5151B', 2, NULL, NULL, NULL, NULL, NULL
 -- Data for Name: Element; Type: TABLE DATA; Schema: public; Owner: -
 --
 -- elementID, moduleID, description
-INSERT INTO "Element" VALUES (0, 'ICAA5151B', ' ');
+INSERT INTO "Element" VALUES (1, 'ICAA5151B', ' ');
 INSERT INTO "Element" VALUES (1, 'ICAA5158B', ' ');
-INSERT INTO "Element" VALUES (2, 'ICAA5046B', ' ');
-INSERT INTO "Element" VALUES (3, 'ICAA5139B', ' ');
-INSERT INTO "Element" VALUES (4, 'ICAA5046B', 'Implement and monitor participative arrangements for the management of OHS');
-INSERT INTO "Element" VALUES (5, 'ICAA5046B', 'Provide information to the workgroup about OHS policies and procedures.');
-INSERT INTO "Element" VALUES (6, 'ICAA5151B', 'Investigate current practices in relation to resource usage');
+INSERT INTO "Element" VALUES (1, 'ICAA5046B', ' ');
+INSERT INTO "Element" VALUES (1, 'ICAA5139B', ' ');
+INSERT INTO "Element" VALUES (2, 'ICAA5046B', 'Implement and monitor participative arrangements for the management of OHS');
+INSERT INTO "Element" VALUES (3, 'ICAA5046B', 'Provide information to the workgroup about OHS policies and procedures.');
+INSERT INTO "Element" VALUES (2, 'ICAA5151B', 'Investigate current practices in relation to resource usage');
 
 --
 -- Data for Name: Evidence; Type: TABLE DATA; Schema: public; Owner: -
 --
 -- claimID, elementID, description, moduleID, approved, assessorNote
-INSERT INTO "Evidence" VALUES ( 1, 0, 'BUSB0101', 'ICAA5046B', NULL, NULL);
-INSERT INTO "Evidence" VALUES ( 2, 0, 'BUSB0101', 'ICAA5046B', false, '');
-INSERT INTO "Evidence" VALUES ( 2, 0, 'ggfgdgfd', 'ICAA5151B', false, '');
+--INSERT INTO "Evidence" VALUES ( 1, 0, 'BUSB0101', 'ICAA5046B', NULL, NULL);
+--INSERT INTO "Evidence" VALUES ( 2, 0, 'BUSB0101', 'ICAA5046B', false, '');
+--INSERT INTO "Evidence" VALUES ( 2, 0, 'ggfgdgfd', 'ICAA5151B', false, '');
 
 --
 -- Data for Name: Criterion; Type: TABLE DATA; Schema: public; Owner: -
 --
--- criterionID, elementID, description
-INSERT INTO "Criterion" VALUES (1, 1, 'Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.');
-INSERT INTO "Criterion" VALUES (2, 1, 'Provide information to the workgroup on the organisation''s OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.');
-INSERT INTO "Criterion" VALUES (3, 1, 'Regularly provide and clearly explain information about identified hazards and the outcomes of risk assessment and control to the workgroup.');
-INSERT INTO "Criterion" VALUES (1, 2, 'Identify environmental regulations applying to the enterprise');
-INSERT INTO "Criterion" VALUES (2, 3, 'Analyse procedures for assessing compliance with environmental/sustainability regulations');
-INSERT INTO "Criterion" VALUES (3, 2, 'Collect information on environmental and resource efficiency systems and procedures, and provide to the work group where appropriate');
+-- criterionID, elementID, description, moduleID
+INSERT INTO "Criterion" VALUES (1, 1, 'Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.', 'ICAA5158B');
+INSERT INTO "Criterion" VALUES (2, 1, 'Provide information to the workgroup on the organisation''s OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.', 'ICAA5158B');
+INSERT INTO "Criterion" VALUES (3, 1, 'Regularly provide and clearly explain information about identified hazards and the outcomes of risk assessment and control to the workgroup.', 'ICAA5158B');
+INSERT INTO "Criterion" VALUES (1, 2, 'Identify environmental regulations applying to the enterprise', 'ICAA5046B');
+INSERT INTO "Criterion" VALUES (2, 1, 'Analyse procedures for assessing compliance with environmental/sustainability regulations', 'ICAA5139B');
+INSERT INTO "Criterion" VALUES (3, 1, 'Collect information on environmental and resource efficiency systems and procedures, and provide to the work group where appropriate', 'ICAA5046B');
 
 --
 -- Data for Name: Provider; Type: TABLE DATA; Schema: public; Owner: -
