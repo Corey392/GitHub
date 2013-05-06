@@ -16,7 +16,7 @@ import javax.servlet.ServletException;
 import util.*;
 
 /** @author     James Purves, Todd Wiggins, Mitch Carr
- *  @version    1.030
+ *  @version    1.031
  *	Created:    ?
  *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module. Updated remove module error message.
  *	            30/04/2013: MC: Removed all ClaimRecord calls, methods, etc.
@@ -24,6 +24,7 @@ import util.*;
  *				05/05/2013: TW: Updated submitClaim method, added boolean Submit for submit or save as draft.
  *				06/05/2013: MC: Updated submitClaim method, moved update call until after claim status has been set.
  *				06/05/2013: MC: Updated submitClaim method to reflect changes to Claim.Status.
+ *				06/05/2013: TW: Handles submitting a claim without any modules added. Now returns an error message.
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -56,8 +57,13 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 		// was submitted or the user clicked back, in which case the url is set
 		// to the ListClaimsServlet.
 		if (request.getParameter("submitClaim") != null) {
-			claim = this.submitClaim(user, claim, true);
-			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
+			if (!claim.getClaimedModules().isEmpty()) {
+				claim = this.submitClaim(user, claim, true);
+				url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
+			} else {
+				request.setAttribute("moduleError", new RPLError("Please add a module before submitting a claim."));
+				url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
+			}
 		} else if (request.getParameter("draftClaim") != null) {
 			claim = this.submitClaim(user, claim, false);
 			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
@@ -306,10 +312,10 @@ public class UpdatePrevClaimServlet extends HttpServlet {
                 }
             }
             if (submit) {
-		Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully submitted.");
-		claim.setStatus(Claim.Status.PRELIMINARY);
+				Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully submitted.");
+				claim.setStatus(Claim.Status.PRELIMINARY);
             } else {
-		claim.setStatus(Claim.Status.DRAFT);
+				claim.setStatus(Claim.Status.DRAFT);
             }
             claimIO.update(claim);
         } catch (SQLException ex) {

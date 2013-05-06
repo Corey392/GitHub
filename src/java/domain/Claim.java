@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import util.Util;
 import java.io.Serializable;
 
-/**
- * A Claim is made by a Student
- * @author Adam Shortall
- * @author David Gibbins
- * @author Mitchell Carr
+/** A Claim is made by a Student
+ *  @author     Adam Shortall, David Gibbins, Todd Wiggins, Mitchell Carr
+ *  @version    1.030
+ *	Created:    ?
+ *	Change Log: 06/05/2013: TW: Added getCode() and EMPTY_DRAFT status to status Enum.
  */
 public class Claim implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Enumeration Classes">
     public enum Status {
-
+        EMPTY_DRAFT(0, "No Modules"),
         DRAFT(1, "Draft"),
         PRELIMINARY(2, "Preliminary"),
         EVIDENCE(3, "Attach Evidence"),
@@ -23,8 +23,8 @@ public class Claim implements Serializable {
         APPROVAL(5, "Awaiting Approval"),
         SUBMITTED(6, "Submitted"),
         APPROVED(7, "Approved"),
-        DECLINED(8, "Declined");        
-        
+        DECLINED(8, "Declined");
+
         public final int code;
         public final String desc;
 
@@ -48,11 +48,15 @@ public class Claim implements Serializable {
                     throw new IllegalArgumentException("Invalid int for Status");
             }
         }
-        
+
+		public int getCode() {
+			return this.code;
+		}
+
         public String getDesc() {
             return this.desc;
         }
-        
+
         @Override
         public String toString() {
             return this.desc;
@@ -63,7 +67,7 @@ public class Claim implements Serializable {
 
         RPL(true, "RPL"),
         PREVIOUS_STUDIES(false, "Previous Studies");
-        
+
         public final Boolean value;
         public final String desc;
 
@@ -75,11 +79,11 @@ public class Claim implements Serializable {
         public static ClaimType getFromBool(Boolean value) {
             return value ? RPL : PREVIOUS_STUDIES;
         }
-        
+
         public String getDesc() {
             return this.desc;
         }
-        
+
         @Override
         public String toString() {
             return this.desc;
@@ -90,7 +94,7 @@ public class Claim implements Serializable {
 
         TAFENSW('C'),
         OTHER_PROVIDER('D');
-        
+
         public final char value;
 
         Option(char value) {
@@ -105,7 +109,7 @@ public class Claim implements Serializable {
                     throw new IllegalArgumentException("Invalid char for Option");
             }
         }
-        
+
         public char getValue() {
             return this.value;
         }
@@ -119,7 +123,7 @@ public class Claim implements Serializable {
     private String courseID;
     private String assessorID;
     private String delegateID;
-    
+
     // Data & Object references:
     private ArrayList<ClaimedModule> claimedModules;
     private Campus campus;
