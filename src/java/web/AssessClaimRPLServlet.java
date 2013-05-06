@@ -20,7 +20,8 @@ import util.Util;
 /**
  *
  * @author David, Mitchell Carr
- * Changelog:   06/05/2013 MC: updated approveClaim to update claim status
+ * Changelog:   06/05/2013 MC: Updated approveClaim to update claim status
+ *              07/05/2013 MC: Updated approveClaim to reflect changes to ClaimedModule.getEvidence() method
  */
 public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadModel {
 
@@ -200,9 +201,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         
         for (ClaimedModule claimedModule: claim.getClaimedModules()) {
             claimedModule.setApproved(true);
-            for (Evidence e: claimedModule.getEvidence()) {
-                e.setApproved(true);
-            }
+            claimedModule.getEvidence().setApproved(true);
         }
         claim.setStatus(Claim.Status.APPROVED);
         try {
