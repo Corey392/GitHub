@@ -1,8 +1,8 @@
 ﻿/* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:
- *  Version:	v2.130
- *  Modified:	04/05/2013
+ *  Version:	v2.161
+ *  Modified:	06/05/2013
  *  Change Log:	v2.110:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
@@ -27,6 +27,7 @@
 		v2.140:	Mitch:	Updated both  'fn_updateclaim' methods.
 		v2.150: Todd:   Added 'fn_deletedraftclaim' to reduce read from Database from web server. Ensures only draft claims are deleted.
 		v2.160:	Bryce:	Fixed 'fn_insertelement' so that it increments PK properly.
+		v2.161:	Todd:	Updated 'fn_resetpassword' to accept User ID or Email address.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1187,7 +1188,7 @@ CREATE FUNCTION fn_resetpassword(userid text) RETURNS text
         newPassword text;
     BEGIN
         SELECT INTO newPassword fn_GeneratePassword();
-        UPDATE "User" SET "password" = md5(newPassword)::bytea WHERE "userID" = $1;
+        UPDATE "User" SET "password" = md5(newPassword)::bytea WHERE "userID" = $1 OR "email" = $1;
         RETURN newPassword;
     END;
 $_$;
