@@ -25,7 +25,8 @@ import util.RPLServlet;
  * This servlet is for the adding and editing of RPL evidence. This only applies
  * to claims for RPL and not claims for Previous Studies. This servlet uses the
  * addRPLEvidence page to get input from the user.
- * @author James Purves
+ * @author James Purves, Mitch Carr
+ * Changelog:   07/05/2013 MC: Updated setEvidence method to reflect changes to the way ClaimedModule objects hold Evidence
  */
 public class AddEvidenceServlet extends HttpServlet {
     
@@ -164,23 +165,22 @@ public class AddEvidenceServlet extends HttpServlet {
             Claim claim, Integer addEvidenceTo, ClaimedModule module, 
             ArrayList<ClaimedModule> claimedModules){
         EvidenceIO evidenceIO = new EvidenceIO(user.role);
-        ArrayList<Evidence> evidence = new ArrayList<Evidence>();
+        Evidence evidence = null;
         if (!module.getElements().isEmpty()){
             for (Element element: module.getElements()){
                 String elementID = String.valueOf(element.getElementID());
                 String description = request.getParameter(elementID);
                 if (description != null){
-                    Evidence e = new Evidence(
+                    evidence = new Evidence(
                             claim.getClaimID(),
                             module.getModuleID(),
                             description,
                             element.getElementID());
-                    evidence.add(e);
                     try{
-                        if (this.isNewEvidence(module, e)){
-                            evidenceIO.insert(e);
+                        if (this.isNewEvidence(module, evidence)){
+                            evidenceIO.insert(evidence);
                         } else {
-                            evidenceIO.update(e);
+                            evidenceIO.update(evidence);
                         }
                     } catch (SQLException ex) {
                         Logger.getLogger(AddEvidenceServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -190,16 +190,15 @@ public class AddEvidenceServlet extends HttpServlet {
         } else {
             String description = request.getParameter("evidence");
             if (description != null){
-                Evidence e = new Evidence(
+                evidence = new Evidence(
                             claim.getClaimID(),
                             module.getModuleID(),
                             description);
-                evidence.add(e);
                 try{
-                    if (this.isNewEvidence(module, e)){
-                        evidenceIO.insert(e);
+                    if (this.isNewEvidence(module, evidence)){
+                        evidenceIO.insert(evidence);
                     } else {
-                        evidenceIO.update(e);
+                        evidenceIO.update(evidence);
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(AddEvidenceServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -219,14 +218,12 @@ public class AddEvidenceServlet extends HttpServlet {
      * @return whether the evidence is new
      */
     private boolean isNewEvidence(ClaimedModule m, Evidence e){
-        ArrayList<Evidence> evidence = m.getEvidence();
+        Evidence evidence = m.getEvidence();
         boolean isNewEvidence = true;
         if (evidence != null){
-            for (Evidence cme : evidence){
-                if (cme.getModuleID().equals(e.getModuleID()) 
-                        && cme.getElementID() == e.getElementID()){
-                    isNewEvidence = false;
-                }
+            if (evidence.getModuleID().equals(e.getModuleID()) 
+                    && evidence.getElementID() == e.getElementID()){
+                isNewEvidence = false;
             }
         }
         return isNewEvidence;
