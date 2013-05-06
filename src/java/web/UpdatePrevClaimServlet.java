@@ -22,6 +22,7 @@ import util.*;
  *	            30/04/2013: MC: Removed all ClaimRecord calls, methods, etc.
  *				04/05/2013: MC: Updated submitClaim method
  *				05/05/2013: TW: Updated submitClaim method, added boolean Submit for submit or save as draft.
+ *				06/05/2013: MC: Updated submitClaim method, moved update call until after claim status has been set.
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -300,16 +301,16 @@ public class UpdatePrevClaimServlet extends HttpServlet {
                 try{
                     moduleIO.insert(m);
                 }catch (Exception ex){
-                    ex.printStackTrace();
+                    //ex.printStackTrace();
                 }
             }
+            if (submit) {
+		Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully submitted.");
+		claim.setStatus(Claim.Status.SUBMITTED);
+            } else {
+		claim.setStatus(Claim.Status.DRAFT);
+            }
             claimIO.update(claim);
-			if (submit) {
-				Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully submitted.");
-				claim.setStatus(Claim.Status.SUBMITTED);
-			} else {
-				claim.setStatus(Claim.Status.DRAFT);
-			}
         } catch (SQLException ex) {
             Logger.getLogger(UpdatePrevClaimServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
