@@ -21,7 +21,7 @@ import util.Util;
 
 /**
  *
- * @author David
+ * @author David, Mitch Carr
  */
 public class ViewEvidenceServlet extends HttpServlet {
 
@@ -51,7 +51,7 @@ public class ViewEvidenceServlet extends HttpServlet {
             
             int claimID = Integer.parseInt(request.getParameter("claimID"));
             String moduleID = request.getParameter("moduleID");
-            String studentID = request.getParameter("studentID");
+            //String studentID = request.getParameter("studentID");
             
             //Check button pressed
             if (action.equalsIgnoreCase("Approve Evidence")){
@@ -66,7 +66,7 @@ public class ViewEvidenceServlet extends HttpServlet {
                         EvidenceIO evidenceIO = new EvidenceIO(user.role);
                         
                         for (int i = 0; i < selectedValues.length; i++) {
-                            Evidence evidence = Util.getCompleteEvidence(claimID, moduleID, selectedValues[i], user.role);
+                            Evidence evidence = Util.getCompleteEvidence(claimID, moduleID, user.role);
                             evidence.setApproved(true);
                             try {
                                 evidenceIO.update(evidence);
