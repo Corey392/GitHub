@@ -253,7 +253,7 @@ public class ClaimIO extends RPL_IO <Claim> {
         String opt = rs.getString(Field.OPTION.name);
         Option option = (opt != null) ? Option.getFromChar(opt.charAt(0)) : null;
 
-        System.out.println("===>" + Field.STATUS.name);
+        //System.out.println("===>" + Field.STATUS.name);
 
         Status status = Status.getFromInt(rs.getInt(Field.STATUS.name));
         ClaimType claimType = ClaimType.getFromBool(rs.getBoolean(Field.CLAIM_TYPE.name));
