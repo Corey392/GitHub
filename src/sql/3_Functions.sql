@@ -25,6 +25,7 @@
  *		v2.121: Mitch:	Added 'fn_getclaimtotal'
 		v2.130:	Bryce:	Added 'fn_listmodulesnotcoreincourse'.
 		v2.140:	Mitch:	Updated both  'fn_updateclaim' methods.
+		v2.150: Todd:   Added 'fn_deletedraftclaim' to reduce read from Database from web server. Ensures only draft claims are deleted.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -207,6 +208,27 @@ CREATE FUNCTION fn_deletecampus("campusID" text) RETURNS void
     LANGUAGE sql
     AS $_$
     DELETE FROM "Campus" WHERE "campusID" = $1;
+$_$;
+
+
+--
+-- Name: fn_deletedraftclaim(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Author: Todd Wiggins
+--
+
+CREATE OR REPLACE FUNCTION fn_DeleteDraftClaim(claimid integer) RETURNS void
+    LANGUAGE plpgsql
+    AS $_$
+    DECLARE _status int;
+    BEGIN
+	    SELECT INTO _status "status" FROM "Claim" WHERE "claimID" = $1;
+	    IF _status = 1 OR _status = 0 THEN
+		PERFORM fn_deleteclaim($1);
+	    ELSE
+		RAISE EXCEPTION 'Claim is not in Draft Status';
+		RETURN;
+	    END IF;
+	END
 $_$;
 
 
@@ -1109,8 +1131,8 @@ CREATE FUNCTION fn_removemodulecore("courseID" text, "moduleID" text) RETURNS vo
     LANGUAGE sql
     AS $_$
 	DELETE FROM "CourseModule"
-	WHERE "courseID" = $1 
-	AND "moduleID" = $2 
+	WHERE "courseID" = $1
+	AND "moduleID" = $2
 	AND "elective" = false;
 $_$;
 
@@ -1123,8 +1145,8 @@ CREATE FUNCTION fn_removemoduleelective("campusID" text, "disciplineID" integer,
     LANGUAGE sql
     AS $_$
 	DELETE FROM "CourseModule"
-	WHERE "campusID" = $1 
-	AND "disciplineID" = $2 
+	WHERE "campusID" = $1
+	AND "disciplineID" = $2
 	AND "courseID" = $3
 	AND "moduleID" = $4
 	AND "elective" = true;
@@ -1703,6 +1725,19 @@ GRANT ALL ON FUNCTION fn_deletecampus("campusID" text) TO admin;
 GRANT ALL ON FUNCTION fn_deletecampus("campusID" text) TO clerical;
 GRANT ALL ON FUNCTION fn_deletecampus("campusID" text) TO teacher;
 GRANT ALL ON FUNCTION fn_deletecampus("campusID" text) TO student;
+
+
+--
+-- Name: fn_deletedraftclaim(integer); Type: ACL; Schema: public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION fn_deletedraftclaim(claimid integer) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_deletedraftclaim(claimid integer) FROM postgres;
+GRANT ALL ON FUNCTION fn_deletedraftclaim(claimid integer) TO postgres;
+GRANT ALL ON FUNCTION fn_deletedraftclaim(claimid integer) TO admin;
+GRANT ALL ON FUNCTION fn_deletedraftclaim(claimid integer) TO clerical;
+GRANT ALL ON FUNCTION fn_deletedraftclaim(claimid integer) TO teacher;
+GRANT ALL ON FUNCTION fn_deletedraftclaim(claimid integer) TO student;
 
 
 --

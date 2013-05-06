@@ -14,20 +14,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Handles I/O for Claim made by the Student 
- * and assessed by assessors.
- * 
- * @author Adam Shortall, Bryce Carr, Mitch Carr
- * @version 1.02
+ * Handles I/O for Claim made by the Student and assessed by assessors.
+ * @author Adam Shortall, Bryce Carr, Mitch Carr, Todd Wiggins
+ * @version 1.030
  * <b>Created:</b>  Unknown
- * <b>Modified:</b> 24/04/2013
+ * <b>Modified:</b> 06/05/2013
  * <b>Change Log:</b>  08/04/2013:   Made small changes to incorporate the guideFileAddress DB field.
  *              24/04/2013:   Added header comments to match code conventions.
  *              01/05/2013:   Updated update(Claim) method to reflect change 2.090 to functions.sql
  *              01/05/2013:   Updated deleteClaim(Claim) and getById(Claim) methods to reflect change 2.091 to functions.sql
  *              04/05/2013:   Implemented getTotalClaims() method
  *              06/05/2013:   Fixed update method
- * <b>Purpose:</b>  Controller class for interaction between application and database's Claim table. 
+ *              06/05/2013: TW: Added 'deleteDraft' method.
+ * <b>Purpose:</b>  Controller class for interaction between application and database's Claim table.
  */
 public class ClaimIO extends RPL_IO <Claim> {
 
@@ -47,14 +46,14 @@ public class ClaimIO extends RPL_IO <Claim> {
         ASSESSOR_ID("assessorID"),
         DELEGATE_ID("delegateID"),
         STATUS("status");
-        
+
         public final String name;
-        
+
         Field(String name) {
             this.name = name;
         }
     }
-    
+
     public ClaimIO(Role role) {
         super(role);
     }
@@ -71,7 +70,7 @@ public class ClaimIO extends RPL_IO <Claim> {
         String courseID = claim.getCourseID();
         Integer disciplineID = claim.getDisciplineID();
         ClaimType claimType = claim.getClaimType();
-        
+
         String sql = "SELECT fn_InsertClaim(?,?,?,?,?)";
 
         SQLParameter p1 = new SQLParameter(studentID);
@@ -88,36 +87,36 @@ public class ClaimIO extends RPL_IO <Claim> {
      * users have different privileges so this works
      * differently depending on their user's role.
      * @param claim the claim containing new claim data
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void update(Claim claim) throws SQLException {
-        
+
         Role role = super.role;
-        
+
         if (!(role == Role.ADMIN || role == Role.TEACHER || role == Role.STUDENT)){
             return;
         }
-        
+
         String sql;
         int claimID = claim.getClaimID();
         Option option = claim.getOption();
         Character optionValue = (option != null) ? option.value : Option.OTHER_PROVIDER.value;
         Integer status = claim.getStatus().code;
-        
+
         SQLParameter p1 = new SQLParameter(claimID);
         SQLParameter p2;
         SQLParameter p3;
         SQLParameter p4 = new SQLParameter(optionValue);
         SQLParameter p9 = new SQLParameter(status);
-        
+
         if (role == Role.STUDENT) {
             sql = "SELECT fn_UpdateClaim(?,?,?,?,?)";
             String campusID = claim.getCampus().getCampusID();
             int disciplineID = claim.getDiscipline().getDisciplineID();
-                
+
             p2 = new SQLParameter(campusID);
             p3 = new SQLParameter(disciplineID);
-                
+
             super.doPreparedStatement(sql, p1, p2, p3, p4, p9);
         }else {
             sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?,?)";
@@ -127,48 +126,63 @@ public class ClaimIO extends RPL_IO <Claim> {
             Date dateResolved = claim.getDateResolved();
             String assessorID = claim.getAssessorID();
             String delegateID = claim.getDelegateID();
-                
+
             p2 = new SQLParameter(assessorApproved);
             p3 = new SQLParameter(delegateApproved);
             SQLParameter p5 = new SQLParameter(requestComp);
             SQLParameter p6 = new SQLParameter(dateResolved);
             SQLParameter p7 = new SQLParameter(assessorID);
             SQLParameter p8 = new SQLParameter(delegateID);
-                
+
             super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9);
         }
-           
+
     }
-    
+
     /**
      * Deletes a claim, and all claimed modules/evidence for that claim.
      * @param claim the claim to delete.
-     * @throws SQLException 
+     * @throws SQLException
      */
 
-    public void delete(Claim claim) throws SQLException {        
+    public void delete(Claim claim) throws SQLException {
         int claimID = claim.getClaimID();
         String sql = "SELECT fn_DeleteClaim(?)";
-        
+
         SQLParameter p1 = new SQLParameter(claimID);
-        
+
         super.doPreparedStatement(sql, p1);
     }
-    
+
+    /**
+     * Deletes a draft claim, and all claimed modules/evidence for that claim.
+     * @param claim the claim to delete.
+     * @throws SQLException
+     */
+
+    public void deleteDraft(Claim claim) throws SQLException {
+        int claimID = claim.getClaimID();
+        String sql = "SELECT fn_DeleteDraftClaim(?)";
+
+        SQLParameter p1 = new SQLParameter(claimID);
+
+        super.doPreparedStatement(sql, p1);
+    }
+
     /**
      * Gets a claim from the database, identified by a studentID and
      * a claimID.
      * @param claimID
-     * @return 
+     * @return
      */
     public Claim getByID(int claimID) {
-        
+
         String sql = "SELECT * FROM fn_GetClaimByID(?)";
         SQLParameter p1 = new SQLParameter(claimID);
-        
+
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
-            
+
             if (rs.next()) {
                 return this.getClaimFromRS(rs);
             }
@@ -177,13 +191,13 @@ public class ClaimIO extends RPL_IO <Claim> {
         }
         return null;
     }
-    
+
     /**
      * Returns a list of the user's claims. For students these
      * are claims that the student has made. For teachers, these
      * are claims the assessor has assessed previously, and is
-     * assigned to assess. 
-     * 
+     * assigned to assess.
+     *
      * @param user The user who's claims to get
      * @return list of the user's claims
      */
@@ -197,28 +211,28 @@ public class ClaimIO extends RPL_IO <Claim> {
         }
         SQLParameter p1 = new SQLParameter(user.getUserID());
         ResultSet rs = super.doPreparedStatement(sql, p1);
-        
+
         while (rs.next()) {
             list.add(this.getClaimFromRS(rs));
         }
         return list;
     }
-    
+
     /**
      * @return total number of claims in DB
      */
     public int getTotalClaims() throws SQLException {
-        
+
         String sql = "SELECT * FROM fn_GetClaimTotal()";
         ResultSet rs = super.doPreparedStatement(sql);
         int total = 0;
-        
+
         if (rs.next()) {
             total = rs.getInt(1);
         }
         return total;
     }
-    
+
     /**
      * Gets a claim from the result set.
      * @param rs the ResultSet pointing to a claim record.
@@ -226,39 +240,39 @@ public class ClaimIO extends RPL_IO <Claim> {
      * @throws SQLException if database threw an exception, check SQLState for vendor error code.
      */
     private Claim getClaimFromRS(ResultSet rs) throws SQLException {
-        
+
         int claimID = rs.getInt(Field.CLAIM_ID.name);
         String studentID = rs.getString(Field.STUDENT_ID.name);
         Boolean assessorApproved = rs.getBoolean(Field.ASSESSOR_APPROVED.name);
         Boolean delegateApproved = rs.getBoolean(Field.DELEGATE_APPROVED.name);
         String campusID = rs.getString(Field.CAMPUS_ID.name);
-        String courseID = rs.getString(Field.COURSE_ID.name); 
+        String courseID = rs.getString(Field.COURSE_ID.name);
         Integer disciplineID = rs.getInt(Field.DISCIPLINE_ID.name);
         String assessorID = rs.getString(Field.ASSESSOR_ID.name);
-        String delegateID = rs.getString(Field.DELEGATE_ID.name);                 
+        String delegateID = rs.getString(Field.DELEGATE_ID.name);
         String opt = rs.getString(Field.OPTION.name);
         Option option = (opt != null) ? Option.getFromChar(opt.charAt(0)) : null;
 
-        System.out.println("===>" + Field.STATUS.name);    
+        System.out.println("===>" + Field.STATUS.name);
 
         Status status = Status.getFromInt(rs.getInt(Field.STATUS.name));
-        ClaimType claimType = ClaimType.getFromBool(rs.getBoolean(Field.CLAIM_TYPE.name)); 
+        ClaimType claimType = ClaimType.getFromBool(rs.getBoolean(Field.CLAIM_TYPE.name));
         Date dateMade = rs.getDate(Field.DATE_MADE.name);
         Date dateResolved = rs.getDate(Field.DATE_RESOLVED.name);
         Boolean requestCompletion = rs.getBoolean(Field.REQUEST_COMPLETION.name);
-        
+
         return new Claim(
-                        claimID, 
-                        studentID, 
-                        campusID, 
-                        disciplineID, 
-                        courseID, 
-                        assessorApproved, 
-                        delegateApproved, 
-                        option, 
-                        status, 
+                        claimID,
+                        studentID,
+                        campusID,
+                        disciplineID,
+                        courseID,
+                        assessorApproved,
+                        delegateApproved,
+                        option,
+                        status,
                         claimType,
-                        dateMade, 
+                        dateMade,
                         dateResolved,
                         requestCompletion,
                         assessorID,

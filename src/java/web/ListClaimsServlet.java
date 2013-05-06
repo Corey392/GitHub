@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.RequestDispatcher;
+import util.FieldError;
 import util.RPLError;
 import util.RPLPage;
 import util.RPLServlet;
@@ -73,7 +74,7 @@ public class ListClaimsServlet extends HttpServlet {
                 session.setAttribute("claim", selectedClaim);
             }
         } else if (request.getParameter("delete") != null) {
-            request = this.deleteClaim(request, user);
+            request = this.deleteClaim(request, user, claims);
             url = RPLPage.LIST_CLAIMS_STUDENT.relativeAddress;
 			int claimID = Integer.parseInt(request.getParameter("selectedClaim"));
 			for (int i = 0; i < claims.size(); i++) {
@@ -169,32 +170,39 @@ public class ListClaimsServlet extends HttpServlet {
     }
 
     /**
-     * Deletes the currently selected claim. Raises an error if the user tries
-     * to delete a claim that is not a draft.
+     * Deletes the currently selected "DRAFT" claim. Raises an error if the user tries to delete a claim that is not a draft.
      * @param request the request
      * @param user the current user
      * @return the updated request
      */
-    private HttpServletRequest deleteClaim(HttpServletRequest request, User user){
+    private HttpServletRequest deleteClaim(HttpServletRequest request, User user, ArrayList<Claim> claims){
         ClaimIO claimIO = new ClaimIO(user.getRole());
         //ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
         //TODO: uncomment line above when ClaimRecordIO has been updated
-        Claim selectedClaim = this.setSelectedClaim(request, user);
-
-        try {
-            if (selectedClaim.getStatus() == Claim.Status.DRAFT){
-                claimIO.delete(selectedClaim);
-                //claimRecordIO.insert(new ClaimRecord(selectedClaim.getClaimID(), selectedClaim.getStudentID(), 0, user.getUserID(), "", 3, 0, selectedClaim.getCampusID(), selectedClaim.getCourseID(), selectedClaim.getClaimType().desc)); //  Update - Kyoungho Lee
-                //TODO: uncomment line above when ClaimRecordIO has been updated
-             } else {
-                RPLError error = new RPLError("You can only remove Draft claims");
-                request.setAttribute("error", error);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ListClaimsServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException npe) {
-            Logger.getLogger(ListClaimsServlet.class.getName()).log(Level.SEVERE, null, npe);
-        }
+		String claimID = request.getParameter("selectedClaim");
+		if (claimID != null) {
+			Claim selectedClaim = new Claim(Integer.valueOf(claimID),user.getStudentID());
+			for (Claim claim : claims) {
+				if (claim.getClaimID() == selectedClaim.getClaimID()) {
+					if (claim.getStatus() == Claim.Status.DRAFT){
+						try {
+							claimIO.deleteDraft(selectedClaim);
+						} catch (SQLException ex) {
+							Logger.getLogger(ListClaimsServlet.class.getName()).log(Level.SEVERE, null, ex);
+							//Should be thrown if the claim is not in draft status in database.
+							RPLError error = new RPLError(FieldError.CLAIM_DELETE_NOT_DRAFT);
+							request.setAttribute("error", error);
+						} catch (Exception e) {
+							Logger.getLogger(ListClaimsServlet.class.getName()).log(Level.SEVERE, null, e);
+						}
+					 } else {
+						RPLError error = new RPLError(FieldError.CLAIM_DELETE_NOT_DRAFT);
+						request.setAttribute("error", error);
+					}
+					break;
+				}
+			}
+		}
         this.populateClaimList(user);
         return request;
     }
