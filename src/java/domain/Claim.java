@@ -9,17 +9,21 @@ import java.io.Serializable;
  * A Claim is made by a Student
  * @author Adam Shortall
  * @author David Gibbins
+ * @author Mitchell Carr
  */
 public class Claim implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Enumeration Classes">
     public enum Status {
 
-        DRAFT(1, "Draft claim"),
-        SUBMITTED(2, "Submitted: awaiting assessment"),
-        ASSESSED(3, "Assessed: awaiting approval"),
-        APPROVED(4, "Approved: awaiting resolution"),
-        RESOLVED(5, "Resolved");
+        DRAFT(1, "Draft"),
+        PRELIMINARY(2, "Preliminary"),
+        EVIDENCE(3, "Attach Evidence"),
+        ASSESSMENT(4, "Awaiting Assessment"),
+        APPROVAL(5, "Awaiting Approval"),
+        SUBMITTED(6, "Submitted"),
+        APPROVED(7, "Approved"),
+        DECLINED(8, "Declined");        
         
         public final int code;
         public final String desc;
@@ -33,10 +37,13 @@ public class Claim implements Serializable {
             switch(value) {
                 case 0: return DRAFT;  // Daniel
                 case 1: return DRAFT;
-                case 2: return SUBMITTED;
-                case 3: return ASSESSED;
-                case 4: return APPROVED;
-                case 5: return RESOLVED;
+                case 2: return PRELIMINARY;
+                case 3: return EVIDENCE;
+                case 4: return ASSESSMENT;
+                case 5: return APPROVAL;
+                case 6: return SUBMITTED;
+                case 7: return APPROVED;
+                case 8: return DECLINED;
                 default:
                     throw new IllegalArgumentException("Invalid int for Status");
             }
