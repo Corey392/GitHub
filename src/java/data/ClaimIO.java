@@ -26,6 +26,7 @@ import java.util.logging.Logger;
  *              01/05/2013:   Updated update(Claim) method to reflect change 2.090 to functions.sql
  *              01/05/2013:   Updated deleteClaim(Claim) and getById(Claim) methods to reflect change 2.091 to functions.sql
  *              04/05/2013:   Implemented getTotalClaims() method
+ *              06/05/2013:   Fixed update method
  * <b>Purpose:</b>  Controller class for interaction between application and database's Claim table. 
  */
 public class ClaimIO extends RPL_IO <Claim> {
@@ -100,27 +101,26 @@ public class ClaimIO extends RPL_IO <Claim> {
         String sql;
         int claimID = claim.getClaimID();
         Option option = claim.getOption();
-        //Character optionValue = (option != null) ? option.value : Option.OTHER_PROVIDER.value;
-        Boolean optionValue = (option != null && option.value != Option.OTHER_PROVIDER.value) ? true : false;
-        //Mitch: Our new DB uses a boolean value rather than a Char for the 5th element.
-        //I've commented out the original line and replaced it with a boolean value that may not necessarily be correct
+        Character optionValue = (option != null) ? option.value : Option.OTHER_PROVIDER.value;
+        Integer status = claim.getStatus().code;
         
         SQLParameter p1 = new SQLParameter(claimID);
         SQLParameter p2;
         SQLParameter p3;
         SQLParameter p4 = new SQLParameter(optionValue);
+        SQLParameter p9 = new SQLParameter(status);
         
         if (role == Role.STUDENT) {
-            sql = "SELECT fn_UpdateClaim(?,?,?,?)";
+            sql = "SELECT fn_UpdateClaim(?,?,?,?,?)";
             String campusID = claim.getCampus().getCampusID();
             int disciplineID = claim.getDiscipline().getDisciplineID();
                 
             p2 = new SQLParameter(campusID);
             p3 = new SQLParameter(disciplineID);
                 
-            super.doPreparedStatement(sql, p1, p2, p3, p4);
+            super.doPreparedStatement(sql, p1, p2, p3, p4, p9);
         }else {
-            sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?)";
+            sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?,?)";
             Boolean assessorApproved = claim.getAssessorApproved();
             Boolean delegateApproved = claim.getDelegateApproved();
             Boolean requestComp = claim.getRequestCompletion();
@@ -135,7 +135,7 @@ public class ClaimIO extends RPL_IO <Claim> {
             SQLParameter p7 = new SQLParameter(assessorID);
             SQLParameter p8 = new SQLParameter(delegateID);
                 
-            super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8);
+            super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9);
         }
            
     }
