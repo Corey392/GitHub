@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import util.Util;
 
 /** Domain class for Claimed Modules, an extension of Module.
- *  @author David, Adam Shortall, Todd Wiggins
+ *  @author David, Adam Shortall, Todd Wiggins, Mitch Carr
  *  @version    1.10
  *	Created:    ?
  *	Modified:	05/05/2013: TW: Added 'Module Name' into constructor, deprecated existing.
+ *	Modified:	07/05/2013: MC: Updated evidence field, as well as getEvidence and setEvidence methods
  */
 public final class ClaimedModule extends Module implements Serializable{
 
@@ -22,7 +23,7 @@ public final class ClaimedModule extends Module implements Serializable{
     private char recognition;
 
     private ArrayList<Provider> providers;
-    private ArrayList<Evidence> evidence;
+    private Evidence evidence;
 
     /**
      * Empty constructor
@@ -121,7 +122,7 @@ public final class ClaimedModule extends Module implements Serializable{
     /**
      * @return the evidence
      */
-    public ArrayList<Evidence> getEvidence() {
+    public Evidence getEvidence() {
         return evidence;
     }
 
@@ -184,7 +185,7 @@ public final class ClaimedModule extends Module implements Serializable{
     /**
      * @param evidence the evidence to set
      */
-    public void setEvidence(ArrayList<Evidence> evidence) {
+    public void setEvidence(Evidence evidence) {
         this.evidence = evidence;
     }
 
