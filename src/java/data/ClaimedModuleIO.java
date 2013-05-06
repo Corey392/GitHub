@@ -10,17 +10,17 @@ import java.util.logging.Logger;
 
 /**
  * Handles IO for ClaimedModule objects.
- * @author Adam Shortall, Bryce Carr, Mitchell Carr
- * @version 1.02
- * <b>Created:</b> Unknown 
- * <b>Modified:</b> 24/04/2013
+ * @author Adam Shortall, Bryce Carr, Mitchell Carr, Todd Wiggins
+ * @version 1.004
+ * <b>Created:</b> Unknown
  * <b>Change Log:</b>  08/04/2013: Made small changes to incorporate guideFileAddress DB field.
  *                  24/04/2013: Added header comments to match code conventions.
  *                  05/05/2013: Updated delete to reflect DB
+ *                  06/05/2013: Fixed 'delete' method to send the parameters in to the database correctly.
  * <b>Purpose:</b>  Controller class for interaction with database's ClaimedModule table.
  */
 public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
-    
+
     private enum Field {
         MODULE_ID("moduleID"),
         CLAIM_ID("claimID"),
@@ -31,11 +31,11 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         RECOGNITION("recognition");
 
         public final String name;
-        
+
         Field(String name) {
             this.name = name;
         }
-        
+
         @Override
         public String toString() {
             return this.name;
@@ -45,7 +45,7 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
     public ClaimedModuleIO(Role role) {
         super(role);
     }
-    
+
     /**
      * Inserts a new ClaimedModule.
      * @param claimedModule the ClaimedModule to insert.
@@ -55,17 +55,17 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         String sql = "SELECT fn_InsertClaimedModule(?,?)";
         String moduleID = claimedModule.getModuleID();
         int claimID = claimedModule.getClaimID();
-        
+
         SQLParameter p1 = new SQLParameter(moduleID);
         SQLParameter p2 = new SQLParameter(claimID);
-        
+
         super.doPreparedStatement(sql, p1, p2);
     }
 
     /**
      * Updates a ClaimedModule with new information.
      * @param claimedModule
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void update(ClaimedModule claimedModule) throws SQLException {
         String sql = "SELECT fn_UpdateClaimedModule(?,?,?,?,?,?,?,?)";
@@ -77,7 +77,7 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         String functionalCode = claimedModule.getFunctionalCode();
         boolean overseasEvidence = claimedModule.isOverseasEvidence();
         char recognition = claimedModule.getRecognition();
-        
+
         SQLParameter p1 = new SQLParameter(moduleID);
         SQLParameter p2 = new SQLParameter(studentID);
         SQLParameter p3 = new SQLParameter(claimID);
@@ -86,36 +86,36 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         SQLParameter p6 = new SQLParameter(functionalCode);
         SQLParameter p7 = new SQLParameter(overseasEvidence);
         SQLParameter p8 = new SQLParameter(recognition);
-        
+
         super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8);
     }
-    
+
     /**
      * Deletes a ClaimedModule
      * @param claimedModule
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void delete(ClaimedModule claimedModule) throws SQLException {
         String sql = "SELECT fn_DeleteClaimedModule(?,?)";
         String moduleID = claimedModule.getModuleID();
         int claimID = claimedModule.getClaimID();
-        
-        SQLParameter p1 = new SQLParameter(moduleID);
-        SQLParameter p2 = new SQLParameter(claimID);
-        
+
+        SQLParameter p1 = new SQLParameter(claimID);
+        SQLParameter p2 = new SQLParameter(moduleID);
+
         super.doPreparedStatement(sql, p1, p2);
     }
-    
+
     /**
      * Returns a list of ClaimedModule for a Claim.
      * @param claim
-     * @return 
+     * @return
      */
     public ArrayList<ClaimedModule> getList(int claimID, String studentID) {
         ArrayList<ClaimedModule> list = null;
         String sql = "SELECT * FROM fn_ListClaimedModules(?)";
         SQLParameter p1 = new SQLParameter(claimID);
-        
+
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
             list = new ArrayList<ClaimedModule>();
@@ -150,7 +150,7 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         }
         return list;
     }
-    
+
     /**
      * Add provider to a claimed module.
      * @param claimID
@@ -159,11 +159,11 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
      */
     public void addProvider(int claimID, String moduleID, char providerID) throws SQLException {
         String sql = "SELECT fn_AddProviderToClaimedModule(?,?,?)";
-        
+
         SQLParameter p1 = new SQLParameter(claimID);
         SQLParameter p2 = new SQLParameter(moduleID);
         SQLParameter p3 = new SQLParameter(providerID);
-        
+
         super.doPreparedStatement(sql, p1, p2, p3);
     }
 }

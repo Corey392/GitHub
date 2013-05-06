@@ -1,9 +1,10 @@
 <%--Purpose:    Allows a student add modules to a claim.
  *  @author     James Lee Chin, Todd Wiggins
- *  @version    1.20
+ *  @version    1.21
  *  Created:    18/05/2011, 4:11:01 PM
  *	Modified:	05/05/2013: TW: Added 'National Module Code' as per Story Boards, Removed 'Evidence' as this is for another page after first review.
  *				06/05/2013: TW: Added Draft / Preliminary / Attach Evidence Status Handling, eg. only allows you to add modules in Draft Status.
+ *				06/05/2013: TW: Fixed delete module button to only show when in Draft status.
 --%>
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
@@ -31,7 +32,9 @@
             <th>Module / Unit Code</th>
             <th>National Module Code</th>
             <th>Module / Unit Name</th>
-            <th>Actions</th>
+			<c:if test="<%= claimCode == Claim.Status.DRAFT.getCode() %>">
+				<th>Actions</th>
+			</c:if>
         </tr>
         <c:choose>
             <c:when test="${claim.claimedModules != null && claim.claimedModules.size() != 0}">
@@ -40,7 +43,9 @@
                         <td>${claimedModule.moduleID}</td>
 						<td>${claimedModule.getNationalModuleID()}</td>
                         <td>${claimedModule.getName()}</td>
-                        <td><button type="submit" name="removeModule" value="<%= index %>">Remove Module</button></td>
+						<c:if test="<%= claimCode == Claim.Status.DRAFT.getCode() %>">
+							<td><button type="submit" name="removeModule" value="<%= index %>">Remove Module</button></td>
+						</c:if>
                     </tr>
                     <% index = index + 1; %>
                 </c:forEach>
