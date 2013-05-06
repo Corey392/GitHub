@@ -25,6 +25,7 @@ import util.*;
  *				06/05/2013: MC: Updated submitClaim method, moved update call until after claim status has been set.
  *				06/05/2013: MC: Updated submitClaim method to reflect changes to Claim.Status.
  *				06/05/2013: TW: Handles submitting a claim without any modules added. Now returns an error message.
+ *				07/05/2013: MC: Added switch and basic IO needed for adding evidence
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -50,6 +51,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         ArrayList<Module> modules = this.initialiseModuleList(user, claim);
         ArrayList<Provider> providers = this.initialiseProviderList(user);
         Module selectedModule = this.getSelectedModule(request, user, modules);
+        ArrayList<Evidence> evidence = new ArrayList<Evidence>();
 
 		// If the request came from the reviewClaimPrev jsp page the
 		// claim will be submitted, or a module will be added or removed. The
@@ -67,6 +69,12 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 		} else if (request.getParameter("draftClaim") != null) {
 			claim = this.submitClaim(user, claim, false);
 			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
+                } else if (request.getParameter("addTextEvidence") != null){
+                        EvidenceIO evidenceIO = new EvidenceIO(user.role);
+                        for (Module m : modules){
+                            evidence.add(evidenceIO.getEvidence(claim.getClaimID(), m.getModuleID()));
+                        }
+                        url = RPLPage.ADD_RPL_EVIDENCE.relativeAddress;
 		} else if (request.getParameter("addModule") != null) {
 			if (selectedModule == null) {
 				url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
@@ -100,6 +108,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 		// Sets the required attributes and forwards the request to the given
 		// url.
 		session.setAttribute("claim", claim);
+		request.setAttribute("evidence", evidence);
 		request.setAttribute("selectedModule", selectedModule);
 		request.setAttribute("modules", modules);
 		request.setAttribute("providers", providers);
