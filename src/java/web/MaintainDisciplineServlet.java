@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -25,8 +24,12 @@ import util.RPLPage;
 import util.Util;
 
 /**
- *
- * @author Adam Shortall
+ *  Handles requests for the Clerical Admin's Discipline maintenance page.
+ * @author Adam Shortall, Bryce Carr
+ * @version 1.010
+ * Created:	Unknown
+ * Modified:	06/05/2013
+ * Changelog:	06/05/2013: Bryce Carr:	Added deleteDiscipline(), successfully implementing Discipline deletion.
  */
 public class MaintainDisciplineServlet extends HttpServlet {
     
@@ -47,14 +50,16 @@ public class MaintainDisciplineServlet extends HttpServlet {
             
             String url = RPLPage.CLERICAL_DISCIPLINE.relativeAddress;
             
-            Integer updateID = Util.getPageIntID(request, "updateDiscipline");             
+            //Integer updateID = Util.getPageIntID(request, "updateDiscipline");           
             
             // Have either pressed 'Add New Campus' or 'Update Campus' or 'Back'
             if (request.getParameter("addDiscipline") != null) {
                 this.addDiscipline(request);
             } else if (request.getParameter("saveDisciplines") != null) {
                 this.saveDisciplines(request);
-            }
+            } else if (request.getParameter("deleteDiscipline") != null)    {
+		this.deleteDiscipline(request);
+	    }
             
             DisciplineIO disciplineIO = new DisciplineIO(user.role);
             ArrayList<Discipline> disciplines = disciplineIO.getList();
@@ -125,6 +130,32 @@ public class MaintainDisciplineServlet extends HttpServlet {
         } else {
             RPLError invalidNameError = new RPLError(discipline.validate());
             request.setAttribute("invalidNameError", invalidNameError);
+        }
+    }
+    
+    
+    /**
+     * Deletes a discipline from the database, modifies the request.
+     * @param request 
+     */
+    private void deleteDiscipline(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        
+        String ID = request.getParameter("deleteDiscipline");
+	Discipline deleteDiscipline;
+        
+        if (ID != null) {
+            DisciplineIO disciplineIO = new DisciplineIO(user.role);
+            try {
+		deleteDiscipline = disciplineIO.getByID(Integer.valueOf(ID));
+                disciplineIO.delete(deleteDiscipline);
+                request.setAttribute("disciplineUpdatedMessage", deleteDiscipline.getName() + " (ID: " + deleteDiscipline.getDisciplineID() + ") deleted successfully.");
+            } catch (SQLException ex) {
+                Logger.getLogger(MaintainDisciplineServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            request.setAttribute("disciplineUpdatedMessage", "Error: Discipline not deleted.");
         }
     }
 
