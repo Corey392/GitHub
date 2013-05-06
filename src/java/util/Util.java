@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
  * 		    30/04/2013: Mitch Carr: Removed all instances of ClaimRecord and classes/methods pertaining to it.<br/>
  * 		    01/05/2013: Mitch Carr: Updated to reflect change made to ClaimIO.getById(Claim)<br/>
+ *                  07/05/2013: Mitch Carr: Updated getCompleteEvidence and removed getCompleteEvidenceList<br />
  * <b>Purpose:</b>  Appears to provide reusable access to commonly-used complex interactions with IO classes.
  */
 public final class Util {
@@ -132,34 +133,16 @@ public final class Util {
      * Returns an Evidence record with completed element & criteria
      * @param claimID
      * @param moduleID
-     * @param elementID
      * @param role
      * @return
      */
-    public static Evidence getCompleteEvidence(int claimID, String moduleID, Integer elementID, Role role) {
+    public static Evidence getCompleteEvidence(int claimID, String moduleID, Role role) {
         EvidenceIO evidenceIO = new EvidenceIO(role);
-        Evidence evidence = evidenceIO.getByID(claimID, moduleID, elementID);
-        if (!(elementID == null || elementID == Util.INT_ID_EMPTY)) {
-            evidence.setElement(Util.getCompleteElement(elementID, moduleID, role));
+        Evidence evidence = evidenceIO.getEvidence(claimID, moduleID);
+        if (evidence != null && evidence.getElementID() != null) {
+            evidence.setElement(Util.getCompleteElement(evidence.getElementID(), moduleID, role));
         }
         return evidence;
-    }
-
-    /**
-     * Returns a list of all Evidence for a claimed module, completed with elements and criteria.
-     * @param claimID
-     * @param moduleID
-     * @param role
-     * @return
-     */
-    public static ArrayList<Evidence> getCompleteEvidenceList(int claimID, String moduleID, Role role) {
-
-        EvidenceIO evidenceIO = new EvidenceIO(role);
-        ArrayList<Evidence> list = evidenceIO.getList(claimID, moduleID);
-        for (Evidence e : list) {
-            e.setElement(Util.getCompleteElement(e.getElementID(), moduleID, role));
-        }
-        return list;
     }
 
     /**
@@ -194,7 +177,7 @@ public final class Util {
         if (claimedModules != null) {
             for (ClaimedModule cm : claimedModules) {
                 cm.setProviders(providerIO.getList(claimID, cm.getModuleID()));
-                cm.setEvidence(Util.getCompleteEvidenceList(claimID, cm.getModuleID(), role));
+                cm.setEvidence(Util.getCompleteEvidence(claimID, cm.getModuleID(), role));
             }
         } else {
             claimedModules = new ArrayList<ClaimedModule>();
