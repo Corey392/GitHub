@@ -1,21 +1,24 @@
 <%-- 
     Document   : addRPLEvidence
     Created on : 19/05/2011, 6:02:35 PM
-    Author     : James Purves
+    Author     : James Purves, Mitch Carr
 --%>
 
+<%@page import="domain.Module"%>
+<%@page import="domain.Evidence"%>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.ADD_RPL_EVIDENCE; %>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
-<jsp:useBean id="module" scope="request" class="domain.ClaimedModule"/>
-<jsp:useBean id="evidence" scope="request" class="domain.Evidence"/>
+<jsp:useBean id="selectedModule" scope="request" class="domain.Module"/>
+<jsp:useBean id="modules" scope="request" class="java.util.ArrayList"/>
+<jsp:useBean id="evidence" scope="request" class="java.util.ArrayList"/>
 
 <table style="width:600px">
     <tr>
-        <td>Module&nbsp;Name:&nbsp;${module.name}</td>
-        <td>Module&nbsp;ID:&nbsp;${module.moduleID}</td>
+        <td>Module&nbsp;Name:&nbsp;${selectedModule.name}</td>
+        <td>Module&nbsp;ID:&nbsp;${selectedModule.moduleID}</td>
     </tr>
-    <c:if test="${module.elements.size() == 0}">
+    <c:if test="${modules.size() == 0}">
         <tr>
             <td colspan="2">
                 This module has no elements listed in our database. For a full 
@@ -26,18 +29,18 @@
     </c:if>
 </table>
 <form action="addEvidence" method="post" name="addRPLEvidenceForm">
-<input type="hidden" name="moduleID" value="${module.moduleID}"/>
+<input type="hidden" name="moduleID" value="${selectedModule.moduleID}"/>
 <table style="width:800px; border:1px">
     <c:choose>
-        <c:when test="${module.elements.size() != 0}">
+        <c:when test="${modules.size() != 0}">
             <tr>
                 <th>Elements</th>
                 <th>Criteria</th>
                 <th>Evidence</th>
             </tr>
-            <c:forEach var="element" items="${module.elements}">
+            <c:forEach var="element" items="${module.getElements()}">
                 <tr>
-                    <td>${element.description}</td>
+                    <td>${element.getDescription()}</td>
                     <td>
                         <ul>
                             <c:forEach var="criterion" items="${element.criteria}">
@@ -46,7 +49,7 @@
                         </ul>
                     </td>
                     <td>
-                        <c:forEach var="evidenceItem" items="${module.evidence}">
+                        <c:forEach var="evidenceItem" items="${evidence}">
                             <c:if test="${evidenceItem.elementID == element.elementID}">
                                 <jsp:setProperty name="evidence" property="description" value="${evidenceItem.description}"/>
                             </c:if>
@@ -61,8 +64,8 @@
                 <th colspan="3">Evidence</th>
             </tr>
             <tr>
-                <c:if test="${module.evidence.size() > 0}">
-                    <jsp:setProperty name="evidence" property="description" value="${module.evidence.get(0).description}"/>
+                <c:if test="${evidence.size() > 0}">
+                    <jsp:setProperty name="evidence" property="description" value="${evidence.get(0).description}"/>
                 </c:if>
                 <td colspan="3">
                     <%-- <input type="text" name="evidence" value="${evidence.description}"/> --%>
@@ -74,7 +77,7 @@
     <tr>
         <td colspan="3">
             <c:choose>
-                <c:when test="${module.evidence.size() == 0}">
+                <c:when test="${evidence.size() == 0}">
                     <input type="submit" value="Add Evidence" name="addEvidence"/>
                 </c:when>
                 <c:otherwise>
