@@ -23,6 +23,7 @@ import util.*;
  *				04/05/2013: MC: Updated submitClaim method
  *				05/05/2013: TW: Updated submitClaim method, added boolean Submit for submit or save as draft.
  *				06/05/2013: MC: Updated submitClaim method, moved update call until after claim status has been set.
+ *				06/05/2013: MC: Updated submitClaim method to reflect changes to Claim.Status.
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -306,7 +307,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
             }
             if (submit) {
 		Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully submitted.");
-		claim.setStatus(Claim.Status.SUBMITTED);
+		claim.setStatus(Claim.Status.PRELIMINARY);
             } else {
 		claim.setStatus(Claim.Status.DRAFT);
             }
