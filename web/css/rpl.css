@@ -6,6 +6,7 @@
     Modified   : 29/04/2013:  TW: Changed width to 100% (now partially responsive) instead of static 2000px
                  29/04/2013:  TW: Added campus,course,discipline to here, removed from createClaim JSP code.
                  05/05/2013:  TW: Added pg_titlebar, pg_title_site, pg_title_page elements and moved border from content to side_left.
+                 06/05/2013:  TW: Added a bunch of #evidence for the Add Evidence page and div #buttons, added padding to #side_left
 */
 
 body {
@@ -27,6 +28,45 @@ body {
 #pg_title_page {
 	font-size:2em;
 }
+#evidence_mod {
+	margin-top:2em;
+}
+#evidence_mod_mod {
+	font-size:1.7em;
+	font-weight:bold;
+}
+#evidence_mod_desc {
+	font-size:1.7em;
+}
+#evidence_tbl {
+	max-width:1000px;
+	border-collapse:collapse;
+}
+#evidence_tbl td,th {
+	border-bottom: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+	border-right: 1px solid #aaa;
+}
+#evidence_textarea {
+	width:100%;
+	min-width:200px;
+	height:100%;
+	resize:none;
+	border:none;
+}
+#evidence_tbl_1 {
+	min-width:15em;
+}
+#evidence_tbl_2 {
+	min-width:15em;
+}
+#evidence_tbl_3 {
+	min-width:20em;
+}
+div #buttons {
+	text-align:center;
+	margin-top:2em;
+}
 #campus, #course, #discipline {
 	width: 100%;
 }
@@ -38,6 +78,7 @@ body {
     width: 170px;
     padding: 5px;
     border-right: 1px solid #ccc;
+	padding-bottom:20%;
 }
 #content {
     overflow: auto; /*IMPORTANT! DO NOT REMOVE*/

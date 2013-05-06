@@ -1,15 +1,13 @@
 package util;
 
-/**
- *
+/**<b>Purpose:</b>  Stores values for names and addresses of pages for the RPL website.
  * @author Adam Shortall, Todd Wiggins, Bryce Carr
- * @version 1.021
+ * @version 1.022
  * <b>Created:</b>  Unknown<br/>
- * <b>Modified:</b> 24/04/2013<br/>
+ * <b>Modified:</b> 06/05/2013<br/>
  * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Added reference to new Data Maintenance page (dataMaintenanceSelect.jsp).<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
  *                  05/05/2013: TW: Added site title field which is used in the browser on tabs / window title bar.<br/>
- * <b>Purpose:</b>  Stores values for names and addresses of pages for the RPL website.
  */
 public enum RPLPage {
     HOME("", "/index.jsp"),
@@ -21,6 +19,7 @@ public enum RPLPage {
 	STUDENT_DETAILS("Manage My Details", "/students/myDetails.jsp"),//Added by: Todd Wiggins
     CREATE_CLAIM("Create Claim", "/students/createClaim.jsp"),
     REVIEW_CLAIM_PREV("Review Claim", "/students/reviewClaimPrev.jsp"),
+    ADD_EVIDENCE_PREV("Add Evidence to Claim", "/students/addEvidencePrev.jsp"),//Added by: Todd Wiggins
     REVIEW_CLAIM_RPL("Review Claim", "/students/reviewClaimRPL.jsp"),
     ADD_RPL_EVIDENCE("Add Evidence", "/students/addRPLEvidence.jsp"),
     CLERICAL_HOME("Clerical Home Page", "/maintenance/index.jsp"),
