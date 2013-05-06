@@ -1,9 +1,9 @@
 <%--
 	Purpose:	Header code, sets up page, ensures consistency, reduced code.
 	@author		Adam Shortall, Todd Wiggins, Bryce Carr, Mitch Carr
-	@version	1.040
+	@version	1.041
 	Created:	9/05/2011, 10:19 PM
-	Modified:   05/05/2013
+	Modified:   06/05/2013
 	Change Log: 1.010:  TW:	Moved user level navigation to header from each users index pages.
 				1.011:  TW: Added 'Manage My Details' to Student and 'Change My Password' to all users.
 				1.012:  BC: Begun cleanup of Clerical/Admin links to match new storyboards.
@@ -14,6 +14,7 @@
 				1.031:  MC: Removed other unused links.
 				1.032:  BC:	Removed Manage Courses link from Clerical menu (already in Data Maintenance menu). Changed header image to unofficial RPL logo.
 				1.040:  TW:	Added new Site Title and Page Title section. Changed <header><title> field to new 'siteTitle' value in RPLPage.
+				1.041:  TW:	Added 'home' link to 'RPL' Logo. More consistent with how the web generally works.
 --%>
 <%@page import="domain.User.Role"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -44,7 +45,7 @@
 		<span id="pg_title_page"><%= thisPage.title %></span>
 	</div>
     <div id="side_left">
-        <img src="<%= RPLPage.ROOT %>/images/RPL_small.jpg" alt="logo" />
+        <a href="<%= RPLPage.ROOT %>/home"><img src="<%= RPLPage.ROOT %>/images/RPL_small.jpg" alt="logo" /></a>
         <div id="menu">
             <ul>
                 <li><a href="<%= RPLPage.ROOT %>/home">Home</a></li>
