@@ -19,7 +19,8 @@ import util.Util;
 
 /**
  *
- * @author David
+ * @author David, Mitchell Carr
+ * Changelog:   06/05/2013 MC: updated approveClaim to update claim status
  */
 public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadModel {
 
@@ -203,6 +204,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                 e.setApproved(true);
             }
         }
+        claim.setStatus(Claim.Status.APPROVED);
         try {
             cIO.update(claim);
         }
