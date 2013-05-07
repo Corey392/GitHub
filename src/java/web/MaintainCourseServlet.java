@@ -27,13 +27,12 @@ import util.Util;
 /**
  *
  * @author Adam Shortall, Bryce Carr
- * @version 1.02
- * <b>Created:</b> Unknown <br/>
- * <b>Modified:</b> 24/04/2013 <br/>
- * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Made small changes to incorporate guideFileAddress DB field.<br/>
- *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.
- *                  
- * <b>Purpose:</b>  
+ * @version 1.030
+ * Created:	Unknown
+ * Modified:	07/05/2013
+ * Change Log:	08/04/2013: Bryce Carr:	Made small changes to incorporate guideFileAddress DB field.
+ *		24/04/2013: Bryce Carr:	Added header comments to match code conventions.
+ *		07/05/2013: Bryce Carr:	Implemented Course deletion.
  */
 public class MaintainCourseServlet extends HttpServlet {
     
@@ -73,7 +72,9 @@ public class MaintainCourseServlet extends HttpServlet {
                 course.setCoreModules(moduleIO.getListOfCores(id));
                 session.setAttribute("selectedCourse", course);
                 url = RPLServlet.MAINTAIN_CORE_MODULES_SERVLET.relativeAddress;
-            }
+            } else if (request.getParameter("deleteCourse") != null)	{
+		this.deleteCourse(request);
+	    }
             
             courseIO = new CourseIO(user.role);
             ArrayList<Course> courses = courseIO.getList();
@@ -85,7 +86,33 @@ public class MaintainCourseServlet extends HttpServlet {
         } finally {            
             out.close();
         }
-    }    
+    }
+    
+    /**
+     * Deletes a Course from the database, modifies the request.
+     * @author Bryce Carr
+     * @param request 
+     */
+    private void deleteCourse(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        
+        String ID = request.getParameter("deleteCourse");
+	Course deleteCourse;
+        
+        if (ID != null) {
+            CourseIO courseIO = new CourseIO(user.role);
+            try {
+		deleteCourse = courseIO.getByID(ID);
+                courseIO.delete(deleteCourse);
+                request.setAttribute("deleteSuccess", deleteCourse.getName() + " (ID: " + deleteCourse.getCourseID() + ") deleted successfully.");
+            } catch (SQLException ex) {
+                Logger.getLogger(MaintainCourseServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            request.setAttribute("deleteError", "Error: Course not deleted.");
+        }
+    }
     
     /**
      * @author James Lee Chin
