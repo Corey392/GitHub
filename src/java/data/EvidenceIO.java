@@ -12,7 +12,7 @@ import util.Util;
  * Handles I/O for Evidence provided by the Student
  * in the database.
  * 
- * @author Adam Shortall
+ * @author Adam Shortall, Mitchell Carr
  */
 public class EvidenceIO extends RPL_IO<Evidence> {
 
@@ -121,12 +121,12 @@ public class EvidenceIO extends RPL_IO<Evidence> {
         
     }
     
-    /**
-     * Returns a list of evidence for a claimedModule.
+   /**
+     * Returns evidence for a claimedModule.
      * @param claimedModule
      * @return 
      */
-    public ArrayList<Evidence> getList(int claimID, String moduleID) {
+    public Evidence getEvidence(int claimID, String moduleID) {
         
         String sql = "SELECT * FROM fn_ListEvidence(?,?)";
         
@@ -136,22 +136,21 @@ public class EvidenceIO extends RPL_IO<Evidence> {
         try {
             
             ResultSet rs = super.doPreparedStatement(sql, p1, p2);
-            ArrayList<Evidence> list = new ArrayList<Evidence>();
+            Evidence evidence = null;
 
-            while (rs.next()) {
+            if (rs.next()) {
                 int elementID = rs.getInt(Field.ELEMENT_ID.name); // returns 0 if elementID is null
                 boolean approved = rs.getBoolean(Field.APPROVED.name);
                 String assessorNote = rs.getString(Field.ASSESSOR_NOTE.name);
                 String description = rs.getString(Field.DESCRIPTION.name);
-                Evidence evidence = new Evidence(claimID, moduleID);
+                evidence = new Evidence(claimID, moduleID);
                 evidence.setApproved(approved);
                 evidence.setAssessorNote(assessorNote);
                 evidence.setDescription(description);
                 evidence.setElementID(elementID);
-                list.add(evidence);
             }
             
-            return list;
+            return evidence;
             
         } catch (SQLException ex) {
             Logger.getLogger(EvidenceIO.class.getName()).log(Level.SEVERE, null, ex);
