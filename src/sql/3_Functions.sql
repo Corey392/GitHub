@@ -1,7 +1,7 @@
 ﻿/* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:
- *  Version:	v2.163
+ *  Version:	v2.164
  *  Modified:	07/05/2013
  *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
@@ -30,6 +30,7 @@
 		v2.161:	Todd:	Updated 'fn_resetpassword' to accept User ID or Email address.
 		v2.162:	Todd:	Minor updates 'fn_insertevidence' and 'fn_updateevidence'.
 		v2.163:	Bryce:	Updated 'fn_insertcriterion' and 'fn_listcriteria' to account for new composite primary key in Criterion table.
+		v2.164:	Bryce:	Updated 'fn_deletecriterion' to account for new composite primary key in Criterion table.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -274,19 +275,21 @@ $_$;
 
 
 --
--- Name: fn_deletecriterion(integer, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_deletecriterion(integer, integer, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_deletecriterion(criterionid integer, elementid integer) RETURNS void
+CREATE FUNCTION fn_deletecriterion(criterionid integer, elementid integer, moduleid text) RETURNS void
     LANGUAGE sql
     AS $_$
     DELETE FROM "Criterion"
     WHERE "criterionID" = $1
-    AND "elementID" = $2;
+    AND "elementID" = $2
+    AND "moduleID" = $3;
 
     UPDATE "Criterion"
     SET "criterionID" = "criterionID" - 1
     WHERE "elementID" = $2
+    AND "moduleID" = $3
     AND "criterionID" > $1;
 $_$;
 
