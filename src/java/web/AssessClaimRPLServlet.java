@@ -5,6 +5,7 @@ import domain.*;
 import domain.User.Role;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.SingleThreadModel;
@@ -27,7 +28,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
 
     HttpSession session;
     User user;
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -36,17 +37,17 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         session = request.getSession();
         user = (User)session.getAttribute("user");
         String url;
 
-        String rpath = request.getParameter("rpath"); 
-       
+        String rpath = request.getParameter("rpath");
+
         // If User came from ListClaims Page
         if (rpath.equalsIgnoreCase(RPLPage.LIST_CLAIMS_TEACHER.relativeAddress)) {
             String ccmd = request.getParameter("ccmd");
- System.out.println("ccmd=" + ccmd);            
+ System.out.println("ccmd=" + ccmd);
             if(ccmd != null) {
                 if (ccmd.equalsIgnoreCase("Back")) {
                     url = RPLPage.TEACHER_HOME.relativeAddress;
@@ -55,7 +56,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                 }
 
                 String selectedClaimID = request.getParameter("selectedClaim");
-                
+
                 if (selectedClaimID == null) {
                     url = RPLServlet.VIEW_TEACHER_CLAIM_SERVLET.relativeAddress;
 
@@ -87,7 +88,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                     RequestDispatcher dispatcher = request.getRequestDispatcher(url);
                     dispatcher.forward(request, response);
                 }
-                
+
             }
 //            int claimID = Integer.parseInt(request.getParameter("claimID"));
 //            String studentID = request.getParameter("studentID");
@@ -98,10 +99,10 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
 //            RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 //            dispatcher.forward(request, response);
         } else if (rpath.equalsIgnoreCase(RPLPage.VIEW_EVIDENCE_PAGE.relativeAddress)) {
-         //User Came from ViewEvidenceServlet   
+         //User Came from ViewEvidenceServlet
             String selectedClaimID = request.getParameter("selectedClaim");
             if (selectedClaimID == null) {
-                
+
                 int claimID = Integer.parseInt(request.getParameter("claimID"));
                 String studentID = request.getParameter("studentID");
                 Claim claim = Util.getCompleteClaim(studentID, claimID, user.role);
@@ -111,26 +112,26 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                 dispatcher.forward(request, response);
             } else {
                 // TODO: Implement Search Method here
-                
-                
+
+
                 //User Came from ListClaims Page
 
             }
 
-        } else if (rpath.equalsIgnoreCase(RPLPage.ASSESS_CLAIM_PREV.relativeAddress) 
+        } else if (rpath.equalsIgnoreCase(RPLPage.ASSESS_CLAIM_PREV.relativeAddress)
                     || rpath.equalsIgnoreCase(RPLPage.ASSESS_CLAIM_RPL.relativeAddress)){
-        // If User came from assessClaimPrev or assessClaimRPL Page    
+        // If User came from assessClaimPrev or assessClaimRPL Page
             String moduleID = Util.getPageStringID(request, "evid");
             // If "View Evidence" Button clicked
             if (!(moduleID == null || moduleID.isEmpty())) {
-                
+
                 request.removeAttribute("rpath");
                 String claimID = request.getParameter("claimID");
                 String studentID = request.getParameter("studentID");
                 //rpath = RPLServlet.ASSESS_CLAIM_RPL_SERVLET.relativeAddress;
                 //Mitchell: I can't see any reason for the above statement to exist,
                 //so I've commented it out for the time being
-                
+
                 url = RPLServlet.VIEW_EVIDENCE_SERVLET.relativeAddress;
                 request.setAttribute("claimID", claimID);
                 request.setAttribute("studentID", studentID);
@@ -167,7 +168,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         } else if (rpath.equalsIgnoreCase(RPLPage.EVIDENCE_UPDATED_PAGE.relativeAddress)) {
             String studentID = request.getParameter("studentID");
             int claimID = Integer.parseInt(request.getParameter("claimID"));
-            
+
             Claim claim = Util.getCompleteClaim(studentID, claimID, user.role);
             url = getForwardURLForClaimType(claim);
             request.setAttribute("claim", claim);
@@ -175,7 +176,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
             dispatcher.forward(request, response);
         }
     }
-    
+
     /**
      * approveClaim Method is called when an Assessor or Delegate wishes to approve
      * a claim. The claim's 'Assessor Approved' and 'Delegate Approved' fields will
@@ -198,10 +199,13 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
             claim.setDelegateApproved(Boolean.TRUE);
             }
         }
-        
+
         for (ClaimedModule claimedModule: claim.getClaimedModules()) {
             claimedModule.setApproved(true);
-            claimedModule.getEvidence().setApproved(true);
+			ArrayList<Evidence> evi = claimedModule.getEvidence();
+			for (Evidence e : evi) {
+				e.setApproved(true);
+			}
         }
         claim.setStatus(Claim.Status.APPROVED);
         try {
@@ -211,7 +215,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
             SQLex.getMessage();
         }
     }
-    
+
     public void approveSelected(HttpServletRequest request, HttpServletResponse response, Claim claim) {
         String[] selectedValues = request.getParameterValues("approved");
         ClaimIO cIO = new ClaimIO(user.role);
@@ -227,22 +231,22 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
             }
         }
         try {
-            
+
             cIO.update(claim);
         }
         catch(SQLException SQLex) {
             SQLex.getMessage();
         }
     }
-    
+
     public void printClaim(HttpServletRequest request, HttpServletResponse response, Claim claim) {
         //TODO: Print Claim Method
     }
-    
+
     /**
      * Sets and gets URL based on Claim Type.
      * @param url
-     * @return 
+     * @return
      */
     private String getForwardURLForClaimType(Claim claim) {
 
@@ -251,11 +255,11 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         } else {
             return RPLPage.ASSESS_CLAIM_PREV.relativeAddress;
         }
-        
+
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -268,7 +272,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -281,7 +285,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

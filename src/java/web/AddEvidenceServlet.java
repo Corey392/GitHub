@@ -29,8 +29,8 @@ import util.RPLServlet;
  * Changelog:   07/05/2013 MC: Updated setEvidence method to reflect changes to the way ClaimedModule objects hold Evidence
  */
 public class AddEvidenceServlet extends HttpServlet {
-    
-    /** 
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -46,24 +46,24 @@ public class AddEvidenceServlet extends HttpServlet {
         String moduleID;
         ArrayList<ClaimedModule> claimedModules;
         boolean error = false;
-        
+
         // Initialises the url for the next page as an empty string. Gets the
         // session and the current user.
         String url = "";
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        
+
         // Gets the current claim from the session.
         claim = (Claim) session.getAttribute("claim");
-        // addEvidenceTo is the index of the module in the claim's 
+        // addEvidenceTo is the index of the module in the claim's
         // claimedModules ArrayList.
         addEvidenceTo = (Integer) request.getAttribute("addEvidenceTo");
         if (addEvidenceTo != null) {
             claimedModules = claim.getClaimedModules();
             module = claimedModules.get(addEvidenceTo.intValue());
         } else {
-            // If addEvidenceTo is null then the servlet has been requested by 
-            // the addRPLEvidence page and the module's ID has been supplied 
+            // If addEvidenceTo is null then the servlet has been requested by
+            // the addRPLEvidence page and the module's ID has been supplied
             // instead.
             moduleID = request.getParameter("moduleID");
             claimedModules = claim.getClaimedModules();
@@ -85,18 +85,18 @@ public class AddEvidenceServlet extends HttpServlet {
                 url = RPLServlet.UPDATE_RPL_CLAIM_SERVLET.relativeAddress;
             }
         }
-        
+
         // If there wasn't an error then set the url to forward the address to
         // the next servlet or to the addRPLEvidence depending on whether any
         // buttons were pressed. If addEvidence or saveEvidence were pressed
         // call the setEvidence method.
         if (!error){
             if (request.getParameter("addEvidence") != null){
-                claim = this.setEvidence(request, user, claim, addEvidenceTo, 
+                claim = this.setEvidence(request, user, claim, addEvidenceTo,
                         module, claimedModules);
                 url = RPLServlet.UPDATE_RPL_CLAIM_SERVLET.relativeAddress;
             } else if (request.getParameter("saveEvidence") != null) {
-                claim = this.setEvidence(request, user, claim, addEvidenceTo, 
+                claim = this.setEvidence(request, user, claim, addEvidenceTo,
                         module, claimedModules);
                 url = RPLServlet.UPDATE_RPL_CLAIM_SERVLET.relativeAddress;
             } else if (request.getParameter("cancel") != null) {
@@ -105,7 +105,7 @@ public class AddEvidenceServlet extends HttpServlet {
                 url = RPLPage.ADD_RPL_EVIDENCE.relativeAddress;
             }
         }
-        
+
         // Set the claim and module attribute and forward the claim.
         session.setAttribute("claim", claim);
         request.setAttribute("module", module);
@@ -114,7 +114,7 @@ public class AddEvidenceServlet extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -127,7 +127,7 @@ public class AddEvidenceServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -140,7 +140,7 @@ public class AddEvidenceServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
@@ -148,10 +148,10 @@ public class AddEvidenceServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-        
+
     /**
      * Saves the evidence to the database or updates it if it is already there.
-     * If there aren't any elements for the module then there is only one 
+     * If there aren't any elements for the module then there is only one
      * item of evidence to save, otherwise evidence is saved for each element.
      * @param request the page request to retrieve the evidence from
      * @param user the User who is currently logged in
@@ -161,26 +161,26 @@ public class AddEvidenceServlet extends HttpServlet {
      * @param claimedModules the list of ClaimedModules
      * @return the updated Claim
      */
-    private Claim setEvidence(HttpServletRequest request, User user, 
-            Claim claim, Integer addEvidenceTo, ClaimedModule module, 
-            ArrayList<ClaimedModule> claimedModules){
+    private Claim setEvidence(HttpServletRequest request, User user, Claim claim, Integer addEvidenceTo, ClaimedModule module, ArrayList<ClaimedModule> claimedModules){
         EvidenceIO evidenceIO = new EvidenceIO(user.role);
-        Evidence evidence = null;
+        ArrayList<Evidence> evi = new ArrayList<Evidence>();
         if (!module.getElements().isEmpty()){
             for (Element element: module.getElements()){
                 String elementID = String.valueOf(element.getElementID());
                 String description = request.getParameter(elementID);
                 if (description != null){
-                    evidence = new Evidence(
+                    Evidence evidence = new Evidence(
                             claim.getClaimID(),
                             module.getModuleID(),
                             description,
                             element.getElementID());
                     try{
                         if (this.isNewEvidence(module, evidence)){
-                            evidenceIO.insert(evidence);
+							evi.add(evidence);
+                            evidenceIO.insert(evi);
                         } else {
-                            evidenceIO.update(evidence);
+							evi.add(evidence);
+                            evidenceIO.update(evi);
                         }
                     } catch (SQLException ex) {
                         Logger.getLogger(AddEvidenceServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -190,27 +190,29 @@ public class AddEvidenceServlet extends HttpServlet {
         } else {
             String description = request.getParameter("evidence");
             if (description != null){
-                evidence = new Evidence(
+				Evidence evidence = new Evidence(
                             claim.getClaimID(),
                             module.getModuleID(),
                             description);
                 try{
                     if (this.isNewEvidence(module, evidence)){
-                        evidenceIO.insert(evidence);
+						evi.add(evidence);
+                        evidenceIO.insert(evi);
                     } else {
-                        evidenceIO.update(evidence);
+						evi.add(evidence);
+                        evidenceIO.update(evi);
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(AddEvidenceServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        module.setEvidence(evidence);
+        module.setEvidence(evi);
         claimedModules.set(addEvidenceTo, module);
         claim.setClaimedModules(claimedModules);
         return claim;
     }
-    
+
     /**
      * Test whether a module already has evidence for a given element.
      * @param m the ClaimedModule the evidence belongs to
@@ -218,13 +220,14 @@ public class AddEvidenceServlet extends HttpServlet {
      * @return whether the evidence is new
      */
     private boolean isNewEvidence(ClaimedModule m, Evidence e){
-        Evidence evidence = m.getEvidence();
+        ArrayList<Evidence> evidence = m.getEvidence();
         boolean isNewEvidence = true;
         if (evidence != null){
-            if (evidence.getModuleID().equals(e.getModuleID()) 
-                    && evidence.getElementID() == e.getElementID()){
-                isNewEvidence = false;
-            }
+			for (Evidence evi : evidence) {
+				if (evi.getModuleID().equals(e.getModuleID()) && evi.getElementID() == e.getElementID()){
+					isNewEvidence = false;
+				}
+			}
         }
         return isNewEvidence;
     }

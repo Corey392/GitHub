@@ -23,7 +23,7 @@ public final class ClaimedModule extends Module implements Serializable{
     private char recognition;
 
     private ArrayList<Provider> providers;
-    private Evidence evidence;
+    private ArrayList<Evidence> evidence;
 
     /**
      * Empty constructor
@@ -122,7 +122,7 @@ public final class ClaimedModule extends Module implements Serializable{
     /**
      * @return the evidence
      */
-    public Evidence getEvidence() {
+    public ArrayList<Evidence> getEvidence() {
         return evidence;
     }
 
@@ -185,7 +185,7 @@ public final class ClaimedModule extends Module implements Serializable{
     /**
      * @param evidence the evidence to set
      */
-    public void setEvidence(Evidence evidence) {
+    public void setEvidence(ArrayList<Evidence> evidence) {
         this.evidence = evidence;
     }
 

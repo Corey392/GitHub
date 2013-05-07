@@ -136,12 +136,9 @@ public final class Util {
      * @param role
      * @return
      */
-    public static Evidence getCompleteEvidence(int claimID, String moduleID, Role role) {
+    public static ArrayList<Evidence> getCompleteEvidence(int claimID, String moduleID, Role role) {
         EvidenceIO evidenceIO = new EvidenceIO(role);
-        Evidence evidence = evidenceIO.getEvidence(claimID, moduleID);
-        if (evidence != null && evidence.getElementID() != null) {
-            evidence.setElement(Util.getCompleteElement(evidence.getElementID(), moduleID, role));
-        }
+        ArrayList<Evidence> evidence = evidenceIO.getEvidence(claimID, moduleID);
         return evidence;
     }
 

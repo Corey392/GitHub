@@ -25,7 +25,7 @@ import util.Util;
  */
 public class ViewEvidenceServlet extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -34,25 +34,25 @@ public class ViewEvidenceServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user");
         String url;
         String rpath = request.getParameter("rpath"); // jsp path
-       
-        
+
+
         //If user came from AssessPrevClaim Page
-        
-        
+
+
         // If user came from viewEvidence Page
         if (rpath.equalsIgnoreCase(RPLPage.VIEW_EVIDENCE_PAGE.relativeAddress)) {
             //Get button pressed
             String action = request.getParameter("btn");
-            
+
             int claimID = Integer.parseInt(request.getParameter("claimID"));
             String moduleID = request.getParameter("moduleID");
             //String studentID = request.getParameter("studentID");
-            
+
             //Check button pressed
             if (action.equalsIgnoreCase("Approve Evidence")){
                 String[] sv = request.getParameterValues("approved");
@@ -64,10 +64,12 @@ public class ViewEvidenceServlet extends HttpServlet {
                         }
 
                         EvidenceIO evidenceIO = new EvidenceIO(user.role);
-                        
+
                         for (int i = 0; i < selectedValues.length; i++) {
-                            Evidence evidence = Util.getCompleteEvidence(claimID, moduleID, user.role);
-                            evidence.setApproved(true);
+                            ArrayList<Evidence> evidence = Util.getCompleteEvidence(claimID, moduleID, user.role);
+                            for (Evidence e : evidence) {
+								e.setApproved(true);
+							}
                             try {
                                 evidenceIO.update(evidence);
                             } catch (SQLException sqlex) {
@@ -81,15 +83,15 @@ public class ViewEvidenceServlet extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher(url);
                 dispatcher.forward(request, response);
             }
-            
+
         } else if (rpath.equalsIgnoreCase(RPLPage.ASSESS_CLAIM_RPL.relativeAddress)) {
         // If user came from AssessRPLClaim Page
-            //get request params    
+            //get request params
             int claimID = Integer.parseInt(request.getParameter("claimID"));
             String studentID = request.getParameter("studentID");
             String moduleID = Util.getPageStringID(request, "evid");
             Claim claim = Util.getCompleteClaim(studentID, claimID, user.role);
-            
+
             ElementIO elementIO = new ElementIO(user.role);
             ClaimedModule claimedModule = new ClaimedModule();
             ArrayList<ClaimedModule> claimedModules = Util.getCompleteClaimedModuleList(claimID, studentID, user.role);
@@ -101,9 +103,9 @@ public class ViewEvidenceServlet extends HttpServlet {
                     if (claim.getClaimType().desc.equalsIgnoreCase("Previous Studies")){
                         request.setAttribute("prevtype", "prevtype");
                     }
-                    
+
                     request.setAttribute("empt", "1");
-                    
+
                 }
             }
             request.getServletContext();
@@ -111,14 +113,14 @@ public class ViewEvidenceServlet extends HttpServlet {
             url = RPLPage.VIEW_EVIDENCE_PAGE.relativeAddress;
             request.setAttribute("claimedModule", claimedModule);
             request.setAttribute("rpath", RPLServlet.VIEW_EVIDENCE_SERVLET.relativeAddress);
-            
+
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-            dispatcher.forward(request, response);   
+            dispatcher.forward(request, response);
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -131,7 +133,7 @@ public class ViewEvidenceServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -144,7 +146,7 @@ public class ViewEvidenceServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

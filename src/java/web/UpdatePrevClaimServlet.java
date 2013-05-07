@@ -72,7 +72,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
                 } else if (request.getParameter("addTextEvidence") != null){
                         EvidenceIO evidenceIO = new EvidenceIO(user.role);
                         for (Module m : modules){
-                            evidence.add(evidenceIO.getEvidence(claim.getClaimID(), m.getModuleID()));
+                            evidence = evidenceIO.getEvidence(claim.getClaimID(), m.getModuleID());
                         }
                         url = RPLPage.ADD_RPL_EVIDENCE.relativeAddress;
 		} else if (request.getParameter("addModule") != null) {
