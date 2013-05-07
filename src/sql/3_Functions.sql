@@ -1,7 +1,7 @@
 ﻿/* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:
- *  Version:	v2.162
+ *  Version:	v2.163
  *  Modified:	07/05/2013
  *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
@@ -29,6 +29,7 @@
 		v2.160:	Bryce:	Fixed 'fn_insertelement' so that it increments PK properly.
 		v2.161:	Todd:	Updated 'fn_resetpassword' to accept User ID or Email address.
 		v2.162:	Todd:	Minor updates 'fn_insertevidence' and 'fn_updateevidence'.
+		v2.163:	Bryce:	Updated 'fn_insertcriterion' and 'fn_listcriteria' to account for new composite primary key in Criterion table.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -706,7 +707,7 @@ $_$;
 -- Name: fn_insertcriterion(integer, text, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_insertcriterion("elementID" integer, description text) RETURNS void
+CREATE FUNCTION fn_insertcriterion("elementID" integer, "moduleID" text, description text) RETURNS void
     LANGUAGE plpgsql
     AS $_$
     DECLARE criterionID int;
@@ -714,8 +715,8 @@ CREATE FUNCTION fn_insertcriterion("elementID" integer, description text) RETURN
         criterionID := MAX("Criterion"."criterionID") FROM "Criterion" WHERE "Criterion"."elementID" = $1;
         IF criterionID IS NULL THEN criterionID := 0; END IF;
         criterionID := criterionID + 1;
-	INSERT INTO "Criterion"("criterionID", "elementID", "description")
-	VALUES(criterionID,$1,$2);
+	INSERT INTO "Criterion"("criterionID", "elementID", "moduleID", "description")
+	VALUES(criterionID,$1,$2, $3);
     END;
 $_$;
 
@@ -967,13 +968,15 @@ $_$;
 
 
 --
--- Name: fn_listcriteria(integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_listcriteria(integer, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_listcriteria(elementid integer) RETURNS SETOF "Criterion"
+CREATE FUNCTION fn_listcriteria(elementid integer, moduleID text) RETURNS SETOF "Criterion"
     LANGUAGE sql
     AS $_$
-    SELECT * FROM "Criterion" WHERE "elementID" = $1;
+    SELECT * FROM "Criterion"
+	WHERE "elementID" = $1
+	    AND "moduleID" = $2;
 $_$;
 
 

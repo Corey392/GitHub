@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Adam Shortall, Bryce Carr, Mitch Carr, Todd Wiggins
- * @version 1.02
+ * @version 1.022
  * <b>Created:</b>  Unknown<br/>
  * <b>Modified:</b> 24/04/2013<br/>
  * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Removed code to account for removal of moduleID field in DB's Criterion table.<br/>
@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  * 		    01/05/2013: Mitch Carr: Updated to reflect change made to ClaimIO.getById(Claim)<br/>
  *                  07/05/2013: Mitch Carr: Updated getCompleteEvidence and removed getCompleteEvidenceList<br />
  *                  07/05/2013: TW: Changed evidence to ArrayList<Evidence> in getCompleteEvidence().<br />
+ *		    07/05/2013:	Bryce Carr: Updated getCompleteElement() and getCompleteModule() to account for updated Criterion table (part of implementing Criterion insertion).<br />
  * <b>Purpose:</b>  Appears to provide reusable access to commonly-used complex interactions with IO classes.
  */
 public final class Util {
@@ -101,7 +102,7 @@ public final class Util {
         ElementIO elementIO = new ElementIO(role);
         CriterionIO criterionIO = new CriterionIO(role);
         Element element = elementIO.getByID(moduleID, elementID);
-        ArrayList<Criterion> criteria = criterionIO.getList(elementID);
+        ArrayList<Criterion> criteria = criterionIO.getList(elementID, moduleID);
         element.setCriteria(criteria);
 
         return element;
@@ -124,7 +125,7 @@ public final class Util {
 		}
         module.setElements(elementIO.getList(moduleID));
         for (Element e : module.getElements()) {
-            e.setCriteria(criterionIO.getList(e.getElementID()));
+            e.setCriteria(criterionIO.getList(e.getElementID(), moduleID));
         }
         return module;
     }

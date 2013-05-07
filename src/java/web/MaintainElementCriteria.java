@@ -29,6 +29,7 @@ import util.Util;
  * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Removed code to account for removal of field moduleID in DB's Criterion table.<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.
  *                  05/05/2013: Mitch Carr: Implemented deleteCriterion segment of processRequest
+ *		    07/05/2013:	Bryce Carr: Added arguments to a couple of method calls to use updated methods for adding Criteria.
  */
 public class MaintainElementCriteria extends HttpServlet {
 
@@ -61,7 +62,7 @@ public class MaintainElementCriteria extends HttpServlet {
             // Event handling:
             if (addNewCriterion != null) {
                 String newCriterionText = request.getParameter("newCriterionText");
-                Criterion criterion = new Criterion(selectedElement.getElementID(), newCriterionText);
+                Criterion criterion = new Criterion(selectedElement.getElementID(), selectedElement.getModuleID(), newCriterionText);
                 try {
                     criterionIO.insert(criterion);
                 } catch (SQLException ex) {
@@ -81,7 +82,7 @@ public class MaintainElementCriteria extends HttpServlet {
                 }
             } else if (deleteCriterionID != null) {
                 int deleteID = Integer.parseInt(deleteCriterionID);
-                ArrayList<Criterion> criterionArray =  criterionIO.getList(selectedElement.getElementID());
+                ArrayList<Criterion> criterionArray =  criterionIO.getList(selectedElement.getElementID(), selectedElement.getModuleID());
                 for (Criterion c : criterionArray){
                     if (c.getCriterionID() == deleteID){
                         try {
@@ -97,7 +98,7 @@ public class MaintainElementCriteria extends HttpServlet {
                 url = RPLServlet.MAINTAIN_MODULE_ELEMENTS_SERVLET.relativeAddress;
             }
             
-            selectedElement.setCriteria(criterionIO.getList(selectedElement.getElementID()));
+            selectedElement.setCriteria(criterionIO.getList(selectedElement.getElementID(), selectedElement.getModuleID()));
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request,response);
         } finally {            
