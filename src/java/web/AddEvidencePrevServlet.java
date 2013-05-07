@@ -40,7 +40,7 @@ public class AddEvidencePrevServlet extends HttpServlet {
 		//Get the modules that evidence is required for
 		ArrayList<ClaimedModule> claimedMods = claim.getClaimedModules();
 
-		request.setAttribute("elements", claimedMods.get(1).getElements());
+		request.setAttribute("elements", claimedMods.get(0).getElements());
 
 		if (request.getParameter("saveEvidence") != null) {	//Process the form
 
