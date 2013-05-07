@@ -30,7 +30,6 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="element" items="${claimedModule.element}">
 			<tr>
 				<td>
 					Provide information to the workgroup about OHS policies and procedures
@@ -42,7 +41,17 @@
 					<textarea id="evidence_textarea" name="MODID:ELEMENTID" placeholder="Enter the types evidence you can provide in here."></textarea>
 				</td>
             </tr>
-			</c:forEach>
+			<tr>
+				<td>
+					Provide information to the workgroup about OHS policies and procedures
+				</td><td>
+					1. Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.<br/>
+					2. Provide information to the workgroup on the organizations OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.<br/>
+					3. Regularly provide and clearly explain information about identified hazards and the outcomes of risk assessment and control to the workgroup.
+				</td><td>
+					<textarea id="evidence_textarea" name="MODID:ELEMENTID" placeholder="Enter the types evidence you can provide in here."></textarea>
+				</td>
+            </tr>
 		</tbody>
 	</table>
     </c:forEach>

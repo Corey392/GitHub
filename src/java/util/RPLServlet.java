@@ -1,8 +1,8 @@
 package util;
 
 /**
- * @author Adam Shortall, Kyoungho Lee, Bryce Carr
- * @version 1.02
+ * @author Adam Shortall, Kyoungho Lee, Bryce Carr, Todd Wiggins
+ * @version 1.021
  * <b>Created:</b>  Unknown<br/>
  * <b>Modified:</b> 24/04/2013<br/>
  * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Re-ordered enums for servlet URLs in a more logical fashion.<br/>
@@ -31,12 +31,13 @@ public enum RPLServlet {
     MAINTAIN_MODULE_SERVLET("/maintenance/maintainModule"),
     MAINTAIN_CAMPUS_DISCIPLINE_SERVLET("/maintenance/campusDiscipline"),
     MAINTAIN_DISCIPLINE_COURSES_SERVLET("/maintenance/disciplineCourses"),
-    MAINTAIN_CORE_MODULES_SERVLET("/maintenance/coreModules"),  
+    MAINTAIN_CORE_MODULES_SERVLET("/maintenance/coreModules"),
     MAINTAIN_COURSE_ELECTIVES_SERVLET("/maintenance/courseElectives"),
     MAINTAIN_MODULE_ELEMENTS_SERVLET("/maintenance/moduleElements"),
     MAINTAIN_TABLE_SERVLET("/maintenance/maintainTable"),
     /* Student Servlets */
     ADD_EVIDENCE_SERVLET("/students/addEvidence"),
+    ADD_EVIDENCE_PREV("/students/AddEvidencePrev"),//Added by: Todd Wiggins
     CREATE_CLAIM_SERVLET("/students/createClaim"),
     STUDENT_LIST_CLAIM_RECORDS("/students/listClaimRecords"), // Kyoungho Lee
     LIST_CLAIMS_STUDENT_SERVLET("/students/listClaims"),
@@ -47,15 +48,15 @@ public enum RPLServlet {
     TEACHER_LIST_CLAIM_RECORDS("/teachers/listClaimRecords"),
     VIEW_EVIDENCE_SERVLET("/teachers/ViewEvidence"),
     VIEW_TEACHER_CLAIM_SERVLET("/teachers/ViewTeacherClaims"); // Kyoungho Lee
-    
+
     public final String relativeAddress;
     public final String absoluteAddress;
-    
+
     RPLServlet(String relativeAddress) {
         this.relativeAddress = relativeAddress;
         this.absoluteAddress = RPLPage.ROOT + relativeAddress;
     }
-    
+
     @Override
     public String toString() {
         return this.absoluteAddress;

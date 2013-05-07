@@ -33,14 +33,17 @@ public class AddEvidencePrevServlet extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = RPLPage.ADD_EVIDENCE_PREV.relativeAddress;
+		//Get session User & Claim.
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		Claim claim = (Claim) session.getAttribute("claim");
+		//Get the modules that evidence is required for
+		ArrayList<ClaimedModule> claimedMods = claim.getClaimedModules();
+
+		request.setAttribute("elements", claimedMods.get(1).getElements());
 
 		if (request.getParameter("saveEvidence") != null) {	//Process the form
-			//Get session User & Claim.
-			HttpSession session = request.getSession();
-			User user = (User) session.getAttribute("user");
-			Claim claim = (Claim) session.getAttribute("claim");
-			//Get the modules that evidence is required for
-			ArrayList<ClaimedModule> claimedMods = claim.getClaimedModules();
+
 		}
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);

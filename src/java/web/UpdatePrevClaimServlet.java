@@ -70,12 +70,8 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 		} else if (request.getParameter("draftClaim") != null) {
 			claim = this.submitClaim(user, claim, false);
 			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
-                } else if (request.getParameter("addTextEvidence") != null){
-                        EvidenceIO evidenceIO = new EvidenceIO(user.role);
-                        for (Module m : modules){
-                            evidence = evidenceIO.getEvidence(claim.getClaimID(), m.getModuleID());
-                        }
-                        url = RPLPage.ADD_RPL_EVIDENCE.relativeAddress;
+		} else if (request.getParameter("addTextEvidence") != null){
+		    url = RPLServlet.ADD_EVIDENCE_PREV.relativeAddress;
 		} else if (request.getParameter("addModule") != null) {
 			if (selectedModule == null) {
 				url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;
