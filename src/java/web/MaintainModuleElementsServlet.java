@@ -22,13 +22,14 @@ import util.RPLServlet;
 import util.Util;
 
 /**
+ * Process requests for Clerical Admin's ModuleElement maintenance page.
  * @author Adam Shortall, Bryce Carr
- * @version 1.02
- * <b>Created:</b>  Unknown<br/>
- * <b>Modified:</b> 24/04/2013<br/>
- * <b>Change Log:</b>  08/04/2013:  Bryce Carr: Removed code to account for removal of field moduleID in DB's Criterion table.<br/>
- *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
- * <b>Purpose:</b>  
+ * @version 1.030
+ * Created:	Unknown
+ * Modified:	24/04/2013
+ * Change Log:	08/04/2013: Bryce Carr:	Removed code to account for removal of field moduleID in DB's Criterion table.
+ *		24/04/2013: Bryce Carr:	Added header comments to match code conventions.
+ *		06/05/2013: Bryce Carr: Implemented element deletion.
  */
 public class MaintainModuleElementsServlet extends HttpServlet {
 
@@ -79,11 +80,16 @@ public class MaintainModuleElementsServlet extends HttpServlet {
                 }
                 request.setAttribute("elementUpdateMessage", "Element successfully updated");
             } else if (removeElementID != null) {
-                // TODO: delete element
+		try {
+		    Element deleteElement = elementIO.getByID(selectedModule.getModuleID(), Integer.valueOf(removeElementID));
+		    elementIO.delete(deleteElement);
+		} catch (SQLException ex)   {
+		    Logger.getLogger(MaintainModuleElementsServlet.class.getName()).log(Level.SEVERE, null, ex);
+		}
             } else if (addCriteriaElementID != null) {
                 Element selectedElement = elementIO.getByID(selectedModule.getModuleID(), Integer.parseInt(addCriteriaElementID));
                 CriterionIO criterionIO = new CriterionIO(user.role);
-                selectedElement.setCriteria(criterionIO.getList(selectedElement.getElementID()));
+                selectedElement.setCriteria(criterionIO.getList(selectedElement.getElementID(), selectedModule.getModuleID()));
                 session.setAttribute("selectedElement", selectedElement);
                 
                 url = RPLServlet.MAINTAIN_ELEMENT_CRITERIA_SERVLET.relativeAddress;

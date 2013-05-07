@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.ModuleIO;
@@ -25,7 +21,6 @@ import util.FieldError;
 import util.RPLError;
 import util.RPLPage;
 import util.RPLServlet;
-import util.Util;
 
 /**
  * Hanles the maintenance/data-entry page for modules.
