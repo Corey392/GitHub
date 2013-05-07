@@ -1,9 +1,9 @@
 ﻿/* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:
- *  Version:	v2.161
- *  Modified:	06/05/2013
- *  Change Log:	v2.110:
+ *  Version:	v2.162
+ *  Modified:	07/05/2013
+ *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
  *		v2.021:	Mitch:	Fixed a mistake I made earlier in fn_listcores and fn_listelectives. Both have been tested and work now.
@@ -28,6 +28,7 @@
 		v2.150: Todd:   Added 'fn_deletedraftclaim' to reduce read from Database from web server. Ensures only draft claims are deleted.
 		v2.160:	Bryce:	Fixed 'fn_insertelement' so that it increments PK properly.
 		v2.161:	Todd:	Updated 'fn_resetpassword' to accept User ID or Email address.
+		v2.162:	Todd:	Minor updates 'fn_insertevidence' and 'fn_updateevidence'.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -773,10 +774,10 @@ $_$;
 -- Name: fn_insertevidence( integer, integer, text, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_insertevidence( "claimID" integer, "elementID" integer, description text, "moduleID" text) RETURNS void
+CREATE FUNCTION fn_insertevidence( "claimID" integer, "elementID" integer, "studentEvidence" text, "moduleID" text) RETURNS void
     LANGUAGE sql
     AS $_$
-	INSERT INTO "Evidence"( "claimID", "elementID", "description", "moduleID")
+	INSERT INTO "Evidence"( "claimID", "elementID", "studentEvidence", "moduleID")
 	VALUES($1,$2,$3,$4);
 $_$;
 
@@ -1340,16 +1341,16 @@ $_$;
 -- Name: fn_updateevidence( integer, text, text, boolean, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_updateevidence( claimid integer, moduleid text, description text, approved boolean, assessornote text) RETURNS void
+CREATE FUNCTION fn_updateevidence( claimid integer, moduleid text, "studentEvidence" text, approved boolean, assessornote text) RETURNS void
     LANGUAGE sql
     AS $_$
     UPDATE "Evidence"
     SET
-        "description" = $3,
+        "studentEvidence" = $3,
         "approved" = $4,
         "assessorNote" = $5
     WHERE
-	"claimID" = $1
+		"claimID" = $1
     AND "moduleID" = $2;
 $_$;
 

@@ -1,18 +1,20 @@
 /* Purpose:  	Adds the Tables to the database.
- * Authors:	Ryan, Kelly, Todd, Bryce
- * Created:	Unknown	
- * Version:	v2.010
- * Modified:	30/04/2013
+ * Authors:		Ryan, Kelly, Todd, Bryce
+ * Created:		Unknown
+ * Version:		v2.021
+ * Modified:	07/05/2013
  * Change Log:	v2.000: Todd:	Updated Student table, datatype for PhoneNumber changed to text
- *		v2.010:	Bryce:	Updated CourseModule table, foreign key for CampusDisciplineCourse electives
-		v2.020:	Bryce:	Updated Element, Evidence and Criterion tables. Changed PK of Element to a composite key and changed the others' references to match.
+ *				v2.010:	Bryce:	Updated CourseModule table, foreign key for CampusDisciplineCourse electives
+				v2.020:	Bryce:	Updated Element, Evidence and Criterion tables. Changed PK of Element to a composite key and changed the others' references to match.
+				v2.021:	Todd:	Updated "Evidence" table, added "StudentEvidence" column and changed the composite key to include "ElementID". Moved 2 SET option here instead of the CreateDB sql.
  * Pre-conditions: Database must be created, tables must not already exist.
  */
 --------------------------------------------------------------------------------------
 -- Make Sure you have closed the query window and opened again on RPL_2012 database --
 --------------------------------------------------------------------------------------
+SET standard_conforming_strings = off;
+SET escape_string_warning = off;
 SET default_tablespace = '';
-
 SET default_with_oids = false;
 
 --
@@ -23,11 +25,11 @@ CREATE FUNCTION fn_generatepassword() RETURNS text
     LANGUAGE sql
     AS $$
 	SELECT array_to_string(array(
-		SELECT substr('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', trunc(random() * 61)::integer + 1, 1) 
+		SELECT substr('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', trunc(random() * 61)::integer + 1, 1)
 		FROM generate_series(1, 12)), '');
 $$;
 --
--- Name: User; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: User; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "User" (
@@ -48,12 +50,12 @@ CREATE TABLE "User" (
 --
 
 COMMENT ON TABLE "User" IS 'A user account, where the userID is a student number, a teacher''s ID or an admin''s ID.
-The role of each user determines which database login role the application will connect 
-to the database with when the user logs in, and therefore the permissions granted to 
+The role of each user determines which database login role the application will connect
+to the database with when the user logs in, and therefore the permissions granted to
 the application for that user. Roles are (A)Assessor, (D)Delegate, (M)Admin, (S)Student';
 
 --
--- Name: Teacher; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Teacher; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Teacher" (
@@ -61,7 +63,7 @@ CREATE TABLE "Teacher" (
     "teacherID" text NOT NULL,
 	CONSTRAINT "pk_Teacher" PRIMARY KEY ("teacherID"),
 	CONSTRAINT "fk_Teacher_User" FOREIGN KEY ("userID")
-      REFERENCES "User" ("userID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE    
+      REFERENCES "User" ("userID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -72,7 +74,7 @@ CREATE TABLE "Teacher" (
 COMMENT ON TABLE "Teacher" IS 'A teacher account, where teacherID is not the TAFE staff ID, but an ID chosen by the teacher as a username for this system.';
 
 --
--- Name: Student; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Student; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Student" (
@@ -99,7 +101,7 @@ CREATE TABLE "Student" (
 COMMENT ON TABLE "Student" IS 'A student account, studentID is the student''s number assigned by TAFE.';
 
 --
--- Name: Campus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Campus; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Campus" (
@@ -117,7 +119,7 @@ COMMENT ON TABLE "Campus" IS 'A campus runs several disciplines, and each discip
 several campuses. This table is related to CampusDiscipline to resolve the N-M relationship.';
 
 --
--- Name: Discipline; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Discipline; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Discipline" (
@@ -133,11 +135,11 @@ CREATE TABLE "Discipline" (
 --
 
 COMMENT ON TABLE "Discipline" IS 'A discipline is maintained at a campus and runs many courses. A delegate can
- be responsible for an entire discipline, while an assessor may only be responsible 
+ be responsible for an entire discipline, while an assessor may only be responsible
 for a single course. ';
 
 --
--- Name: CampusDiscipline; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: CampusDiscipline; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "CampusDiscipline" (
@@ -147,7 +149,7 @@ CREATE TABLE "CampusDiscipline" (
 	CONSTRAINT "fk_CampusDiscipline_Campus" FOREIGN KEY ("campusID")
       REFERENCES "Campus" ("campusID") MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT "fk_CampusDiscipline_Discipline" FOREIGN KEY ("disciplineID")
-      REFERENCES "Discipline" ("disciplineID") MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE  
+      REFERENCES "Discipline" ("disciplineID") MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -156,11 +158,11 @@ CREATE TABLE "CampusDiscipline" (
 --
 
 COMMENT ON TABLE "CampusDiscipline" IS 'Associative entity for the N-M relationship between Campus and Discipline.
- A record in this table represents a particular Campus'' Discipline (e.g. 
+ A record in this table represents a particular Campus'' Discipline (e.g.
 Ourimbah''s Information Technology discipline.)';
 
 --
--- Name: Delegate; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Delegate; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Delegate" (
@@ -171,7 +173,7 @@ CREATE TABLE "Delegate" (
 	CONSTRAINT "fk_Delegate_CampusDiscipline" FOREIGN KEY ("campusID", "disciplineID")
       REFERENCES "CampusDiscipline" ("campusID", "disciplineID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT "fk_Delegate_Teacher" FOREIGN KEY ("teacherID")
-      REFERENCES "Teacher" ("teacherID") MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE   
+      REFERENCES "Teacher" ("teacherID") MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -180,11 +182,11 @@ CREATE TABLE "Delegate" (
 --
 
 COMMENT ON TABLE "Delegate" IS 'A type of teacher that is responsible for an entire discipline at a campus.
- A delegate may, however, be responsible for more than one discipline 
+ A delegate may, however, be responsible for more than one discipline
 at a campus, and may also be responsible for a discipline in multiple campuses.';
 
 --
--- Name: Module; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Module; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Module" (
@@ -199,13 +201,13 @@ CREATE TABLE "Module" (
 -- Name: TABLE "Module"; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE "Module" IS 'Modules are identified by a 9-10 character code that is already in use by TAFE. 
-The guide attribute is an MS-Word document: the recognition guide for this module. 
+COMMENT ON TABLE "Module" IS 'Modules are identified by a 9-10 character code that is already in use by TAFE.
+The guide attribute is an MS-Word document: the recognition guide for this module.
 Students and assessors can read through these documents to determine critical
  aspects of evidence and a description of required skills and knowledge.';
 
  --
--- Name: Course; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Course; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Course" (
@@ -247,7 +249,7 @@ COMMENT ON TABLE "CampusDisciplineCourse" IS 'Associative entity for the N-M rel
  i.e. one that has elective modules that other courses of the same courseID may not have.';
 
  --
--- Name: Assessor; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Assessor; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Assessor" (
@@ -268,15 +270,15 @@ CREATE TABLE "Assessor" (
 -- Name: TABLE "Assessor"; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE "Assessor" IS 'Associative entity for the N-M relationship between Teacher 
+COMMENT ON TABLE "Assessor" IS 'Associative entity for the N-M relationship between Teacher
 and CampusDisciplineCourse. This relationship exists for Assessors,
- who are responsible for one or more courses at a campus.An 
-assessor can be a course coordinator, in which case they are 
+ who are responsible for one or more courses at a campus.An
+assessor can be a course coordinator, in which case they are
 alerted whenever a claim is made for the CampusDisciplineCourse
  with which they are associated.';
 
  --
--- Name: Claim; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Claim; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Claim" (
@@ -321,7 +323,7 @@ COMMENT ON TABLE "Claim" IS 'A claim is made by a student for one or more module
  only need evidence for Modules.)';
 
  --
--- Name: Update; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Update; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Update" (
@@ -341,7 +343,7 @@ CREATE TABLE "Update" (
 COMMENT ON TABLE "Update" IS 'keeps track of when a claim is updated and by who.';
 
 --
--- Name: File; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: File; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "File" (
@@ -358,7 +360,7 @@ CREATE TABLE "File" (
 COMMENT ON TABLE "File" IS 'Keeps track of files that are provided as Evidence for a claim.';
 
 --
--- Name: ClaimedModule; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ClaimedModule; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "ClaimedModule" (
@@ -381,13 +383,13 @@ CREATE TABLE "ClaimedModule" (
 -- Name: TABLE "ClaimedModule"; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE "ClaimedModule" IS 'A record of this entity represents a Module that has been chosen by a 
+COMMENT ON TABLE "ClaimedModule" IS 'A record of this entity represents a Module that has been chosen by a
 student for a particular Claim. Certain details are recorded for each
  module, mapping to areas on the ''orange'' and ''yellow'' recognition forms.
   Evidence is provided by a Student against each record here.';
 
 --
--- Name: Element; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Element; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Element" (
@@ -406,26 +408,27 @@ CREATE TABLE "Element" (
 
 COMMENT ON TABLE "Element" IS 'An element is one of many that may be required for a student
  to provide evidence against in order to gain credit for a module.
- TAFE identifies elements by an incrementing integer starting from 
+ TAFE identifies elements by an incrementing integer starting from
 1, with an association with a Module, so this table identifies each
- record the same way. The description attribute is the text of the 
+ record the same way. The description attribute is the text of the
 element in the recognition guide. For each element there may be many Criteria. ';
 
 --
--- Name: Evidence; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Evidence; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Evidence" (
     "claimID" integer NOT NULL,
-    "elementID" integer,
+    "elementID" integer NOT NULL,
     "description" text NOT NULL,
     "moduleID" character varying(10) NOT NULL,
     "approved" boolean,
     "assessorNote" text,
-	CONSTRAINT "pk_Evidence" PRIMARY KEY ("claimID", "moduleID"),
+	"studentEvidence" text,
+	CONSTRAINT "pk_Evidence" PRIMARY KEY ("claimID", "moduleID", "elementID"),
 	CONSTRAINT "fk_Evidence_Element" FOREIGN KEY ("elementID", "moduleID")
       REFERENCES "Element" ("elementID", "moduleID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT "fk_Evidence_ClaimedModule" FOREIGN KEY ("claimID",  "moduleID") 
+	CONSTRAINT "fk_Evidence_ClaimedModule" FOREIGN KEY ("claimID",  "moduleID")
 	  REFERENCES "ClaimedModule"("claimID", "moduleID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE
 
 );
@@ -437,11 +440,11 @@ CREATE TABLE "Evidence" (
 
 COMMENT ON TABLE "Evidence" IS 'Evidence is made against either a Module or an Element. For each ClaimedModule
  there may be many records in this table, one for each Element, or just one record
- for the entire module depending on the type of claim being made (see "type" in 
+ for the entire module depending on the type of claim being made (see "type" in
 the table "Claim").';
 
 --
--- Name: Criterion; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Criterion; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Criterion" (
@@ -462,7 +465,7 @@ CREATE TABLE "Criterion" (
 COMMENT ON TABLE "Criterion" IS 'Each of the criteria belong to an Element, together an element''s criteria
  explain what is required for a student to be granted credit for that element of the Module.';
 --
--- Name: Provider; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Provider; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "Provider" (
@@ -480,7 +483,7 @@ CREATE TABLE "Provider" (
 COMMENT ON TABLE "Provider" IS 'Previous provider codes used on the ''orange'' form are represented here.';
 
 --
--- Name: ClaimedModuleProvider; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ClaimedModuleProvider; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "ClaimedModuleProvider" (
@@ -499,12 +502,12 @@ CREATE TABLE "ClaimedModuleProvider" (
 -- Name: TABLE "ClaimedModuleProvider"; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON TABLE "ClaimedModuleProvider" IS 'Associative entity resolving the N-M relationship between ClaimedModule 
+COMMENT ON TABLE "ClaimedModuleProvider" IS 'Associative entity resolving the N-M relationship between ClaimedModule
 and Provider. A claimed module can have 0..3 providers.';
 
 
 --
--- Name: Course/Module; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: Course/Module; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE "CourseModule" (
