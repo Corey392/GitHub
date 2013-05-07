@@ -2,11 +2,12 @@ package util;
 
 /**
  * @author Adam Shortall, Kyoungho Lee, Bryce Carr, Todd Wiggins
- * @version 1.021
+ * @version 1.030
  * <b>Created:</b>  Unknown<br/>
- * <b>Modified:</b> 24/04/2013<br/>
+ * <b>Modified:</b> 07/05/2013<br/>
  * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Re-ordered enums for servlet URLs in a more logical fashion.<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
+ *		    07/05/2013:	Bryce Carr: Added RPLServlet field for Provider maintenance servlet.
  * <b>Purpose:</b>  Servlet urls are stored here.
  */
 public enum RPLServlet {
@@ -14,7 +15,7 @@ public enum RPLServlet {
     LOGIN_SERVLET("/home"),
     LOGOUT_SERVLET("/logout"),
     REGISTER_SERVLET("/register"),
-    /* Admin Servlets */
+    /* Clerical Admin Servlets */
     ADD_ADMIN("/admins/addTeacher?" + web.FormAddTeacher.ROLE + "=" + web.FormAddTeacher.adminRole),
     ADD_CLERICAL("/admins/addTeacher?" + web.FormAddTeacher.ROLE + "=" + web.FormAddTeacher.clericalRole),
     ADD_TEACHER("/admins/addTeacher?" + web.FormAddTeacher.ROLE + "=" + web.FormAddTeacher.teacherRole),
@@ -22,7 +23,6 @@ public enum RPLServlet {
     LIST_ERRORS("/admins/listErrors"), // Kyoungho Lee
     ADMIN_LIST_UNASSIGNED_CLAIMS("/admins/listUnassignedClaims"),
     ADMIN_MODIFY_ACCOUNT("/admins/modifyAccount"),
-    /* Clerical Admin Servlets */
     MAINTAIN_ELEMENT_CRITERIA_SERVLET("/maintenance/elementCriteria"),
     MAINTAIN_CAMPUS_SERVLET("/maintenance/maintainCampus"),
     MAINTAIN_DISCIPLINE_SERVLET("/maintenance/maintainDiscipline"),
@@ -34,6 +34,7 @@ public enum RPLServlet {
     MAINTAIN_CORE_MODULES_SERVLET("/maintenance/coreModules"),
     MAINTAIN_COURSE_ELECTIVES_SERVLET("/maintenance/courseElectives"),
     MAINTAIN_MODULE_ELEMENTS_SERVLET("/maintenance/moduleElements"),
+    MAINTAIN_PROVIDER_SERVLET("/maintenance/maintainProviders"),
     MAINTAIN_TABLE_SERVLET("/maintenance/maintainTable"),
     /* Student Servlets */
     ADD_EVIDENCE_SERVLET("/students/addEvidence"),

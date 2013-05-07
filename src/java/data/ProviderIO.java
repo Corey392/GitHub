@@ -10,8 +10,10 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author James
- * @author Adam Shortall
+ * @author Adam Shortall, James, Bryce Carr
+ * @version 1.010
+ * Modified:	07/05/2013
+ * Changelog:	07/05/2013: Bryce Carr:	Added update() method.
  */
 public class ProviderIO extends RPL_IO<Provider> {
 
@@ -43,6 +45,20 @@ public class ProviderIO extends RPL_IO<Provider> {
         p1 = new SQLParameter(providerID);
         p2 = new SQLParameter(name);
         
+        super.doPreparedStatement(sql, p1, p2);
+    }
+    
+    /**
+     * Updates the name of the provider.
+     * @param provider The provider object with updated name
+     * @throws SQLException if the provider name is not unique
+     */
+    public void update(Provider provider) throws SQLException {
+        String name = provider.getName();
+        char id = provider.getProviderID();
+        String sql = "SELECT fn_UpdateProvider(?,?)";
+        SQLParameter p1 = new SQLParameter(id);
+        SQLParameter p2 = new SQLParameter(name);        
         super.doPreparedStatement(sql, p1, p2);
     }
 

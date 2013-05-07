@@ -1379,6 +1379,17 @@ $_$;
 
 
 --
+-- Name: fn_updateprovider(text, text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fn_updateprovider(id text, name text) RETURNS void
+    LANGUAGE sql
+    AS $_$
+    UPDATE "Provider" SET "name" = $2 WHERE "providerID" = $1;
+$_$;
+
+
+--
 -- Name: fn_updatestudent(text, text, text, text, text, text); Type: FUNCTION; Schema: public; Owner: -
 --
 

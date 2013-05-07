@@ -2,12 +2,13 @@ package util;
 
 /**<b>Purpose:</b>  Stores values for names and addresses of pages for the RPL website.
  * @author Adam Shortall, Todd Wiggins, Bryce Carr
- * @version 1.022
+ * @version 1.030
  * <b>Created:</b>  Unknown<br/>
- * <b>Modified:</b> 06/05/2013<br/>
+ * <b>Modified:</b> 07/05/2013<br/>
  * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Added reference to new Data Maintenance page (dataMaintenanceSelect.jsp).<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
  *                  05/05/2013: TW: Added site title field which is used in the browser on tabs / window title bar.<br/>
+ *		    07/05/2013:	BC: Added RPLPage field for CLERICAL_PROVIDER page.
  */
 public enum RPLPage {
     HOME("", "/index.jsp"),
@@ -32,6 +33,7 @@ public enum RPLPage {
     CLERICAL_COURSE("Course Table Maintenance", "/maintenance/course.jsp"),
     CLERICAL_MAINTENANCE_SELECT("Data Maintenance Table Selection", "/maintenance/dataMaintenanceSelect.jsp"),
     CLERICAL_MODULE("Module Table Maintenance", "/maintenance/module.jsp"),
+    CLERICAL_PROVIDER("Provider Maintenance", "/maintenance/provider.jsp"),
     ASSESS_CLAIM_PREV("Assess Claim", "/teachers/assessClaimPrev.jsp"),
     ASSESS_CLAIM_RPL("Assess Claim", "/teachers/assessClaimRPL.jsp"),
     VIEW_EVIDENCE_PAGE("View Evidence", "/teachers/viewEvidence.jsp"),

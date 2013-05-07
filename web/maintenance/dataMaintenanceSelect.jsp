@@ -29,20 +29,13 @@
             <td align="center"><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Course</a></td>
         </tr>
         <tr>
-            <td align="center"><a href="#">Criterion</a></td>
-        </tr>
-        <tr>
             <td align="center"><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>">Discipline</a></td>
         </tr>
         <tr>
-            <%--
-            <td align="center"><a href="#">ClaimedModule</a></td>
-            <td align="center"><a href="#">ClaimedModuleProvider</a></td>
-            --%>
             <td align="center"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></td>
         </tr>
         <tr>
-            <td align="center"><a href="#">Provider</a></td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_PROVIDER_SERVLET %>">Provider</a></td>
         </tr>
     </table>
     </form>
