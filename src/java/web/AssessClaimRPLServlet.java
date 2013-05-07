@@ -18,11 +18,10 @@ import util.RPLPage;
 import util.RPLServlet;
 import util.Util;
 
-/**
- *
- * @author David, Mitchell Carr
- * Changelog:   06/05/2013 MC: Updated approveClaim to update claim status
- *              07/05/2013 MC: Updated approveClaim to reflect changes to ClaimedModule.getEvidence() method
+/**@author David, Mitchell Carr, Todd Wiggins
+ * Change Log: 06/05/2013 MC: Updated approveClaim to update claim status
+ *             07/05/2013 MC: Updated approveClaim to reflect changes to ClaimedModule.getEvidence() method
+ *             07/05/2013 TW: Updated approveClaim() to handle ArrayList<Evidence>.
  */
 public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadModel {
 

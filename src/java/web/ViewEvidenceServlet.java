@@ -19,9 +19,10 @@ import util.RPLPage;
 import util.RPLServlet;
 import util.Util;
 
-/**
- *
- * @author David, Mitch Carr
+/** @author     David, Mitch Carr, Todd Wiggins
+ *  @version    1.020
+ *	Created:    ?
+ *	Change Log: 07/05/2013: TW: Updated to handle ArrayList<Evidence>
  */
 public class ViewEvidenceServlet extends HttpServlet {
 

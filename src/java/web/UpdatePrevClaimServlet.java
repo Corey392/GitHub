@@ -26,6 +26,7 @@ import util.*;
  *				06/05/2013: MC: Updated submitClaim method to reflect changes to Claim.Status.
  *				06/05/2013: TW: Handles submitting a claim without any modules added. Now returns an error message.
  *				07/05/2013: MC: Added switch and basic IO needed for adding evidence
+ *				07/05/2013: TW: Updated to handle ArrayList<Evidence>
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {

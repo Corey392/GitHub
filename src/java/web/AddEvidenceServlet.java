@@ -27,6 +27,7 @@ import util.RPLServlet;
  * addRPLEvidence page to get input from the user.
  * @author James Purves, Mitch Carr
  * Changelog:   07/05/2013 MC: Updated setEvidence method to reflect changes to the way ClaimedModule objects hold Evidence
+ *				07/05/2013 TW: Updated setEvidence() method to handle ArrayList<Evidence>
  */
 public class AddEvidenceServlet extends HttpServlet {
 

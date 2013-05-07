@@ -18,7 +18,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Adam Shortall, Bryce Carr, Mitch Carr
+ * @author Adam Shortall, Bryce Carr, Mitch Carr, Todd Wiggins
  * @version 1.02
  * <b>Created:</b>  Unknown<br/>
  * <b>Modified:</b> 24/04/2013<br/>
@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * 		    30/04/2013: Mitch Carr: Removed all instances of ClaimRecord and classes/methods pertaining to it.<br/>
  * 		    01/05/2013: Mitch Carr: Updated to reflect change made to ClaimIO.getById(Claim)<br/>
  *                  07/05/2013: Mitch Carr: Updated getCompleteEvidence and removed getCompleteEvidenceList<br />
+ *                  07/05/2013: TW: Changed evidence to ArrayList<Evidence> in getCompleteEvidence().<br />
  * <b>Purpose:</b>  Appears to provide reusable access to commonly-used complex interactions with IO classes.
  */
 public final class Util {

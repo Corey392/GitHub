@@ -6,10 +6,11 @@ import util.Util;
 
 /** Domain class for Claimed Modules, an extension of Module.
  *  @author David, Adam Shortall, Todd Wiggins, Mitch Carr
- *  @version    1.10
+ *  @version    1.020
  *	Created:    ?
  *	Modified:	05/05/2013: TW: Added 'Module Name' into constructor, deprecated existing.
- *	Modified:	07/05/2013: MC: Updated evidence field, as well as getEvidence and setEvidence methods
+ *				07/05/2013: MC: Updated evidence field, as well as getEvidence and setEvidence methods
+ *				07/05/2013: TW: Changed evidence to ArrayList<Evidence>.
  */
 public final class ClaimedModule extends Module implements Serializable{
 
