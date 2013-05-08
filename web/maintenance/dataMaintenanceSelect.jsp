@@ -11,6 +11,7 @@
                                         Removed CampusDiscipline and CampusDisciplineCourse in favour of a more intuitive means of managing them (drilling down through Campus' maintenance page).
                                         Centered table. UI prettiness isn't a concern at the moment but this was a trivial change and it's slightly more appealing.
 		05/05/2013: Bryce Carr:	Removed Element from list. Elements are have a 1:N relationship with Modules, thus they will be incorporated into Module maintenance.
+		08/05/2013: Bryce Carr:	Removed Provider from the list following discussion with Todd Wiggins.
 --%>
 
 <%! RPLPage thisPage = RPLPage.CLERICAL_MAINTENANCE_SELECT; %>
@@ -33,9 +34,6 @@
         </tr>
         <tr>
             <td align="center"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></td>
-        </tr>
-        <tr>
-            <td align="center"><a href="<%= RPLServlet.MAINTAIN_PROVIDER_SERVLET %>">Provider</a></td>
         </tr>
     </table>
     </form>
