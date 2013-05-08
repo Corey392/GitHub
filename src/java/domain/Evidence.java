@@ -5,9 +5,9 @@ import util.Util;
 
 /** Object for evidence records.
  *  @author     David, James, Adam Shortall, Todd Wiggins
- *  @version    1.010
+ *  @version    1.020
  *	Created:    ?
- *	Change Log: 06/05/2013: TW: Added 'studentEvidence' to match Database records.
+ *	Change Log: 08/05/2013: TW: Added 'updated' field.
  */
 public class Evidence implements Serializable {
 
@@ -15,11 +15,11 @@ public class Evidence implements Serializable {
     /** elementID == 0 when Evidence is for a module rather than an element */
     private Integer elementID;
     private String description;
-    private String studentEvidence;
     private String moduleID;
     private boolean approved;
     private String assessorNote;
     private Element element;
+	private boolean updated;
 
     /**
      * Creates a new evidence object.
@@ -41,7 +41,7 @@ public class Evidence implements Serializable {
      */
 	@Deprecated
     public Evidence(int claimID, String moduleID, String description) {
-        this(claimID, moduleID, description, Util.INT_ID_EMPTY);
+        this(claimID, moduleID, Util.INT_ID_EMPTY, description);
     }
 
    /**
@@ -51,26 +51,14 @@ public class Evidence implements Serializable {
      * @param description
      * @param elementID
      */
-	@Deprecated
-    public Evidence(int claimID, String moduleID, String description, int elementID) {
-		this(claimID, moduleID, elementID, description, "");
-    }
-
-   /**
-     * Inserts an 'RPL' evidence with description and associated elementID.
-     * @param claimID
-     * @param moduleID
-     * @param description
-     * @param elementID
-     */
-    public Evidence(int claimID, String moduleID, int elementID, String description, String studentEvidence) {
+    public Evidence(int claimID, String moduleID, int elementID, String description) {
         this.claimID = claimID;
         this.moduleID = moduleID;
         this.elementID = elementID;
         this.approved = false;
         this.assessorNote = "";
         this.description = description;
-		this.studentEvidence = studentEvidence;
+		this.updated = false;
     }
 
     /**
@@ -134,6 +122,7 @@ public class Evidence implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
+		this.setUpdated(true);
     }
 
     /**
@@ -148,6 +137,7 @@ public class Evidence implements Serializable {
      */
     public void setApproved(boolean approved) {
         this.approved = approved;
+		this.setUpdated(true);
     }
 
     /**
@@ -155,6 +145,7 @@ public class Evidence implements Serializable {
      */
     public void setAssessorNote(String assessorNote) {
         this.assessorNote = assessorNote;
+		this.setUpdated(true);
     }
 
     /**
@@ -171,16 +162,20 @@ public class Evidence implements Serializable {
         this.element = element;
     }
 
-	/**@return String containing the evidence able to be provided by the student.
+	/**
+	 * Flags this Evidence instance as being updated (or Added)
+	 * @return boolean true if needs to be updated in database or false for no changes.
 	 */
-	public String getStudentEvidence() {
-		return this.studentEvidence;
+	public boolean isUpdated() {
+		return this.updated;
 	}
 
-	/**@param studentEvidence String containing the evidence able to be provided by the student.
+	/**
+	 * Flags this Evidence instance as being updated (or Added)
+	 * @param updated boolean true if needs to be updated in database or false for no changes / new.
 	 */
-	public void setStudentEvidence(String studentEvidence) {
-		this.studentEvidence = studentEvidence;
+	public void setUpdated(boolean updated) {
+		this.updated = updated;
 	}
 
     @Override

@@ -1,10 +1,15 @@
 <%--Purpose:    Allows a student add text based evidence to a claim.
  *  @author     Todd Wiggins
- *  @version    1.000
+ *  @version    1.001
  *  Created:    06/05/2013
- *	Modified:
+ *	Modified:	08/05/2013: TW: Finished: Adds data that has been previously submitted, eg. as a draft.
 --%>
 <%@page import="domain.Claim"%>
+<%@page import="domain.ClaimedModule"%>
+<%@page import="domain.Criterion"%>
+<%@page import="domain.Element"%>
+<%@page import="domain.Evidence"%>
+<%@page import="java.util.ArrayList"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
 
 <%@include file="../WEB-INF/jspf/header.jspf" %>
@@ -13,48 +18,53 @@
 <h2 class="center">Add Evidence to Previous Studies Claim</h2>
 <p>Describe the evidence you are able to provide that demonstrates your knowledge for each element within each module.</p>
 <p>If you have any documents as evidence, these can be uploaded after you have submitted the claim and a preliminary review been made by an assessor.</p>
-
-<form action="addEvidencePrevClaim" method="post" name="addEvidenceForm">
-	<c:forEach var="claimedModule" items="${claim.claimedModules}">
-	<p id="evidence_mod">
-		<span id="evidence_mod_mod">Module: </span>
-		<span id="evidence_mod_desc">${claimedModule.getModuleID()} - ${claimedModule.getName()}</span><br/>
-		${claimedModule.getInstructions()}
-	</p>
-	<table id="evidence_tbl">
-		<thead>
-			<tr>
-				<th id="evidence_tbl_1">Element</th>
-				<th id="evidence_tbl_2">Performance Criteria</th>
-				<th id="evidence_tbl_3">Evidence</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>
-					Provide information to the workgroup about OHS policies and procedures
-				</td><td>
-					1. Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.<br/>
-					2. Provide information to the workgroup on the organizations OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.<br/>
-					3. Regularly provide and clearly explain information about identified hazards and the outcomes of risk assessment and control to the workgroup.
-				</td><td>
-					<textarea id="evidence_textarea" name="MODID:ELEMENTID" placeholder="Enter the types evidence you can provide in here."></textarea>
-				</td>
-            </tr>
-			<tr>
-				<td>
-					Provide information to the workgroup about OHS policies and procedures
-				</td><td>
-					1. Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.<br/>
-					2. Provide information to the workgroup on the organizations OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.<br/>
-					3. Regularly provide and clearly explain information about identified hazards and the outcomes of risk assessment and control to the workgroup.
-				</td><td>
-					<textarea id="evidence_textarea" name="MODID:ELEMENTID" placeholder="Enter the types evidence you can provide in here."></textarea>
-				</td>
-            </tr>
-		</tbody>
-	</table>
-    </c:forEach>
+<form action="AddEvidencePrev" method="post" name="addEvidenceForm">
+	<% ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();
+	for (int i = 0; i < claimedModules.size(); i++) { %>
+		<p id="evidence_mod">
+			<span id="evidence_mod_mod">Module: </span>
+			<span id="evidence_mod_desc"><% out.print(claimedModules.get(i).getModuleID()); %> - <% out.print(claimedModules.get(i).getName()); %></span><br/>
+			<% out.print(claimedModules.get(i).getInstructions()); %>
+		</p>
+		<table id="evidence_tbl">
+			<thead>
+				<tr>
+					<th id="evidence_tbl_1">Element</th>
+					<th id="evidence_tbl_2">Performance Criteria</th>
+					<th id="evidence_tbl_3">Evidence</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% ArrayList<Element> elements = claimedModules.get(i).getElements();
+				for (int j = 0; j < elements.size(); j++) { %>
+					<tr>
+						<td>
+							<% out.print(elements.get(j).getDescription()); %>
+						</td><td>
+							<% ArrayList<Criterion> criterion = elements.get(j).getCriteria();
+							for (Criterion c : criterion) {
+								out.print("- "+c.getDescription()+"<br/>");
+							} %>
+						</td><td>
+							<textarea id="evidence_textarea" name="<% out.print(claimedModules.get(i).getModuleID()+"|"+elements.get(j).getElementID()); %>" placeholder="Enter the types of evidence you can provide in here."><%
+							if (request.getParameter(claimedModules.get(i).getModuleID()+"|"+elements.get(j).getElementID()) != null) {
+								out.print(request.getParameter(claimedModules.get(i).getModuleID()+"|"+elements.get(j).getElementID()));
+							} else {
+								ArrayList<Evidence> evidence = claimedModules.get(i).getEvidence();
+								if (evidence != null) {
+									for (int k = 0; k < evidence.size(); k++) {
+										if (evidence.get(k).getElementID().equals(elements.get(j).getElementID())) {
+											out.print(evidence.get(k).getDescription());
+										}
+									}
+								}
+							} %></textarea>
+						</td>
+					</tr>
+				<% } %>
+			</tbody>
+		</table>
+	<% } %>
 	<div id="buttons">
 		<input type="submit" name="saveEvidence" value="Save Evidence">
 		<input type="reset" name="reset" value="Reset Text">

@@ -1,14 +1,14 @@
 /* Purpose:  	Adds the Views to the database.
  * Authors:		Ryan,Kelly,Todd
  * Created:		?
- * Version:		4.011
- * Modified:	07/05/2013
+ * Version:		4.013
+ * Modified:	08/05/2013
  * Change Log:	v2: Todd: Added new users into User, Student, Teacher and Assessor tables.
  * 				v3: Ryan:
 				09/04/2013: Todd:   Updated Student inserts to match new table structure
 				25/04/2013: Todd:   Added more insert statements for CourseModule
 				06/05/2013: Bryce:  Updated insert statements to match new Element PK system
-				07/05/2013: Todd:  Minor update to Evidence supplying better dummy data.
+				08/05/2013: Todd:   Removed Evidence for claims. Add from a claim on site instead.
  * Pre-conditions: Must be run after all other setup database scripts.
  */
  --
@@ -171,14 +171,6 @@ INSERT INTO "Element" VALUES (1, 'ICAA5139B', ' ');
 INSERT INTO "Element" VALUES (2, 'ICAA5046B', 'Implement and monitor participative arrangements for the management of OHS');
 INSERT INTO "Element" VALUES (3, 'ICAA5046B', 'Provide information to the workgroup about OHS policies and procedures.');
 INSERT INTO "Element" VALUES (2, 'ICAA5151B', 'Investigate current practices in relation to resource usage');
-
---
--- Data for Name: Evidence; Type: TABLE DATA; Schema: public; Owner: -
---
--- claimID, elementID, description, moduleID, approved, assessorNote
---INSERT INTO "Evidence" VALUES ( 1, 0, 'Some dummy student evidence.', 'ICAA5046B', NULL, NULL);
---INSERT INTO "Evidence" VALUES ( 2, 0, 'TAFE Transcript (dummy data)', 'ICAA5046B', false, '');
---INSERT INTO "Evidence" VALUES ( 2, 0, 'UNI Transcript (dummy data)', 'ICAA5151B', false, '');
 
 --
 -- Data for Name: Criterion; Type: TABLE DATA; Schema: public; Owner: -

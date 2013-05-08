@@ -1,7 +1,7 @@
-﻿/* Purpose:  	Adds the Functions to the database.
+/* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:
- *  Version:	v2.165
+ *  Version:	v2.166
  *  Modified:	08/05/2013
  *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
@@ -32,6 +32,7 @@
 		v2.163:	Bryce:	Updated 'fn_insertcriterion' and 'fn_listcriteria' to account for new composite primary key in Criterion table.
 		v2.164:	Bryce:	Updated 'fn_deletecriterion' to account for new composite primary key in Criterion table.
 		v2.165:	Todd:	Fixed permissions for 'fn_insertcriterion', 'fn_deletecriterion' and 'fn_listcriteria'.
+		v2.166:	Todd:	Updated 'fn_insertevidence', 'fn_updateevidence' in line with Table update.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -779,10 +780,10 @@ $_$;
 -- Name: fn_insertevidence( integer, integer, text, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_insertevidence( "claimID" integer, "elementID" integer, "studentEvidence" text, "moduleID" text) RETURNS void
+CREATE FUNCTION fn_insertevidence( "claimID" integer, "elementID" integer, "description" text, "moduleID" text) RETURNS void
     LANGUAGE sql
     AS $_$
-	INSERT INTO "Evidence"( "claimID", "elementID", "studentEvidence", "moduleID")
+	INSERT INTO "Evidence"( "claimID", "elementID", "description", "moduleID")
 	VALUES($1,$2,$3,$4);
 $_$;
 
@@ -1345,20 +1346,21 @@ $_$;
 
 
 --
--- Name: fn_updateevidence( integer, text, text, boolean, text); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_updateevidence( integer, integer, text, text, boolean, text); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_updateevidence( claimid integer, moduleid text, "studentEvidence" text, approved boolean, assessornote text) RETURNS void
+CREATE FUNCTION fn_updateevidence( claimid integer, elementID integer, moduleid text, "description" text, approved boolean, assessornote text) RETURNS void
     LANGUAGE sql
     AS $_$
     UPDATE "Evidence"
     SET
-        "studentEvidence" = $3,
-        "approved" = $4,
-        "assessorNote" = $5
+        "description" = $4,
+        "approved" = $5,
+        "assessorNote" = $6
     WHERE
 		"claimID" = $1
-    AND "moduleID" = $2;
+	AND "elementID" = $2
+    AND "moduleID" = $3;
 $_$;
 
 
@@ -2954,13 +2956,13 @@ GRANT ALL ON FUNCTION fn_updateelement(elementid integer, moduleid text, descrip
 -- Name: fn_updateevidence( integer, text, text, boolean, text); Type: ACL; Schema: public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION fn_updateevidence( claimid integer, moduleid text, description text, approved boolean, assessornote text) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_updateevidence( claimid integer, moduleid text, description text, approved boolean, assessornote text) FROM postgres;
-GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, moduleid text, description text, approved boolean, assessornote text) TO postgres;
-GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, moduleid text, description text, approved boolean, assessornote text) TO admin;
-GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, moduleid text, description text, approved boolean, assessornote text) TO clerical;
-GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, moduleid text, description text, approved boolean, assessornote text) TO teacher;
-GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, moduleid text, description text, approved boolean, assessornote text) TO student;
+REVOKE ALL ON FUNCTION fn_updateevidence( claimid integer, elementID integer, moduleid text, description text, approved boolean, assessornote text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_updateevidence( claimid integer, elementID integer, moduleid text, description text, approved boolean, assessornote text) FROM postgres;
+GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, elementID integer, moduleid text, description text, approved boolean, assessornote text) TO postgres;
+GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, elementID integer, moduleid text, description text, approved boolean, assessornote text) TO admin;
+GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, elementID integer, moduleid text, description text, approved boolean, assessornote text) TO clerical;
+GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, elementID integer, moduleid text, description text, approved boolean, assessornote text) TO teacher;
+GRANT ALL ON FUNCTION fn_updateevidence( claimid integer, elementID integer, moduleid text, description text, approved boolean, assessornote text) TO student;
 
 
 --

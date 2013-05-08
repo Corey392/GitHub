@@ -1,12 +1,13 @@
 /*
     Description: CSS for whole site.
     Author     : James Lee Chin, Todd Wiggins
-    Version    : 1.030
+    Version    : 1.032
     Created on : Sep 1, 2012, 12:00:00 AM
     Modified   : 29/04/2013:  TW: Changed width to 100% (now partially responsive) instead of static 2000px
                  29/04/2013:  TW: Added campus,course,discipline to here, removed from createClaim JSP code.
                  05/05/2013:  TW: Added pg_titlebar, pg_title_site, pg_title_page elements and moved border from content to side_left.
                  06/05/2013:  TW: Added a bunch of #evidence for the Add Evidence page and div #buttons, added padding to #side_left
+                 08/05/2013:  TW: Change width of #evidence_tbl1
 */
 
 body {
@@ -55,7 +56,7 @@ body {
 	border:none;
 }
 #evidence_tbl_1 {
-	min-width:15em;
+	min-width:10em;
 }
 #evidence_tbl_2 {
 	min-width:15em;

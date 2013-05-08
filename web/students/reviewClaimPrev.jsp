@@ -1,10 +1,11 @@
 <%--Purpose:    Allows a student add modules to a claim.
  *  @author     James Lee Chin, Todd Wiggins
- *  @version    1.21
+ *  @version    1.211
  *  Created:    18/05/2011, 4:11:01 PM
  *	Modified:	05/05/2013: TW: Added 'National Module Code' as per Story Boards, Removed 'Evidence' as this is for another page after first review.
  *				06/05/2013: TW: Added Draft / Preliminary / Attach Evidence Status Handling, eg. only allows you to add modules in Draft Status.
  *				06/05/2013: TW: Fixed delete module button to only show when in Draft status.
+ *				08/05/2013: TW: Updated 'Add/Modify Evidence' button label, more accurate.
 --%>
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
@@ -109,7 +110,7 @@
 				<c:if test="${selectError.message.length() > 0}">
 				<b>${selectError.message}</b>
 				</c:if>
-				<input type="submit" value="Add Evidence" name="addTextEvidence" />
+				<input type="submit" value="Add / Modify Evidence" name="addTextEvidence" />
 				<input type="submit" value="Save Draft Claim" name="draftClaim" />
 				<input type="submit" value="Submit Claim" name="submitClaim" />
 			</c:when>

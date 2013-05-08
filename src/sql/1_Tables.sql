@@ -1,13 +1,14 @@
 /* Purpose:  	Adds the Tables to the database.
  * Authors:		Ryan, Kelly, Todd, Bryce
  * Created:		Unknown
- * Version:		v2.022
- * Modified:	07/05/2013
+ * Version:		v2.023
+ * Modified:	08/05/2013
  * Change Log:	v2.000: Todd:	Updated Student table, datatype for PhoneNumber changed to text
  *		v2.010:	Bryce:	Updated CourseModule table, foreign key for CampusDisciplineCourse electives
 		v2.020:	Bryce:	Updated Element, Evidence and Criterion tables. Changed PK of Element to a composite key and changed the others' references to match.
-		v2.021:	Todd:	Updated "Evidence" table, added "StudentEvidence" column and changed the composite key to include "ElementID". Moved 2 SET option here instead of the CreateDB sql.
+		v2.021:	Todd:	Moved 2 SET option here instead of the CreateDB sql.
 		v2.022:	Bryce:	Updated "Criterion" table, changed composite primary key to include "moduleID".
+		v2.023:	Todd:	Updated "Evidence", removed NOT NULL for 'description'.
  * Pre-conditions: Database must be created, tables must not already exist.
  */
 --------------------------------------------------------------------------------------
@@ -421,11 +422,10 @@ element in the recognition guide. For each element there may be many Criteria. '
 CREATE TABLE "Evidence" (
     "claimID" integer NOT NULL,
     "elementID" integer NOT NULL,
-    "description" text NOT NULL,
+    "description" text,
     "moduleID" character varying(10) NOT NULL,
     "approved" boolean,
     "assessorNote" text,
-	"studentEvidence" text,
 	CONSTRAINT "pk_Evidence" PRIMARY KEY ("claimID", "moduleID", "elementID"),
 	CONSTRAINT "fk_Evidence_Element" FOREIGN KEY ("elementID", "moduleID")
       REFERENCES "Element" ("elementID", "moduleID") MATCH FULL ON UPDATE CASCADE ON DELETE CASCADE,

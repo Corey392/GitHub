@@ -7,13 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import util.Util;
 
 /** Handles I/O for Evidence provided by the Student in the database.
  *  @author     Adam Shortall, Mitchell Carr, Todd Wiggins
- *  @version    1.020
+ *  @version    1.030
  *	Created:    ?
- *	Change Log: 06/05/2013: TW: Added Evidence ArrayList for getEvidence method
+ *	Change Log: 06/05/2013: TW: Added Evidence ArrayList for getEvidence method.
+ *				08/05/2013: TW: Updated 'update' method for updated Database function, added insertAndOrUpdate method, added checking 'updated' flag on for each instance of Evidence in update and insert methods.
  */
 public class EvidenceIO extends RPL_IO<Evidence> {
 
@@ -36,21 +36,34 @@ public class EvidenceIO extends RPL_IO<Evidence> {
         super(role);
     }
 
+	/**
+	 * Convenience method, performs an 'Insert' to new Evidence items and then an 'Update' for any non-new Evidence items.
+	 * @author Todd Wiggins
+	 * @param evidence ArrayList of Evidence with the 'updated' field set.
+	 * @throws SQLException For any failures from the database
+	 */
+	public void insertAndOrUpdate(ArrayList<Evidence> evidence) throws SQLException {
+		this.insert(evidence);
+		this.update(evidence);
+	}
+
     public void insert(ArrayList<Evidence> evidence) throws SQLException {
 		for (Evidence evi : evidence) {
-			String sql = "SELECT fn_InsertEvidence(?,?,?,?)";
+			if (!evi.isUpdated()) {
+				String sql = "SELECT fn_InsertEvidence(?,?,?,?)";
 
-			int claimID = evi.getClaimID();
-			Integer elementID = evi.getElementID();
-			String description = evi.getDescription();
-			String moduleID = evi.getModuleID();
+				int claimID = evi.getClaimID();
+				Integer elementID = evi.getElementID();
+				String description = evi.getDescription();
+				String moduleID = evi.getModuleID();
 
-			SQLParameter p1 = new SQLParameter(claimID);
-			SQLParameter p2 = new SQLParameter(elementID);
-			SQLParameter p3 = new SQLParameter(description);
-			SQLParameter p4 = new SQLParameter(moduleID);
+				SQLParameter p1 = new SQLParameter(claimID);
+				SQLParameter p2 = new SQLParameter(elementID);
+				SQLParameter p3 = new SQLParameter(description);
+				SQLParameter p4 = new SQLParameter(moduleID);
 
-			super.doPreparedStatement(sql, p1, p2, p3, p4);
+				super.doPreparedStatement(sql, p1, p2, p3, p4);
+			}
 		}
     }
 
@@ -63,26 +76,23 @@ public class EvidenceIO extends RPL_IO<Evidence> {
      */
     public void update(ArrayList<Evidence> evidence) throws SQLException {
         String sql;
-		for (Evidence e : evidence) {
-			int claimID = e.getClaimID();
-			String moduleID = e.getModuleID();
-			String description = e.getDescription();
-			boolean approved = e.isApproved();
-			String assessorNote = e.getAssessorNote();
-			int elementID = e.getElementID();
+		for (Evidence evi : evidence) {
+			if (evi.isUpdated()) {
+				int claimID = evi.getClaimID();
+				int elementID = evi.getElementID();
+				String moduleID = evi.getModuleID();
+				String description = evi.getDescription();
+				boolean approved = evi.isApproved();
+				String assessorNote = evi.getAssessorNote();
 
-			SQLParameter p1 = new SQLParameter(claimID);
-			SQLParameter p2 = new SQLParameter(moduleID);
-			SQLParameter p3 = new SQLParameter(description);
-			SQLParameter p4 = new SQLParameter(approved);
-			SQLParameter p5 = new SQLParameter(assessorNote);
+				SQLParameter p1 = new SQLParameter(claimID);
+				SQLParameter p2 = new SQLParameter(elementID);
+				SQLParameter p3 = new SQLParameter(moduleID);
+				SQLParameter p4 = new SQLParameter(description);
+				SQLParameter p5 = new SQLParameter(approved);
+				SQLParameter p6 = new SQLParameter(assessorNote);
 
-			if (elementID == Util.INT_ID_EMPTY) { // Determines claim type
-				sql = "SELECT fn_UpdateEvidence(?,?,?,?,?)";
-				super.doPreparedStatement(sql, p1, p2, p3, p4, p5);
-			} else {
 				sql = "SELECT fn_UpdateEvidence(?,?,?,?,?,?)";
-				SQLParameter p6 = new SQLParameter(elementID);
 				super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6);
 			}
 		}
