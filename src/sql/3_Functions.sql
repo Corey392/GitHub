@@ -1,8 +1,8 @@
 ﻿/* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:
- *  Version:	v2.164
- *  Modified:	07/05/2013
+ *  Version:	v2.165
+ *  Modified:	08/05/2013
  *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
@@ -31,6 +31,7 @@
 		v2.162:	Todd:	Minor updates 'fn_insertevidence' and 'fn_updateevidence'.
 		v2.163:	Bryce:	Updated 'fn_insertcriterion' and 'fn_listcriteria' to account for new composite primary key in Criterion table.
 		v2.164:	Bryce:	Updated 'fn_deletecriterion' to account for new composite primary key in Criterion table.
+		v2.165:	Todd:	Fixed permissions for 'fn_insertcriterion', 'fn_deletecriterion' and 'fn_listcriteria'.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1803,16 +1804,16 @@ GRANT ALL ON FUNCTION fn_deletecourse(courseid text) TO student;
 
 
 --
--- Name: fn_deletecriterion(integer, integer); Type: ACL; Schema: public; Owner: -
+-- Name: fn_deletecriterion(integer, integer, text); Type: ACL; Schema: public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer) FROM postgres;
-GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer) TO postgres;
-GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer) TO admin;
-GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer) TO clerical;
-GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer) TO teacher;
-GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer) TO student;
+REVOKE ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer, moduleid text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer, moduleid text) FROM postgres;
+GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer, moduleid text) TO postgres;
+GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer, moduleid text) TO admin;
+GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer, moduleid text) TO clerical;
+GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer, moduleid text) TO teacher;
+GRANT ALL ON FUNCTION fn_deletecriterion(criterionid integer, elementid integer, moduleid text) TO student;
 
 
 --
@@ -2371,13 +2372,13 @@ GRANT ALL ON FUNCTION fn_insertcourse("courseID" text, name text) TO student;
 -- Name: fn_insertcriterion(integer, text, text); Type: ACL; Schema: public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION fn_insertcriterion("elementID" integer, description text) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_insertcriterion("elementID" integer, description text) FROM postgres;
-GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, description text) TO postgres;
-GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, description text) TO admin;
-GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, description text) TO clerical;
-GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, description text) TO teacher;
-GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, description text) TO student;
+REVOKE ALL ON FUNCTION fn_insertcriterion("elementID" integer, "moduleID" text, description text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_insertcriterion("elementID" integer, "moduleID" text, description text) FROM postgres;
+GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, "moduleID" text, description text) TO postgres;
+GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, "moduleID" text, description text) TO admin;
+GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, "moduleID" text, description text) TO clerical;
+GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, "moduleID" text, description text) TO teacher;
+GRANT ALL ON FUNCTION fn_insertcriterion("elementID" integer, "moduleID" text, description text) TO student;
 
 
 --
@@ -2654,16 +2655,16 @@ GRANT ALL ON FUNCTION fn_listcoursesnotindiscipline(campusid text, disciplineid 
 
 
 --
--- Name: fn_listcriteria(integer); Type: ACL; Schema: public; Owner: -
+-- Name: fn_listcriteria(integer, text); Type: ACL; Schema: public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION fn_listcriteria(elementid integer) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_listcriteria(elementid integer) FROM postgres;
-GRANT ALL ON FUNCTION fn_listcriteria(elementid integer) TO postgres;
-GRANT ALL ON FUNCTION fn_listcriteria(elementid integer) TO admin;
-GRANT ALL ON FUNCTION fn_listcriteria(elementid integer) TO clerical;
-GRANT ALL ON FUNCTION fn_listcriteria(elementid integer) TO teacher;
-GRANT ALL ON FUNCTION fn_listcriteria(elementid integer) TO student;
+REVOKE ALL ON FUNCTION fn_listcriteria(elementid integer, moduleID text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_listcriteria(elementid integer, moduleID text) FROM postgres;
+GRANT ALL ON FUNCTION fn_listcriteria(elementid integer, moduleID text) TO postgres;
+GRANT ALL ON FUNCTION fn_listcriteria(elementid integer, moduleID text) TO admin;
+GRANT ALL ON FUNCTION fn_listcriteria(elementid integer, moduleID text) TO clerical;
+GRANT ALL ON FUNCTION fn_listcriteria(elementid integer, moduleID text) TO teacher;
+GRANT ALL ON FUNCTION fn_listcriteria(elementid integer, moduleID text) TO student;
 
 
 --
