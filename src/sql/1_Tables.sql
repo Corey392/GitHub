@@ -1,14 +1,15 @@
 /* Purpose:  	Adds the Tables to the database.
  * Authors:		Ryan, Kelly, Todd, Bryce
  * Created:		Unknown
- * Version:		v2.023
- * Modified:	08/05/2013
+ * Version:		v2.024
+ * Modified:	12/05/2013
  * Change Log:	v2.000: Todd:	Updated Student table, datatype for PhoneNumber changed to text
  *		v2.010:	Bryce:	Updated CourseModule table, foreign key for CampusDisciplineCourse electives
 		v2.020:	Bryce:	Updated Element, Evidence and Criterion tables. Changed PK of Element to a composite key and changed the others' references to match.
 		v2.021:	Todd:	Moved 2 SET option here instead of the CreateDB sql.
 		v2.022:	Bryce:	Updated "Criterion" table, changed composite primary key to include "moduleID".
 		v2.023:	Todd:	Updated "Evidence", removed NOT NULL for 'description'.
+		v2.024:	Todd:	Updated "Claim", modified constraint for "DateMade" to be less than or equal to today.
  * Pre-conditions: Database must be created, tables must not already exist.
  */
 --------------------------------------------------------------------------------------
@@ -300,7 +301,7 @@ CREATE TABLE "Claim" (
     "assessorID" text,
     "delegateID" text,
     "status" integer DEFAULT 0 NOT NULL,
-    CONSTRAINT "ck_Claim_CurrentDate" CHECK (("dateMade" = ('now'::text)::date)),
+    CONSTRAINT "ck_Claim_CurrentDate" CHECK (("dateMade" <= ('now'::text)::date)),
     CONSTRAINT "ck_Claim_DateResolved" CHECK (("dateResolved" >= ('now'::text)::date)),
     CONSTRAINT "ck_Claim_Option" CHECK ((option = ANY (ARRAY['C'::bpchar, 'D'::bpchar]))),
 	CONSTRAINT "pk_Claim" PRIMARY KEY ("claimID"),

@@ -3,6 +3,7 @@ package web;
 import data.*;
 import domain.*;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ import util.*;
  *				06/05/2013: TW: Handles submitting a claim without any modules added. Now returns an error message.
  *				07/05/2013: MC: Added switch and basic IO needed for adding evidence
  *				07/05/2013: TW: Updated to handle ArrayList<Evidence>
+ *				12/05/2013: TW: Added handling of 'viewTextEvidence', added changing date of claim to "now / today". Made 'submitClaim()' public static to allow it to be used by AddEvidencePrevServlet. Moved 'Submit Claim' button to 'Add Evidence' page and only shows the 'Add Evidence' button after at least 1 module has been added.
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -70,7 +72,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 		} else if (request.getParameter("draftClaim") != null) {
 			claim = this.submitClaim(user, claim, false);
 			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
-		} else if (request.getParameter("addTextEvidence") != null){
+		} else if (request.getParameter("addTextEvidence") != null || request.getParameter("viewTextEvidence") != null){
 		    url = RPLServlet.ADD_EVIDENCE_PREV.relativeAddress;
 		} else if (request.getParameter("addModule") != null) {
 			if (selectedModule == null) {
@@ -306,7 +308,7 @@ public class UpdatePrevClaimServlet extends HttpServlet {
      * @param submit Should this claim be submitted (true) or saved as a draft (false).
      * @return the modified claim
      */
-    private Claim submitClaim(User user, Claim claim, boolean submit) {
+    public static Claim submitClaim(User user, Claim claim, boolean submit) {
         ClaimIO claimIO = new ClaimIO(user.getRole());
         ClaimedModuleIO moduleIO = new ClaimedModuleIO(user.getRole());
         try {

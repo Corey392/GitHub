@@ -1,13 +1,14 @@
 /*
     Description: CSS for whole site.
     Author     : James Lee Chin, Todd Wiggins
-    Version    : 1.032
+    Version    : 1.033
     Created on : Sep 1, 2012, 12:00:00 AM
     Modified   : 29/04/2013:  TW: Changed width to 100% (now partially responsive) instead of static 2000px
                  29/04/2013:  TW: Added campus,course,discipline to here, removed from createClaim JSP code.
                  05/05/2013:  TW: Added pg_titlebar, pg_title_site, pg_title_page elements and moved border from content to side_left.
                  06/05/2013:  TW: Added a bunch of #evidence for the Add Evidence page and div #buttons, added padding to #side_left
                  08/05/2013:  TW: Change width of #evidence_tbl1
+                 12/05/2013:  TW: Adjusted #content 'display' to block and added 'max-width' to 1000px;
 */
 
 body {
@@ -83,9 +84,10 @@ div #buttons {
 }
 #content {
     overflow: auto; /*IMPORTANT! DO NOT REMOVE*/
-    display: inline-block;
+    display:block;
     margin-left: 5px;
     padding: 5px;
+	max-width:1000px;
 }
 
 #menu {

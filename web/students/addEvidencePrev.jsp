@@ -3,6 +3,7 @@
  *  @version    1.001
  *  Created:    06/05/2013
  *	Modified:	08/05/2013: TW: Finished: Adds data that has been previously submitted, eg. as a draft.
+ *				12/05/2013: TW: Added handling if adding/modifying evidence is possible based on claim status and user role. Moved 'Submit Claim' and 'Save Draft Claim' buttons to this page and added handling them here, removed 'Save Evidence' button.
 --%>
 <%@page import="domain.Claim"%>
 <%@page import="domain.ClaimedModule"%>
@@ -46,7 +47,9 @@
 								out.print("- "+c.getDescription()+"<br/>");
 							} %>
 						</td><td>
-							<textarea id="evidence_textarea" name="<% out.print(claimedModules.get(i).getModuleID()+"|"+elements.get(j).getElementID()); %>" placeholder="Enter the types of evidence you can provide in here."><%
+							<% if (request.getAttribute("editable") != null && request.getAttribute("editable").equals("true")) { %>
+								<textarea id="evidence_textarea" name="<% out.print(claimedModules.get(i).getModuleID()+"|"+elements.get(j).getElementID()); %>" placeholder="Enter the types of evidence you can provide in here."><%
+							}
 							if (request.getParameter(claimedModules.get(i).getModuleID()+"|"+elements.get(j).getElementID()) != null) {
 								out.print(request.getParameter(claimedModules.get(i).getModuleID()+"|"+elements.get(j).getElementID()));
 							} else {
@@ -58,7 +61,8 @@
 										}
 									}
 								}
-							} %></textarea>
+							} %>
+							<% if (request.getAttribute("editable") != null && request.getAttribute("editable").equals("true")) { %></textarea><% } %>
 						</td>
 					</tr>
 				<% } %>
@@ -66,8 +70,12 @@
 		</table>
 	<% } %>
 	<div id="buttons">
-		<input type="submit" name="saveEvidence" value="Save Evidence">
+		<% if (request.getAttribute("editable") != null && request.getAttribute("editable").equals("true")) { %>
+		<input type="submit" value="Save Draft Claim" name="draftClaim" />
+		<input type="submit" value="Submit Claim" name="submitClaim" />
 		<input type="reset" name="reset" value="Reset Text">
+		<% } %>
+		<input type="submit" name="back" value="Back">
 	</div>
 </form>
 

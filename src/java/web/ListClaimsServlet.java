@@ -24,11 +24,11 @@ import util.Util;
 
 /** Populates the list of claims for the student's listClaims page and redirects any requests from that page.
  *  @author     James Purves, Todd Wiggins
- *  @version    1.02
+ *  @version    1.021
  *	Created:    ?
- *	Modified:   29/04/2013
  *	Change Log: 1.01: TW: Updated URL when deleting to return to the list of claims instead of a 404.
- *	            1.02: TW: Now claim is removed from the list of claims displayed on page.
+ *	            29/04/2013: TW: Now claim is removed from the list of claims displayed on page.
+ *	            12/05/2013: TW: Updated error message to say claim instead of module.
  */
 public class ListClaimsServlet extends HttpServlet {
 
@@ -58,8 +58,7 @@ public class ListClaimsServlet extends HttpServlet {
             Claim selectedClaim = this.setSelectedClaim(request, user);
             if (selectedClaim == null){
                 url = RPLPage.LIST_CLAIMS_STUDENT.relativeAddress;
-                error = new RPLError("Please select a module using the radio "
-                        + "button beside it.");
+                error = new RPLError("Please select a claim from the list using the radio button.");
                 request.setAttribute("error", error);
             } else {
                 if (selectedClaim.getClaimType() == Claim.ClaimType.RPL){

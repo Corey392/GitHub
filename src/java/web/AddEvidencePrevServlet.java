@@ -4,10 +4,12 @@ import data.CriterionIO;
 import data.ElementIO;
 import data.EvidenceIO;
 import domain.Claim;
+import domain.Claim.Status;
 import domain.ClaimedModule;
 import domain.Element;
 import domain.Evidence;
 import domain.User;
+import domain.User.Role;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,11 +25,11 @@ import util.RPLPage;
 import util.RPLServlet;
 
 /** Purpose: Processes a request to add evidence to an Previous Studies claim.
- * <p/>
  * @author Todd Wiggins
- * @version 1.001
+ * @version 1.002
  * Created: 07/05/2013
  * Change Log: 08/05/2013: TW: Finished: Processes the evidence to the database. Added reading existing evidence data.
+ *			   12/05/2013: TW: Added handling if adding/modifying evidence is possible based on claim status and user role. Moved 'Submit Claim' and 'Save Draft Claim' buttons to this page and added handling them here, removed 'Save Evidence' button and moved code to a 'saveEvidence()' method.
  */
 public class AddEvidencePrevServlet extends HttpServlet {
 	/**
@@ -49,7 +51,31 @@ public class AddEvidencePrevServlet extends HttpServlet {
 		//Get the modules that evidence is required for
 		ArrayList<ClaimedModule> claimedMods = claim.getClaimedModules();
 
-		if (request.getParameter("saveEvidence") == null) {	//Process the data required to build the form
+		boolean editable = false;
+		if (user.role.name().equals(Role.STUDENT.name())) {
+			if (claim.getStatus() == Status.DRAFT || claim.getStatus() == Status.EVIDENCE) {
+				editable = true;
+			}
+		} else if (user.role.name().equals(Role.TEACHER.name()) || user.role.name().equals(Role.ADMIN.name())) {
+			if (claim.getStatus() == Status.PRELIMINARY || claim.getStatus() == Status.ASSESSMENT || claim.getStatus() == Status.APPROVAL) {
+				editable = true;
+			}
+		}
+		request.setAttribute("editable", editable?"true":"false");
+
+		if (request.getParameter("submitClaim") != null) {
+			if (!claim.getClaimedModules().isEmpty()) {
+				saveEvidence(user,claim,claimedMods,request);
+				claim = UpdatePrevClaimServlet.submitClaim(user, claim, true);
+				url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
+			}
+		} else if (request.getParameter("draftClaim") != null) {
+			saveEvidence(user,claim,claimedMods,request);
+			claim = UpdatePrevClaimServlet.submitClaim(user, claim, false);
+			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
+		} else if (request.getParameter("back") != null) {
+			url = RPLServlet.UPDATE_PREV_CLAIM_SERVLET.relativeAddress;
+		} else if (request.getParameter("saveEvidence") == null) {	//Process the data required to build the form
 			//Read all the element, criterion and evidence data for each claimed module
 			CriterionIO criterionIO = new CriterionIO(user.getRole());
 			ElementIO elementIO = new ElementIO(user.getRole());
@@ -66,14 +92,20 @@ public class AddEvidencePrevServlet extends HttpServlet {
 				cm.setElements(elements);
 			}
 			claim.setClaimedModules(claimedMods);
-		} else {	//Process the form ("saveEvidence" != null)
-			//Get the Evidence data for each Module -> Element
+		}
+		session.setAttribute("claim", claim);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+		dispatcher.forward(request, response);
+	}
+
+	private void saveEvidence(User user, Claim claim, ArrayList<ClaimedModule> claimedMods, HttpServletRequest request) {
+		//Get the Evidence data for each Module -> Element
 			ArrayList<Evidence> evidences = new ArrayList<Evidence>();
 			for (ClaimedModule claimedModule : claimedMods) {
 				ArrayList<Evidence> existingEvidence = claimedModule.getEvidence();
 
 				for (Element element : claimedModule.getElements()) {
-					System.out.println("request.getParameter(element.getModuleID()+\"|\"+element.getElementID(): "+request.getParameter(element.getModuleID()+"|"+element.getElementID()));
 					Evidence evidence = new Evidence(claim.getClaimID(), claimedModule.getModuleID(), element.getElementID(), request.getParameter(element.getModuleID()+"|"+element.getElementID()));
 					if (existingEvidence != null) {
 						for (int i = 0; i < existingEvidence.size(); i++) {
@@ -98,11 +130,6 @@ public class AddEvidencePrevServlet extends HttpServlet {
 			} catch (SQLException ex) {
 				Logger.getLogger(AddEvidencePrevServlet.class.getName()).log(Level.SEVERE, null, ex);
 			}
-			url = RPLServlet.UPDATE_PREV_CLAIM_SERVLET.relativeAddress;
-		}
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-		dispatcher.forward(request, response);
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
