@@ -34,7 +34,8 @@
 		v2.165:	Todd:	Fixed permissions for 'fn_insertcriterion', 'fn_deletecriterion' and 'fn_listcriteria'.
 		v2.166:	Todd:	Updated 'fn_insertevidence', 'fn_updateevidence' in line with Table update.
  *		v2.170:	Todd:	Added 'fn_insertFile', 'fn_updateFile', 'fn_deleteFile', 'fn_deleteFiles', 'fn_getAllFiles', 'fn_getFileByID'. Added Permissions for "File" table.
- * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
+ *		v2.180: Mitch:	Updated 'fn_getAllFiles' and 'fn_getFileByID'; neither would work with pgadmin previously.
+* Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
 --
@@ -1621,21 +1622,25 @@ $_$;
 
 --Added 13/05/2013, Todd Wiggins
 CREATE OR REPLACE FUNCTION fn_getAllFiles(_claimID int) RETURNS SETOF "File"
-	LANGUAGE sql
+	LANGUAGE plpgsql
 	AS $_$
+BEGIN
 	SELECT *
 		FROM "File"
 		WHERE "claimID" = _claimID;
+END;
 $_$;
 
 
 --Added 13/05/2013, Todd Wiggins
 CREATE OR REPLACE FUNCTION fn_getFileByID(_fileID int) RETURNS SETOF "File"
-	LANGUAGE sql
+	LANGUAGE plpgsql
 	AS $_$
+BEGIN
 	SELECT *
 		FROM "File"
 		WHERE "fileID" = _fileID;
+END;
 $_$;
 
 --
