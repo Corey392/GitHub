@@ -1,9 +1,10 @@
 <%--Purpose:    Allows a student add text based evidence to a claim.
  *  @author     Todd Wiggins
- *  @version    1.001
+ *  @version    1.002
  *  Created:    06/05/2013
  *	Modified:	08/05/2013: TW: Finished: Adds data that has been previously submitted, eg. as a draft.
  *				12/05/2013: TW: Added handling if adding/modifying evidence is possible based on claim status and user role. Moved 'Submit Claim' and 'Save Draft Claim' buttons to this page and added handling them here, removed 'Save Evidence' button.
+ *				13/05/2013: TW: Moved "Attach Evidence" button to this page from Review Claim / Module Selection page. Only show 'Attach Evidence' button 'attachEvidence' attribute of request.
 --%>
 <%@page import="domain.Claim"%>
 <%@page import="domain.ClaimedModule"%>
@@ -61,8 +62,8 @@
 										}
 									}
 								}
-							} %>
-							<% if (request.getAttribute("editable") != null && request.getAttribute("editable").equals("true")) { %></textarea><% } %>
+							}
+							if (request.getAttribute("editable") != null && request.getAttribute("editable").equals("true")) { %></textarea><% } %>
 						</td>
 					</tr>
 				<% } %>
@@ -70,10 +71,13 @@
 		</table>
 	<% } %>
 	<div id="buttons">
-		<% if (request.getAttribute("editable") != null && request.getAttribute("editable").equals("true")) { %>
-		<input type="submit" value="Save Draft Claim" name="draftClaim" />
-		<input type="submit" value="Submit Claim" name="submitClaim" />
-		<input type="reset" name="reset" value="Reset Text">
+		<% if (request.getAttribute("editable") != null && request.getAttribute("editable").equals("true")) {
+			if (request.getAttribute("attachEvidence") != null && request.getAttribute("attachEvidence").equals("true")) { %>
+				<input type="submit" value="Attach Evidence" name="AttachEvidence" />
+			<% } %>
+			<input type="submit" value="Save Draft Claim" name="draftClaim" />
+			<input type="submit" value="Submit Claim" name="submitClaim" />
+			<input type="reset" name="reset" value="Reset Text">
 		<% } %>
 		<input type="submit" name="back" value="Back">
 	</div>

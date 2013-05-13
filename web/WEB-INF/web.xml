@@ -159,6 +159,10 @@
         <servlet-name>AttachEvidenceServlet</servlet-name>
         <servlet-class>web.AttachEvidenceServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetFileServlet</servlet-name>
+        <servlet-class>web.GetFileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -300,6 +304,10 @@
     <servlet-mapping>
         <servlet-name>AttachEvidenceServlet</servlet-name>
         <url-pattern>/students/attachEvidence</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetFileServlet</servlet-name>
+        <url-pattern>/students/getFile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

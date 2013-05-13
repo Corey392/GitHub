@@ -17,7 +17,7 @@ import javax.servlet.ServletException;
 import util.*;
 
 /** @author     James Purves, Todd Wiggins, Mitch Carr
- *  @version    1.032
+ *  @version    1.033
  *	Created:    ?
  *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module. Updated remove module error message.
  *	            30/04/2013: MC: Removed all ClaimRecord calls, methods, etc.
@@ -30,6 +30,7 @@ import util.*;
  *				07/05/2013: TW: Updated to handle ArrayList<Evidence>
  *				12/05/2013: TW: Added handling of 'viewTextEvidence', added changing date of claim to "now / today". Made 'submitClaim()' public static to allow it to be used by AddEvidencePrevServlet. Moved 'Submit Claim' button to 'Add Evidence' page and only shows the 'Add Evidence' button after at least 1 module has been added.
  *				12/05/2013: TW: Added handling of 'AttachEvidence' button.
+ *				13/05/2013: TW: Moved 'AttachEvidence' button to 'AddEvidence' Text page.
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -75,8 +76,6 @@ public class UpdatePrevClaimServlet extends HttpServlet {
 			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
 		} else if (request.getParameter("addTextEvidence") != null || request.getParameter("viewTextEvidence") != null){
 		    url = RPLServlet.ADD_EVIDENCE_PREV.relativeAddress;
-		} else if (request.getParameter("AttachEvidence") != null) {
-			url = RPLServlet.ATTACH_EVIDENCE.relativeAddress;
 		} else if (request.getParameter("addModule") != null) {
 			if (selectedModule == null) {
 				url = RPLPage.REVIEW_CLAIM_PREV.relativeAddress;

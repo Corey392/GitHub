@@ -1,8 +1,8 @@
 /* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
- *  Created:
- *  Version:	v2.166
- *  Modified:	08/05/2013
+ *  Created:	?
+ *  Version:	v2.170
+ *  Modified:	13/05/2013
  *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
@@ -33,6 +33,7 @@
 		v2.164:	Bryce:	Updated 'fn_deletecriterion' to account for new composite primary key in Criterion table.
 		v2.165:	Todd:	Fixed permissions for 'fn_insertcriterion', 'fn_deletecriterion' and 'fn_listcriteria'.
 		v2.166:	Todd:	Updated 'fn_insertevidence', 'fn_updateevidence' in line with Table update.
+ *		v2.170:	Todd:	Added 'fn_insertFile', 'fn_updateFile', 'fn_deleteFile', 'fn_deleteFiles', 'fn_getAllFiles', 'fn_getFileByID'. Added Permissions for "File" table.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1573,6 +1574,69 @@ END;
 $_$;
 
 
+--Added 13/05/2013, Todd Wiggins
+CREATE OR REPLACE FUNCTION fn_insertFile(claimID int, filename text) RETURNS void
+	LANGUAGE plpgsql
+	AS $_$
+BEGIN
+	INSERT INTO "File" ("claimID", "filename")
+		VALUES (claimID, filename);
+END;
+$_$;
+
+
+--Added 13/05/2013, Todd Wiggins
+CREATE OR REPLACE FUNCTION fn_updateFile(_fileID int, _claimID int, _filename text) RETURNS void
+	LANGUAGE plpgsql
+	AS $_$
+BEGIN
+	UPDATE "File"
+		SET "filename" = _filename
+		WHERE "fileID" = _fileID AND "claimID" = _claimID;
+END;
+$_$;
+
+
+--Added 13/05/2013, Todd Wiggins
+CREATE OR REPLACE FUNCTION fn_deleteFile(_fileID int) RETURNS void
+	LANGUAGE plpgsql
+	AS $_$
+BEGIN
+	DELETE FROM "File"
+		WHERE "fileID" = _fileID;
+END;
+$_$;
+
+
+--Added 13/05/2013, Todd Wiggins
+CREATE OR REPLACE FUNCTION fn_deleteFiles(_claimID int) RETURNS void
+	LANGUAGE plpgsql
+	AS $_$
+BEGIN
+	DELETE FROM "File"
+		WHERE "claimID" = _claimID;
+END;
+$_$;
+
+
+--Added 13/05/2013, Todd Wiggins
+CREATE OR REPLACE FUNCTION fn_getAllFiles(_claimID int) RETURNS SETOF "File"
+	LANGUAGE sql
+	AS $_$
+	SELECT *
+		FROM "File"
+		WHERE "claimID" = _claimID;
+$_$;
+
+
+--Added 13/05/2013, Todd Wiggins
+CREATE OR REPLACE FUNCTION fn_getFileByID(_fileID int) RETURNS SETOF "File"
+	LANGUAGE sql
+	AS $_$
+	SELECT *
+		FROM "File"
+		WHERE "fileID" = _fileID;
+$_$;
 
 --
 -- Name: public; Type: ACL; Schema: -; Owner: -
@@ -3136,6 +3200,85 @@ REVOKE ALL ON TABLE "vw_ModulesOutOfCourse" FROM postgres;
 GRANT ALL ON TABLE "vw_ModulesOutOfCourse" TO postgres;
 GRANT SELECT ON TABLE "vw_ModulesOutOfCourse" TO student;
 
+
+--Added 13/05/2013, Todd Wiggins
+REVOKE ALL ON TABLE "File" FROM PUBLIC;
+REVOKE ALL ON TABLE "File" FROM postgres;
+GRANT ALL ON TABLE "File" TO postgres;
+GRANT ALL ON TABLE "File" TO admin;
+GRANT ALL ON TABLE "File" TO clerical;
+GRANT ALL ON TABLE "File" TO student;
+GRANT ALL ON TABLE "File" TO teacher;
+
+
+--Added 13/05/2013, Todd Wiggins
+REVOKE ALL ON TABLE "File_fileID_seq" FROM PUBLIC;
+REVOKE ALL ON TABLE "File_fileID_seq" FROM postgres;
+GRANT ALL ON TABLE "File_fileID_seq" TO postgres;
+GRANT ALL ON TABLE "File_fileID_seq" TO admin;
+GRANT ALL ON TABLE "File_fileID_seq" TO clerical;
+GRANT ALL ON TABLE "File_fileID_seq" TO student;
+GRANT ALL ON TABLE "File_fileID_seq" TO teacher;
+
+
+--Added 13/05/2013, Todd Wiggins
+REVOKE ALL ON FUNCTION fn_insertFile(claimID int, filename text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_insertFile(claimID int, filename text) FROM postgres;
+GRANT ALL ON FUNCTION fn_insertFile(claimID int, filename text) TO postgres;
+GRANT ALL ON FUNCTION fn_insertFile(claimID int, filename text) TO admin;
+GRANT ALL ON FUNCTION fn_insertFile(claimID int, filename text) TO clerical;
+GRANT ALL ON FUNCTION fn_insertFile(claimID int, filename text) TO teacher;
+GRANT ALL ON FUNCTION fn_insertFile(claimID int, filename text) TO student;
+
+
+--Added 13/05/2013, Todd Wiggins
+REVOKE ALL ON FUNCTION fn_updateFile(_fileID int, _claimID int, _filename text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_updateFile(_fileID int, _claimID int, _filename text) FROM postgres;
+GRANT ALL ON FUNCTION fn_updateFile(_fileID int, _claimID int, _filename text) TO postgres;
+GRANT ALL ON FUNCTION fn_updateFile(_fileID int, _claimID int, _filename text) TO admin;
+GRANT ALL ON FUNCTION fn_updateFile(_fileID int, _claimID int, _filename text) TO clerical;
+GRANT ALL ON FUNCTION fn_updateFile(_fileID int, _claimID int, _filename text) TO teacher;
+GRANT ALL ON FUNCTION fn_updateFile(_fileID int, _claimID int, _filename text) TO student;
+
+
+--Added 13/05/2013, Todd Wiggins
+REVOKE ALL ON FUNCTION fn_deleteFile(_fileID int) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_deleteFile(_fileID int) FROM postgres;
+GRANT ALL ON FUNCTION fn_deleteFile(_fileID int) TO postgres;
+GRANT ALL ON FUNCTION fn_deleteFile(_fileID int) TO admin;
+GRANT ALL ON FUNCTION fn_deleteFile(_fileID int) TO clerical;
+GRANT ALL ON FUNCTION fn_deleteFile(_fileID int) TO teacher;
+GRANT ALL ON FUNCTION fn_deleteFile(_fileID int) TO student;
+
+
+--Added 13/05/2013, Todd Wiggins
+REVOKE ALL ON FUNCTION fn_deleteFiles(_claimID int) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_deleteFiles(_claimID int) FROM postgres;
+GRANT ALL ON FUNCTION fn_deleteFiles(_claimID int) TO postgres;
+GRANT ALL ON FUNCTION fn_deleteFiles(_claimID int) TO admin;
+GRANT ALL ON FUNCTION fn_deleteFiles(_claimID int) TO clerical;
+GRANT ALL ON FUNCTION fn_deleteFiles(_claimID int) TO teacher;
+GRANT ALL ON FUNCTION fn_deleteFiles(_claimID int) TO student;
+
+
+--Added 13/05/2013, Todd Wiggins
+REVOKE ALL ON FUNCTION fn_getAllFiles(_claimID int) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_getAllFiles(_claimID int) FROM postgres;
+GRANT ALL ON FUNCTION fn_getAllFiles(_claimID int) TO postgres;
+GRANT ALL ON FUNCTION fn_getAllFiles(_claimID int) TO admin;
+GRANT ALL ON FUNCTION fn_getAllFiles(_claimID int) TO clerical;
+GRANT ALL ON FUNCTION fn_getAllFiles(_claimID int) TO teacher;
+GRANT ALL ON FUNCTION fn_getAllFiles(_claimID int) TO student;
+
+
+--Added 13/05/2013, Todd Wiggins
+REVOKE ALL ON FUNCTION fn_getFileByID(_fileID int) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_getFileByID(_fileID int) FROM postgres;
+GRANT ALL ON FUNCTION fn_getFileByID(_fileID int) TO postgres;
+GRANT ALL ON FUNCTION fn_getFileByID(_fileID int) TO admin;
+GRANT ALL ON FUNCTION fn_getFileByID(_fileID int) TO clerical;
+GRANT ALL ON FUNCTION fn_getFileByID(_fileID int) TO teacher;
+GRANT ALL ON FUNCTION fn_getFileByID(_fileID int) TO student;
 
 
 

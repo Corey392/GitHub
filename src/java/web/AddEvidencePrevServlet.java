@@ -26,10 +26,11 @@ import util.RPLServlet;
 
 /** Purpose: Processes a request to add evidence to an Previous Studies claim.
  * @author Todd Wiggins
- * @version 1.002
+ * @version 1.003
  * Created: 07/05/2013
  * Change Log: 08/05/2013: TW: Finished: Processes the evidence to the database. Added reading existing evidence data.
  *			   12/05/2013: TW: Added handling if adding/modifying evidence is possible based on claim status and user role. Moved 'Submit Claim' and 'Save Draft Claim' buttons to this page and added handling them here, removed 'Save Evidence' button and moved code to a 'saveEvidence()' method.
+ *			   13/05/2013: TW: Moved 'AttachEvidence' button and handling to here. Added attribute to request for 'attachEvidence' based on Claim Status and User Type.
  */
 public class AddEvidencePrevServlet extends HttpServlet {
 	/**
@@ -52,16 +53,24 @@ public class AddEvidencePrevServlet extends HttpServlet {
 		ArrayList<ClaimedModule> claimedMods = claim.getClaimedModules();
 
 		boolean editable = false;
+		boolean attachEvidence = false;
 		if (user.role.name().equals(Role.STUDENT.name())) {
 			if (claim.getStatus() == Status.DRAFT || claim.getStatus() == Status.EVIDENCE) {
 				editable = true;
+			}
+			if (claim.getStatus() != Status.EMPTY_DRAFT || claim.getStatus() != Status.DRAFT || claim.getStatus() != Status.PRELIMINARY) {
+				attachEvidence = true;
 			}
 		} else if (user.role.name().equals(Role.TEACHER.name()) || user.role.name().equals(Role.ADMIN.name())) {
 			if (claim.getStatus() == Status.PRELIMINARY || claim.getStatus() == Status.ASSESSMENT || claim.getStatus() == Status.APPROVAL) {
 				editable = true;
 			}
+			if (claim.getStatus() != Status.EMPTY_DRAFT || claim.getStatus() != Status.DRAFT || claim.getStatus() != Status.PRELIMINARY) {
+				attachEvidence = true;
+			}
 		}
 		request.setAttribute("editable", editable?"true":"false");
+		request.setAttribute("attachEvidence", attachEvidence?"true":"false");
 
 		if (request.getParameter("submitClaim") != null) {
 			if (!claim.getClaimedModules().isEmpty()) {
@@ -75,6 +84,8 @@ public class AddEvidencePrevServlet extends HttpServlet {
 			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
 		} else if (request.getParameter("back") != null) {
 			url = RPLServlet.UPDATE_PREV_CLAIM_SERVLET.relativeAddress;
+		} else if (request.getParameter("AttachEvidence") != null) {
+			url = RPLServlet.ATTACH_EVIDENCE.relativeAddress;
 		} else if (request.getParameter("saveEvidence") == null) {	//Process the data required to build the form
 			//Read all the element, criterion and evidence data for each claimed module
 			CriterionIO criterionIO = new CriterionIO(user.getRole());

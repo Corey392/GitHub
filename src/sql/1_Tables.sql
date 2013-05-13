@@ -1,8 +1,8 @@
 /* Purpose:  	Adds the Tables to the database.
  * Authors:		Ryan, Kelly, Todd, Bryce
  * Created:		Unknown
- * Version:		v2.024
- * Modified:	12/05/2013
+ * Version:		v2.025
+ * Modified:	13/05/2013
  * Change Log:	v2.000: Todd:	Updated Student table, datatype for PhoneNumber changed to text
  *		v2.010:	Bryce:	Updated CourseModule table, foreign key for CampusDisciplineCourse electives
 		v2.020:	Bryce:	Updated Element, Evidence and Criterion tables. Changed PK of Element to a composite key and changed the others' references to match.
@@ -10,6 +10,7 @@
 		v2.022:	Bryce:	Updated "Criterion" table, changed composite primary key to include "moduleID".
 		v2.023:	Todd:	Updated "Evidence", removed NOT NULL for 'description'.
 		v2.024:	Todd:	Updated "Claim", modified constraint for "DateMade" to be less than or equal to today.
+		v2.025:	Todd:	Updated "File", Added fileID to be an auto_increment field (using the 'Serial' data type).
  * Pre-conditions: Database must be created, tables must not already exist.
  */
 --------------------------------------------------------------------------------------
@@ -350,7 +351,7 @@ COMMENT ON TABLE "Update" IS 'keeps track of when a claim is updated and by who.
 --
 
 CREATE TABLE "File" (
-    "fileID" integer NOT NULL,
+    "fileID" serial UNIQUE NOT NULL,
 	"claimID" integer NOT NULL,
 	"filename" character varying(50) NOT NULL,
 	CONSTRAINT "pk_File" PRIMARY KEY ("fileID")

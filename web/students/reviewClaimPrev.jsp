@@ -1,6 +1,6 @@
 <%--Purpose:    Allows a student add modules to a claim.
  *  @author     James Lee Chin, Todd Wiggins
- *  @version    1.212
+ *  @version    1.214
  *  Created:    18/05/2011, 4:11:01 PM
  *	Modified:	05/05/2013: TW: Added 'National Module Code' as per Story Boards, Removed 'Evidence' as this is for another page after first review.
  *				06/05/2013: TW: Added Draft / Preliminary / Attach Evidence Status Handling, eg. only allows you to add modules in Draft Status.
@@ -8,6 +8,7 @@
  *				08/05/2013: TW: Updated 'Add/Modify Evidence' button label, more accurate.
  *				12/05/2013: TW: Added 'View Evidence' button to states other than 'Draft'. 'Add Evidence' button only shows after a module has been added.
  *				12/05/2013: TW: Changed heading from 'Recognition of Previous Studies' to 'Claim: Module Selection', more accurate.
+ *				13/05/2013: TW: Moved attach evidence button to "Add Evidence" Text page. Added handling when size of modules to be added is 0, now hides module list section and displays a notice to user.
 --%>
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
@@ -61,7 +62,8 @@
 		</table>
 		<br />
 		<c:choose>
-			<c:when test="<%= claimCode == Claim.Status.DRAFT.getCode() %>">
+			<c:when test="<%= (claimCode == Claim.Status.DRAFT.getCode()) %>">
+				<% if (modules.size() <= 1) { out.print("<p>All modules for this course have been added.</p>"); } else { %>
 				<table class="datatable">
 					<% index = 0; %>
 					<tbody class="last_row">
@@ -108,6 +110,7 @@
 					</tr>
 					</tbody>
 				</table>
+				<% } %>
 				<c:if test="${selectError.message.length() > 0}">
 				<b>${selectError.message}</b>
 				</c:if>
@@ -118,7 +121,6 @@
 			</c:when>
 			<c:when test="<%= claimCode == Claim.Status.EVIDENCE.getCode() %>">
 				<input type="submit" value="View Evidence" name="viewTextEvidence" />
-				<input type="submit" value="Attach Evidence" name="AttachEvidence" />
 				<input type="submit" value="Back" name="back" />
 			</c:when>
 			<c:otherwise>
