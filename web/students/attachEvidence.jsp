@@ -1,8 +1,9 @@
 <%--Purpose:    Allows a student upload evidence to a claim.
- *  @author     Todd Wiggins
- *  @version    1.000
+ *  @author     Todd Wiggins, Mitch Carr
+ *  @version    1.010
  *  Created:    13/05/2013
  *	Modified:
+ *  Changelog:	1.010: MC: Changed "images/*" to "image/*"; untested, but should fix the filetype selection issue
 --%>
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
@@ -18,7 +19,7 @@
 		the Assessor Notes in the 'Add Evidence' screen as they may have told you what
 		you will or will not need to upload.</p>
 		<p>Files being uploaded must an Image (for scanned documents) or Adobe PDF format</p>
-		<input type="file" name="files" accept="images/*|application/pdf" multiple>
+		<input type="file" name="files" accept="image/*|application/pdf" multiple>
 	</div>
 	<div id="buttons">
 		<input type="submit" name="submitFiles" value="Upload Files to Claim">
