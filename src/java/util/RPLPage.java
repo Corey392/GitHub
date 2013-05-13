@@ -13,6 +13,7 @@ package util;
 public enum RPLPage {
     HOME("", "/index.jsp"),
     REGISTER("RPL Student Registration", "/studentRegister.jsp"),
+    REGISTER_USER("Register User", "/maintenance/addUser.jsp"),
     REGISTER_CONFIRM("RPL Registration Confirmed", "/students/registerConfirm.jsp"),
 	CHANGE_PW("Change My Password", "/changePassword.jsp"),//Added by: Todd Wiggins
 	RESET_PASSWORD("Reset Password", "/resetPassword.jsp"),//Added by: Todd Wiggins

@@ -68,6 +68,7 @@
 					<li><a href="">Assign assessors/delegates to courses/disciplines</a></li>
 					<li><a href="<%= RPLServlet.LIST_ERRORS %>?view=">Manage Error Codes</a></li>
 			<%	} else if (user.getRole() == Role.CLERICAL) {%>
+                                        <li><a href="<%= RPLPage.REGISTER_USER %>">Add User</a></li>
                     <li><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT %>">Data Maintenance</a></li>
 					<li><a href="">Manage Teachers</a></li>
 					<li><a href="">Manage Users</a></li>
