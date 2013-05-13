@@ -7,6 +7,7 @@
  *				06/05/2013: TW: Fixed delete module button to only show when in Draft status.
  *				08/05/2013: TW: Updated 'Add/Modify Evidence' button label, more accurate.
  *				12/05/2013: TW: Added 'View Evidence' button to states other than 'Draft'. 'Add Evidence' button only shows after a module has been added.
+ *				12/05/2013: TW: Changed heading from 'Recognition of Previous Studies' to 'Claim: Module Selection', more accurate.
 --%>
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
@@ -21,8 +22,7 @@
 <%! RPLPage thisPage = RPLPage.REVIEW_CLAIM_PREV; %>
 <% int claimCode = claim.getStatus().getCode(); %>
 
-<h2 class="center">Recognition of Previous Studies</h2>
-
+<h2 class="center">Claim: Module Selection</h2>
 
 <c:if test="${!moduleError.toString().trim().equals('')}">
     <div class="warning">${moduleError}</div>
@@ -117,7 +117,9 @@
 				<input type="submit" value="Save Draft Claim" name="draftClaim" />
 			</c:when>
 			<c:when test="<%= claimCode == Claim.Status.EVIDENCE.getCode() %>">
+				<input type="submit" value="View Evidence" name="viewTextEvidence" />
 				<input type="submit" value="Attach Evidence" name="AttachEvidence" />
+				<input type="submit" value="Back" name="back" />
 			</c:when>
 			<c:otherwise>
 				<input type="submit" value="View Evidence" name="viewTextEvidence" />

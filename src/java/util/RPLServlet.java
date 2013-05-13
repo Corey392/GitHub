@@ -2,12 +2,14 @@ package util;
 
 /**
  * @author Adam Shortall, Kyoungho Lee, Bryce Carr, Todd Wiggins
- * @version 1.030
+ * @version 1.032
  * <b>Created:</b>  Unknown<br/>
  * <b>Modified:</b> 07/05/2013<br/>
  * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Re-ordered enums for servlet URLs in a more logical fashion.<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
- *		    07/05/2013:	Bryce Carr: Added RPLServlet field for Provider maintenance servlet.
+ *		            07/05/2013:	Bryce Carr: Added RPLServlet field for Provider maintenance servlet.
+ *		            08/05/2013:	TW: Added RPLServlet field for ADD_EVIDENCE_PREV.
+ *		            12/05/2013:	TW: Added RPLServlet field for ATTACH_EVIDENCE_.
  * <b>Purpose:</b>  Servlet urls are stored here.
  */
 public enum RPLServlet {
@@ -39,6 +41,7 @@ public enum RPLServlet {
     /* Student Servlets */
     ADD_EVIDENCE_SERVLET("/students/addEvidence"),
     ADD_EVIDENCE_PREV("/students/AddEvidencePrev"),//Added by: Todd Wiggins
+    ATTACH_EVIDENCE("/students/attachEvidence"),//Added by: Todd Wiggins
     CREATE_CLAIM_SERVLET("/students/createClaim"),
     STUDENT_LIST_CLAIM_RECORDS("/students/listClaimRecords"), // Kyoungho Lee
     LIST_CLAIMS_STUDENT_SERVLET("/students/listClaims"),

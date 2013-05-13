@@ -2,13 +2,13 @@ package util;
 
 /**<b>Purpose:</b>  Stores values for names and addresses of pages for the RPL website.
  * @author Adam Shortall, Todd Wiggins, Bryce Carr
- * @version 1.030
+ * @version 1.031
  * <b>Created:</b>  Unknown<br/>
  * <b>Modified:</b> 07/05/2013<br/>
  * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Added reference to new Data Maintenance page (dataMaintenanceSelect.jsp).<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
- *                  05/05/2013: TW: Added site title field which is used in the browser on tabs / window title bar.<br/>
- *		    07/05/2013:	BC: Added RPLPage field for CLERICAL_PROVIDER page.
+ *                  05/05/2013: TW: Added site title field which is used in the browser on tabs / window title bar. Added a variety of fields over time, see line comments.<br/>
+ *					07/05/2013:	BC: Added RPLPage field for CLERICAL_PROVIDER page.
  */
 public enum RPLPage {
     HOME("", "/index.jsp"),
@@ -21,6 +21,7 @@ public enum RPLPage {
     CREATE_CLAIM("Create Claim", "/students/createClaim.jsp"),
     REVIEW_CLAIM_PREV("Review Claim", "/students/reviewClaimPrev.jsp"),
     ADD_EVIDENCE_PREV("Add Evidence to Claim", "/students/addEvidencePrev.jsp"),//Added by: Todd Wiggins
+    ATTACH_EVIDENCE("Attach Evidence to Claim", "/students/attachEvidence.jsp"),//Added by: Todd Wiggins
     REVIEW_CLAIM_RPL("Review Claim", "/students/reviewClaimRPL.jsp"),
     ADD_RPL_EVIDENCE("Add Evidence", "/students/addRPLEvidence.jsp"),
     CLERICAL_HOME("Clerical Home Page", "/maintenance/index.jsp"),
