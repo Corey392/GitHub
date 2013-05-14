@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import domain.Discipline;
@@ -64,18 +60,20 @@ public class DisciplineIO extends RPL_IO<Discipline> {
      * Deletes a discipline, and all courses etc. that depend on it. 
      * Can only be done by ADMIN level users.
      * @param discipline the discipline object to delete
-     * @throws SQLException 
+     * @throws SQLException if the Discipline to delete doesn't exist
      */
     public void delete(Discipline discipline) throws SQLException {
         int id = discipline.getDisciplineID();
-        String sql = "SELECT fn_DeleteDiscipline(" + id + ")";
-        super.doQuery(sql);
+        String sql = "SELECT fn_DeleteDiscipline(?)";
+        SQLParameter p1 = new SQLParameter(id);
+        super.doPreparedStatement(sql, p1);
     }
     
     /**
      * Gets a list of disciplines from a ResultSet.
-     * @param rs result set from database (without any modification of the cursor)
-     * @return 
+     * @param rs ResultSet from database (without any modification of the cursor)
+     * @return Returns ArrayList<Discipline> of Discipline objects within the 
+     *          ResultSet passed in.
      */
     private ArrayList<Discipline> getListFromRS(ResultSet rs) {
         try {
@@ -110,37 +108,38 @@ public class DisciplineIO extends RPL_IO<Discipline> {
         
     /**
      * Gets a list of disciplines for a campus.
-     * @param campusID
-     * @return 
+     * @param campusID ID of the campus to get disciplines from
+     * @return ArrayList<Discipline> of Discipline objects for
+     *          a specific campus.
      */
     public ArrayList<Discipline> getList(String campusID) {
-        String sql;
-        ArrayList<Discipline> list = null;
-        sql = "SELECT * FROM fn_ListDisciplines(?)";
+        
+        String sql = "SELECT * FROM fn_ListDisciplines(?)";
         SQLParameter p1 = new SQLParameter(campusID);
         try {
             return this.getListFromRS(super.doPreparedStatement(sql, p1));
         } catch (SQLException ex) {
             Logger.getLogger(DisciplineIO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list;
+        return null;
     }
     
     /**
      * Gets a list of disciplines that is not in a campus.
      * @param campusID ID of the campus to find disciplines not in
-     * @return 
+     * @return ArrayList<Discipline> of Discipline objects not pertaining
+     *          to the specified campus.
      */
     public ArrayList<Discipline> getListNotInCampus(String campusID) {
+        
         String sql = "SELECT * FROM fn_ListDisciplinesNotInCampus(?)";
-        ArrayList<Discipline> list = null;
         SQLParameter p1 = new SQLParameter(campusID);
         try {
             return this.getListFromRS(super.doPreparedStatement(sql,p1));
         } catch (SQLException ex) {
             Logger.getLogger(DisciplineIO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list;
+        return null;
     }
     
     /**
@@ -171,11 +170,11 @@ public class DisciplineIO extends RPL_IO<Discipline> {
      * @throws SQLException if a constraint is violated
      */    
     public void addCourse(String campusID, int disciplineID, String courseID) throws SQLException {
+        
         String sql = "SELECT fn_AddCourseToDiscipline(?,?,?)";
-        SQLParameter p1, p2, p3;
-        p1 = new SQLParameter(campusID);        
-        p2 = new SQLParameter(disciplineID);
-        p3 = new SQLParameter(courseID);
+        SQLParameter p1 = new SQLParameter(campusID);        
+        SQLParameter p2 = new SQLParameter(disciplineID);
+        SQLParameter p3 = new SQLParameter(courseID);
         
         super.doPreparedStatement(sql, p1, p2, p3);       
     }
@@ -185,14 +184,14 @@ public class DisciplineIO extends RPL_IO<Discipline> {
      * @param campusID campus where the course is taught
      * @param disciplineID discipline where the course is taught
      * @param courseID the course to remove
-     * @throws SQLException 
+     * @throws SQLException if targeted CampusDiscipline doesn't exist
      */
     public void removeCourse(String campusID, int disciplineID, String courseID) throws SQLException {
+        
         String sql = "SELECT fn_RemoveCourseFromDiscipline(?,?,?)";
-        SQLParameter p1, p2, p3;
-        p1 = new SQLParameter(campusID);
-        p2 = new SQLParameter(disciplineID);
-        p3 = new SQLParameter(courseID);
+        SQLParameter p1 = new SQLParameter(campusID);
+        SQLParameter p2 = new SQLParameter(disciplineID);
+        SQLParameter p3 = new SQLParameter(courseID);
         
         super.doPreparedStatement(sql, p1, p2, p3);
     }

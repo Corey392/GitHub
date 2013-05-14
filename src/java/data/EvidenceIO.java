@@ -47,6 +47,11 @@ public class EvidenceIO extends RPL_IO<Evidence> {
 		this.update(evidence);
 	}
 
+    /**
+     * Inserts evidence. Only does so for the DB; actual files are not touched.
+     * @param evidence ArrayList of Evidence with the 'updated' field set.
+     * @throws SQLException if evidence couldn't be inserted into the DB
+     */
     public void insert(ArrayList<Evidence> evidence) throws SQLException {
 		for (Evidence evi : evidence) {
 			if (!evi.isUpdated()) {
@@ -68,16 +73,15 @@ public class EvidenceIO extends RPL_IO<Evidence> {
     }
 
     /**
-     * Updates evidence. Calls one of two database functions depending
-     * on whether the claim type is RPL or PREVIOUS_STUDIES. Claim
-     * type is determined by evidence.elementID.
-     * @param evidence
-     * @throws SQLException
+     * Updates evidence.
+     * @param evidence ArrayList of Evidence with the 'updated' field set.
+     * @throws SQLException if evidence didn't exist in DB or was otherwise inaccessible
      */
     public void update(ArrayList<Evidence> evidence) throws SQLException {
-        String sql;
 		for (Evidence evi : evidence) {
 			if (evi.isUpdated()) {
+				String sql = "SELECT fn_UpdateEvidence(?,?,?,?,?,?)";
+                                
 				int claimID = evi.getClaimID();
 				int elementID = evi.getElementID();
 				String moduleID = evi.getModuleID();
@@ -91,18 +95,19 @@ public class EvidenceIO extends RPL_IO<Evidence> {
 				SQLParameter p4 = new SQLParameter(description);
 				SQLParameter p5 = new SQLParameter(approved);
 				SQLParameter p6 = new SQLParameter(assessorNote);
-
-				sql = "SELECT fn_UpdateEvidence(?,?,?,?,?,?)";
+                                
 				super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6);
 			}
 		}
     }
 
     /**
-     *
-     * @param claimID
-     * @param moduleID
-     * @return
+     * Retrieves an Evidence object from the database.
+     * @param claimID ID of the Claim to get Evidence attached to
+     * @param moduleID ID of the Module to get Evidence attached to
+     * @param elementID ID of the Element to retrieve, attached to a ClaimedModule
+     * @return Returns the Evidence object defined by the IDs passed in.
+     *          If it couldn't be found, returns null.
      */
     public Evidence getByID(int claimID, String moduleID, Integer elementID) {
 
@@ -135,8 +140,9 @@ public class EvidenceIO extends RPL_IO<Evidence> {
 
    /**
      * Returns evidence for a claimedModule.
-     * @param claimedModule
-     * @return
+     * @param claimID ClaimID of the ClaimedModule to retrieve Evidence from 
+     * @param moduleID ModuleID of the ClaimedModule to retrieve Evidence from
+     * @return Returns an ArrayList<Evidence> of Evidence attached to a ClaimedModule.
      */
     public ArrayList<Evidence> getEvidence(int claimID, String moduleID) {
         String sql = "SELECT * FROM fn_ListEvidence(?,?)";
@@ -154,12 +160,12 @@ public class EvidenceIO extends RPL_IO<Evidence> {
                 boolean approved = rs.getBoolean(Field.APPROVED.name);
                 String assessorNote = rs.getString(Field.ASSESSOR_NOTE.name);
                 String description = rs.getString(Field.DESCRIPTION.name);
-				Evidence e = new Evidence(claimID, moduleID);
+		Evidence e = new Evidence(claimID, moduleID);
                 e.setApproved(approved);
                 e.setAssessorNote(assessorNote);
                 e.setDescription(description);
                 e.setElementID(elementID);
-				evidence.add(e);
+		evidence.add(e);
             }
 
             return evidence;

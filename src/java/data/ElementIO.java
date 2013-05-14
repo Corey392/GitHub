@@ -40,6 +40,7 @@ public class ElementIO extends RPL_IO <Element> {
      * Inserts or Updates an Element object depending on the function parameter.
      * @param element the element object to save
      * @param function whether to insert or update
+     * @throws SQLException if Element already existed in DB or otherwise couldn't be inserted
      */
     public void insert(Element element) throws SQLException{
         String moduleID = element.getModuleID();
@@ -53,7 +54,7 @@ public class ElementIO extends RPL_IO <Element> {
     /**
      * Updates the description field of a specified element.
      * @param element The element object with updated description
-     * @throws SQLException
+     * @throws SQLException if Element didn't exist in DB or otherwise couldn't be updated
      */
     public void update(Element element) throws SQLException {
         Integer elementID = element.getElementID();
@@ -68,8 +69,8 @@ public class ElementIO extends RPL_IO <Element> {
 
     /**
      * Deletes an element.
-     * @param element
-     * @throws SQLException
+     * @param element Element to delete from the database
+     * @throws SQLException if Element didn't exist or couldn't be deleted
      */
     public void delete(Element element) throws SQLException {
         Integer elementID = element.getElementID();
@@ -82,52 +83,55 @@ public class ElementIO extends RPL_IO <Element> {
 
     /**
      * Returns an element by ID.
-     * @param moduleID
-     * @param elementID
-     * @return
+     * @param moduleID ModuleID of the Element to be retrieved
+     * @param elementID ElementID of the Element to be retrieved
+     * @return Element with IDs corresponding to values passed in.
+     *          If Element couldn't be found, returns blank Element object.
      */
     public Element getByID(String moduleID, int elementID) {
+        
         Element element = new Element();
-        ResultSet rs;
+        
         String sql = "SELECT * FROM fn_GetElement(?,?)";
-        SQLParameter p1, p2;
-        p1 = new SQLParameter(moduleID);
-        p2 = new SQLParameter(elementID);
+        SQLParameter p1 = new SQLParameter(moduleID);
+        SQLParameter p2 = new SQLParameter(elementID);
+        
         try {
-            rs = super.doPreparedStatement(sql, p1, p2);
+            ResultSet rs = super.doPreparedStatement(sql, p1, p2);
             element = new Element(elementID, moduleID);
             rs.next();
     		if (rs.getRow() > 0) {
-			   element.setDescription(rs.getString(Field.DESCRIPTION.name()));
-			}
+			element.setDescription(rs.getString(Field.DESCRIPTION.name()));
+		}
         } catch (SQLException ex) {
             Logger.getLogger(ElementIO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return element;
     }
+    
     /**
      * Gets a list of Elements that belong to a specific module.
-     * @param moduleID the ID of the module
-     * @return the list of elements belonging to that module
+     * @param moduleID the ID of the module to retrieve elements for
+     * @return list of elements belonging to that module.
+     *          If Module doesn't exist in DB, returns null.
      */
     public ArrayList<Element> getList(String moduleID){
-        ArrayList<Element> elements = null;
-        ResultSet rs;
-        String sql;
+        
         try {
-            sql = "SELECT * FROM fn_GetModuleElements(?)";
+            String sql = "SELECT * FROM fn_GetModuleElements(?)";
             SQLParameter p1 = new SQLParameter(moduleID);
-            rs = super.doPreparedStatement(sql, p1);
-            elements = new ArrayList<Element>();
+            ResultSet rs = super.doPreparedStatement(sql, p1);
+            ArrayList<Element> elements = new ArrayList<Element>();
             while (rs.next()) {
                 int elementID = rs.getInt(Field.ELEMENT_ID.name);
                 String description = rs.getString(Field.DESCRIPTION.name);
                 Element element = new Element(elementID, moduleID, description);
                 elements.add(element);
             }
+            return elements;
         } catch (SQLException e) {
             System.err.println(e.getMessage() + "\n Error Code: " + e.getErrorCode());
         }
-        return elements;
+        return null;
     }
 }
