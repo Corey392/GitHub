@@ -19,18 +19,17 @@ import util.RPLError;
 import util.RPLPage;
 
 /** @author     Adam Shortall, Todd Wiggins
- *  @version    1.11
- *	Created:    ?
- *	Modified:   10/04/2013
+ *  @version    1.0
+ *	Modified:   14/05/2013
  *	Change Log: 1.10: TW: Added meaningful location to exception messages. Made changes to actually allow a user to register with the updates.
  *				1.11: TW: Added remaining input fields from form into the 'student' variable. Validates the user has agreed to T&C and Privacy policy.
- *                              1.12: RD: Modified to only be accesible by admins to registers teachers and other admins to  to register
+ *                              1.12: RD: Modified to only be create a teacher, admin or assessor.
  *	Purpose:                Sends user to the student registration page. When
  *				a user has attempted to register there, this servlet
  *				receives the form data and attempts to create a
- *				student in the database.
+ *				teacher, admin or assessor in the database.
  */
-public class addNewUser extends HttpServlet implements SingleThreadModel {
+public class AddNewUserServlet extends HttpServlet implements SingleThreadModel {
 
     HttpSession session;
     String url;
@@ -53,13 +52,13 @@ public class addNewUser extends HttpServlet implements SingleThreadModel {
             session = request.getSession();
             session.setAttribute("user", Teacher);
             // Check to see if there is any form data, then validate:
-            request = this.registerStudent(request);
+            request = this.registerTeacher(request);
 
             session.setAttribute("user", Teacher);
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request, response);
         } catch(Exception e) {
-            System.out.println("RegisterServlet: processRequest: Exception: "+e.getMessage());
+            System.out.println("AddNewUserServlet: processRequest: Exception: "+e.getMessage());
         } finally {
             out.close();
         }
@@ -71,7 +70,7 @@ public class addNewUser extends HttpServlet implements SingleThreadModel {
      * @param request
      * @return
      */
-	private HttpServletRequest registerStudent(HttpServletRequest request) {
+	private HttpServletRequest registerTeacher(HttpServletRequest request) {
 		if (request.getParameter("userID") != null && request.getParameter("role") != null) {
 			String passwordConfirm;
 			Teacher = (User) session.getAttribute("user");
@@ -119,12 +118,12 @@ public class addNewUser extends HttpServlet implements SingleThreadModel {
 					Teacher.logIn();
 					url = RPLPage.REGISTER_CONFIRM.relativeAddress;
 				} catch (SQLException e) {
-					System.out.println("RegisterServlet: registerStudent: SQLException: "+e.getMessage());
+					System.out.println("AddNewUserServlet: registerStudent: SQLException: "+e.getMessage());
 					if (e.getSQLState().equals(PostgreError.UNIQUE_VIOLATION.code)) {
 						request.setAttribute("studentUniqueError", new RPLError(FieldError.STUDENT_UNIQUE));
 					}
 				} catch (Exception e) {
-					System.out.println("RegisterServlet: registerStudent: Exception: "+e.getMessage());
+					System.out.println("AddNewUserServlet: registerStudent: Exception: "+e.getMessage());
 				}
 			}
                         
