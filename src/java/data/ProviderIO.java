@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Adam Shortall, James, Bryce Carr
  * @version 1.010
  * Modified:	07/05/2013
@@ -41,9 +40,9 @@ public class ProviderIO extends RPL_IO<Provider> {
         char providerID = provider.getProviderID();
         String name = provider.getName();
         String sql = "SELECT fn_InsertProvider(?,?)";
-        SQLParameter p1, p2;
-        p1 = new SQLParameter(providerID);
-        p2 = new SQLParameter(name);
+        
+        SQLParameter p1 = new SQLParameter(providerID);
+        SQLParameter p2 = new SQLParameter(name);
         
         super.doPreparedStatement(sql, p1, p2);
     }
@@ -51,7 +50,7 @@ public class ProviderIO extends RPL_IO<Provider> {
     /**
      * Updates the name of the provider.
      * @param provider The provider object with updated name
-     * @throws SQLException if the provider name is not unique
+     * @throws SQLException if the ID is invalid
      */
     public void update(Provider provider) throws SQLException {
         String name = provider.getName();
@@ -65,7 +64,7 @@ public class ProviderIO extends RPL_IO<Provider> {
     /**
      * Deletes the specified provider.
      * @param provider the provider to delete.
-     * @throws SQLException 
+     * @throws SQLException if no such provider existed in the DB.
      */
     public void delete(Provider provider) throws SQLException {
         char providerID = provider.getProviderID();
@@ -77,8 +76,9 @@ public class ProviderIO extends RPL_IO<Provider> {
     
     /**
      * Returns a provider with data from the database.
-     * @param provider with ID field set
-     * @return provider with data from the database
+     * @param provider Provider to retrieve from DB
+     * @return provider with data from the database.
+     *          Null if they don't exist
      */
     public Provider getByID(Provider provider) {
         char providerID = provider.getProviderID();
@@ -98,18 +98,17 @@ public class ProviderIO extends RPL_IO<Provider> {
     
     /**
      * Returns a list of providers for a claimed module.
-     * @param claimID
-     * @param moduleID
-     * @return 
+     * @param claimID ClaimID of the ClaimedModule to retrieve providers for
+     * @param moduleID ModuleID of the ClaimedModule to retrieve providers for
+     * @return Returns an ArrayList<Provider> of providers attached to a ClaimedModule
      */
     public ArrayList<Provider> getList(int claimID, String moduleID) {
-        ArrayList<Provider> list = null;
+        ArrayList<Provider> list = new ArrayList<Provider>();
         String sql = "SELECT * FROM fn_ListProviders(?,?)";
         SQLParameter p1 = new SQLParameter(claimID);
         SQLParameter p2 = new SQLParameter(moduleID);
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1, p2);
-            list = new ArrayList<Provider>();
             char providerID;
             String name;
             while (rs.next()) {
@@ -124,17 +123,15 @@ public class ProviderIO extends RPL_IO<Provider> {
     }
     
     /**
-     * Returns a list of all providers in the database.
      * @return a list of all providers in the database.
      */
     public ArrayList<Provider> getList() {
-        ArrayList<Provider> list = null;
+        ArrayList<Provider> list = new ArrayList<Provider>();
         String sql = "SELECT * FROM fn_ListProviders()";
         try {
             ResultSet rs = super.doQuery(sql);
             char providerID;
             String name;
-            list = new ArrayList<Provider>();
             while (rs.next()) {
                 providerID = rs.getString("providerID").charAt(0);
                 name = rs.getString("name");

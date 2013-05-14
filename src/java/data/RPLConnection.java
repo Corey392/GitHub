@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import java.sql.Connection;
@@ -51,6 +47,7 @@ public enum RPLConnection {
 
     /**
      * Closes the database connection.
+     * @throws SQLException if connection couldn't be closed
      */
     public void closeDatabase() throws SQLException{
         if (this.conn != null) {
@@ -59,13 +56,16 @@ public enum RPLConnection {
         }
     }
     
-    /** Prepares a statement for execution in the database. @param sql the statement. */
+    /** 
+     * Prepares a statement for execution in the database. 
+     * @param sql the statement.
+     * @throws SQLException if command entered could not be processed
+     */
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return this.conn.prepareStatement(sql);
     }
 
     /**
-     * Returns the connection to the database, which may or may not be null.
      * @return the connection to the database, which may or may not be null.
      */
     public Connection getConnection() {

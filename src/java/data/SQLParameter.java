@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import java.sql.Types;
@@ -38,6 +34,7 @@ public class SQLParameter {
      * 
      * @param name name of the parameter.
      * @param value the value of the parameter, could be a String, Date etc.
+     * @throws IllegalArgumentException if value is not of a supported type
      */
     public SQLParameter(String name, Object value) {        
         this.name = name;

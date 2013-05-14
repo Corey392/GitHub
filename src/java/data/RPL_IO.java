@@ -97,6 +97,7 @@ public abstract class RPL_IO<T> {
      * that they appear in the database.
      * @throws SQLException the database threw an exception, check exception's
      * SQLState for Postgre exception code.
+     * @throws IllegalArgumentException if parameter passed in was not of a supported type
      */
     protected ResultSet doPreparedStatement(String sql, SQLParameter... params) throws SQLException {
 

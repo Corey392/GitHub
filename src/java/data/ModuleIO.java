@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author James, Adam Shortall, Bryce Carr
  * @version 1.020
  * Created: Unknown
@@ -73,7 +72,7 @@ public class ModuleIO extends RPL_IO<Module> {
     /**
      * Deletes a module and all dependent elements etc.
      * @param module the module to delete
-     * @throws SQLException
+     * @throws SQLException if module does not exist in DB
      */
     public void delete(Module module) throws SQLException {
         String moduleID = module.getModuleID();
@@ -84,8 +83,8 @@ public class ModuleIO extends RPL_IO<Module> {
 
     /**
      * Gets a Module by its ID.
-     * @param moduleID the ID of the module
-     * @return the module that was found or an empty module
+     * @param moduleID the ID of the module to retrieve
+     * @return the module that was found. Otherwise, null.
      */
     public Module getByID(String moduleID){
 
@@ -105,9 +104,9 @@ public class ModuleIO extends RPL_IO<Module> {
     }
 
     /**
-     *
-     * @param courseID
-     * @return
+     * @param courseID ID of the course to retrieve core modules from
+     * @return ArrayList<Module> of core modules from a course.
+     *          If they can't be retrieved, null.
      */
     public ArrayList<Module> getListOfCores(String courseID) {
 
@@ -123,9 +122,9 @@ public class ModuleIO extends RPL_IO<Module> {
     }
 
     /**
-     *
-     * @param courseID
-     * @return
+     * @param courseID ID of the course to retrieve elective modules from
+     * @return ArrayList<Module> of elective modules from a course.
+     *          If they can't be retrieved, null.
      */
     public ArrayList<Module> getListOfElectives(String courseID) {
 
@@ -142,8 +141,8 @@ public class ModuleIO extends RPL_IO<Module> {
     }
 
     /**
-     * Returns a list of all modules in the database.
-     * @return all modules.
+     * @return all modules in the DB. If there aren't any, or the DB isn't
+     *          set up properly, returns null.
      */
     public ArrayList<Module> getList() {
 
@@ -158,12 +157,11 @@ public class ModuleIO extends RPL_IO<Module> {
     }
 
     /**
-     * Returns a list of modules that are not in the course, i.e. that are not
-     * either Core modules or Elective modules of that course.
-     * @param courseID
-     * @return
+     * @param courseID ID of the course to retrieve modules not pertaining to
+     * @return ArrayList<Module> of modules not in a specific course.
+     *          If they can't be retrieved, returns null
      */
-    public ArrayList<Module> getListNotInCourse(String courseID) {    // fn_ListModulesNotInCourse(courseID text)
+    public ArrayList<Module> getListNotInCourse(String courseID) {
 
         String sql = "SELECT * FROM fn_ListModulesNotInACourse(?)";
         SQLParameter p1 = new SQLParameter(courseID);
@@ -177,10 +175,9 @@ public class ModuleIO extends RPL_IO<Module> {
     }
 
     /**
-     * Returns a list of modules that are not core modules of the course.
-     * They may be elective modules of the course.
-     * @param courseID
-     * @return
+     * @param courseID ID of the course to retrieve non-core modules for.
+     * @return ArrayList<Module> of non-core modules for a course.
+     *          If they can't be retrieved, returns null.
      */
     public ArrayList<Module> getListNotCoreInCourse(String courseID) {
 
@@ -197,6 +194,7 @@ public class ModuleIO extends RPL_IO<Module> {
 
     /**
      * Adds a core module to a course.
+     * @param courseID
      * @param moduleID
      * @throws SQLException the module cannot be added as a core to the course.
      */
