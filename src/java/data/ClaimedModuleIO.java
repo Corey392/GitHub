@@ -49,13 +49,15 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
     /**
      * Inserts a new ClaimedModule.
      * @param claimedModule the ClaimedModule to insert.
-     * @throws SQLException if data is wrong.
+     * @throws SQLException if ClaimedModule already exists in DB,
+     *          or Module/Claim doesn't exist.
      */
     public void insert(ClaimedModule claimedModule) throws SQLException {
-        String sql = "SELECT fn_InsertClaimedModule(?,?)";
+        
         String moduleID = claimedModule.getModuleID();
         int claimID = claimedModule.getClaimID();
 
+        String sql = "SELECT fn_InsertClaimedModule(?,?)";
         SQLParameter p1 = new SQLParameter(moduleID);
         SQLParameter p2 = new SQLParameter(claimID);
 
@@ -64,10 +66,11 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
 
     /**
      * Updates a ClaimedModule with new information.
-     * @param claimedModule
-     * @throws SQLException
+     * @param claimedModule ClaimedModule to update
+     * @throws SQLException if ClaimedModule specified doesn't exist in DB
      */
     public void update(ClaimedModule claimedModule) throws SQLException {
+        
         String sql = "SELECT fn_UpdateClaimedModule(?,?,?,?,?,?,?,?)";
         String moduleID = claimedModule.getModuleID();
         String studentID = claimedModule.getStudentID();
@@ -92,14 +95,15 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
 
     /**
      * Deletes a ClaimedModule
-     * @param claimedModule
-     * @throws SQLException
+     * @param claimedModule ClaimedModule to delete from database
+     * @throws SQLException if ClaimedModule doesn't exist
      */
     public void delete(ClaimedModule claimedModule) throws SQLException {
-        String sql = "SELECT fn_DeleteClaimedModule(?,?)";
+        
         String moduleID = claimedModule.getModuleID();
         int claimID = claimedModule.getClaimID();
 
+        String sql = "SELECT fn_DeleteClaimedModule(?,?)";
         SQLParameter p1 = new SQLParameter(claimID);
         SQLParameter p2 = new SQLParameter(moduleID);
 
@@ -108,17 +112,19 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
 
     /**
      * Returns a list of ClaimedModule for a Claim.
-     * @param claim
-     * @return
+     * @param claimID ID of Claim for which the returned ClaimedModule objects 
+     *              pertain to.
+     * @param studentID ID of the student whose Claim the returned modules belong to
+     * @return a list of ClaimedModule objects with the ClaimID passed in
      */
     public ArrayList<ClaimedModule> getList(int claimID, String studentID) {
-        ArrayList<ClaimedModule> list = null;
+        
         String sql = "SELECT * FROM fn_ListClaimedModules(?)";
         SQLParameter p1 = new SQLParameter(claimID);
 
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
-            list = new ArrayList<ClaimedModule>();
+            ArrayList<ClaimedModule> list = new ArrayList<ClaimedModule>();
             boolean approved, overseasEvidence;
             char recognition;
             String moduleID;
@@ -145,17 +151,20 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
                 module.setRecognition(recognition);
                 list.add(module);
             }
+            return list;
         } catch (SQLException ex) {
             Logger.getLogger(ClaimedModuleIO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list;
+        return null;
     }
 
     /**
      * Add provider to a claimed module.
-     * @param claimID
-     * @param moduleID
-     * @param provider
+     * @param claimID ClaimID of the ClaimedModule targeted
+     * @param moduleID ModuleID of the ClaimedModule targeted
+     * @param providerID ID of Provider to assign to the ClaimedModule
+     * @throws SQLException If any of the IDs passed in aren't valid,
+     *          or a ClaimedModuleProvider with those IDs already exists
      */
     public void addProvider(int claimID, String moduleID, char providerID) throws SQLException {
         String sql = "SELECT fn_AddProviderToClaimedModule(?,?,?)";
