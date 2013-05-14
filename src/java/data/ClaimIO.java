@@ -61,8 +61,8 @@ public class ClaimIO extends RPL_IO <Claim> {
     /**
      * Inserts a new claim. Some fields are set automatically:
      * claimID, dateMade and submitted.
-     * @param claim the claim to insert.
-     * @throws SQLException the data is wrong.
+     * @param claim The Claim to insert into the database.
+     * @throws SQLException if the Claim already exists in the database
      */
     public void insert(Claim claim) throws SQLException {
         String studentID = claim.getStudentID();
@@ -83,11 +83,11 @@ public class ClaimIO extends RPL_IO <Claim> {
     }
 
     /**
-     * Updates a claim with new claim data. Different
-     * users have different privileges so this works
-     * differently depending on their user's role.
-     * @param claim the claim containing new claim data
-     * @throws SQLException
+     * Updates a database Claim entry with new data. Different
+     * users have different privileges, so this works
+     * differently depending on their role.
+     * @param claim The Claim whose database record needs updating.
+     * @throws SQLException if the Claim didn't already exist in the database.
      */
     public void update(Claim claim) throws SQLException {
 
@@ -142,9 +142,8 @@ public class ClaimIO extends RPL_IO <Claim> {
     /**
      * Deletes a claim, and all claimed modules/evidence for that claim.
      * @param claim the claim to delete.
-     * @throws SQLException
+     * @throws SQLException if the Claim didn't already exist.
      */
-
     public void delete(Claim claim) throws SQLException {
         int claimID = claim.getClaimID();
         String sql = "SELECT fn_DeleteClaim(?)";
@@ -156,10 +155,10 @@ public class ClaimIO extends RPL_IO <Claim> {
 
     /**
      * Deletes a draft claim, and all claimed modules/evidence for that claim.
-     * @param claim the claim to delete.
-     * @throws SQLException
+     * If it isn't a draft claim, the command will do nothing.
+     * @param claim The claim to delete.
+     * @throws SQLException The claim doesn't exist.
      */
-
     public void deleteDraft(Claim claim) throws SQLException {
         int claimID = claim.getClaimID();
         String sql = "SELECT fn_DeleteDraftClaim(?)";
@@ -170,10 +169,9 @@ public class ClaimIO extends RPL_IO <Claim> {
     }
 
     /**
-     * Gets a claim from the database, identified by a studentID and
-     * a claimID.
-     * @param claimID
-     * @return
+     * Gets a claim from the database, identified by a ClaimID.
+     * @param claimID ID of the Claim to retrieve from the database.
+     * @return Claim retrieved from the database
      */
     public Claim getByID(int claimID) {
 
@@ -193,13 +191,14 @@ public class ClaimIO extends RPL_IO <Claim> {
     }
 
     /**
-     * Returns a list of the user's claims. For students these
+     * Returns a list of the user's claims. For students, these
      * are claims that the student has made. For teachers, these
-     * are claims the assessor has assessed previously, and is
+     * are claims an assessor has assessed previously, and is
      * assigned to assess.
      *
-     * @param user The user who's claims to get
+     * @param user The user whose claims we want to grab
      * @return list of the user's claims
+     * @throws SQLException If the User isn't in the database.
      */
     public ArrayList<Claim> getList(User user) throws SQLException {
         ArrayList<Claim> list = new ArrayList<Claim>();
@@ -220,24 +219,20 @@ public class ClaimIO extends RPL_IO <Claim> {
 
     /**
      * @return total number of claims in DB
+     * @throws SQLException If the ResultSet returned contains data different
+     *          than expected at the time of this method's creation.
      */
     public int getTotalClaims() throws SQLException {
-
         String sql = "SELECT * FROM fn_GetClaimTotal()";
         ResultSet rs = super.doPreparedStatement(sql);
-        int total = 0;
-
-        if (rs.next()) {
-            total = rs.getInt(1);
-        }
-        return total;
+        return rs.next() ? rs.getInt(1) : 0;
     }
 
     /**
-     * Gets a claim from the result set.
-     * @param rs the ResultSet pointing to a claim record.
+     * Gets a Claim from the ResultSet passed in.
+     * @param rs the ResultSet containing a Claim record.
      * @return the claim that the ResultSet's cursor is pointing at.
-     * @throws SQLException if database threw an exception, check SQLState for vendor error code.
+     * @throws SQLException if ResultSet passed in didn't contain a valid Claim.
      */
     private Claim getClaimFromRS(ResultSet rs) throws SQLException {
 
@@ -252,8 +247,6 @@ public class ClaimIO extends RPL_IO <Claim> {
         String delegateID = rs.getString(Field.DELEGATE_ID.name);
         String opt = rs.getString(Field.OPTION.name);
         Option option = (opt != null) ? Option.getFromChar(opt.charAt(0)) : null;
-
-        //System.out.println("===>" + Field.STATUS.name);
 
         Status status = Status.getFromInt(rs.getInt(Field.STATUS.name));
         ClaimType claimType = ClaimType.getFromBool(rs.getBoolean(Field.CLAIM_TYPE.name));
