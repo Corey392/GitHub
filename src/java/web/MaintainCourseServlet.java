@@ -26,13 +26,14 @@ import util.Util;
 
 /**
  *
- * @author Adam Shortall, Bryce Carr
+ * @author Adam Shortall, Bryce Carr, Mitchell Carr
  * @version 1.030
  * Created:	Unknown
  * Modified:	07/05/2013
  * Change Log:	08/04/2013: Bryce Carr:	Made small changes to incorporate guideFileAddress DB field.
  *		24/04/2013: Bryce Carr:	Added header comments to match code conventions.
  *		07/05/2013: Bryce Carr:	Implemented Course deletion.
+ *              15/05/2013: MC: Removed guideFileAddress fields to match Course
  */
 public class MaintainCourseServlet extends HttpServlet {
     

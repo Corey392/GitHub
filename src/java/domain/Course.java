@@ -14,7 +14,7 @@ import util.FieldError;
  * <b>Change Log:</b>  08/04/2013:    Made small changes to incorporate guideFileAddress DB field.
  *                  24/04/2013:   Added header comments to match code conventions.
  *		    30/04/2013:	BC: Edited validateField() to account for null field value. Field in database is allowed null, but code didn't previously allow it.
- *                  15/05/2013: MC: 
+ *                  15/05/2013: MC: Removed guideFileAddress and associated methods
  * <b>Purpose:</b>  Model class for database's Course table.
  */
 public class Course implements Comparable<Course>, Serializable {
