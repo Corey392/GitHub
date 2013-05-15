@@ -18,6 +18,8 @@ import java.util.logging.Logger;
  *                  05/05/2013: Updated delete to reflect DB
  *                  06/05/2013: Fixed 'delete' method to send the parameters in to the database correctly.
  *                  15/05/2013: MC: Updated call to ClaimedModule where deprecated constructor was used
+ *                              MC: Fixed 'fn_UpdateClaimedModule' call to reflect current DB
+ *                              MC: Updated 'getList' to reflect changes made to ClaimedModule
  * <b>Purpose:</b>  Controller class for interaction with database's ClaimedModule table.
  */
 public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
@@ -74,7 +76,6 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         
         String sql = "SELECT fn_UpdateClaimedModule(?,?,?,?,?,?,?,?)";
         String moduleID = claimedModule.getModuleID();
-        String studentID = claimedModule.getStudentID();
         int claimID = claimedModule.getClaimID();
         boolean approved = claimedModule.isApproved();
         String arrangementNo = claimedModule.getArrangementNo();
@@ -83,7 +84,6 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         char recognition = claimedModule.getRecognition();
 
         SQLParameter p1 = new SQLParameter(moduleID);
-        SQLParameter p2 = new SQLParameter(studentID);
         SQLParameter p3 = new SQLParameter(claimID);
         SQLParameter p4 = new SQLParameter(approved);
         SQLParameter p5 = new SQLParameter(arrangementNo);
@@ -91,7 +91,7 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
         SQLParameter p7 = new SQLParameter(overseasEvidence);
         SQLParameter p8 = new SQLParameter(recognition);
 
-        super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8);
+        super.doPreparedStatement(sql, p1, p3, p4, p5, p6, p7, p8);
     }
 
     /**
@@ -118,7 +118,7 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
      * @param studentID ID of the student whose Claim the returned modules belong to
      * @return a list of ClaimedModule objects with the ClaimID passed in
      */
-    public ArrayList<ClaimedModule> getList(int claimID, String studentID) {
+    public ArrayList<ClaimedModule> getList(int claimID) {
         
         String sql = "SELECT * FROM fn_ListClaimedModules(?)";
         SQLParameter p1 = new SQLParameter(claimID);
@@ -144,7 +144,7 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
                 } else {
                     recognition = ' ';
                 }
-                module = new ClaimedModule(claimID, studentID, moduleID, "");
+                module = new ClaimedModule(claimID, moduleID, "");
                 module.setApproved(approved);
                 module.setArrangementNo(arrangementNo);
                 module.setFunctionalCode(functionalCode);

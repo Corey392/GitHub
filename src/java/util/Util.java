@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
  *                  07/05/2013: Mitch Carr: Updated getCompleteEvidence and removed getCompleteEvidenceList<br />
  *                  07/05/2013: TW: Changed evidence to ArrayList<Evidence> in getCompleteEvidence().<br />
  *		    07/05/2013:	Bryce Carr: Updated getCompleteElement() and getCompleteModule() to account for updated Criterion table (part of implementing Criterion insertion).<br />
+ *                  15/05/2013: Mitch Carr: Updated 'getCompleteClaimedModuleList' to reflect changes made to ClaimedModuleIO
  * <b>Purpose:</b>  Appears to provide reusable access to commonly-used complex interactions with IO classes.
  */
 public final class Util {
@@ -172,7 +173,7 @@ public final class Util {
 
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(role);
         ProviderIO providerIO = new ProviderIO(role);
-        ArrayList<ClaimedModule> claimedModules = claimedModuleIO.getList(claimID, studentID);
+        ArrayList<ClaimedModule> claimedModules = claimedModuleIO.getList(claimID);
         if (claimedModules != null) {
             for (ClaimedModule cm : claimedModules) {
                 cm.setProviders(providerIO.getList(claimID, cm.getModuleID()));

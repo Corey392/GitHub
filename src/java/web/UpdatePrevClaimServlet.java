@@ -3,7 +3,6 @@ package web;
 import data.*;
 import domain.*;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -31,6 +30,7 @@ import util.*;
  *				12/05/2013: TW: Added handling of 'viewTextEvidence', added changing date of claim to "now / today". Made 'submitClaim()' public static to allow it to be used by AddEvidencePrevServlet. Moved 'Submit Claim' button to 'Add Evidence' page and only shows the 'Add Evidence' button after at least 1 module has been added.
  *				12/05/2013: TW: Added handling of 'AttachEvidence' button.
  *				13/05/2013: TW: Moved 'AttachEvidence' button to 'AddEvidence' Text page.
+ *                              15/05/2013: MC: Updated addModule method to reflect changes made to ClaimedModule
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -131,7 +131,6 @@ public class UpdatePrevClaimServlet extends HttpServlet {
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(user.role);
 		ClaimedModule claimedModule = new ClaimedModule(
 				claim.getClaimID(),
-				user.getUserID(),
 				selectedModule.getModuleID(),
 				selectedModule.getName());
         claimedModule.setElements(selectedModule.getElements());

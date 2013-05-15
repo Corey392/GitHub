@@ -23,6 +23,7 @@ import util.*;
  *	Modified:	25/04/2013
  *	Change Log: 25/04/2013: TW: Added handling when a user submits the form without selecting a module. Fixed remove module button, now actually works. Updated remove module error message.
  * 		    04/05/2013: MC: Updated submitClaim method
+ *                  15/05/2013: MC: Updated addModule method to reflect change to ClaimedModule
  *	Purpose:    Handles the adding and removing of modules from a RPL claim.
  */
 public class UpdateRPLClaimServlet extends HttpServlet {
@@ -124,7 +125,6 @@ public class UpdateRPLClaimServlet extends HttpServlet {
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(user.role);
         ClaimedModule claimedModule = new ClaimedModule();
         claimedModule.setClaimID(claim.getClaimID());
-        claimedModule.setStudentID(user.getUserID());
         claimedModule.setModuleID(selectedModule.getModuleID());
         claimedModule.setName(selectedModule.getName());
         claimedModule.setElements(selectedModule.getElements());

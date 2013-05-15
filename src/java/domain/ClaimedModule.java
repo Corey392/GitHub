@@ -16,8 +16,6 @@ import util.Util;
 public final class ClaimedModule extends Module implements Serializable{
 
     private int claimID;
-    private String studentID;
-
     private boolean approved;
     private String arrangementNo;
     private String functionalCode;
@@ -31,20 +29,18 @@ public final class ClaimedModule extends Module implements Serializable{
      * Empty constructor
      */
     public ClaimedModule() {
-        this(Util.INT_ID_EMPTY, "", "", "");
+        this(Util.INT_ID_EMPTY, "", "");
     }
 
     /**
      * Constructs a ClaimedModule with all mandatory fields.
-	 * @author Todd Wiggins (added Module Name)
+     * @author Todd Wiggins (added Module Name)
      * @param claimID Student's Claim ID
-     * @param studentID	Student ID
      * @param moduleID TAFE Unit / Module Code
      * @param name Name of Module
      */
-    public ClaimedModule(int claimID, String studentID, String moduleID, String name) {
+    public ClaimedModule(int claimID, String moduleID, String name) {
         this.setClaimID(claimID);
-        this.setStudentID(studentID);
         this.setModuleID(moduleID);
         this.setName(name);
         this.approved = false;
@@ -55,21 +51,15 @@ public final class ClaimedModule extends Module implements Serializable{
     }
 
     /**
-     * @return the claimID
+     * @return Unique identifier of the Claim for this ClaimedModule
      */
     public int getClaimID() {
         return claimID;
     }
 
     /**
-     * @return the studentID
-     */
-    public String getStudentID() {
-        return studentID;
-    }
-
-    /**
-     * @return the approved
+     * @return If this ClaimedModule has been approved, returns true. 
+     *          Otherwise, false.
      */
     public boolean isApproved() {
         return approved;
@@ -118,17 +108,10 @@ public final class ClaimedModule extends Module implements Serializable{
     }
 
     /**
-     * @param claimID the claimID to set
+     * @param claimID Unique identifier of the Claim for this ClaimedModule
      */
     public void setClaimID(int claimID) {
         this.claimID = claimID;
-    }
-
-    /**
-     * @param studentID the studentID to set
-     */
-    public void setStudentID(String studentID) {
-        this.studentID = studentID;
     }
 
     /**
