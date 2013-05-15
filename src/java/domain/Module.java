@@ -14,6 +14,7 @@ import util.FieldError;
  * Created:    ?
  * Modified:   05/05/2013: TW: Added 'National Module ID', deprecated existing constructors.
  * 	       05/05/2013: MC: Removed unnecessary check, minor cleanup
+ *              15/05/2013: MC: Removed two unused, deprecated methods
  */
 public class Module implements Comparable<Module> {
 
@@ -39,6 +40,11 @@ public class Module implements Comparable<Module> {
             this.error = error;
         }
 
+        /**
+         * @param value String to test against this Field's associated pattern.
+         * @return If the value passed in matches this Field's pattern, returns
+         *          true. Otherwise, false.
+         */
         public boolean validate(String value) {
             return value.matches(pattern);
         }
@@ -48,12 +54,7 @@ public class Module implements Comparable<Module> {
         this("","","");
     }
 
-	@Deprecated
-    public Module(String moduleID) {
-        this(moduleID, "", "");
-    }
-
-	@Deprecated
+    @Deprecated
     public Module(String moduleID, String name) {
         this(moduleID, name, "");
     }
@@ -61,11 +62,6 @@ public class Module implements Comparable<Module> {
 	@Deprecated
     public Module(String moduleID, String name, String instructions) {
         this(moduleID, "", name, instructions, new ArrayList<Element>());
-    }
-
-	@Deprecated
-    public Module(String moduleID, String name, String instructions, ArrayList<Element> elements) {
-        this(moduleID, "", name, instructions, elements);
     }
 
     public Module(String moduleID, String nationalModuleID, String name, String instructions, ArrayList<Element> elements) {
@@ -77,7 +73,6 @@ public class Module implements Comparable<Module> {
     }
 
     /**
-     *
      * @return a list of FieldError, one for each Module.Field in error.
      */
     public ArrayList<FieldError> validate() {
@@ -90,42 +85,72 @@ public class Module implements Comparable<Module> {
         return list;
     }
 
+    /**
+     * @return List of elements encompassed by this Module
+     */
     public ArrayList<Element> getElements() {
         return elements;
     }
 
+    /**
+     * @param elements List of elements to be encompassed by this Module
+     */
     public void setElements(ArrayList<Element> elements) {
         this.elements = elements;
     }
 
+    /**
+     * @return Instructions pertaining to this Module
+     */
     public String getInstructions() {
         return instructions;
     }
 
+    /**
+     * @param guide Instructions pertaining to this Module
+     */
     public void setInstructions(String guide) {
         this.instructions = guide;
     }
 
+    /**
+     * @return Unique identifier for this Module
+     */
     public String getModuleID() {
         return moduleID;
     }
 
+    /**
+     * @param moduleID Unique identifier to set for this Module
+     */
     public void setModuleID(String moduleID) {
         this.moduleID = moduleID;
     }
 
+    /**
+     * @return Unique identifier for this Module's national code
+     */
     public String getNationalModuleID() {
         return nationalModuleID;
     }
 
+    /**
+     * @param nationalModuleID Unique identifier for this Module's national code
+     */
     public void setNationalModuleID(String nationalModuleID) {
         this.nationalModuleID = nationalModuleID;
     }
 
+    /**
+     * @return Name of this Module
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name Name of this Module
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -138,11 +163,6 @@ public class Module implements Comparable<Module> {
         return this.moduleID + ": " + this.name;
     }
 
-    /**
-     * Compares modules by moduleID.
-     * @param that
-     * @return
-     */
     @Override
     public int compareTo(Module that) {
         return this.moduleID.compareTo(that.moduleID);

@@ -172,6 +172,13 @@ public class User implements Comparable<User> {
             this.namePattern = "^[a-zA-Z]+$";
         }
 
+        /**
+         * Returns a Role object from the character stored in the database
+         * @param c Char representing a user Role
+         * @return Returns the Role associated with the char passed in
+         * @throws IllegalArgumentException if the char from the database 
+         *          doesn't have a corresponding Role.
+         */
         public static Role roleFromChar(char c) {
             switch (c) {
                 case UserIO.ADMIN_CODE:
@@ -196,11 +203,13 @@ public class User implements Comparable<User> {
         LOGGED_IN,
         NOT_LOGGED_IN;
     }
+    
     /**
      * Validates a specified field of a user by checking it against a pattern.
-     * @param user the user with fields to be validated
      * @param field the field to validate
      * @return true if the field is valid
+     * @throws IllegalArgumentException if the field does not match an existing 
+     *          pattern.
      */
     public boolean validateField(Field field) {
         switch(field) {
@@ -224,100 +233,98 @@ public class User implements Comparable<User> {
     }
 
     /**
-     *
-     * @return claims for a User
+     * @return Claims associated with a user
      */
     public ArrayList<Claim> getClaims() {
         return claims;
     }
 
     /**
-     *
-     * @param claims
+     * @param claims List of Claim objects to be associated with a User
      */
     public void setClaims(ArrayList<Claim> claims) {
         this.claims = claims;
     }
 
     /**
-     * @return the userID
+     * @return the user's ID
      */
     public String getUserID() {
         return userID;
     }
 
     /**
-     * @param userID the userID to set
+     * @param userID A unique identifier for this User
      */
     public void setUserID(String userID) {
         this.userID = userID;
     }
 
     /**
-     * @return the firstName
+     * @return The user's first name
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * @param firstName the firstName to set
+     * @param firstName First name to set for user
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * @return the lastName
+     * @return The user's last name
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * @param lastName the lastName to set
+     * @param lastName Last name to set for user
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * @return the emailAddress
+     * @return User's email address
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * @param emailAddress the emailAddress to set
+     * @param emailAddress Email address to set for user
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * @return the password
+     * @return User's password
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * @param password the password to set
+     * @param password Password to set for user
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
 	/**
-	 * @param otherName the otherName for the user (eg. middle)
+	 * @param otherName Another name to be set for user. eg. Middle name
 	 */
 	public void setOtherName(String otherName) {
 		this.otherName = otherName;
 	}
 
 	/**
-	 * @return otherName the otherName for the user (eg. middle)
+	 * @return Another name the user is known by. eg. Middle name
 	 */
 	public String getOtherName() {
 		return this.otherName;
@@ -333,63 +340,63 @@ public class User implements Comparable<User> {
 	}
 
 	/**
-	 * @return String[], index 0 address line 1, index 1 address line 2
+	 * @return A string array with both associated addressed for a user.
 	 */
 	public String[] getAddress() {
 		return new String[] {this.address1, this.address2};
 	}
 
 	/**
-	 * @param town the users address field for town
+	 * @param town Town in which the user resides
 	 */
 	public void setTown(String town) {
 		this.town = town;
 	}
 
 	/**
-	 * @return town the users address field for town
+	 * @return Town in which the user resides
 	 */
 	public String getTown() {
 		return this.town;
 	}
 
 	/**
-	 * @param state the users address field for state
+	 * @param state State in which the user resides
 	 */
 	public void setState(String state) {
 		this.state = state;
 	}
 
 	/**
-	 * @return state the users address field for state
+	 * @return State in which the user resides
 	 */
 	public String getState() {
 		return this.state;
 	}
 
 	/**
-	 * @param postCode the users address field for postCode
+	 * @param postCode Postcode for the town in which the user resides
 	 */
 	public void setPostCode(int postCode) {
 		this.postCode = postCode;
 	}
 
 	/**
-	 * @return postCode the users address field for postCode
+	 * @return Postcode for the town in which the user resides
 	 */
 	public int getPostCode() {
 		return this.postCode;
 	}
 
 	/**
-	 * @param phone the phone number for the user
+	 * @param phone Phone number to set for user
 	 */
 	public void setPhoneNumber(String phone) {
 		this.phone = phone;
 	}
 
 	/**
-	 * @return the phone number for the user
+	 * @return User's phone number
 	 */
 	public String getPhoneNumber() {
 		return this.phone;
@@ -410,37 +417,35 @@ public class User implements Comparable<User> {
 	}
 
 	/**
-	 * @param staff is this user a staff member (only applicable for students)
+	 * @param staff True if this user is a staff member? (only applicable for students)
 	 */
 	public void setStaff(boolean staff) {
 		this.staff = staff;
 	}
 
 	/**
-	 * @return staff is this user a staff member (only applicable for students)
+	 * @return True if this user is a staff member (only applicable for students)
 	 */
 	public boolean isStaff() {
 		return this.staff;
 	}
 
     /**
-     * @return the role
+     * @return User's Role (eg. Admin)
      */
     public Role getRole() {
         return role;
     }
 
     /**
-     * Returns the status
-     * @return the status
+     * @return User's status (eg. logged in or not)
      */
     public Status getStatus() {
         return this.status;
     }
 
     /**
-     * Sets the status
-     * @param status the status to set
+     * @param status The user's login status
      */
     public void setStatus(Status status) {
         this.status = status;

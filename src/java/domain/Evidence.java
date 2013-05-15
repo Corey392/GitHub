@@ -12,7 +12,6 @@ import util.Util;
 public class Evidence implements Serializable {
 
     private int claimID;
-    /** elementID == 0 when Evidence is for a module rather than an element */
     private Integer elementID;
     private String description;
     private String moduleID;
@@ -35,9 +34,6 @@ public class Evidence implements Serializable {
 
     /**
      * Inserts a 'Previous Studies' evidence with description.
-     * @param claimID
-     * @param moduleID
-     * @param description
      */
 	@Deprecated
     public Evidence(int claimID, String moduleID, String description) {
@@ -46,10 +42,6 @@ public class Evidence implements Serializable {
 
    /**
      * Inserts an 'RPL' evidence with description and associated elementID.
-     * @param claimID
-     * @param moduleID
-     * @param description
-     * @param elementID
      */
     public Evidence(int claimID, String moduleID, int elementID, String description) {
         this.claimID = claimID;
@@ -58,67 +50,70 @@ public class Evidence implements Serializable {
         this.approved = false;
         this.assessorNote = "";
         this.description = description;
-		this.updated = false;
+	this.updated = false;
     }
 
     /**
-     * @return the claimID
+     * @return Unique identifier for the Claim this class depicts evidence for
      */
     public int getClaimID() {
         return claimID;
     }
 
     /**
-     * @return the elementID
+     * @return Unique identifier for the Element this class depicts evidence for
      */
     public Integer getElementID() {
         return elementID;
     }
 
     /**
-     * @return the description
+     * @return Description of the evidence this object depicts
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * @return the moduleID
+     * @return Unique identifier for the Module this class depicts evidence for
      */
     public String getModuleID() {
         return moduleID;
     }
 
     /**
-     * @return the approved
+     * @return If the evidence this object depicts has been approved, true.
+     *          Otherwise, false.
      */
     public boolean isApproved() {
         return approved;
     }
 
     /**
-     * @return the assessorNote
+     * @return A note left by the Assessor. May be blank.
      */
     public String getAssessorNote() {
         return assessorNote;
     }
 
     /**
-     * @param claimID the claimID to set
+     * @param claimID Unique identifier depicting the Claim that this class 
+     *              provides evidence for
      */
     public void setClaimID(int claimID) {
         this.claimID = claimID;
     }
 
     /**
-     * @param elementID the elementID to set
+     * @param elementID Unique identifier depicting the Element that this class 
+     *              provides evidence for
      */
     public void setElementID(Integer elementID) {
         this.elementID = elementID;
     }
 
     /**
-     * @param description the description to set
+     * @param description Text description of the evidence this object depicts
      */
     public void setDescription(String description) {
         this.description = description;
@@ -126,14 +121,16 @@ public class Evidence implements Serializable {
     }
 
     /**
-     * @param moduleID the moduleID to set
+     * @param moduleID Unique identifier depicting the Module that this class 
+     *              provides evidence for
      */
     public void setModuleID(String moduleID) {
         this.moduleID = moduleID;
     }
 
     /**
-     * @param approved the approved to set
+     * @param approved If the evidence this object depicts has been approved,
+     *                  returns true. Otherwise, false.
      */
     public void setApproved(boolean approved) {
         this.approved = approved;
@@ -141,7 +138,8 @@ public class Evidence implements Serializable {
     }
 
     /**
-     * @param assessorNote the assessorNote to set
+     * @param assessorNote A note left by the Assessor for whoever views this
+     *                  piece of evidence thereafter.
      */
     public void setAssessorNote(String assessorNote) {
         this.assessorNote = assessorNote;
@@ -149,14 +147,14 @@ public class Evidence implements Serializable {
     }
 
     /**
-     * @return the element
+     * @return The Element which this object is providing evidence for
      */
     public Element getElement() {
         return element;
     }
 
     /**
-     * @param element the element to set
+     * @param element The Element which this object is providing evidence for
      */
     public void setElement(Element element) {
         this.element = element;
@@ -164,7 +162,8 @@ public class Evidence implements Serializable {
 
 	/**
 	 * Flags this Evidence instance as being updated (or Added)
-	 * @return boolean true if needs to be updated in database or false for no changes.
+	 * @return If this object's database entry differs from its current state
+         *          in the application, returns true. Otherwise, false.
 	 */
 	public boolean isUpdated() {
 		return this.updated;
@@ -172,7 +171,8 @@ public class Evidence implements Serializable {
 
 	/**
 	 * Flags this Evidence instance as being updated (or Added)
-	 * @param updated boolean true if needs to be updated in database or false for no changes / new.
+	 * @param updated True if this object no longer matches its entry in
+         *          the database. Otherwise, false.
 	 */
 	public void setUpdated(boolean updated) {
 		this.updated = updated;
