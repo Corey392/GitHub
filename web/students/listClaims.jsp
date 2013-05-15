@@ -1,7 +1,8 @@
-<%--
-    Document   : listClaims for a Student
-    Created on : 15/05/2011, 3:53:01 PM
-    Author     : David Gibbins, James Purves
+<%--Purpose:    listClaims for a Student
+ *  @author     David Gibbins, James Purves, Todd Wiggins
+ *  @version    1.001
+ *  Created:    15/05/2011, 3:53:01 PM
+ *	Modified:	15/05/2013: TW: Added Status Explanations, Changed Error message to be wrapped in <div> #errorMessage.
 --%>
 
 <%@include file="../WEB-INF/jspf/header.jspf" %>
@@ -9,12 +10,10 @@
 <jsp:useBean id="claims" scope="session" class="java.util.ArrayList" />
 <jsp:useBean id="error" scope="request" class="util.RPLError"/>
 <div class="body">
-    <center>
     <h2>Your Claims</h2>
     <c:if test="${error.message.length() > 0}">
-        <td><b>${error.message}</b></td>
+        <div id="errorMessage">${error.message}</div>
     </c:if>
-    </center>
     <form name="listClaims" action="<%= RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.absoluteAddress %>" method="post" >
         <table border="0" class="datatable">
             <tr>

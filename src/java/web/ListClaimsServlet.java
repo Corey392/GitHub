@@ -1,9 +1,7 @@
 package web;
 
 import data.ClaimIO;
-//import data.ClaimRecordIO;
 import domain.Claim;
-//import domain.ClaimRecord;
 import domain.User;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -24,11 +22,12 @@ import util.Util;
 
 /** Populates the list of claims for the student's listClaims page and redirects any requests from that page.
  *  @author     James Purves, Todd Wiggins
- *  @version    1.021
+ *  @version    1.022
  *	Created:    ?
  *	Change Log: 1.01: TW: Updated URL when deleting to return to the list of claims instead of a 404.
  *	            29/04/2013: TW: Now claim is removed from the list of claims displayed on page.
  *	            12/05/2013: TW: Updated error message to say claim instead of module.
+ *	            15/05/2013: TW: Added Handling if No Claim is selected when trying to Delete, no longer throwing exception, improved Error Message handling.
  */
 public class ListClaimsServlet extends HttpServlet {
 
@@ -73,14 +72,8 @@ public class ListClaimsServlet extends HttpServlet {
                 session.setAttribute("claim", selectedClaim);
             }
         } else if (request.getParameter("delete") != null) {
-            request = this.deleteClaim(request, user, claims);
-            url = RPLPage.LIST_CLAIMS_STUDENT.relativeAddress;
-			int claimID = Integer.parseInt(request.getParameter("selectedClaim"));
-			for (int i = 0; i < claims.size(); i++) {
-				if (claims.get(i).getClaimID() == claimID) {
-					claims.remove(i);
-				}
-			}
+			url = RPLPage.LIST_CLAIMS_STUDENT.relativeAddress;
+			request = this.deleteClaim(request, user, claims, session);
         } else if (request.getParameter("back") != null){
             url = RPLPage.STUDENT_HOME.relativeAddress;
         } else {
@@ -142,8 +135,7 @@ public class ListClaimsServlet extends HttpServlet {
         try {
             ArrayList<Claim> claims = claimIO.getList(user);
             for (Claim claim : claims){
-                Claim c = Util.getCompleteClaim(user.getUserID(),
-                        claim.getClaimID(), user.role);
+                Claim c = Util.getCompleteClaim(user.getUserID(), claim.getClaimID(), user.role);
                 completeClaims.add(c);
             }
         } catch (SQLException ex) {
@@ -174,10 +166,8 @@ public class ListClaimsServlet extends HttpServlet {
      * @param user the current user
      * @return the updated request
      */
-    private HttpServletRequest deleteClaim(HttpServletRequest request, User user, ArrayList<Claim> claims){
+    private HttpServletRequest deleteClaim(HttpServletRequest request, User user, ArrayList<Claim> claims, HttpSession session){
         ClaimIO claimIO = new ClaimIO(user.getRole());
-        //ClaimRecordIO claimRecordIO = new ClaimRecordIO(user.getRole());    // Kyoungho Lee
-        //TODO: uncomment line above when ClaimRecordIO has been updated
 		String claimID = request.getParameter("selectedClaim");
 		if (claimID != null) {
 			Claim selectedClaim = new Claim(Integer.valueOf(claimID),user.getStudentID());
@@ -186,23 +176,24 @@ public class ListClaimsServlet extends HttpServlet {
 					if (claim.getStatus() == Claim.Status.DRAFT){
 						try {
 							claimIO.deleteDraft(selectedClaim);
+							claims.remove(claim);
 						} catch (SQLException ex) {
 							Logger.getLogger(ListClaimsServlet.class.getName()).log(Level.SEVERE, null, ex);
 							//Should be thrown if the claim is not in draft status in database.
-							RPLError error = new RPLError(FieldError.CLAIM_DELETE_NOT_DRAFT);
-							request.setAttribute("error", error);
+							request.setAttribute("error", new RPLError(FieldError.CLAIM_DELETE_NOT_DRAFT));
 						} catch (Exception e) {
 							Logger.getLogger(ListClaimsServlet.class.getName()).log(Level.SEVERE, null, e);
 						}
 					 } else {
-						RPLError error = new RPLError(FieldError.CLAIM_DELETE_NOT_DRAFT);
-						request.setAttribute("error", error);
+						request.setAttribute("error", new RPLError(FieldError.CLAIM_DELETE_NOT_DRAFT));
 					}
 					break;
 				}
 			}
+		} else {
+			request.setAttribute("error", new RPLError(FieldError.CLAIM_DELETE_NOT_SELECTED));
 		}
-        this.populateClaimList(user);
+		session.setAttribute("claims", claims);
         return request;
     }
 }

@@ -2,12 +2,13 @@ package util;
 
 /**
  * @author Adam Shortall, Bryce Carr, Todd Wiggins
- * @version: 1.005
+ * @version: 1.006
  * Modified:    08/04/2013: Bryce Carr: Added message: COURSE_GUIDE_FILE_ADDRESS.
  *              11/04/2013: Todd Wiggins: Added messages: TERMS_AND_COND, RESET_FAILED, RESET_SENT.
  *              24/04/2013: Bryce Carr: Added header comments to match code conventions.
  *				25/04/2013: Todd Wiggins: Added 4 x 'NOT_SELECTED' error messages.
  *				06/05/2013: Todd Wiggins: Added CLAIM_DELETE_NOT_DRAFT error.
+ *				15/05/2013: Todd Wiggins: Added CLAIM_DELETE_NOT_SELECTED error.
  * <b>Purpose:</b>  Defines error messages for different input fields on pages in the
  * RPL website. These messages are displayed to the user next to the fields that
  * they are associated with.
@@ -41,7 +42,8 @@ public enum FieldError {
 	DISCIPLINE_NOT_SELECTED("A discipline was not selected, please select a Discipline from the list."),//Added by: Todd Wiggins
 	COURSE_NOT_SELECTED("A course was not selected, please select a Course from the list."),//Added by: Todd Wiggins
 	CLAIM_TYPE_NOT_SELECTED("A claim type was not selected, please select a Claim Type from the list."),//Added by: Todd Wiggins
-	CLAIM_DELETE_NOT_DRAFT("The claim you selected cannot be deleted, only claims in a 'Draft' status can be deleted.");//Added by: Todd Wiggins
+	CLAIM_DELETE_NOT_DRAFT("The claim you selected cannot be deleted, only claims in a 'Draft' status can be deleted."),//Added by: Todd Wiggins
+	CLAIM_DELETE_NOT_SELECTED("Please select a claim before trying to delete.");//Added by: Todd Wiggins
 
     public String message;
 
