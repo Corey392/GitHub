@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 /** Purpose:    Manages communication with the File table in the Database. Also removes the physical file when calling a delete method.
  *  @author     Todd Wiggins
- *  @version    1.000
+ *  @version    1.010
  *	Created:    13/05/2013
- *	Change Log:
+ *	Change Log: 15/05/2013: TW: Fixed removal of Physical file, also now removes directory if no other files exist within the claims/id/ directory.
  */
 public class FileIO extends RPL_IO<ClaimFile> {
 
@@ -57,7 +57,7 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public void insert(ClaimFile file) throws SQLException {
-		
+
 		String sql = "SELECT fn_insertFile(?,?);";
 		SQLParameter p1 = new SQLParameter(file.getClaimID());
 		SQLParameter p2 = new SQLParameter(file.getFilename());
@@ -71,7 +71,7 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public void update(ClaimFile file) throws SQLException {
-		
+
 		String sql = "SELECT fn_updateFile(?,?,?);";
 		SQLParameter p1 = new SQLParameter(file.getFileID());
 		SQLParameter p2 = new SQLParameter(file.getClaimID());
@@ -86,16 +86,20 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public void delete(ClaimFile claimFile) throws SQLException {
-		
+
 		String sql = "SELECT fn_deleteFile(?);";
 		SQLParameter p1 = new SQLParameter(claimFile.getFileID());
 
 		super.doPreparedStatement(sql, p1);
 
-		File file = new File(ClaimFile.directoryClaims + claimFile.getClaimID() + "/" + claimFile.getFileID());
-		if (!file.isDirectory()) {
+		String directory = ClaimFile.directoryClaims + claimFile.getClaimID() + "/";
+		File file = new File(directory + claimFile.getFilename());
+		file.delete();
+		if (file.list() == null || file.list().length == 0) {
+			file = new File(directory);
 			file.delete();
 		}
+
 	}
 
 	/**
@@ -104,7 +108,7 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @param claimID ID of the claim to delete files attached to
 	 */
 	public void deleteByClaim(int claimID) throws SQLException {
-		
+
 		String sql = "SELECT fn_deleteFiles(?);";
 		SQLParameter p1 = new SQLParameter(claimID);
 
@@ -123,7 +127,7 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public ClaimFile getFileByID(int fileID) throws SQLException {
-		
+
 		String sql = "SELECT * FROM fn_getFileByID(?)";
 		SQLParameter p1 = new SQLParameter(fileID);
 
@@ -143,7 +147,7 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public ArrayList<ClaimFile> getList(int claimID) throws SQLException {
-		
+
 		String sql = "SELECT * FROM fn_getAllFiles(?) ORDER BY filename";
 		SQLParameter p1 = new SQLParameter(claimID);
 

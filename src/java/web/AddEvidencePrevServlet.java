@@ -31,6 +31,7 @@ import util.RPLServlet;
  * Change Log: 08/05/2013: TW: Finished: Processes the evidence to the database. Added reading existing evidence data.
  *			   12/05/2013: TW: Added handling if adding/modifying evidence is possible based on claim status and user role. Moved 'Submit Claim' and 'Save Draft Claim' buttons to this page and added handling them here, removed 'Save Evidence' button and moved code to a 'saveEvidence()' method.
  *			   13/05/2013: TW: Moved 'AttachEvidence' button and handling to here. Added attribute to request for 'attachEvidence' based on Claim Status and User Type.
+ *			   15/05/2013: TW: Fixed qualification of "Attach Evidence".
  */
 public class AddEvidencePrevServlet extends HttpServlet {
 	/**
@@ -54,18 +55,20 @@ public class AddEvidencePrevServlet extends HttpServlet {
 
 		boolean editable = false;
 		boolean attachEvidence = false;
+		System.out.println("STATUS::: "+claim.getStatus());
 		if (user.role.name().equals(Role.STUDENT.name())) {
-			if (claim.getStatus() == Status.DRAFT || claim.getStatus() == Status.EVIDENCE) {
+			if (claim.getStatus().code == Status.DRAFT.code || claim.getStatus().code == Status.EVIDENCE.code) {
 				editable = true;
 			}
-			if (claim.getStatus() != Status.EMPTY_DRAFT || claim.getStatus() != Status.DRAFT || claim.getStatus() != Status.PRELIMINARY) {
+			if (claim.getStatus().code != Status.EMPTY_DRAFT.code && claim.getStatus().code != Status.DRAFT.code && claim.getStatus().code != Status.PRELIMINARY.code) {
+				System.out.println("HELLO");
 				attachEvidence = true;
 			}
 		} else if (user.role.name().equals(Role.TEACHER.name()) || user.role.name().equals(Role.ADMIN.name())) {
-			if (claim.getStatus() == Status.PRELIMINARY || claim.getStatus() == Status.ASSESSMENT || claim.getStatus() == Status.APPROVAL) {
+			if (claim.getStatus().code == Status.PRELIMINARY.code || claim.getStatus().code == Status.ASSESSMENT.code || claim.getStatus().code == Status.APPROVAL.code) {
 				editable = true;
 			}
-			if (claim.getStatus() != Status.EMPTY_DRAFT || claim.getStatus() != Status.DRAFT || claim.getStatus() != Status.PRELIMINARY) {
+			if (claim.getStatus().code != Status.EMPTY_DRAFT.code && claim.getStatus().code != Status.DRAFT.code && claim.getStatus().code != Status.PRELIMINARY.code) {
 				attachEvidence = true;
 			}
 		}

@@ -25,12 +25,11 @@ import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import util.RPLPage;
 
-/**	Purpose:    Handles uploading evidence files to a claim. (NOT Finished)
+/**	Purpose:    Handles uploading evidence files to a claim.
  *  @author     Todd Wiggins
- *  @version    1.000
+ *  @version    1.001
  *	Created:    13/05/2013
- *	Change Log:
- *  References: http://www.avajava.com/tutorials/lessons/how-do-i-upload-a-file-to-a-servlet.html
+ *	Change Log: 15/05/2013: TW: Fixed removal of files, now updates list correctly.
  */
 public class AttachEvidenceServlet extends HttpServlet {
 
@@ -58,14 +57,6 @@ public class AttachEvidenceServlet extends HttpServlet {
 			claimFiles = new ArrayList<ClaimFile>();
 		}
 
-		String[] values = request.getParameterValues("remove");
-		if (values != null) {
-
-		for (String v : values) {
-			System.out.println("Values ::: "+v);
-		}
-
-		}
 		String fileFolder = claim.getClaimID() + "/";
 		File fileFolderLocation = new File(ClaimFile.directoryClaims+fileFolder);
 
@@ -112,7 +103,14 @@ public class AttachEvidenceServlet extends HttpServlet {
 			if (request.getParameter("selected") != null) {
 				int fileID = Integer.parseInt(request.getParameter("selected"));
 				try {
-					fileIO.delete(new ClaimFile(fileID,claim.getClaimID()));
+					//Remove the file from the filelist.
+					for (int i = 0; i < claimFiles.size(); i++) {
+						if (claimFiles.get(i).getFileID() == fileID) {
+							fileIO.delete(claimFiles.get(i));
+							claimFiles.remove(i);
+							break;
+						}
+					}
 				} catch (SQLException ex) {
 					request.setAttribute("error", "There was an error while trying to remove this file, please advise the Site Administrator.");
 					Logger.getLogger(AttachEvidenceServlet.class.getName()).log(Level.SEVERE, null, ex);
