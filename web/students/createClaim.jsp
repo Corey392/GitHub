@@ -1,11 +1,11 @@
 <%--Create Claim page where you select Campus, Disciple, Course and Claim type.
  *  @author     James Purves, Todd Wiggins
- *  @version    1.02
+ *  @version    1.11
  *  Created:    14/05/2011, 5:06:19 PM
- *	Modified:   29/04/2013
  *	Change Log: 1.01: TW: Added error messages from servlet.
  *              1.02: TW: Moved error messages to central location. Team decision.
- *              1.10: TW: Added AJAX queries to get Discipline and Courses instead of a full page refresh.
+ *              29/04/2013: 1.10: TW: Added AJAX queries to get Discipline and Courses instead of a full page refresh.
+ *              15/05/2013: 1.11: TW: Improving display of errors to be consistent across site.
 --%>
 
 <%@include file="..\WEB-INF\jspf\header.jspf" %>
@@ -24,14 +24,14 @@
 			document.getElementById("ajaxDiscipline").innerHTML = buildSelect("discipline",data.discipline);
 			document.getElementById("ajaxCourse").innerHTML = buildSelect("course",blank);
 		}).fail(function() {
-			alert("Error doing AJAX query.");
+			alert("Error getting Discipline information.");
 		});
 	}
 	function getCourses() {
 		$.getJSON('<%= RPLPage.ROOT %>/AJAX?type=claim&sub=course&discipline='+document.getElementById("discipline").value, function(data) {
 			document.getElementById("ajaxCourse").innerHTML = buildSelect("course",data.course);
 		}).fail(function() {
-			alert("Error doing AJAX2 query.");
+			alert("Error getting Course information.");
 		});
 	}
 	function buildSelect(id, items) {
@@ -85,13 +85,13 @@
         <td><input type="radio" name="claimType" value="prevStudies" />Previous Studies</td>
         <td><input type="radio" name="claimType" value="rpl" />Recognition of Prior Learning</td>
     </tr>
-	<tr>
-		<td colspan="3">${errorCampusID.message}${errorDisciplineID.message}${errorCourseID.message}${errorClaimType.message}</td>
-	</tr>
     <tr>
         <td><input type="submit" value="Create Claim" /></td>
     </tr>
     </table>
+	<c:if test="${errorCampusID.message.length() > 0 || errorDisciplineID.message.length() > 0 || errorCourseID.message.length() > 0 || errorClaimType.message.length > 0}">
+		<div id="errorMessage">${errorCampusID.message}${errorDisciplineID.message}${errorCourseID.message}${errorClaimType.message}</div>
+	</c:if>
 </form>
 
 <%@include file="..\WEB-INF\jspf\footer.jspf" %>

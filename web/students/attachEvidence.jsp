@@ -1,9 +1,10 @@
 <%--Purpose:    Allows a student upload evidence to a claim.
  *  @author     Todd Wiggins, Mitch Carr
- *  @version    1.010
+ *  @version    1.011
  *  Created:    13/05/2013
  *	Modified:	13/05/2013: Added list of files attached to claim, added Javascript code.
  *              13/05/2013: MC: Changed "images/*" to "image/*"; untested, but should fix the filetype selection issue
+ *              15/05/2013: TW: Improving display of errors to be consistent across site.
 --%>
 <%@page import="domain.ClaimFile"%>
 <%@page import="java.util.ArrayList"%>
@@ -38,7 +39,7 @@
 <% ArrayList<ClaimFile> claimFiles = (ArrayList<ClaimFile>) session.getAttribute("claimFiles");
 	if (claimFiles != null && claimFiles.size() > 0) {
 		if (request.getAttribute("error") != null) { %>
-			<p id="errorMessage">${error}</p>
+			<div id="errorMessage">${error}</div>
 		<% } %>
 	<form action="attachEvidence" method="post" name="attachEvidenceForm">
 		<table id="evidence_tbl">

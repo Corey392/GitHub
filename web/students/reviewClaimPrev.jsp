@@ -1,6 +1,6 @@
 <%--Purpose:    Allows a student add modules to a claim.
  *  @author     James Lee Chin, Todd Wiggins
- *  @version    1.214
+ *  @version    1.215
  *  Created:    18/05/2011, 4:11:01 PM
  *	Modified:	05/05/2013: TW: Added 'National Module Code' as per Story Boards, Removed 'Evidence' as this is for another page after first review.
  *				06/05/2013: TW: Added Draft / Preliminary / Attach Evidence Status Handling, eg. only allows you to add modules in Draft Status.
@@ -9,6 +9,7 @@
  *				12/05/2013: TW: Added 'View Evidence' button to states other than 'Draft'. 'Add Evidence' button only shows after a module has been added.
  *				12/05/2013: TW: Changed heading from 'Recognition of Previous Studies' to 'Claim: Module Selection', more accurate.
  *				13/05/2013: TW: Moved attach evidence button to "Add Evidence" Text page. Added handling when size of modules to be added is 0, now hides module list section and displays a notice to user.
+ *				15/05/2013: TW: Improving display of errors to be consistent across site.
 --%>
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
@@ -25,8 +26,8 @@
 
 <h2 class="center">Claim: Module Selection</h2>
 
-<c:if test="${!moduleError.toString().trim().equals('')}">
-    <div class="warning">${moduleError}</div>
+<c:if test="${moduleError.message.length() > 0}">
+    <div id="errorMessage">${moduleError}</div>
 </c:if>
 
 <form action="updatePrevClaim" method="post" name="updateClaimForm">

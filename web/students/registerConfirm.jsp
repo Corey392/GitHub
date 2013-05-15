@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : registerConfirm
     Created on : 10/05/2011, 9:42:34 PM
     Author     : Adam Shortall
@@ -10,7 +10,7 @@
 <table>
     <thead>
         <tr>
-            <th colspan="2">Your account has been added with the following information:</th>
+            <th colspan="2">Your account has been created with the following information:</th>
         </tr>
     </thead>
     <tbody>
@@ -37,6 +37,5 @@
         </tr>
     </tfoot>
 </table>
-
 
 <%@include file="../WEB-INF/jspf/footer.jspf" %>

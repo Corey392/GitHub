@@ -1,7 +1,8 @@
-<%-- 
-    Document   : reviewClaimRPL
-    Created on : 18/05/2011, 4:10:44 PM
-    Author     : James Purves
+<%--Purpose:    Allows a Student to Add Modules to a Claim
+ *  @author     James Purves, Todd Wiggins
+ *  @version    1.001
+ *  Created:    18/05/2011, 4:10:44 PM
+ *	Modified:	15/05/2013: TW: Improving display of errors to be consistent across site.
 --%>
 
 <%@page import="domain.Claim"%>
@@ -15,20 +16,20 @@
 
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.REVIEW_CLAIM_RPL; %>
-<% 
+<%
     boolean unsubmitted = (claim.getStatus() == Claim.Status.DRAFT);
 %>
 
 <h2 class="center">Recognition of Prior Learning</h2>
-    
+
 <c:if test="${!moduleError.toString().trim().equals('')}">
-    <div class="warning">${moduleError}</div>
+    <div id="errorMessage">${moduleError}</div>
 </c:if>
 
 <form action="updateRPLClaim"" method="post" name="updateClaimForm">
     <table border="0" class="datatable" style="min-width:700px">
         <tr>
-            <th>Module&nbsp;ID</th>
+            <th>Module ID</th>
             <th>Module Name</th>
             <th>Evidence</th>
             <th></th>
@@ -61,7 +62,7 @@
             </c:when>
             <c:otherwise>
                 <tr>
-                    <td colspan="4">You&nbsp;have&nbsp;not&nbsp;added&nbsp;any&nbsp;modules</td>
+                    <td colspan="4">You have not added any modules</td>
                 </tr>
             </c:otherwise>
         </c:choose>
@@ -92,22 +93,19 @@
 
             <td><input type="text" name="evidence" /></td>
             <td><input type="submit" value="Add Module" name="addModule" /></td>
-            
+
         </tr>
         <tr>
             <td colspan="4">
-                <b>Select&nbsp;1&nbsp;-&nbsp;3&nbsp;Providers:</b><br />
+                <b>Select 1 - 3 Providers:</b><br />
             <% index = 0; %>
             <c:forEach var="provider" items="${providers}">
-            
                 <input type="checkbox" name="provider" value="<%= index %>">${provider.name}
-                &nbsp;&nbsp;
                 <c:if test="<%= (index + 1) % 3 == 0 %>">
                     <br />
                 </c:if>
                 <% index += 1; %>
             </c:forEach>
-
             </td>
         </tr>
         </tbody>
@@ -116,11 +114,9 @@
         <c:choose>
             <c:when test="<%= unsubmitted %>">
                 <c:if test="${selectError.message.length() > 0}">
-                    <b>${selectError.message}</b>
+                    <div id="errorMessage">${selectError.message}</div>
                 </c:if>
-
                 <input type="submit" value="Submit Claim" name="submitClaim" />
-
             </c:when>
             <c:otherwise>
                         <input type="submit" value="Back" name="back" />
@@ -128,5 +124,4 @@
         </c:choose>
 </form>
 
-        
 <%@include file="../WEB-INF/jspf/footer.jspf" %>

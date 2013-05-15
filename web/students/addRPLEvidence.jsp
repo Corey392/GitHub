@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : addRPLEvidence
     Created on : 19/05/2011, 6:02:35 PM
     Author     : James Purves, Mitch Carr
@@ -15,13 +15,13 @@
 
 <table style="width:600px">
     <tr>
-        <td>Module&nbsp;Name:&nbsp;${selectedModule.name}</td>
-        <td>Module&nbsp;ID:&nbsp;${selectedModule.moduleID}</td>
+        <td>Module Name: ${selectedModule.name}</td>
+        <td>Module ID: ${selectedModule.moduleID}</td>
     </tr>
     <c:if test="${modules.size() == 0}">
         <tr>
             <td colspan="2">
-                This module has no elements listed in our database. For a full 
+                This module has no elements listed in our database. For a full
                 recognition guide please visit this link:<br />
                 <a href="www.tafensw.edu.au">www.tafensw.edu.au</a>
             </td>
