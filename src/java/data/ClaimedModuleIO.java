@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  *                  24/04/2013: Added header comments to match code conventions.
  *                  05/05/2013: Updated delete to reflect DB
  *                  06/05/2013: Fixed 'delete' method to send the parameters in to the database correctly.
+ *                  15/05/2013: MC: Updated call to ClaimedModule where deprecated constructor was used
  * <b>Purpose:</b>  Controller class for interaction with database's ClaimedModule table.
  */
 public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
@@ -143,7 +144,7 @@ public class ClaimedModuleIO extends RPL_IO <ClaimedModule> {
                 } else {
                     recognition = ' ';
                 }
-                module = new ClaimedModule(claimID, studentID, moduleID);
+                module = new ClaimedModule(claimID, studentID, moduleID, "");
                 module.setApproved(approved);
                 module.setArrangementNo(arrangementNo);
                 module.setFunctionalCode(functionalCode);

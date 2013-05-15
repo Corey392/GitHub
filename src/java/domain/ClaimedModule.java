@@ -11,6 +11,7 @@ import util.Util;
  *	Modified:	05/05/2013: TW: Added 'Module Name' into constructor, deprecated existing.
  *				07/05/2013: MC: Updated evidence field, as well as getEvidence and setEvidence methods
  *				07/05/2013: TW: Changed evidence to ArrayList<Evidence>.
+ *                              15/05/2013: MC: Removed deprecated constructor and updated another
  */
 public final class ClaimedModule extends Module implements Serializable{
 
@@ -30,18 +31,7 @@ public final class ClaimedModule extends Module implements Serializable{
      * Empty constructor
      */
     public ClaimedModule() {
-        this(Util.INT_ID_EMPTY, "", "");
-    }
-
-    /**
-     * Constructs a ClaimedModule with all mandatory fields.
-     * @param claimID
-     * @param studentID
-     * @param moduleID
-     */
-	@Deprecated
-    public ClaimedModule(int claimID, String studentID, String moduleID) {
-        this(claimID,studentID,moduleID,"");
+        this(Util.INT_ID_EMPTY, "", "", "");
     }
 
     /**
