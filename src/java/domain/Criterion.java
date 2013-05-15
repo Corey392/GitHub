@@ -1,4 +1,5 @@
 package domain;
+
 import util.Util;
 
 /**
@@ -32,42 +33,64 @@ public class Criterion implements Comparable<Criterion> {
         this.description = description;
     }
 
+    /**
+     * @return ID to uniquely identify this Criterion
+     */
     public int getCriterionID() {
         return criterionID;
     }
 
+    /**
+     * @param criterionID ID to uniquely identify this Criterion
+     */
     public void setCriterionID(int criterionID) {
         this.criterionID = criterionID;
     }
 
+    /**
+     * @return Description of this Criterion
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * @param description Description of this Criterion
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * @return ID uniquely identifying the Element associated with this Criterion
+     */
     public int getElementID() {
         return elementID;
     }
 
+    /**
+     * @param elementID ID uniquely identifying the Element associated with 
+     *          this Criterion
+     */
     public void setElementID(int elementID) {
         this.elementID = elementID;
     }
     
+    /**
+     * @return ID uniquely identifying the Module associated with this Criterion
+     */
     public String getModuleID()	{
 	return this.moduleID;
     }
     
+    /**
+     * @param moduleID ID uniquely identifying the Module associated with 
+     *              this Criterion
+     */
     public void setModuleID(String moduleID)	{
 	this.moduleID = moduleID;
     }
 
-    /**
-     * 
-     * @return The criterion's description (text that student/teacher sees).
-     */
     @Override
     public String toString() {
         return this.description == null ? "" : this.description;
@@ -77,6 +100,7 @@ public class Criterion implements Comparable<Criterion> {
     public int compareTo(Criterion that) {
         if (this.criterionID < that.criterionID) {
             return -1;
-        } return (this.criterionID == that.criterionID ? 0 : 1);
+        } 
+        return (this.criterionID == that.criterionID ? 0 : 1);
     }
 }

@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import java.util.ArrayList;
 
 /**
- *
  * @author David, James
  */
 public class Element implements Comparable<Element> {
@@ -30,34 +25,58 @@ public class Element implements Comparable<Element> {
         this.description = description;
     }
 
+    /**
+     * @return Returns a list of criteria for this Element
+     */
     public ArrayList<Criterion> getCriteria() {
         return criteria;
     }
 
+    /**
+     * @param criteria A list of criteria to set for this Element
+     */
     public void setCriteria(ArrayList<Criterion> criteria) {
         this.criteria = criteria;
     }
 
+    /**
+     * @return Description of this Element
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * @param description Description of this Element
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * @return Unique identifier for this Element
+     */
     public int getElementID() {
         return elementID;
     }
 
+    /**
+     * @param elementID Unique identifier to set for this Element
+     */
     public void setElementID(int elementID) {
         this.elementID = elementID;
     }
 
+    /**
+     * @return Unique ID for the Module this Element pertains to
+     */
     public String getModuleID() {
         return moduleID;
     }
 
+    /**
+     * @param moduleID Unique ID for the Module this Element pertains to
+     */
     public void setModuleID(String moduleID) {
         this.moduleID = moduleID;
     }
@@ -71,6 +90,7 @@ public class Element implements Comparable<Element> {
     public int compareTo(Element that) {
         if (this.elementID < that.elementID) {
             return -1;
-        } return (this.elementID == that.elementID ? 0 : 1);
+        } 
+        return (this.elementID == that.elementID ? 0 : 1);
     }
 }

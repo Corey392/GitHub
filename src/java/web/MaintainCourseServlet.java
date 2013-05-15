@@ -127,10 +127,9 @@ public class MaintainCourseServlet extends HttpServlet {
         
         String[] courseIDs = request.getParameterValues("courseID[]");
         String[] courseNames = request.getParameterValues("courseName[]");
-        String[] guideFileAddresses = request.getParameterValues("guideFileAddress[]");
         
         for(int i = 0; i < courseIDs.length; i++) {
-            Course course = new Course(courseIDs[i], courseNames[i], guideFileAddresses[i]);
+            Course course = new Course(courseIDs[i], courseNames[i]);
 
             if(course.validate().isEmpty()) {
                 try {
@@ -157,9 +156,8 @@ public class MaintainCourseServlet extends HttpServlet {
     private void addCourse(HttpServletRequest request) {
         String courseID = request.getParameter("newCourseID");
         String name = request.getParameter("newCourseName");
-        String guideFileAddress = request.getParameter("newCourseGuideFileAddress");
 
-        Course course = new Course(courseID, name, guideFileAddress);
+        Course course = new Course(courseID, name);
         ArrayList<FieldError> errors = course.validate();
         
         HttpSession session = request.getSession();
