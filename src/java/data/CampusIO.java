@@ -38,23 +38,22 @@ public class CampusIO extends RPL_IO<Campus> {
     
     /**
      * Returns campus data from the database from a specified campusID.
-     * @param campusID
-     * @return A campus object with data from the database.
+     * @param campusID ID of the Campus to retrieve from the database
+     * @return A Campus object with data from the database.
      */
     public Campus getByID(String campusID) {
-        Campus campus = null;
         String sql = "SELECT * FROM fn_GetCampusByID(?)";
         SQLParameter p1 = new SQLParameter(String.valueOf(campusID));
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
             if (rs.next()) {
                 String name = rs.getString(Field.NAME.name);
-                campus = new Campus(campusID, name);
+                return new Campus(campusID, name);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CampusIO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return campus;
+        return null;
     }
 
     /**
@@ -62,11 +61,10 @@ public class CampusIO extends RPL_IO<Campus> {
      * @return all campuses in the database
      */
     public ArrayList<Campus> getList() {
-        ArrayList<Campus> list = null;
+        ArrayList<Campus> list = new ArrayList<Campus>();
         String sql = "SELECT * FROM fn_ListCampuses();";
         try {
             ResultSet rs = super.doQuery(sql);
-            list = new ArrayList<Campus>();
             String campusID, name;
             while (rs.next()) {
                 campusID = rs.getString(Field.CAMPUS_ID.name);
@@ -81,7 +79,7 @@ public class CampusIO extends RPL_IO<Campus> {
 
     /**
      * Inserts a new campus record.
-     * @param campus The campus to insert.
+     * @param campus The campus to insert into the database.
      * @throws SQLException If the campusID is not unique.
      */
     public void insert(Campus campus) throws SQLException {
@@ -97,7 +95,8 @@ public class CampusIO extends RPL_IO<Campus> {
      * Updates an existing campus record.
      * @param campus the campus with updated details
      * @param oldID the ID of the record as it exists in the database
-     * @throws SQLException if the updated ID is not unique
+     * @throws SQLException if the updated ID is not unique,
+     *          or the record to update does not exist
      */
     public void update(Campus campus, String oldID) throws SQLException {
         String campusID = campus.getCampusID();
@@ -113,7 +112,7 @@ public class CampusIO extends RPL_IO<Campus> {
      * Deletes a campus, and all disciplines, courses etc. that depend on it.
      * This should ONLY be invoked by someone with ADMIN level access.
      * @param campus the campus to delete
-     * @throws SQLException 
+     * @throws SQLException if the campus doesn't exist
      */
     public void delete(Campus campus) throws SQLException {
         String campusID = campus.getCampusID();
@@ -123,23 +122,32 @@ public class CampusIO extends RPL_IO<Campus> {
     }
     
     /**
-     * Associates an existing discipline with a campus.
-     * @param disciplineID 
-     * @param campusID
+     * Associates an existing discipline with a campus, thus creating a
+     * CampusDiscipline object in the database.
+     * @param disciplineID ID of the Discipline to create a CampusDiscipline from
+     * @param campusID ID of the Campus to create a CampusDiscipline from
+     * @throws SQLException if either ID is invalid, or a CampusDiscipline
+     *          with those IDs already exists.
      */
     public void addDiscipline(String campusID, int disciplineID) throws SQLException {
         String sql = "SELECT fn_InsertCampusDiscipline(?, ?)";
-        SQLParameter p1, p2;
-        p1 = new SQLParameter(campusID);
-        p2 = new SQLParameter(disciplineID);
+        SQLParameter p1 = new SQLParameter(campusID);
+        SQLParameter p2 = new SQLParameter(disciplineID);
         super.doPreparedStatement(sql, p1, p2);
     }
 
+    /**
+     * Associates an existing discipline with a campus, thus creating a
+     * CampusDiscipline object in the database.
+     * @param disciplineID DisciplineID of the CampusDiscipline to delete
+     * @param campusID CampusID of the CampusDiscipline to delete
+     * @throws SQLException if a CampusDiscipline with IDs matching those 
+     *          passed in doesn't exist.
+     */
     public void removeDiscipline(String campusID, int removeDisciplineID) throws SQLException   {
         String sql = "SELECT fn_removedisciplinefromcampus(?, ?)";
-        SQLParameter p1, p2;
-        p1 = new SQLParameter(campusID);
-        p2 = new SQLParameter(removeDisciplineID);
+        SQLParameter p1 = new SQLParameter(campusID);
+        SQLParameter p2 = new SQLParameter(removeDisciplineID);
         super.doPreparedStatement(sql, p1, p2);
     }
     

@@ -194,9 +194,9 @@ public class ModuleIO extends RPL_IO<Module> {
 
     /**
      * Adds a core module to a course.
-     * @param courseID
-     * @param moduleID
-     * @throws SQLException the module cannot be added as a core to the course.
+     * @param courseID ID of the course to have a module added to
+     * @param moduleID ID of the module to add to a course
+     * @throws SQLException the module could not be added as a core to the course.
      */
     public void addCore(String courseID, String moduleID) throws SQLException {
 
@@ -209,11 +209,11 @@ public class ModuleIO extends RPL_IO<Module> {
 
     /**
      * Adds an elective module to a campus-discipline-course
-     * @param campusID
-     * @param disciplineID
-     * @param courseID
-     * @param moduleID
-     * @throws SQLException
+     * @param campusID Campus ID of the CampusDisciplineCourse
+     * @param disciplineID Discipline ID of the CampusDisciplineCourse
+     * @param courseID Course ID of the CampusDisciplineCourse
+     * @param moduleID ID of the module to add to a CampusDisciplineCourse
+     * @throws SQLException if the module already existed, or the CampusDisciplineCourse didn't exist
      */
     public void addElective(String campusID, int disciplineID, String courseID, String moduleID) throws SQLException {
 
@@ -228,11 +228,11 @@ public class ModuleIO extends RPL_IO<Module> {
 
     /**
      * Removes a module as an elective module for a specified course at a campus-discipline.
-     * @param campusID
-     * @param disciplineID
-     * @param courseID
-     * @param moduleID
-     * @throws SQLException
+     * @param campusID Campus ID of the CampusDisciplineCourse
+     * @param disciplineID Discipline ID of the CampusDisciplineCourse
+     * @param courseID Course ID of the CampusDisciplineCourse
+     * @param moduleID ID of the module to remove from a CampusDisciplineCourse
+     * @throws SQLException if the module or CampusDisciplineCourse didn't exist
      */
     public void removeElective(String campusID, int disciplineID, String courseID, String moduleID) throws SQLException {
         String sql = "SELECT fn_removemoduleelective(?,?,?,?)";
@@ -247,8 +247,8 @@ public class ModuleIO extends RPL_IO<Module> {
     /**
      * Removes a core module from a course.
      * @param courseID the course to remove a core module from
-     * @param moduleID the module that is the core to remove
-     * @throws SQLException if core specified does not exist
+     * @param moduleID the ID of the module to remove
+     * @throws SQLException if course or module specified didn't exist
      */
     public void removeCore(String courseID, String moduleID) throws SQLException {
         String sql = "SELECT fn_removemodulecore(?,?)";
@@ -260,9 +260,9 @@ public class ModuleIO extends RPL_IO<Module> {
 
     /**
      * Takes a ResultSet of Modules and returns them in a list.
-     * @param rs
+     * @param rs ResultSet to retrieve modules from
      * @return list of Module objects
-     * @throws SQLException
+     * @throws SQLException If the module in the ResultSet doesn't exist
      */
     private ArrayList<Module> getListFromResultSet(ResultSet rs) throws SQLException {
 
@@ -279,10 +279,9 @@ public class ModuleIO extends RPL_IO<Module> {
     /**
      * Gets a module from the database by its ID
      * @param moduleID Unique ID of a module
-     * @return Module with corresponding ID
+     * @return Module with corresponding ID. If non-existent, null.
      */
     private Module getModuleById(String moduleID){
-        
         
         String sql = "SELECT * FROM fn_getmodulebyid(?)";
         SQLParameter p1 = new SQLParameter(moduleID);
@@ -302,6 +301,7 @@ public class ModuleIO extends RPL_IO<Module> {
      * Gets a module from a dataset
      * @param rs ResultSet to retrieve the Module from
      * @return Module within ResultSet passed in
+     * @throws SQLException if the ResultSet wasn't of Module objects
      */
     private Module getModuleFromResultSet(ResultSet rs) throws SQLException {
 

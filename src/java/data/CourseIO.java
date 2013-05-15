@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data;
 
 import domain.Course;
@@ -16,7 +12,7 @@ import java.util.logging.Logger;
  * Handles I/O for Course updates by the Clerical Admins
  * 
  * 
- * @author David Gibbins, Adam Shortall * 
+ * @author David Gibbins, Adam Shortall
  * @version 1.02
  * <b>Created:</b>  Unknown
  * <b>Modified:</b> 24/04/2013
@@ -33,7 +29,9 @@ public class CourseIO extends RPL_IO<Course> {
     /**
      * Inserts a Course object.
      * 
-     * @param Course the Course object to insert
+     * @param course the Course object to insert
+     * @throws SQLException if Course couldn't be inserted.
+     *          Usually happens when the Course already exists.
      */
     public void insert(Course course) throws SQLException {
         String courseID = course.getCourseID();
@@ -47,7 +45,7 @@ public class CourseIO extends RPL_IO<Course> {
     
     /**
      * Updates a course with new course data
-     * @param course the course to update containing the updated details
+     * @param course Course object containing the updated details
      * @param oldID the ID of the course to update in the database
      * @throws SQLException if the new ID is not unique
      */
@@ -64,7 +62,7 @@ public class CourseIO extends RPL_IO<Course> {
     /**
      * Deletes the course, and all associated modules etc.
      * @param course the course to delete
-     * @throws SQLException 
+     * @throws SQLException if course didn't exist
      */
     public void delete(Course course) throws SQLException {
         String courseID = course.getCourseID();
@@ -77,8 +75,9 @@ public class CourseIO extends RPL_IO<Course> {
      * Gets data from the current position in the result set
      * and returns a course object containing that data.
      * Requires the ResultSet to be at a valid record.
-     * @param rs
-     * @return 
+     * 
+     * @param rs ResultSet to read a Course object from
+     * @return Course object contained within the ResultSet passed in
      */
     private Course getCourseFromRS(ResultSet rs) {
         try {
@@ -93,15 +92,13 @@ public class CourseIO extends RPL_IO<Course> {
     }
     
     /**
-     * Returns a list of all courses.
-     * @return 
+     * @return a list of all courses in the database.
      */
     public ArrayList<Course> getList() {
         String sql = "SELECT * FROM fn_ListCourses()";
-        ArrayList<Course> list = null;
+        ArrayList<Course> list = new ArrayList<Course>();
         try {
             ResultSet rs = super.doQuery(sql);
-            list = new ArrayList<Course>();
             while (rs.next()) {
                 list.add(this.getCourseFromRS(rs));
             }
@@ -112,37 +109,40 @@ public class CourseIO extends RPL_IO<Course> {
     }
     
     /**
-     * Returns all courses belonging to a campus and a discipline.
-     * @param campusID
-     * @param disciplineID
-     * @return 
+     * Returns all courses belonging to a CampusDiscipline.
+     * @param campusID CampusID of the CampusDiscipline
+     * @param disciplineID DisciplineID of the CampusDiscipline
+     * @return a list of Courses in the CampusDiscipline
      */
     public ArrayList<Course> getList(String campusID, int disciplineID) {
-        ArrayList<Course> list = null;
-        String sql;
-        sql = "SELECT * FROM fn_ListCourses(?,?)";
+        
+        String sql = "SELECT * FROM fn_ListCourses(?,?)";
         SQLParameter p1 = new SQLParameter(campusID);
         SQLParameter p2 = new SQLParameter(disciplineID);
+        
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1, p2);
-            list = new ArrayList<Course>();
+            ArrayList<Course> list = new ArrayList<Course>();
             while (rs.next()) {
                 list.add(this.getCourseFromRS(rs));
             }
+            return list;
         } catch (SQLException ex) {
             Logger.getLogger(CourseIO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return list;
+        return null;
     }
     
     /**
      * Returns a course specified by an ID field.
-     * @param course course with ID field set.
-     * @return 
+     * @param courseID ID of course to retrieve from database
+     * @return Course with ID matching value passed in
      */
     public Course getByID(String courseID) {
+        
         String sql = "SELECT * FROM fn_GetCourse(?)";
         SQLParameter p1 = new SQLParameter(String.valueOf(courseID));
+        
         try {
             ResultSet rs = super.doPreparedStatement(sql, p1);
             if (rs.next()) {
@@ -155,27 +155,27 @@ public class CourseIO extends RPL_IO<Course> {
     }
     
     /**
-     * Returns a list of courses that are not in the selected campus-discipline.
-     * @param campusID
-     * @param disciplineID
-     * @return 
+     * Returns a list of courses that are not in the selected CampusDiscipline.
+     * @param campusID CampusID of the target CampusDiscipline
+     * @param disciplineID DisciplineID of the target CampusDiscipline
+     * @return list of Course objects not pertaining to a specific CampusDiscipline
      */
     public ArrayList<Course> getListNotInDiscipline(String campusID, int disciplineID) {
-        ArrayList<Course> list = null;
+        
         String sql = "SELECT * FROM fn_ListCoursesNotInDiscipline(?,?)";
-        SQLParameter p1, p2;
-        p1 = new SQLParameter(campusID);
-        p2 = new SQLParameter(disciplineID);
-        ResultSet rs;
+        SQLParameter p1 = new SQLParameter(campusID);
+        SQLParameter p2 = new SQLParameter(disciplineID);
+        
         try {
-            rs = super.doPreparedStatement(sql, p1, p2);
-            list = new ArrayList<Course>();
+            ResultSet rs = super.doPreparedStatement(sql, p1, p2);
+            ArrayList<Course> list = new ArrayList<Course>();
             while (rs.next()) {
                 list.add(this.getCourseFromRS(rs));
             }
+            return list;
         } catch (SQLException ex) {
             Logger.getLogger(CourseIO.class.getName()).log(Level.SEVERE, null, ex);
         }        
-        return list;
+        return null;
     }
 }

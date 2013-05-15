@@ -26,53 +26,57 @@ public class CriterionIO extends RPL_IO<Criterion> {
     /**
      * Inserts a new Criterion into the database. 
      * 
-     * @param criterion The criterionID is automatically generated, 
-     * so only the elementID, moduleID and description need be set 
-     * in the Criterion parameter.
+     * @param criterion Criterion to add to the database
+     * @throws SQLException if Criterion could not be added.
+     *          Usually happens if the Criterion already exists.
      */
     public void insert(Criterion criterion) throws SQLException {
+        //The criterionID is automatically generated, so only the elementID, 
+        //moduleID and description need be set in the Criterion parameter.
         int elementID = criterion.getElementID();
 	String moduleID = criterion.getModuleID();
         String description = criterion.getDescription();
-        SQLParameter p1,p2,p3;
+        
         String sql = "SELECT fn_InsertCriterion(?,?,?)";
-        p1 = new SQLParameter(elementID);
-        p2 = new SQLParameter(moduleID);
-	p3 = new SQLParameter(description);
+        SQLParameter p1 = new SQLParameter(elementID);
+        SQLParameter p2 = new SQLParameter(moduleID);
+	SQLParameter p3 = new SQLParameter(description);
         
         super.doPreparedStatement(sql, p1, p2, p3);
     }
 
     /**
      * Updates the criterion with a new description.
-     * @param criterion with all ID fields and the updated description
-     * @throws SQLException if there is something wrong with the description
+     * @param criterion Criterion with fields that we want to update
+     * @throws SQLException if the Criterion doesn't exist or couldn't be updated
      */
     public void update(Criterion criterion) throws SQLException {
+        
         int criterionID = criterion.getCriterionID();
         int elementID = criterion.getElementID();
         String description = criterion.getDescription();
+        
         String sql = "SELECT fn_UpdateCriterion(?,?,?)";
-        SQLParameter p1, p2, p3;
-        p1 = new SQLParameter(criterionID);
-        p2 = new SQLParameter(elementID);
-        p3 = new SQLParameter(description);
+        SQLParameter p1 = new SQLParameter(criterionID);
+        SQLParameter p2 = new SQLParameter(elementID);
+        SQLParameter p3 = new SQLParameter(description);
         
         super.doPreparedStatement(sql, p1, p2, p3);
     }
     
     /**
      * Deletes the specified criterion.
-     * @param criterion The criterion to delete, must contain criterionID, elementID.
-     * @throws SQLException 
+     * @param criterion The criterion to delete. Must contain criterionID & elementID.
+     * @throws SQLException if Criterion doesn't exist
      */
     public void delete(Criterion criterion) throws SQLException {
+        
         int criterionID = criterion.getCriterionID();
         int elementID = criterion.getElementID();
-        SQLParameter p1, p2;
+        
         String sql = "SELECT fn_DeleteCriterion(?,?)";
-        p1 = new SQLParameter(criterionID);
-        p2 = new SQLParameter(elementID);
+        SQLParameter p1 = new SQLParameter(criterionID);
+        SQLParameter p2 = new SQLParameter(elementID);
         
         super.doPreparedStatement(sql, p1, p2);
     }
@@ -81,18 +85,19 @@ public class CriterionIO extends RPL_IO<Criterion> {
      * Gets criteria that belong to an Element of a specific Module.
      * @param elementID the ID of the element
      * @param moduleID the ID of the module
-     * @return a list of criteria for the given element or an empty list
+     * @return a list of criteria for the given element & module.
+     *          If there was a problem with the retrieval, returns an empty list.
      */
     public ArrayList<Criterion> getList(int elementID, String moduleID){
-        ArrayList<Criterion> list = null;
-        ResultSet rs;
+        
+        ArrayList<Criterion> list = new ArrayList<Criterion>();
+        
         String sql = "SELECT * FROM fn_ListCriteria(?, ?)";
-        SQLParameter p1, p2;
-        p1 = new SQLParameter(elementID);
-	p2 = new SQLParameter(moduleID);
+        SQLParameter p1 = new SQLParameter(elementID);
+	SQLParameter p2 = new SQLParameter(moduleID);
+        
         try {
-            rs = super.doPreparedStatement(sql, p1, p2);
-            list = new ArrayList<Criterion>();
+            ResultSet rs = super.doPreparedStatement(sql, p1, p2);
             while(rs.next()){                
                 int criterionID = rs.getInt("criterionID");
                 String description = rs.getString("description");

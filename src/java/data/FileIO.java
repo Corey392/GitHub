@@ -57,11 +57,10 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public void insert(ClaimFile file) throws SQLException {
-		SQLParameter p1,p2;
+		
 		String sql = "SELECT fn_insertFile(?,?);";
-
-		p1 = new SQLParameter(file.getClaimID());
-		p2 = new SQLParameter(file.getFilename());
+		SQLParameter p1 = new SQLParameter(file.getClaimID());
+		SQLParameter p2 = new SQLParameter(file.getFilename());
 
 		super.doPreparedStatement(sql, p1, p2);
 	}
@@ -72,12 +71,11 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public void update(ClaimFile file) throws SQLException {
-		SQLParameter p1,p2,p3;
+		
 		String sql = "SELECT fn_updateFile(?,?,?);";
-
-		p1 = new SQLParameter(file.getFileID());
-		p2 = new SQLParameter(file.getClaimID());
-		p3 = new SQLParameter(file.getFilename());
+		SQLParameter p1 = new SQLParameter(file.getFileID());
+		SQLParameter p2 = new SQLParameter(file.getClaimID());
+		SQLParameter p3 = new SQLParameter(file.getFilename());
 
 		super.doPreparedStatement(sql, p1, p2, p3);
 	}
@@ -88,10 +86,9 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public void delete(ClaimFile claimFile) throws SQLException {
-		SQLParameter p1;
+		
 		String sql = "SELECT fn_deleteFile(?);";
-
-		p1 = new SQLParameter(claimFile.getFileID());
+		SQLParameter p1 = new SQLParameter(claimFile.getFileID());
 
 		super.doPreparedStatement(sql, p1);
 
@@ -104,13 +101,12 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	/**
 	 * Removes all files that are associated with a particular claim ID both from the File System and Database even if the references are not correct..
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
-	 * @param claimID
+	 * @param claimID ID of the claim to delete files attached to
 	 */
 	public void deleteByClaim(int claimID) throws SQLException {
-		SQLParameter p1;
+		
 		String sql = "SELECT fn_deleteFiles(?);";
-
-		p1 = new SQLParameter(claimID);
+		SQLParameter p1 = new SQLParameter(claimID);
 
 		super.doPreparedStatement(sql, p1);
 
@@ -127,10 +123,9 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public ClaimFile getFileByID(int fileID) throws SQLException {
-		SQLParameter p1;
+		
 		String sql = "SELECT * FROM fn_getFileByID(?)";
-
-		p1 = new SQLParameter(fileID);
+		SQLParameter p1 = new SQLParameter(fileID);
 
 		ResultSet results = super.doPreparedStatement(sql, p1);
 
@@ -148,10 +143,9 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	 * @throws SQLException Exception thrown by Database, check Database log or Tomcat Logs for more information if not caught elsewhere.
 	 */
 	public ArrayList<ClaimFile> getList(int claimID) throws SQLException {
-		SQLParameter p1;
+		
 		String sql = "SELECT * FROM fn_getAllFiles(?) ORDER BY filename";
-
-		p1 = new SQLParameter(claimID);
+		SQLParameter p1 = new SQLParameter(claimID);
 
 		ResultSet results = super.doPreparedStatement(sql, p1);
 
