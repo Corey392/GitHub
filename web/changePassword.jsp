@@ -1,9 +1,8 @@
-<%--@author     Todd Wiggins
- *  @version    1.00
+<%--Purpose:    Allows a user to change their password.
+ *  @author     Todd Wiggins
+ *  @version    1.001
  *  Created:    12/04/2013
- *	Modified:
- *	Change Log:
- *	Purpose:    Allows a user to change their password.
+ *	Change Log: 15/05/2013: TW: Improving display of errors to be consistent across site.
 --%>
 <%@include file="WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.CHANGE_PW; %>
@@ -19,24 +18,26 @@
 		<span><label for="userID">User ID:</label> ${user.userID}</span>
 	</div>
     <div>
-		<span><label for="password">Current password:</label></span><%-- TODO: password encryption, challenge/response authentication --%>
+		<span><label for="password">Current password:</label></span>
 		<span><input type="password" name="password" size="20"/></span>
-		<span>${passwordError.message}</span>
 	</div>
     <div>
-		<span><label for="passwordNew">New password:</label></span><%-- TODO: password encryption, challenge/response authentication --%>
+		<span><label for="passwordNew">New password:</label></span>
 		<span><input type="password" name="passwordNew" size="20"/></span>
-		<span>${passwordNewError.message}</span>
 	</div>
     <div>
-		<span><label for="passwordConfirm">Confirm new password:</label></span><%-- TODO: password encryption, challenge/response authentication --%>
+		<span><label for="passwordConfirm">Confirm new password:</label></span>
 		<span><input type="password" name="passwordConfirm" size="20"/></span>
-		<span>${passwordConfirmError.message}</span>
 	</div>
+	<c:if test="${passwordError.message.length() > 0 || passwordNewError.message.length() > 0 || passwordConfirmError.message.length() > 0}">
+		<div id="errorMessage">${passwordError.message}<br/>${passwordNewError.message}<br/>${passwordConfirmError.message}</div>
+	</c:if>
     <div>
         <input type="submit" value="Submit"/> <a href="home">Cancel</a>
 	</div>
-	<p>${successfulMSG.message}</p>
+	<c:if test="${successfulMSG.message.length() > 0}">
+		<div id="successMessage">${successfulMSG.message}</div>
+	</c:if>
 </div>
 </form>
 

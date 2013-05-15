@@ -1,9 +1,8 @@
-<%--@author     Todd Wiggins
- *  @version    1.00
+<%--Purpose:    Allows a Student and other Users to request a password reset.
+ *  @author     Todd Wiggins
+ *  @version    1.001
  *  Created:    11/04/2013
- *	Modified:
- *	Change Log:
- *	Purpose:    Allows a Student and other Users to request a password reset.
+ *	Change Log: 15/05/2013: TW: Improving display of errors to be consistent across site.
 --%>
 <%@include file="WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.RESET_PASSWORD; %>
@@ -26,11 +25,15 @@
 		<span><input type="email" name="email" maxlength="60" size="40" value="${user.email}"/></span>
 		<span>${emailError.message}</span>
 	</div>
+	<c:if test="${userIDError.message.length() > 0 || emailError.message.length() > 0}">
+		<div id="errorMessage">${userIDError.message}<br/>${emailError.message}</div>
+	</c:if>
     <div>
-    <%-- http://download.oracle.com/docs/cd/E12840_01/wls/docs103/dvspisec/servlet.html --%>
         <input type="submit" value="Submit"/> <a href="home">Cancel</a>
 	</div>
-	<p>${ status.message }</p>
+	<c:if test="${status.message.length() > 0}">
+		<div id="successMessage">${status.message}<br/>${emailError.message}</div>
+	</c:if>
 </div>
 <p>If you have not previously registered for the RPL Assist web site, you will need to register for this site separately as being a TAFE student does not automatically provide you with access to this tool.</p>
 </form>

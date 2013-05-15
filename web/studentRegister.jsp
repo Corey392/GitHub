@@ -1,10 +1,10 @@
-<%--@author     Adam Shortall, Todd Wiggins
- *  @version    1.11
+<%--Purpose:    A simple student user registration form.
+ *  @author     Adam Shortall, Todd Wiggins
+ *  @version    1.111
  *  Created:    09/05/2011, 7:19:54 PM
- *	Modified:   11/04/2013
  *	Change Log: 1.10: TW: Updated to the current version of the database. Added fields, changed from table layout to divs, spans and labels. Added Terms and Privacy checkboxes.
- *				1.11: TW: Data Validation update: User now selects a state instead of manual input.
- *	Purpose:    A simple student user registration form.
+ *				11/04/2013: TW: Data Validation update: User now selects a state instead of manual input.
+ *				15/05/2013: TW: Improving display of errors to be consistent across site.
 --%>
 <%@include file="WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.REGISTER; %>
@@ -19,17 +19,14 @@
 
 <form action="register" method="post" name="studentForm">
 <h3>Enter your details:</h3>
-<p>${studentUniqueError.message}</p>
 <div>
     <div>
 		<span><label for="userID">TAFE Student Number:</label></span>
 		<span><input type="text" name="userID" maxlength="9" size="10" value="${user.userID}"/></span>
-		<span>${userIDError.message}</span>
 	</div>
     <div>
 		<span><label for="firstName">First Name:</label></span>
 		<span><input type="text" name="firstName" size="30" value="${user.firstName}"/></span>
-		<span>${firstNameError.message}</span>
 	</div>
     <div>
 		<span><label for="otherName">Other Name:</label></span>
@@ -38,12 +35,10 @@
     <div>
 		<span><label for="lastName">Last Name:</label></span>
 		<span><input type="text" name="lastName" size="30" value="${user.lastName}"/></span>
-		<span>${lastNameError.message}</span>
 	</div>
     <div>
 		<span><label for="email">TAFE email address:</label></span>
 		<span><input type="email" name="email" maxlength="60" size="40" value="${user.email}"/></span>
-		<span>${emailError.message}</span>
 	</div>
     <div>
 		<span><label for="address1">Address Line 1:</label></span>
@@ -79,14 +74,12 @@
 		<span><input type="tel" name="phone" maxlength="16" size="20" value="${user.phoneNumber}"/></span>
 	</div>
     <div>
-		<span><label for="password">Choose a password:</label></span><%-- TODO: password encryption, challenge/response authentication --%>
+		<span><label for="password">Choose a password:</label></span>
 		<span><input type="password" name="password" size="20"/></span>
-		<span>${passwordError.message}</span>
 	</div>
     <div>
-		<span><label for="passwordConfirm">Confirm password:</label></span><%-- TODO: password encryption, challenge/response authentication --%>
+		<span><label for="passwordConfirm">Confirm password:</label></span>
 		<span><input type="password" name="passwordConfirm" size="20"/></span>
-		<span>${passwordConfirmError.message}</span>
 	</div>
     <div>
 		<span><input type="checkbox" name="staff" value="yes"${user.staff ? "checked=\"checked\"" : ""}/>Are you a TAFE Staff Member?</span>
@@ -94,10 +87,25 @@
     <div>
 		<span><input type="checkbox" name="acceptTerms" value="yes"/>Do you accept the <a href="<%= RPLPage.ROOT %>/legal/terms.jsp">Terms &amp; Conditions</a>?</span><br/>
 		<span><input type="checkbox" name="acceptPrivacy" value="yes"/>Do you accept the <a href="<%= RPLPage.ROOT %>/legal/privacy.jsp">Privacy Policy</a>?</span>
-		<div>${termsAndCondError.message}</div>
 	</div>
+	<c:if test="${studentUniqueError.message.length() > 0 ||
+					userIDError.message.length() > 0 ||
+					firstNameError.message.length() > 0 ||
+					lastNameError.message.length() > 0 ||
+					emailError.message.length() > 0 ||
+					passwordError.message.length() > 0 ||
+					passwordConfirmError.message.length() > 0 ||
+					termsAndCondError.message.length() > 0}">
+		<div id="errorMessage">${studentUniqueError.message}<br/>
+					${userIDError.message}<br/>
+					${firstNameError.message}<br/>
+					${lastNameError.message}<br/>
+					${emailError.message}<br/>
+					${passwordError.message}<br/>
+					${passwordConfirmError.message}<br/>
+					${termsAndCondError.message}</div>
+	</c:if>
     <div>
-    <%-- http://download.oracle.com/docs/cd/E12840_01/wls/docs103/dvspisec/servlet.html --%>
         <input type="submit" value="Submit"/> <a href="home">Cancel</a>
 	</div>
 </div>
