@@ -4,6 +4,7 @@
  *  Created:    ?
  *	Modified:	12/04/2013: TW: Added additonal fields for user details.
  *              15/05/2013: TW: Improving display of errors to be consistent across site.
+ *		16/05/2013: MC: Fixed error in password error check; changed invalid String length property to length() method
 --%>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.STUDENT_DETAILS; %>
@@ -80,7 +81,7 @@
 		<span><label for="password">Current password:</label></span>
 		<span><input type="password" name="password" size="20"/></span>
 	</div>
-	<c:if test="${passwordError.message.length() > 0 || firstNameError.message.length() > 0 || lastNameError.message.length() > 0 || userIDError.message.length > 0}">
+	<c:if test="${passwordError.message.length() > 0 || firstNameError.message.length() > 0 || lastNameError.message.length() > 0 || userIDError.message.length() > 0}">
 		<div id="errorMessage">${userIDError.message}<br/>${passwordError.message}<br/>${firstNameError.message}<br/>${lastNameError.message}</div>
 	</c:if>
     <div>
