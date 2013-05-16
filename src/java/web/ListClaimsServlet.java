@@ -20,14 +20,16 @@ import util.RPLPage;
 import util.RPLServlet;
 import util.Util;
 
-/** Populates the list of claims for the student's listClaims page and redirects any requests from that page.
- *  @author     James Purves, Todd Wiggins
+/** 
+ *  Populates the list of claims for the student's listClaims page and redirects any requests from that page.
+ *  @author     James Purves, Todd Wiggins, Mitch Carr
  *  @version    1.022
  *	Created:    ?
  *	Change Log: 1.01: TW: Updated URL when deleting to return to the list of claims instead of a 404.
  *	            29/04/2013: TW: Now claim is removed from the list of claims displayed on page.
  *	            12/05/2013: TW: Updated error message to say claim instead of module.
  *	            15/05/2013: TW: Added Handling if No Claim is selected when trying to Delete, no longer throwing exception, improved Error Message handling.
+ *                  16/05/2013: MC: Updated 'setSelectedClaim' and 'populateClaimList' to reflect changes made to Util class
  */
 public class ListClaimsServlet extends HttpServlet {
 
@@ -135,7 +137,7 @@ public class ListClaimsServlet extends HttpServlet {
         try {
             ArrayList<Claim> claims = claimIO.getList(user);
             for (Claim claim : claims){
-                Claim c = Util.getCompleteClaim(user.getUserID(), claim.getClaimID(), user.role);
+                Claim c = Util.getCompleteClaim(claim.getClaimID(), user.role);
                 completeClaims.add(c);
             }
         } catch (SQLException ex) {
@@ -155,7 +157,7 @@ public class ListClaimsServlet extends HttpServlet {
         Claim selectedClaim = null;
         if (claimID != null){
             int id = Integer.valueOf(claimID);
-            selectedClaim = Util.getCompleteClaim(user.getUserID(), id, user.getRole());
+            selectedClaim = Util.getCompleteClaim(id, user.getRole());
         }
         return selectedClaim;
     }

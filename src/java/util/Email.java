@@ -8,7 +8,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Transport;
+//import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -26,7 +26,13 @@ public class Email {
 	private static final String username = "rpl.tafe.ourimbah@gmail.com";
 	private static final String password = "studying2012";
 
-	public static void send(String toEmail, String subject, String body) {
+	/**
+         * Sends an email from the server to the target specified
+         * @param toEmail Recipient's email address
+         * @param subject Subject of the email
+         * @param body Text to be sent in the email
+         */
+        public static void send(String toEmail, String subject, String body) {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");

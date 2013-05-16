@@ -30,20 +30,23 @@ import javax.servlet.http.HttpServletRequest;
  *                  07/05/2013: TW: Changed evidence to ArrayList<Evidence> in getCompleteEvidence().<br />
  *		    07/05/2013:	Bryce Carr: Updated getCompleteElement() and getCompleteModule() to account for updated Criterion table (part of implementing Criterion insertion).<br />
  *                  15/05/2013: Mitch Carr: Updated 'getCompleteClaimedModuleList' to reflect changes made to ClaimedModuleIO
+ *                  16/05/2013: Mitch Carr: Updated 'getCompleteClaimedModuleList' and 'getCompleteClaim'; removed parameters not necessary with current database and unnecessary assignments
  * <b>Purpose:</b>  Appears to provide reusable access to commonly-used complex interactions with IO classes.
  */
 public final class Util {
 
     public static final int INT_ID_EMPTY = 0;
 
-    private Util() {}
+    private Util() {} //Prevents this class from being instantiated
 
     /**
      * Returns an integer value (probably representing an ID field) from a jsp where
      * the parameter name has a particular prefix followed by a colon.
-     * @param request
-     * @param prefix
-     * @return
+     * @param request HTTP request from a previous page
+     * @param prefix Prefix of token to retrieve from request
+     * @return ID of the page contained within the HTTP request passed in,
+     *          with a prefix matching the one passed in.
+     *          If not found, returns null.
      */
     public static Integer getPageIntID(HttpServletRequest request, String prefix) {
         String stringID = getPageStringID(request, prefix);
@@ -53,9 +56,11 @@ public final class Util {
     /**
      * Returns a String value (probably representing an ID field) from a jsp
      * where the parameter name has a particular prefix followed by a colon.
-     * @param request
-     * @param prefix
-     * @return
+     * @param request HTTP request from a previous page
+     * @param prefix Prefix of token to retrieve from request
+     * @return ID of the page contained within the HTTP request passed in,
+     *          with a prefix matching the one passed in.
+     *          If not found, returns null.
      */
     public static String getPageStringID(HttpServletRequest request, String prefix) {
         Enumeration<String> requestParameters = request.getParameterNames();
@@ -71,12 +76,11 @@ public final class Util {
     }
 
     /**
-     *
-     * @param campusID
-     * @param disciplineID
-     * @param courseID
-     * @param role
-     * @return A course with all elective and core modules set
+     * @param campusID ID of the Campus to retrieve a Course from
+     * @param disciplineID ID of the discipline for the Course to retrieve
+     * @param courseID ID of the Course to retrieve
+     * @param role Role of the user requesting the Course
+     * @return A Course with all elective and core modules set
      */
     public static Course getCourseWithModules(String campusID, int disciplineID, String courseID, Role role) {
         CourseIO courseIO = new CourseIO(role);
@@ -94,10 +98,10 @@ public final class Util {
 
     /**
      * Returns an Element with all of its criteria set.
-     * @param elementID
-     * @param moduleID
-     * @param role
-     * @return
+     * @param elementID ID of the element to retrieve
+     * @param moduleID ID of the module contained within the Element to retrieve
+     * @param role Role of the user requesting the Element
+     * @return Returns an Element specified by the IDs passed in
      */
     public static Element getCompleteElement(int elementID, String moduleID, Role role) {
         ElementIO elementIO = new ElementIO(role);
@@ -108,11 +112,11 @@ public final class Util {
 
         return element;
     }
+    
     /**
-     *
-     * @param moduleID
-     * @param role
-     * @return
+     * @param moduleID ID of the module being requested
+     * @param role Role of the user requesting the Module
+     * @return Returns the Module whose ID matches the moduleID passed in
      */
     public static Module getCompleteModule(String moduleID, Role role) {
         ElementIO elementIO = new ElementIO(role);
@@ -122,8 +126,8 @@ public final class Util {
         Module module = moduleIO.getByID(moduleID);
 
         if (module == null) {
-			return new Module();
-		}
+		return new Module();
+	}
         module.setElements(elementIO.getList(moduleID));
         for (Element e : module.getElements()) {
             e.setCriteria(criterionIO.getList(e.getElementID(), moduleID));
@@ -131,13 +135,12 @@ public final class Util {
         return module;
     }
 
-
     /**
      * Returns an Evidence record with completed element & criteria
-     * @param claimID
-     * @param moduleID
-     * @param role
-     * @return
+     * @param claimID ID of the Claim to retrieve Evidence for
+     * @param moduleID ID of the Module within a Claim to retrieve Evidence for
+     * @param role Role of the user requesting Evidence
+     * @return List of Evidence pertaining to a specific Module
      */
     public static ArrayList<Evidence> getCompleteEvidence(int claimID, String moduleID, Role role) {
         EvidenceIO evidenceIO = new EvidenceIO(role);
@@ -146,11 +149,10 @@ public final class Util {
     }
 
     /**
-     *
-     * @param courseID
-     * @param role
-     * @param campus
-     * @param discipline
+     * @param courseID ID of the Course to retrieve
+     * @param role Role of the user requesting the Course
+     * @param campusID ID of the Campus at which the Course is running
+     * @param disciplineID ID of the Discipline the Course encompasses
      * @return
      */
     public static Course getCompleteCourse(String courseID, Role role, String campusID, int disciplineID) {
@@ -163,13 +165,11 @@ public final class Util {
     }
 
     /**
-     *
-     * @param claimID
-     * @param studentID
-     * @param role
-     * @return
+     * @param claimID ID of the Claim to get a list of ClaimedModule objects for
+     * @param role Role of the user making the request
+     * @return List of ClaimedModules within the Claim specified
      */
-    public static ArrayList<ClaimedModule> getCompleteClaimedModuleList(int claimID, String studentID, Role role) {
+    public static ArrayList<ClaimedModule> getCompleteClaimedModuleList(int claimID, Role role) {
 
         ClaimedModuleIO claimedModuleIO = new ClaimedModuleIO(role);
         ProviderIO providerIO = new ProviderIO(role);
@@ -186,14 +186,12 @@ public final class Util {
     }
 
     /**
-     *
-     * @param studentID
-     * @param claimID
-     * @param role
+     * @param claimID ID of the claim to retrieve
+     * @param role Role of the user making the request
      * @return A claim with all claimedModules which each contain evidence, elements
      * and criteria, where applicable.
      */
-    public static Claim getCompleteClaim(String studentID, int claimID, Role role) {
+    public static Claim getCompleteClaim(int claimID, Role role) {
         ClaimIO claimIO = new ClaimIO(role);
         UserIO userIO = new UserIO(role);
         CampusIO campusIO = new CampusIO(role);
@@ -218,16 +216,15 @@ public final class Util {
         if (claim.getCourseID() != null) {
             claim.setCourse(courseIO.getByID(claim.getCourseID()));
         }
-        claim.setClaimedModules(Util.getCompleteClaimedModuleList(claimID, studentID, role));
+        claim.setClaimedModules(Util.getCompleteClaimedModuleList(claimID, role));
 
         return claim;
     }
 
     /**
-     *
-     * @param campusID
-     * @param role
-     * @return A campus with all disciplines and courses, courses do not have modules set
+     * @param campusID ID of the Campus to retrieve
+     * @param role Role of the user making the request
+     * @return A campus with all disciplines and courses; courses do not have modules set
      */
     public static Campus getCampusWithDisciplinesAndCourses(String campusID, Role role) {
         CampusIO campusIO = new CampusIO(role);
@@ -254,6 +251,5 @@ public final class Util {
 //        ProviderIO providerIO = new ProviderIO(role);
 //
 //    }
-
 
 }

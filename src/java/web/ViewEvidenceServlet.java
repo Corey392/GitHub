@@ -20,9 +20,10 @@ import util.RPLServlet;
 import util.Util;
 
 /** @author     David, Mitch Carr, Todd Wiggins
- *  @version    1.020
+ *  @version    1.030
  *	Created:    ?
  *	Change Log: 07/05/2013: TW: Updated to handle ArrayList<Evidence>
+ *	Change Log: 16/05/2013: MC: Updated 'processRequest' to reflect changes to Util class
  */
 public class ViewEvidenceServlet extends HttpServlet {
 
@@ -89,13 +90,13 @@ public class ViewEvidenceServlet extends HttpServlet {
         // If user came from AssessRPLClaim Page
             //get request params
             int claimID = Integer.parseInt(request.getParameter("claimID"));
-            String studentID = request.getParameter("studentID");
+            
             String moduleID = Util.getPageStringID(request, "evid");
-            Claim claim = Util.getCompleteClaim(studentID, claimID, user.role);
+            Claim claim = Util.getCompleteClaim(claimID, user.role);
 
             ElementIO elementIO = new ElementIO(user.role);
             ClaimedModule claimedModule = new ClaimedModule();
-            ArrayList<ClaimedModule> claimedModules = Util.getCompleteClaimedModuleList(claimID, studentID, user.role);
+            ArrayList<ClaimedModule> claimedModules = Util.getCompleteClaimedModuleList(claimID, user.role);
             for (ClaimedModule cm : claimedModules) {
                 if (moduleID.equalsIgnoreCase(cm.getModuleID())) {
                     cm.setElements(elementIO.getList(moduleID));

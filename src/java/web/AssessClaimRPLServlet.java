@@ -18,10 +18,12 @@ import util.RPLPage;
 import util.RPLServlet;
 import util.Util;
 
-/**@author David, Mitchell Carr, Todd Wiggins
+/**
+ * @author David, Mitchell Carr, Todd Wiggins
  * Change Log: 06/05/2013 MC: Updated approveClaim to update claim status
  *             07/05/2013 MC: Updated approveClaim to reflect changes to ClaimedModule.getEvidence() method
  *             07/05/2013 TW: Updated approveClaim() to handle ArrayList<Evidence>.
+ *             16/05/2013 MC: Updated 'processRequest' to reflect changes made to Util class
  */
 public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadModel {
 
@@ -71,17 +73,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                         e.getMessage();
                     }
 
-                    String[] studentIDArray = request.getParameterValues("studentID");
-                    String studentID = "";
-                    for (int i = 0; i < studentIDArray.length; i++) {
-                        String delim = ":";
-                        String[] temp = studentIDArray[i].split(delim);
-                        if (temp[1].equalsIgnoreCase(selectedClaimID)) {
-                            studentID = temp[0];
-                        }
-
-                    }
-                    Claim claim = Util.getCompleteClaim(studentID, claimID, user.role);
+                    Claim claim = Util.getCompleteClaim(claimID, user.role);
                     url = getForwardURLForClaimType(claim);
                     request.setAttribute("claim", claim);
                     RequestDispatcher dispatcher = request.getRequestDispatcher(url);
@@ -103,8 +95,8 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
             if (selectedClaimID == null) {
 
                 int claimID = Integer.parseInt(request.getParameter("claimID"));
-                String studentID = request.getParameter("studentID");
-                Claim claim = Util.getCompleteClaim(studentID, claimID, user.role);
+                
+                Claim claim = Util.getCompleteClaim(claimID, user.role);
                 url = getForwardURLForClaimType(claim);
                 request.setAttribute("claim", claim);
                 RequestDispatcher dispatcher = request.getRequestDispatcher(url);
@@ -144,8 +136,8 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                 request.getParameterValues(action);
 
                 int claimID = Integer.parseInt(request.getParameter("claimID"));
-                String studentID = request.getParameter("studentID");
-                Claim claim = Util.getCompleteClaim(studentID, claimID, user.role);
+                
+                Claim claim = Util.getCompleteClaim(claimID, user.role);
 
                 url = getForwardURLForClaimType(claim);
 
@@ -165,10 +157,10 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                 dispatcher.forward(request, response);
             }
         } else if (rpath.equalsIgnoreCase(RPLPage.EVIDENCE_UPDATED_PAGE.relativeAddress)) {
-            String studentID = request.getParameter("studentID");
+            
             int claimID = Integer.parseInt(request.getParameter("claimID"));
 
-            Claim claim = Util.getCompleteClaim(studentID, claimID, user.role);
+            Claim claim = Util.getCompleteClaim(claimID, user.role);
             url = getForwardURLForClaimType(claim);
             request.setAttribute("claim", claim);
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
