@@ -6,6 +6,7 @@
  *              1.02: TW: Moved error messages to central location. Team decision.
  *              29/04/2013: 1.10: TW: Added AJAX queries to get Discipline and Courses instead of a full page refresh.
  *              15/05/2013: 1.11: TW: Improving display of errors to be consistent across site.
+ *		16/05/2013: 1.20: MC: Fixed error in ClaimType error check; changed invalid String length property to length() method
 --%>
 
 <%@include file="..\WEB-INF\jspf\header.jspf" %>
@@ -89,7 +90,7 @@
         <td><input type="submit" value="Create Claim" /></td>
     </tr>
     </table>
-	<c:if test="${errorCampusID.message.length() > 0 || errorDisciplineID.message.length() > 0 || errorCourseID.message.length() > 0 || errorClaimType.message.length > 0}">
+	<c:if test="${errorCampusID.message.length() > 0 || errorDisciplineID.message.length() > 0 || errorCourseID.message.length() > 0 || errorClaimType.message.length() > 0}">
 		<div id="errorMessage">${errorCampusID.message}${errorDisciplineID.message}${errorCourseID.message}${errorClaimType.message}</div>
 	</c:if>
 </form>
