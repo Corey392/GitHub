@@ -33,6 +33,12 @@ public class Claim implements Serializable {
             this.desc = desc;
         }
 
+        /**
+         * @param value Integer indicating the Claim's current status
+         * @return Status object indicating the stage at which a Claim currently is
+         * @throws IllegalArgumentException if value passed in doesn't map to a 
+         *          valid Claim Status
+         */
         public static Status getFromInt(int value) {
             switch(value) {
                 case 0: return DRAFT;  // Daniel
@@ -49,10 +55,16 @@ public class Claim implements Serializable {
             }
         }
 
-		public int getCode() {
-			return this.code;
-		}
+	/**
+         * @return Integer indicating current Claim's status
+         */
+        public int getCode() {
+		return this.code;
+	}
 
+        /**
+         * @return Returns a description of the Claim's current status
+         */
         public String getDesc() {
             return this.desc;
         }
@@ -76,10 +88,18 @@ public class Claim implements Serializable {
             this.desc = desc;
         }
 
+        /**
+         * Parses a ClaimType based on the boolean value passed in.
+         * @param value Boolean value indicating the claim's type
+         * @return ClaimType corresponding to boolean value passed in
+         */
         public static ClaimType getFromBool(Boolean value) {
             return value ? RPL : PREVIOUS_STUDIES;
         }
 
+        /**
+         * @return Returns a description of the ClaimType
+         */
         public String getDesc() {
             return this.desc;
         }
@@ -101,6 +121,12 @@ public class Claim implements Serializable {
             this.value = value;
         }
 
+        /**
+         * @param value Character representing a Claim Option
+         * @return Returns an Option corresponding to the char value passed in
+         * @throws IllegalArgumentException if value passed in doesn't map to
+         *          a valid Option.
+         */
         public static Option getFromChar(char value) {
             switch(value) {
                 case 'C': return TAFENSW;
@@ -110,6 +136,9 @@ public class Claim implements Serializable {
             }
         }
 
+        /**
+         * @return Returns a Character representing this Option type.
+         */
         public char getValue() {
             return this.value;
         }
@@ -203,294 +232,312 @@ public class Claim implements Serializable {
     }
 
     /**
-     * @return the claimID
+     * @return Unique identifier for this Claim
      */
     public Integer getClaimID() {
         return claimID;
     }
 
     /**
-     * @return the studentID
+     * @return Unique identifier for this student who lodged this Claim
      */
     public String getStudentID() {
         return studentID;
     }
 
     /**
-     * @return the campusID
+     * @return Unique identifier for the Campus this Claim was lodged to
      */
     public String getCampusID() {
         return campusID;
     }
 
     /**
-     * @return the courseID
+     * @return Unique identifier for the Course this Claim pertains to
      */
     public String getCourseID() {
         return courseID;
     }
 
     /**
-     * @return the disciplineID
+     * @return Unique identifier for the Discipline this Claim pertains to
      */
     public Integer getDisciplineID() {
         return disciplineID;
     }
 
     /**
-     * @return the assessorID
+     * @return Unique identifier for the Assessor responsible for this Claim
      */
     public String getAssessorID() {
         return assessorID;
     }
 
     /**
-     * @return the delegateID
+     * @return Unique identifier for the Delegate responsible for this Claim
      */
     public String getDelegateID() {
         return delegateID;
     }
 
     /**
-     * @return the claimedModules
+     * @return List of modules this Claim encompasses
      */
     public ArrayList<ClaimedModule> getClaimedModules() {
         return claimedModules;
     }
 
     /**
-     * @return the campus
+     * @return Campus at which this Claim was lodged
      */
     public Campus getCampus() {
         return campus;
     }
 
     /**
-     * @return the discipline
+     * @return Discipline this Claim targets
      */
     public Discipline getDiscipline() {
         return discipline;
     }
 
     /**
-     * @return the course
+     * @return Course this Claim is being lodged for
      */
     public Course getCourse() {
         return course;
     }
 
     /**
-     * @return the assessor
+     * @return Assessor responsible for this Claim
      */
     public User getAssessor() {
         return assessor;
     }
 
     /**
-     * @return the delegate
+     * @return Delegate responsible for this Claim
      */
     public User getDelegate() {
         return delegate;
     }
 
     /**
-     * @return the dateMade
+     * @return Date on which this Claim was lodged
      */
     public Date getDateMade() {
         return dateMade;
     }
 
     /**
-     * @return the dateResolved
+     * @return Date on which this Claim was resolved
      */
     public Date getDateResolved() {
         return dateResolved;
     }
 
     /**
-     * @return the assessorApproved
+     * @return If an Assessor approved this claim, returns true.
+     *          Otherwise, returns false.
      */
     public Boolean getAssessorApproved() {
         return assessorApproved;
     }
 
     /**
-     * @return the delegateApproved
+     * @return If a Delegate approved this claim, returns true.
+     *          Otherwise, returns false.
      */
     public Boolean getDelegateApproved() {
         return delegateApproved;
     }
 
     /**
-     * @return the requestCompletion
+     * @return If this Claim has been processed, returns true.
+     *          Otherwise, returns false.
      */
     public Boolean getRequestCompletion() {
         return requestCompletion;
     }
 
     /**
-     * @return the option
+     * @return Returns Option indicating what type of Claim this is.
+     *          eg. One for previous TAFE studies as opposed to outside education
      */
     public Option getOption() {
         return option;
     }
 
     /**
-     * @return the status
+     * @return The current Status of this claim.
+     *          eg. Draft, Preliminary, Approved, etc.
      */
     public Status getStatus() {
         return status;
     }
 
     /**
-     * @return the claimType
+     * @return The type of Claim this is.
+     *          Either "RPL" or "Previous Studies".
      */
     public ClaimType getClaimType() {
         return claimType;
     }
 
     /**
-     * @param claimID the claimID to set
+     * @param claimID Unique ID representing this specific Claim
      */
     public void setClaimID(Integer claimID) {
         this.claimID = claimID;
     }
 
     /**
-     * @param studentID the studentID to set
+     * @param studentID Unique ID representing the student who lodged this 
+     *                  specific Claim.
      */
     public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
 
     /**
-     * @param campusID the campusID to set
+     * @param campusID Unique ID representing the Campus at which this 
+     *                  specific Claim was lodged.
      */
     public void setCampusID(String campusID) {
         this.campusID = campusID;
     }
 
     /**
-     * @param courseID the courseID to set
+     * @param courseID Unique ID representing the Course this specific Claim
+     *                  pertains to.
      */
     public void setCourseID(String courseID) {
         this.courseID = courseID;
     }
 
     /**
-     * @param disciplineID the disciplineID to set
+     * @param disciplineID Unique ID representing the Discipline this specific 
+     *                      Claim targets.
      */
     public void setDisciplineID(Integer disciplineID) {
         this.disciplineID = disciplineID;
     }
 
     /**
-     * @param assessorID the assessorID to set
+     * @param assessorID Unique ID representing the Assessor responsible for 
+     *                  this specific Claim
      */
     public void setAssessorID(String assessorID) {
         this.assessorID = assessorID;
     }
 
     /**
-     * @param delegateID the delegateID to set
+     * @param delegateID Unique ID representing the Delegate responsible for 
+     *                  this specific Claim
      */
     public void setDelegateID(String delegateID) {
         this.delegateID = delegateID;
     }
 
     /**
-     * @param claimedModules the claimedModules to set
+     * @param claimedModules The modules which this Claim encompasses
      */
     public void setClaimedModules(ArrayList<ClaimedModule> claimedModules) {
         this.claimedModules = claimedModules;
     }
 
     /**
-     * @param campus the campus to set
+     * @param campus Campus for this Claim to be lodged at
      */
     public void setCampus(Campus campus) {
         this.campus = campus;
     }
 
     /**
-     * @param discipline the discipline to set
+     * @param discipline Discipline for this Claim to pertain to
      */
     public void setDiscipline(Discipline discipline) {
         this.discipline = discipline;
     }
 
     /**
-     * @param course the course to set
+     * @param course Course this Claim targets
      */
     public void setCourse(Course course) {
         this.course = course;
     }
 
     /**
-     * @param assessor the assessor to set
+     * @param assessor Assessor responsible for this Claim
      */
     public void setAssessor(User assessor) {
         this.assessor = assessor;
     }
 
     /**
-     * @param delegate the delegate to set
+     * @param delegate Delegate responsible for this Claim
      */
     public void setDelegate(User delegate) {
         this.delegate = delegate;
     }
 
     /**
-     * @param dateMade the dateMade to set
+     * @param dateMade Date on which this Claim was lodged
      */
     public void setDateMade(Date dateMade) {
         this.dateMade = dateMade;
     }
 
     /**
-     * @param dateResolved the dateResolved to set
+     * @param dateResolved Date on which this Claim was resolved
      */
     public void setDateResolved(Date dateResolved) {
         this.dateResolved = dateResolved;
     }
 
     /**
-     * @param assessorApproved the assessorApproved to set
+     * @param assessorApproved Boolean value indicating whether an Assessor
+     *                      approved this Claim or not.
      */
     public void setAssessorApproved(Boolean assessorApproved) {
         this.assessorApproved = assessorApproved;
     }
 
     /**
-     * @param delegateApproved the delegateApproved to set
+     * @param delegateApproved Boolean value indicating whether a Delegate
+     *                      approved this Claim or not.
      */
     public void setDelegateApproved(Boolean delegateApproved) {
         this.delegateApproved = delegateApproved;
     }
 
     /**
-     * @param requestCompletion the requestCompletion to set
+     * @param requestCompletion Boolean value indicating whether this Claim
+     *                          has been completely processed or not.
      */
     public void setRequestCompletion(Boolean requestCompletion) {
         this.requestCompletion = requestCompletion;
     }
 
     /**
-     * @param option the option to set
+     * @param option Option indicating what type of Claim this is.
+     *          eg. One for previous TAFE studies as opposed to outside education
      */
     public void setOption(Option option) {
         this.option = option;
     }
 
     /**
-     * @param status the status to set
+     * @param status The current Status of this claim.
+     *          eg. Draft, Preliminary, Approved, etc.
      */
     public void setStatus(Status status) {
         this.status = status;
     }
 
     /**
-     * @param claimType the claimType to set
+     * @param claimType The type of Claim this is.
+     *          Either "RPL" or "Previous Studies".
      */
     public void setClaimType(ClaimType claimType) {
         this.claimType = claimType;

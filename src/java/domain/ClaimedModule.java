@@ -25,9 +25,6 @@ public final class ClaimedModule extends Module implements Serializable{
     private ArrayList<Provider> providers;
     private ArrayList<Evidence> evidence;
 
-    /**
-     * Empty constructor
-     */
     public ClaimedModule() {
         this(Util.INT_ID_EMPTY, "", "");
     }
@@ -66,42 +63,44 @@ public final class ClaimedModule extends Module implements Serializable{
     }
 
     /**
-     * @return the arrangementNo
+     * @return ID of the arrangement this ClaimedModule entails
      */
     public String getArrangementNo() {
         return arrangementNo;
     }
 
     /**
-     * @return the functionalCode
+     * @return Code for functional unit
      */
     public String getFunctionalCode() {
         return functionalCode;
     }
 
     /**
-     * @return the overseasEvidence
+     * @return If Evidence for ClaimedModule came from overseas, returns true.
+     *          Otherwise, returns false.
      */
     public boolean isOverseasEvidence() {
         return overseasEvidence;
     }
 
     /**
-     * @return the recognition
+     * @return Code indicating whether the ClaimedModule was for 
+     *          Pre-arranged RPL or National Recognition
      */
     public char getRecognition() {
         return recognition;
     }
 
     /**
-     * @return the providers
+     * @return List of providers for the Evidence of this ClaimedModule
      */
     public ArrayList<Provider> getProviders() {
         return providers;
     }
 
     /**
-     * @return the evidence
+     * @return list of Evidence supplied for this ClaimedModule
      */
     public ArrayList<Evidence> getEvidence() {
         return evidence;
@@ -115,7 +114,8 @@ public final class ClaimedModule extends Module implements Serializable{
     }
 
     /**
-     * @param approved the approved to set
+     * @param approved Boolean reflecting whether this ClaimedModule is being 
+     *                  approved or not.
      */
     public void setApproved(boolean approved) {
         this.approved = approved;
@@ -129,35 +129,37 @@ public final class ClaimedModule extends Module implements Serializable{
     }
 
     /**
-     * @param functionalCode the functionalCode to set
+     * @param functionalCode Code for functional unit
      */
     public void setFunctionalCode(String functionalCode) {
         this.functionalCode = functionalCode;
     }
 
     /**
-     * @param overseasEvidence the overseasEvidence to set
+     * @param overseasEvidence Boolean value reflecting whether the Evidence
+     *                          for this ClaimedModule came from overseas or not.
      */
     public void setOverseasEvidence(boolean overseasEvidence) {
         this.overseasEvidence = overseasEvidence;
     }
 
     /**
-     * @param recognition the recognition to set
+     * @param recognition Code indicating whether the ClaimedModule was for 
+     *          Pre-arranged RPL or National Recognition
      */
     public void setRecognition(char recognition) {
         this.recognition = recognition;
     }
 
     /**
-     * @param providers the providers to set
+     * @param providers List of Providers supplying Evidence for this ClaimedModule.
      */
     public void setProviders(ArrayList<Provider> providers) {
         this.providers = providers;
     }
 
     /**
-     * @param evidence the evidence to set
+     * @param evidence List of Evidence for this ClaimedModule
      */
     public void setEvidence(ArrayList<Evidence> evidence) {
         this.evidence = evidence;

@@ -5,9 +5,7 @@ import util.FieldError;
 import java.io.Serializable;
 
 /**
- *
- * @author David Gibbins
- * @author Adam Shortall
+ * @author David Gibbins, Adam Shortall
  */
 public class Campus implements Comparable<Campus>, Serializable {    
     
@@ -37,15 +35,13 @@ public class Campus implements Comparable<Campus>, Serializable {
     }
     
     public Campus(String campusID) {
-        this(campusID, "", new ArrayList<Discipline>());
+        this(campusID, "");
     }
     
     public Campus (String campusID, String name) {
         this(campusID, name, new ArrayList<Discipline>());
     }
-    /**
-     * Constructor
-     */
+    
     public Campus(String campusID, String name, ArrayList<Discipline> disciplines) {
         this.campusID = campusID;
         this.name = name;
@@ -69,59 +65,48 @@ public class Campus implements Comparable<Campus>, Serializable {
         return invalidFields;
     }
     
-    
     /**
-     * 
-     * @return campusID
+     * @return campusID Unique identifier representing this specific Campus
      */
     public String getCampusID() {
         return this.campusID;
     }
     
     /**
-     * 
-     * @return name
+     * @return name Name of this Campus
      */
     public String getName() {
         return this.name;
     }
     
     /**
-     * 
-     * @return disciplines of type ArrayList<Discipline>
+     * @return List of disciplines this Campus encompasses
      */
     public ArrayList<Discipline> getDisciplines() {
         return this.disciplines;
     }
     
     /**
-     * 
-     * @param campus 
+     * @param campusID Unique identifier representing this specific Campus
      */
     public void setCampusID(String campusID) {
         this.campusID = campusID;
     }
     
     /**
-     * 
-     * @param name 
+     * @param name Name of this Campus
      */
     public void setName(String name) {
         this.name = name;
     }
     
     /**
-     * 
-     * @param disciplines 
+     * @param disciplines List of disciplines this Campus encompasses
      */
     public void setDisciplines(ArrayList<Discipline> disciplines) {
         this.disciplines = disciplines;
     }
     
-    /**
-     * 
-     * @return toString of superclass
-     */
     @Override
     public String toString() {
         if (campusID == null || campusID.isEmpty()) {

@@ -2,11 +2,15 @@ package domain;
 
 import java.io.Serializable;
 
-/** Purpose:    Used for storing data from the 'File' table in the database. Type is 'ClaimFile' as 'File' is a recognized Java class that will be used within the same class.
- *  @author     Todd Wiggins
- *  @version    1.000
+/** Purpose:    Used for storing data from the 'File' table in the database. 
+ *              Type is 'ClaimFile' as 'File' is a recognized Java class that 
+ *              will be used within the same class.
+ *  @author     Todd Wiggins, Mitch Carr
+ *  @version    1.010
  *	Created:    13/05/2013
- *	Change Log:
+ *	Change Log:         16/05/2013: MC: Changed absolute directory from 'C:/Uploads/' 
+ *                                          to user home, so uploads should work on machines with 
+ *                                          restricted permissions and non-Windows systems.
  */
 public class ClaimFile implements Serializable {
 	//Constant Declarations
@@ -14,13 +18,13 @@ public class ClaimFile implements Serializable {
 	 * The directory on the local machine (server) where the files are stored. (Eg. '/usr/uploads/').
 	 * Type specific sub-folders should be added after this directory (Eg. '/claims/' or '/help/').
 	 */
-	public static final String directoryAbsolute = "C:/Uploads/";
+	public static final String directoryAbsolute = System.getProperty("user.home"); //will probably end up being a hard-coded path when on the server
 	/**
 	 * The sub-directory of 'directoryAbsolute' where files for claims are stored.
 	 * Files should be stored in another sub-directory per claim (Eg. '1/' for Claim ID '1').
 	 * Convention will be ' directoryClaims + claimID + "/" + fileID from Database '.
 	 */
-	public static final String directoryClaims = directoryAbsolute + "claims/";
+	public static final String directoryClaims = directoryAbsolute + "/claims/";
 
 	//Class variables/members
 	private int fileID;
