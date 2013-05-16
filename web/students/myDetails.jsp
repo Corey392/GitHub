@@ -1,5 +1,5 @@
 <%--Purpose:    Allows a Student to update their personal details.
- *  @author     Adam Shortall, Todd Wiggins
+ *  @author     Adam Shortall, Todd Wiggins, Mitch Carr
  *  @version    1.011
  *  Created:    ?
  *	Modified:	12/04/2013: TW: Added additonal fields for user details.
