@@ -23,7 +23,8 @@ import util.Util;
  *  @version    1.030
  *	Created:    ?
  *	Change Log: 07/05/2013: TW: Updated to handle ArrayList<Evidence>
- *	Change Log: 16/05/2013: MC: Updated 'processRequest' to reflect changes to Util class
+ *                  16/05/2013: MC: Updated 'processRequest' to reflect changes to Util class
+ *                  18/05/2013: MC: Removed unnecessary studentID fields pertaining to ClaimedModule
  */
 public class ViewEvidenceServlet extends HttpServlet {
 
@@ -53,7 +54,6 @@ public class ViewEvidenceServlet extends HttpServlet {
 
             int claimID = Integer.parseInt(request.getParameter("claimID"));
             String moduleID = request.getParameter("moduleID");
-            //String studentID = request.getParameter("studentID");
 
             //Check button pressed
             if (action.equalsIgnoreCase("Approve Evidence")){
@@ -70,8 +70,8 @@ public class ViewEvidenceServlet extends HttpServlet {
                         for (int i = 0; i < selectedValues.length; i++) {
                             ArrayList<Evidence> evidence = Util.getCompleteEvidence(claimID, moduleID, user.role);
                             for (Evidence e : evidence) {
-								e.setApproved(true);
-							}
+				e.setApproved(true);
+                            }
                             try {
                                 evidenceIO.update(evidence);
                             } catch (SQLException sqlex) {

@@ -1,18 +1,24 @@
 <%--
     Document   : viewEvidence
     Created on : 11/06/2011, 6:56:16 PM
-    Author     : David
+    Author     : David, Mitch Carr
+    Changelog  :   18/05/2013: MC: Updated studentID fields to reflect changes to database and ClaimedModule class
 --%>
 
+<%@page import="data.ClaimIO"%>
+<%@page import="data.ClaimedModuleIO"%>
 <%@page import="java.util.*" %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.VIEW_EVIDENCE_PAGE; %>
-<jsp:useBean id="user" scope="session" class="domain.User" />
 <jsp:useBean id="claimedModule" scope="request" class="domain.ClaimedModule"/>
 <jsp:useBean id="empt" class="java.lang.String"/>
 <jsp:useBean id="prevtype" class="java.lang.String"/>
 
-<% boolean approved; %>
+<% 
+    boolean approved;
+    ClaimIO claimIO = new ClaimIO(Role.TEACHER);
+    String studentID = claimIO.getByID(claimedModule.getClaimID()).getStudentID();
+%>
 <c:if test="${claimedModule == null}">
     <c:redirect url="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET.relativeAddress %>" />
 </c:if>
@@ -26,10 +32,10 @@
                 previously studied modules.</i><br/><br/>
                 Claim ID: <b>${claimedModule.claimID}</b><br/>
            Evidence for Module <b>${claimedModule.moduleID}</b><br/>
-           Student ID: <b>${claimedModule.studentID}</b><br/>
+           Student ID: <b><%=studentID%></b><br/>
            <input type="hidden" name="claimID" value="${claimedModule.claimID}" />
            <input type="hidden" name="moduleID" value="${claimedModule.moduleID}" />
-           <input type="hidden" name="studentID" value="${claimedModule.studentID}" />
+           <input type="hidden" name="studentID" value="<%=studentID%>" />
         </p>
     </div>
         <div>

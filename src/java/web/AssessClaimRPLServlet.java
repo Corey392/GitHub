@@ -24,6 +24,7 @@ import util.Util;
  *             07/05/2013 MC: Updated approveClaim to reflect changes to ClaimedModule.getEvidence() method
  *             07/05/2013 TW: Updated approveClaim() to handle ArrayList<Evidence>.
  *             16/05/2013 MC: Updated 'processRequest' to reflect changes made to Util class
+ *             18/05/2013 MC: Removed unnecessary studentID fields pertaining to ClaimedModule calls
  */
 public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadModel {
 
@@ -118,14 +119,10 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
 
                 request.removeAttribute("rpath");
                 String claimID = request.getParameter("claimID");
-                String studentID = request.getParameter("studentID");
                 //rpath = RPLServlet.ASSESS_CLAIM_RPL_SERVLET.relativeAddress;
-                //Mitchell: I can't see any reason for the above statement to exist,
-                //so I've commented it out for the time being
 
                 url = RPLServlet.VIEW_EVIDENCE_SERVLET.relativeAddress;
                 request.setAttribute("claimID", claimID);
-                request.setAttribute("studentID", studentID);
                 request.setAttribute("moduleID", moduleID);
                 request.setAttribute("rpath", moduleID);
                 RequestDispatcher dispatcher = request.getRequestDispatcher(url);
