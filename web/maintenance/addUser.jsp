@@ -1,7 +1,10 @@
 <%-- 
     Document   : AddUser
     Created on : 07/05/2013
-    Author     : Ryan Donaldson
+    Author     : Ryan Donaldson, Mitch Carr
+    Changelog:  18/05/2013: MC: Changed "home" to "index.jsp"; home refers to /maintanence/home rather than /home. 
+                            The former does not exist, the latter points to /maintenance/index.jsp anyway.
+                            This change prevents "Cancel" from taking the user to a non-existent page.
 --%>
 
 
@@ -94,7 +97,7 @@
 	</div>
     <div>
     <%-- http://download.oracle.com/docs/cd/E12840_01/wls/docs103/dvspisec/servlet.html --%>
-        <input type="submit" value="Submit"/> <a href="home">Cancel</a>
+        <input type="submit" value="Submit"/> <a href="index.jsp">Cancel</a>
 	</div>
 </div>
 </form>
