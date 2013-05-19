@@ -133,9 +133,9 @@ public class ErrorsServlet extends HttpServlet {
     }// </editor-fold>
     
     /**
-     * 
-     * @param user
-     * @return 
+     * Grabs a list of errors encountered but not yet processed.
+     * @param user User whose Role permissions should be based on
+     * @return list of errors encountered but not yet processed
      */
     private ArrayList<Errors> populateErrorsList(User user){
         ErrorsIO errorsIO = new ErrorsIO(user.getRole());
@@ -151,9 +151,8 @@ public class ErrorsServlet extends HttpServlet {
     }
 
     /**
-     * 
-     * @param user
-     * @return 
+     * @param user User whose Role permissions should be based on
+     * @return Number of errors in list
      */
     private Integer populateErrorsListCount(User user){
         ErrorsIO errorsIO = new ErrorsIO(user.getRole());

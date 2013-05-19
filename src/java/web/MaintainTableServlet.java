@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.CourseIO;
@@ -21,7 +17,6 @@ import util.RPLPage;
 import util.RPLServlet;
 
 /**
- *
  * @author Adam Shortall
  */
 public class MaintainTableServlet extends HttpServlet {

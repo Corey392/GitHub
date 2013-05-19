@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.UserIO;
@@ -22,7 +18,6 @@ import util.Util;
 /**
  * Loads list of accounts for the admin. Responds to an admin user selecting
  * an account from the list and directs to the 'modify account' page.
- * 
  * @author Adam Shortall
  */
 public class AdminListAccountsServlet extends HttpServlet {
@@ -43,7 +38,6 @@ public class AdminListAccountsServlet extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             
-            ArrayList<User> accounts = new ArrayList<User>();
             UserIO userIO = new UserIO(user.role);
             
             // Get user input:
@@ -51,7 +45,7 @@ public class AdminListAccountsServlet extends HttpServlet {
             String cancel = request.getParameter(Form.CANCEL); 
             
             // Set list of accounts:
-            accounts = userIO.getListOfTeacherAndAdminUsers();
+            ArrayList<User> accounts = userIO.getListOfTeacherAndAdminUsers();
             Collections.sort(accounts);
             request.setAttribute("accounts", accounts);
             

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.DisciplineIO;
@@ -21,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import util.RPLError;
 import util.RPLPage;
-import util.Util;
 
 /**
  *  Handles requests for the Clerical Admin's Discipline maintenance page.
@@ -73,6 +68,10 @@ public class MaintainDisciplineServlet extends HttpServlet {
         }
     }
     
+    /**
+     * Updates a set of Disciplines and their DB entries
+     * @param request HTTP request containing within it the IDs and names of Disciplines to update
+     */
     private void saveDisciplines(HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -106,11 +105,10 @@ public class MaintainDisciplineServlet extends HttpServlet {
         }
         
     }
-    
-    
+        
     /**
      * Adds a discipline to the database, modifies the request.
-     * @param request 
+     * @param request HTTP request containing within it the Discipline to add
      */
     private void addDiscipline(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -133,10 +131,9 @@ public class MaintainDisciplineServlet extends HttpServlet {
         }
     }
     
-    
     /**
      * Deletes a discipline from the database, modifies the request.
-     * @param request 
+     * @param request HTTP request containing within it the Discipline to delete
      */
     private void deleteDiscipline(HttpServletRequest request) {
         HttpSession session = request.getSession();

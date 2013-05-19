@@ -71,11 +71,9 @@ public class MaintainModuleServlet extends HttpServlet {
         }
     }
     
-    
-    
     /**
      * Adds a new module to the database, modifies request.
-     * @param request 
+     * @param request HTTP request containing within it the Module to add
      */
     private void addNewModule(HttpServletRequest request) {
         String newModuleID = request.getParameter("newModuleID");
@@ -108,7 +106,10 @@ public class MaintainModuleServlet extends HttpServlet {
         }
      }
     
-        
+    /**
+     * Updates a set of modules and their DB entries.
+     * @param request HTTP request containing within it the name and ID of Modules to update
+     */
     private void saveModules(HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");

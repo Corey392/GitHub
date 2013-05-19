@@ -39,6 +39,7 @@ public class MaintainCampusDisciplineServlet extends HttpServlet {
      *
      * @param request servlet request
      * @param response servlet response
+     * @throws SQLException if a removeDiscipline call fails
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */

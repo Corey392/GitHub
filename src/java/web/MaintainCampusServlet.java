@@ -77,8 +77,8 @@ public class MaintainCampusServlet extends HttpServlet {
     
     /**
      * Takes request and user role, fills the list of campuses sorted, puts in request.
-     * @param request
-     * @param role 
+     * @param request HTTP request to fill with data
+     * @param role Role of the current User
      */
     private void fillCampusList(HttpServletRequest request, Role role) {
         CampusIO campusIO = new CampusIO(role); 
@@ -89,8 +89,10 @@ public class MaintainCampusServlet extends HttpServlet {
     
     /**
      * Writes a campus to the DB, updates request
-     * @param request
-     * @return 
+     * @param request HTTP request to retrieve the details of the Campus to add
+     * @param response HTTP request to forward
+     * @throws ServletException if forwarded request throws a ServletException
+     * @throws IOException if forwarded request throws an IOException
      */
     private void addNewCampus(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String campusID = request.getParameter("newCampusID");
@@ -129,6 +131,13 @@ public class MaintainCampusServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
     
+    /**
+     * Writes a campus to the DB, updates request
+     * @param request HTTP request to retrieve the details of the Campus to remove
+     * @param response HTTP request to forward
+     * @throws ServletException if forwarded request throws a ServletException
+     * @throws IOException if forwarded request throws an IOException
+     */
     private void deleteCampus(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException	{
 	//TODO: BRYCE: Give warning if Campus has disciplines assigned to it
 	
@@ -152,6 +161,13 @@ public class MaintainCampusServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
     
+    /**
+     * Writes a campus to the DB, updates request
+     * @param request HTTP request to retrieve the details of the Campuses to update
+     * @param response HTTP request to forward
+     * @throws ServletException if forwarded request throws a ServletException
+     * @throws IOException if forwarded request throws an IOException
+     */
     private void saveCampuses(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -194,8 +210,6 @@ public class MaintainCampusServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
     
-
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.

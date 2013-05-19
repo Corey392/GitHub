@@ -127,8 +127,7 @@ public class ListClaimsServlet extends HttpServlet {
 
     /**
      * Gets a list of claims for the current user.
-     * @param request the request
-     * @param user the current user
+     * @param user the user to retrieve claims for
      * @return a list of complete claims
      */
     private ArrayList<Claim> populateClaimList(User user){
@@ -148,7 +147,7 @@ public class ListClaimsServlet extends HttpServlet {
 
     /**
      * Gets the claim that the user has selected from the list.
-     * @param request the request
+     * @param request HTTP request to retrieve the current Claim from
      * @param user the current user
      * @return the selected claim
      */
@@ -163,8 +162,9 @@ public class ListClaimsServlet extends HttpServlet {
     }
 
     /**
-     * Deletes the currently selected "DRAFT" claim. Raises an error if the user tries to delete a claim that is not a draft.
-     * @param request the request
+     * Deletes the currently selected "DRAFT" claim. 
+     * Raises an error if the user tries to delete a claim that is not a draft.
+     * @param request HTTP request containing the ID of a claim to process
      * @param user the current user
      * @return the updated request
      */

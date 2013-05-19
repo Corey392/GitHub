@@ -22,7 +22,7 @@ import util.FieldError;
 import util.RPLError;
 import util.RPLPage;
 import util.RPLServlet;
-import util.Util;
+//import util.Util;
 
 /**
  *
@@ -50,7 +50,7 @@ public class MaintainCourseServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             String url = RPLPage.CLERICAL_COURSE.relativeAddress;
-            String updateCourseID = Util.getPageStringID(request, "updateCourse");
+            //String updateCourseID = Util.getPageStringID(request, "updateCourse");
 
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
@@ -92,19 +92,18 @@ public class MaintainCourseServlet extends HttpServlet {
     /**
      * Deletes a Course from the database, modifies the request.
      * @author Bryce Carr
-     * @param request 
+     * @param request HTTP request containing within it the ID of the Course to delete
      */
     private void deleteCourse(HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         
         String ID = request.getParameter("deleteCourse");
-	Course deleteCourse;
         
         if (ID != null) {
             CourseIO courseIO = new CourseIO(user.role);
             try {
-		deleteCourse = courseIO.getByID(ID);
+		Course deleteCourse = courseIO.getByID(ID);
                 courseIO.delete(deleteCourse);
                 request.setAttribute("deleteSuccess", deleteCourse.getName() + " (ID: " + deleteCourse.getCourseID() + ") deleted successfully.");
             } catch (SQLException ex) {
@@ -116,10 +115,10 @@ public class MaintainCourseServlet extends HttpServlet {
     }
     
     /**
+     * Updates a list of Courses in the DB
      * @author James Lee Chin
-     * @param request 
+     * @param request HTTP request containing within it the IDs and names of Courses to update
      */
-    
     private void saveCourses(HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -152,7 +151,7 @@ public class MaintainCourseServlet extends HttpServlet {
     
     /**
      * Adds a new course to the database, modifies the request.
-     * @param request 
+     * @param request HTTP request containing within it the name and ID of a Course to add
      */
     private void addCourse(HttpServletRequest request) {
         String courseID = request.getParameter("newCourseID");

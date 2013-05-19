@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import data.ProviderIO;
@@ -69,6 +65,9 @@ public class MaintainProviderServlet extends HttpServlet {
         }
     }
     
+    /**
+     * @param request HTTP request containing the IDs and names of providers to update
+     */
     private void saveProviders(HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");

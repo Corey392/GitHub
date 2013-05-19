@@ -25,7 +25,7 @@ import util.RPLServlet;
  * This servlet is for the adding and editing of RPL evidence. This only applies
  * to claims for RPL and not claims for Previous Studies. This servlet uses the
  * addRPLEvidence page to get input from the user.
- * @author James Purves, Mitch Carr
+ * @author James Purves, Mitch Carr, Todd Wiggins
  * Change Log:  07/05/2013 MC: Updated setEvidence method to reflect changes to the way ClaimedModule objects hold Evidence
  *				07/05/2013 TW: Updated setEvidence() method to handle ArrayList<Evidence>
  *				08/05/2013 TW: Updated setEvidence() method to handle change in Evidence constructors.
@@ -159,8 +159,8 @@ public class AddEvidenceServlet extends HttpServlet {
      * @param user the User who is currently logged in
      * @param claim the Claim that has the ClaimedModule being updated
      * @param addEvidenceTo the index of the ClaimedModule to add evidence to.
-     * @param module the Module
-     * @param claimedModules the list of ClaimedModules
+     * @param module the Module to set Evidence for
+     * @param claimedModules the list of ClaimedModules which the Module passed in belongs to
      * @return the updated Claim
      */
     private Claim setEvidence(HttpServletRequest request, User user, Claim claim, Integer addEvidenceTo, ClaimedModule module, ArrayList<ClaimedModule> claimedModules){

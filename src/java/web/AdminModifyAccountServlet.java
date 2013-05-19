@@ -22,7 +22,6 @@ import util.RPLServlet;
 
 /**
  * Handles the page that modifies a non-student account.
- * 
  * @author Adam Shortall, Mitchell Carr
  */
 public class AdminModifyAccountServlet extends HttpServlet {

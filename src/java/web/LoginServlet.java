@@ -21,7 +21,7 @@ import util.RPLPage;
  * to tell whether there is a matching user with matching password. The
  * user is directed to the homepage for the type of user they are (students
  * go to student page, etc.) 
- * @author Adam Shortall, Updated by Ben Morrison
+ * @author Adam Shortall, Ben Morrison
  */
 public class LoginServlet extends HttpServlet {
 
@@ -76,10 +76,16 @@ public class LoginServlet extends HttpServlet {
     
     /**
      * Helper method to log in a user.
-     * @param request
-     * @return 
+     * @param user User object to attempt to login with
+     * @param userID ID of the User to login
+     * @param password Password of the User to login
+     * @param session HTTP session to set the user for
+     * @return User logged in
+     * @throws IllegalArgumentException if User doesn't have a valid Role, or login failed.
+     *          eg. Incorrect password
      */
-    private User logInUser(User user, String userID, String password, HttpSession session) {
+    private User logInUser(User user, String userID, String password, HttpSession session) 
+            throws IllegalArgumentException {
         user.setUserID(userID);
         user.setPassword(password);
         UserIO userIO = new UserIO(user.role);
@@ -92,11 +98,6 @@ public class LoginServlet extends HttpServlet {
            
             session.setAttribute("user", user);
             
-            /*try {
-                AccessHistoryIO accessIO = new AccessHistoryIO(user.role); // Ben Morrison
-                accessIO.insert(user.getUserID(), "I");
-            } catch(SQLException e) { System.out.println("Database Error..."); }*/
-            
             return user;
         } else { // User has entered an incorrect username or password
             throw new IllegalArgumentException();
@@ -105,10 +106,11 @@ public class LoginServlet extends HttpServlet {
     
     /**
      * For a given role, returns the URL of the homepage for that role.
-     * @param userRole
-     * @return 
+     * @param userRole Role to retrieve the homepage for
+     * @return Homepage of the Role passed in
+     * @throws IllegalArgumentException if User doesn't have a valid Role
      */
-    private String getURL(Role userRole) {
+    private String getURL(Role userRole) throws IllegalArgumentException{
         switch (userRole) {
             case ADMIN:
                 return RPLPage.ADMIN_HOME.relativeAddress;

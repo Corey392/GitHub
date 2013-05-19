@@ -11,8 +11,7 @@ import javax.servlet.http.HttpSession;
 import util.RPLPage;
 
 /**
- *
- * @author Adam Shortall, Updated by Ben Morrison
+ * @author Adam Shortall, Ben Morrison
  */
 public class LogoutServlet extends HttpServlet {
 

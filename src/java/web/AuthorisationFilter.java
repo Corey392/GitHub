@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import domain.User;
@@ -58,7 +54,7 @@ public class AuthorisationFilter implements Filter {
         } else if (user.role == Role.ADMIN) {
             authorised = !uri.matches("^"+RPLPage.ROOT+"/students.*$");    // Admins can access everything except student pages
         }
-        if (authorised) { // TODO: set this back to if (authorised), set to true only for debugging purposes
+        if (authorised) {
             chain.doFilter(request, response);         
         } else {    // User is not authorised for the page they were going to
             // Send them back to either their user role's homepage, or the website homepage

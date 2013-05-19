@@ -25,11 +25,13 @@ import util.Util;
  *             07/05/2013 TW: Updated approveClaim() to handle ArrayList<Evidence>.
  *             16/05/2013 MC: Updated 'processRequest' to reflect changes made to Util class
  *             18/05/2013 MC: Removed unnecessary studentID fields pertaining to ClaimedModule calls
+ *             19/05/2013 MC: Removed unused parameters and updated affected method calls
  */
 public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadModel {
 
     HttpSession session;
     User user;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -49,7 +51,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         // If User came from ListClaims Page
         if (rpath.equalsIgnoreCase(RPLPage.LIST_CLAIMS_TEACHER.relativeAddress)) {
             String ccmd = request.getParameter("ccmd");
- System.out.println("ccmd=" + ccmd);
+            System.out.println("ccmd=" + ccmd);
             if(ccmd != null) {
                 if (ccmd.equalsIgnoreCase("Back")) {
                     url = RPLPage.TEACHER_HOME.relativeAddress;
@@ -139,9 +141,9 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
                 url = getForwardURLForClaimType(claim);
 
                 if (action.equals("Approve Claim")) {
-                    approveClaim(request, response, claim);
+                    approveClaim(claim);
                 } else if (action.equals("Approve Selected")) {
-                    approveSelected(request, response, claim);
+                    approveSelected(request, claim);
                 } else if (action.equals("Print Claim")) {
                     printClaim(request, response, claim);
                 } else if (action.equals("Back")) {
@@ -166,15 +168,13 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
     }
 
     /**
-     * approveClaim Method is called when an Assessor or Delegate wishes to approve
-     * a claim. The claim's 'Assessor Approved' and 'Delegate Approved' fields will
+     * Method is called when an Assessor or Delegate wishes to approve a claim. 
+     * The claim's 'Assessor Approved' and 'Delegate Approved' fields will
      * be set depending on the User's ID and whether they are the designated Assessor,
      * Delegate, or both. Each of the claimed modules are then set then set to approved.
-     * @param request
-     * @param response
-     * @param url the url to forward to after processing
+     * @param claim The Claim to approve
      */
-    public void approveClaim(HttpServletRequest request, HttpServletResponse response, Claim claim) {
+    public void approveClaim(Claim claim) {
         ClaimIO cIO = new ClaimIO(Role.TEACHER);
         String userID = user.getUserID();
         if (claim.getAssessorID() != null) {
@@ -190,10 +190,10 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
 
         for (ClaimedModule claimedModule: claim.getClaimedModules()) {
             claimedModule.setApproved(true);
-			ArrayList<Evidence> evi = claimedModule.getEvidence();
-			for (Evidence e : evi) {
-				e.setApproved(true);
-			}
+            ArrayList<Evidence> evi = claimedModule.getEvidence();
+            for (Evidence e : evi) {
+		e.setApproved(true);
+            }
         }
         claim.setStatus(Claim.Status.APPROVED);
         try {
@@ -204,7 +204,12 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         }
     }
 
-    public void approveSelected(HttpServletRequest request, HttpServletResponse response, Claim claim) {
+    /**
+     * Approves the ClaimedModules for the Claim passed in.
+     * @param request HTTP request containing the IDs of Modules to approve
+     * @param claim Claim for which to approve ClaimedModules
+     */
+    public void approveSelected(HttpServletRequest request, Claim claim) {
         String[] selectedValues = request.getParameterValues("approved");
         ClaimIO cIO = new ClaimIO(user.role);
         if(selectedValues != null) {
@@ -219,10 +224,8 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
             }
         }
         try {
-
             cIO.update(claim);
-        }
-        catch(SQLException SQLex) {
+        }catch(SQLException SQLex) {
             SQLex.getMessage();
         }
     }
@@ -232,9 +235,9 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
     }
 
     /**
-     * Sets and gets URL based on Claim Type.
-     * @param url
-     * @return
+     * Returns a URL based on Claim Type.
+     * @param claim Claim for which to check the Claim type
+     * @return URL corresponding to the type of Claim passed in
      */
     private String getForwardURLForClaimType(Claim claim) {
 

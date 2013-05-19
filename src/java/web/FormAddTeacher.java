@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 import util.RPLServlet;
@@ -9,7 +5,6 @@ import util.RPLServlet;
 /**
  * Used for constants that name parts of a form for
  * registering new teacher accounts.
- * 
  * @author Adam Shortall
  */
 public class FormAddTeacher extends Form {

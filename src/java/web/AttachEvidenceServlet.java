@@ -25,7 +25,8 @@ import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import util.RPLPage;
 
-/**	Purpose:    Handles uploading evidence files to a claim.
+/**
+ *  Purpose:    Handles uploading evidence files to a claim.
  *  @author     Todd Wiggins
  *  @version    1.001
  *	Created:    13/05/2013

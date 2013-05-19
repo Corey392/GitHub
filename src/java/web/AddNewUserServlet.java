@@ -67,12 +67,12 @@ public class AddNewUserServlet extends HttpServlet implements SingleThreadModel 
     /**
      * Registers a student user with the database. Will set
      * error messages in the request and return the request.
-     * @param request
-     * @return
+     * @param request HTTP request containing data pertaining to the Teacher to register
+     * @return HTTP request indicating the success or failure of this method
      */
 	private HttpServletRequest registerTeacher(HttpServletRequest request) {
 		if (request.getParameter("userID") != null && request.getParameter("role") != null) {
-			String passwordConfirm;
+			//String passwordConfirm;
 			Teacher = (User) session.getAttribute("user");
 			if (Teacher == null) {
 				Teacher = new User(Role.roleFromChar(request.getParameter("role").charAt(0)));
@@ -89,7 +89,7 @@ public class AddNewUserServlet extends HttpServlet implements SingleThreadModel 
 			Teacher.setPostCode(Integer.parseInt(request.getParameter("postCode")));
 			Teacher.setPhoneNumber(request.getParameter("phone"));
 			Teacher.setPassword(request.getParameter("password"));
-			passwordConfirm = request.getParameter("passwordConfirm");
+			//passwordConfirm = request.getParameter("passwordConfirm");
 			Teacher.setStaff(request.getParameter("staff") != null && request.getParameter("staff").equals("yes") ? true : false);
 			boolean isValid = true;
 			if (!Teacher.validateField(User.Field.EMAIL)) {

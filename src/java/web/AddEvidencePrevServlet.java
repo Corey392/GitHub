@@ -113,7 +113,14 @@ public class AddEvidencePrevServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void saveEvidence(User user, Claim claim, ArrayList<ClaimedModule> claimedMods, HttpServletRequest request) {
+	/**
+         * Updates evidence attached to a Claim
+         * @param user User processing Evidence
+         * @param claim Claim to add Evidence for
+         * @param claimedMods List of ClaimedModules to get Evidence from
+         * @param request HTTP request containing within it Element data to set
+         */
+        private void saveEvidence(User user, Claim claim, ArrayList<ClaimedModule> claimedMods, HttpServletRequest request) {
 		//Get the Evidence data for each Module -> Element
 			ArrayList<Evidence> evidences = new ArrayList<Evidence>();
 			for (ClaimedModule claimedModule : claimedMods) {

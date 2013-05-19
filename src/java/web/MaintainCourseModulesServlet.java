@@ -23,8 +23,7 @@ import util.RPLPage;
 import util.Util;
 
 /**
- *
- * @author Adam Shortall, Bryce Carr
+ * @author Adam Shortall, Bryce Carr, Mitch Carr
  * @version 1.020
  * Created:	Unknown
  * Modified:	03/05/2013
@@ -39,6 +38,7 @@ import util.Util;
  *				Removed unnecessary imports.
  *				Changed signature on deInitialise() (didn't actually need arguments)
  *		05/05/2013: BC:	Edited initialise() to reduce calls to database.
+ *		19/05/2013: MC:	Updated initialise(); removed second parameter, since it was never used.
  */
 public class MaintainCourseModulesServlet extends HttpServlet {
     private HttpSession session;
@@ -51,9 +51,10 @@ public class MaintainCourseModulesServlet extends HttpServlet {
     Discipline selectedDiscipline;
     
     /**
-     * Sets variables for every processRequest
+     * Sets variables for every processRequest.
+     * @param request HTTP request containing properties needed to perform a subsequent operation in this class
      */
-    private void initialise(HttpServletRequest request, HttpServletResponse response) {
+    private void initialise(HttpServletRequest request) {
         session = request.getSession();
         user = (User) session.getAttribute("user");
 
@@ -78,6 +79,9 @@ public class MaintainCourseModulesServlet extends HttpServlet {
 	selectedCourse = (Course)session.getAttribute("selectedCourse");
     }
     
+    /**
+     * Sets all of the servlet's field to null. Called after initialise and a subsequent call have executed.
+     */
     private void deInitialise()	{
 	session = null;
 	user = null;
@@ -101,11 +105,9 @@ public class MaintainCourseModulesServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            this.initialise(request, response);
+            this.initialise(request);
             
-            String url;
-            ArrayList<Module> modules;
-            
+            String url;            
             
             // Get selectedCampusID, selectedModuleID & selectedDisciplineID from jsp
             String selectedCampusID = selectedCampus.getCampusID();
@@ -155,7 +157,7 @@ public class MaintainCourseModulesServlet extends HttpServlet {
             request.setAttribute("selectedDiscipline", selectedDiscipline);
 	    request.setAttribute("course", selectedCourse);
             // Now get/set the list of modules to display
-            modules = moduleIO.getListNotInCourse(selectedCourse.getCourseID());
+            ArrayList<Module> modules = moduleIO.getListNotInCourse(selectedCourse.getCourseID());
             request.setAttribute("modules", modules);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
@@ -171,40 +173,59 @@ public class MaintainCourseModulesServlet extends HttpServlet {
     /**
      * A core module can be added so long as a module has been selected
      * from the drop-down list.
-     * @param request
-     * @return 
+     * @param request HTTP request to initialise
+     * @return initialised HTTP request
+     * @throws SQLException if the Core Module couldn't be added
      */
     private HttpServletRequest addCoreModule(HttpServletRequest request) throws SQLException {
-        this.initialise(request, null);
+        this.initialise(request);
 	moduleIO.addCore(selectedCourse.getCourseID(), selectedModule.getModuleID());
 	selectedCourse.getCoreModules().add(selectedModule);
         return request;
     }
 
+    /**
+     * An elective module can be added so long as a module has been selected
+     * from the drop-down list.
+     * @param request HTTP request to initialise
+     * @return initialised HTTP request
+     * @throws SQLException if the Elective Module couldn't be added
+     */
     private HttpServletRequest addElectiveModule(HttpServletRequest request) throws SQLException {
-	this.initialise(request, null);
+	this.initialise(request);
 	moduleIO.addElective(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), selectedCourse.getCourseID(), selectedModule.getModuleID());
 	selectedCourse.getElectiveModules().add(selectedModule);
 	
         return request;
     }
     
+    /**
+     * A core module can be to be removed.
+     * @param request HTTP request to initialise
+     * @return initialised HTTP request
+     * @throws SQLException if the Core Module couldn't be removed
+     */
     private HttpServletRequest removeCoreModule(HttpServletRequest request) throws SQLException {
-        this.initialise(request, null);
+        this.initialise(request);
 	moduleIO.removeCore(selectedCourse.getCourseID(), selectedModule.getModuleID());
 	selectedCourse.getCoreModules().remove(selectedModule);
         return request;
     }
 
+    /**
+     * An elective module can be to be removed.
+     * @param request HTTP request to initialise
+     * @return initialised HTTP request
+     * @throws SQLException if the Elective Module couldn't be removed
+     */
     private HttpServletRequest removeElectiveModule(HttpServletRequest request) throws SQLException {
-	this.initialise(request, null);
+	this.initialise(request);
 	moduleIO.removeElective(selectedCampus.getCampusID(), selectedDiscipline.getDisciplineID(), selectedCourse.getCourseID(), selectedModule.getModuleID());
 	selectedCourse.getElectiveModules().remove(selectedModule);
 	
         return request;
     }
     
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.

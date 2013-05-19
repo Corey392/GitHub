@@ -66,8 +66,8 @@ public class RegisterServlet extends HttpServlet implements SingleThreadModel {
     /**
      * Registers a student user with the database. Will set
      * error messages in the request and return the request.
-     * @param request
-     * @return
+     * @param request HTTP request containing data pertaining to the student to register
+     * @return HTTP request containing details of the request's failure or success
      */
 	private HttpServletRequest registerStudent(HttpServletRequest request) {
 		if (request.getParameter("userID") != null) {
