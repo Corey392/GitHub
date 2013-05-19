@@ -22,13 +22,14 @@ import util.Util;
 
 /**
 * Handles the Maintenance/Data-entry page for a course's core modules.
-* @author Adam Shortall, Bryce Carr
+* @author Adam Shortall, Bryce Carr, Mitch Carr
 * Created:	Unknown
 * Modified:	04/05/2013
 * Version:	1.010
 * Changelog:	04/05/2013: Bryce Carr:	Deleted/modified code to fit its new context (as an extension to Maintain Course).
 *					Implemented Core adding/removal.
 *		05/05/2013: Bryce Carr:	Edited initialise() to reduce calls to database.
+*		19/05/2013: Mitch Carr:	Removed response parameter of initialise(); it wasn't being used at all anywhere
 */
 public class MaintainCoreModulesServlet extends HttpServlet {
 private HttpSession session;
@@ -38,9 +39,10 @@ private HttpSession session;
     Course selectedCourse;
     
     /**
-     * Sets variables for every processRequest
+     * Sets variables for every processRequest.
+     * @param request HTTP request containing data to use to initialise local variables
      */
-    private void initialise(HttpServletRequest request, HttpServletResponse response) {
+    private void initialise(HttpServletRequest request) {
         session = request.getSession();
         user = (User) session.getAttribute("user");
 
@@ -58,6 +60,10 @@ private HttpSession session;
 	selectedCourse = (Course)session.getAttribute("selectedCourse");
     }
     
+    /**
+     * Sets all of the servlet's field to null. Called after initialise and a subsequent call have executed.
+     * Currently unused, but left for future implementation.
+     */
     private void deInitialise()	{
 	session = null;
 	user = null;
@@ -65,6 +71,7 @@ private HttpSession session;
 	selectedModule = null;
 	selectedCourse = null;
     }
+    
     /**
     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
     * @param request servlet request
@@ -78,7 +85,7 @@ private HttpSession session;
         PrintWriter out = response.getWriter();
         try {
             String url = RPLPage.CLERICAL_CORE_MODULES.relativeAddress;
-            this.initialise(request, response);
+            this.initialise(request);
             
             String backToCourse = request.getParameter("backToCourse");
             

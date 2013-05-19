@@ -1,14 +1,5 @@
 package web;
 
-/**<b>Purpose:</b> Processes the 'Create Claim' form for Students.
- * @author ?, Todd Wiggins, Mitchell Carr
- * @version: 1.12
- * Created:	?
- * Modified: 25/04/2013: TW: Added validation for all 4 fields and now returns an error message for each.
- *			 30/04/2013: TW: Moved to an AJAX method of updating select boxes. Added the 'post' boolean to process request.
- *			 04/05/2013: MC: Fixed setClaimID calls
- *			 05/05/2013: TW: Fixed reset of Campus on failed submit attempt.
- */
 import data.*;
 import domain.*;
 import java.io.IOException;
@@ -28,29 +19,32 @@ import util.RPLPage;
 import util.RPLServlet;
 import util.Util;
 
-/**
- * This servlet is for the creation of Claims by students. It is used to create
- * both RPL and Previous Studies Claims.
- * <p/>
- * @author James Purves
+/**<b>Purpose:</b> Processes the 'Create Claim' form for Students.
+ * @author James Purves, Todd Wiggins, Mitchell Carr
+ * @version: 1.12
+ * Created:	?
+ * Modified: 25/04/2013: TW: Added validation for all 4 fields and now returns an error message for each.
+ *			 30/04/2013: TW: Moved to an AJAX method of updating select boxes. Added the 'post' boolean to process request.
+ *			 04/05/2013: MC: Fixed setClaimID calls
+ *			 05/05/2013: TW: Fixed reset of Campus on failed submit attempt.
  */
 public class CreateClaimServlet extends HttpServlet {
-	/**
+	
+        /**
 	 * Processes requests for both HTTP
 	 * <code>GET</code> and
 	 * <code>POST</code> methods.
 	 * <p/>
 	 * @param request  servlet request
 	 * @param response servlet response
+         * @param post Boolean representing whether to post the information or just process it.
+         *              If true, the information is posted.
 	 * @throws ServletException if a servlet-specific error occurs
 	 * @throws IOException      if an I/O error occurs
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response, boolean post) throws ServletException, IOException {
 
 		String url;
-		//Mitchell: There is currently no path on which this variable is not
-		//initialized, so it doesn't need a default variable. This will change only
-		//if the current if/else structure below is altered
 
 		// Gets the session and the current user.
 		HttpSession session = request.getSession();
@@ -207,9 +201,9 @@ public class CreateClaimServlet extends HttpServlet {
 	 * Returns the campus selected in the campus combobox on the createClaim
 	 * page, if there was one selected.
 	 * <p/>
-	 * @param request  the request
+	 * @param request  HTTP request containing the ID of the campus to retrieve
 	 * @param campuses the list of campuses to get the campus from
-	 * @return the selected campus
+	 * @return the selected campus. If it couldn't be found, returns an empty Campus object
 	 */
 	private Campus getSelectedCampus(HttpServletRequest request, ArrayList<Campus> campuses) {
 		String campusID = request.getParameter("campus");
@@ -228,9 +222,9 @@ public class CreateClaimServlet extends HttpServlet {
 	 * Returns the discipline selected in the discipline combobox on the
 	 * createClaim page, if there was one selected.
 	 * <p/>
-	 * @param request     the request
+	 * @param request     HTTP request containing the ID of the Discipline to retrieve
 	 * @param disciplines the list of disciplines to get the discipline from
-	 * @return the selected discipline
+	 * @return the selected discipline. If it couldn't be found, returns an empty Discipline object
 	 */
 	private Discipline getSelectedDiscipline(HttpServletRequest request, ArrayList<Discipline> disciplines) {
 		String disciplineID = request.getParameter("discipline");
@@ -249,9 +243,9 @@ public class CreateClaimServlet extends HttpServlet {
 	 * Returns the course selected in the course combobox on the createClaim
 	 * page, if there was one selected.
 	 * <p/>
-	 * @param request the request
+	 * @param request HTTP request containing the ID of the Course to retrieve
 	 * @param courses the list of courses to get the course from
-	 * @return the selected course
+	 * @return the selected course. If it couldn't be found, returns an empty Course object
 	 */
 	private Course getSelectedCourse(HttpServletRequest request, ArrayList<Course> courses) {
 		String courseID = request.getParameter("course");
@@ -283,7 +277,7 @@ public class CreateClaimServlet extends HttpServlet {
 	 * Returns a list of disciplines for a given campus.
 	 * <p/>
 	 * @param user  the current user
-	 * @param claim the current claim
+	 * @param claim Claim containing the ID of the Campus to retrieve Disciplines
 	 * @return the list of disciplines
 	 */
 	protected static ArrayList<Discipline> getDisciplineList(User user, Claim claim) {
@@ -304,7 +298,7 @@ public class CreateClaimServlet extends HttpServlet {
 	 * Returns a list of courses for a given campus and discipline.
 	 * <p/>
 	 * @param user  the current user
-	 * @param claim the current claim
+	 * @param claim Claim from which to retrieve the IDs of the CampusCourseDiscipline to get Courses pertaining to
 	 * @return the list of courses
 	 */
 	protected static ArrayList<Course> getCourseList(User user, Claim claim) {
