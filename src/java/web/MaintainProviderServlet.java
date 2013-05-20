@@ -93,59 +93,6 @@ public class MaintainProviderServlet extends HttpServlet {
         }
         
     }
-    
-//    
-//    /**
-//     * Adds a provider to the database, modifies the request.
-//     * @param request 
-//     */
-//    private void addProvider(HttpServletRequest request) {
-//        HttpSession session = request.getSession();
-//        User user = (User) session.getAttribute("user");
-//        
-//        String name = request.getParameter("newProviderName");
-//	char providerID = ()
-//        Provider provider = new Provider(name);
-//        
-//        if (provider.validate() == null) {
-//            ProviderIO providerIO = new ProviderIO(user.role);
-//            try {
-//                providerIO.insert(provider);
-//                request.setAttribute("providerUpdatedMessage", "Provider added successfully");
-//            } catch (SQLException ex) {
-//                Logger.getLogger(MaintainProviderServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        } else {
-//            RPLError invalidNameError = new RPLError(provider.validate());
-//            request.setAttribute("invalidNameError", invalidNameError);
-//        }
-//    }
-    
-    
-//    /**
-//     * Deletes a provider from the database, modifies the request.
-//     * @param request 
-//     */
-//    private void deleteProvider(HttpServletRequest request) {
-//        HttpSession session = request.getSession();
-//        User user = (User) session.getAttribute("user");
-//        
-//        String ID = request.getParameter("deleteProvider");
-//	Provider deleteProvider;
-//        
-//        if (ID != null) {
-//            ProviderIO providerIO = new ProviderIO(user.role);
-//            try {
-//		deleteProvider = providerIO.getByID(Integer.valueOf(ID));
-//                providerIO.delete(deleteProvider);
-//                request.setAttribute("providerUpdatedMessage", deleteProvider.getName() + " (ID: " + deleteProvider.getProviderID() + ") deleted successfully.");
-//            } catch (SQLException ex) {
-//                Logger.getLogger(MaintainProviderServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        } else {
-//            request.setAttribute("providerUpdatedMessage", "Error: Provider not deleted.");
-//        }
-//    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
