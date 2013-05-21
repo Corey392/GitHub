@@ -46,15 +46,12 @@ public class AddNewUserServlet extends HttpServlet implements SingleThreadModel 
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        Teacher = new User();
         try {
             url = RPLPage.REGISTER_USER.relativeAddress; // Address of next jsp to load, by default return the register page, if successful change URL
             session = request.getSession();
-            session.setAttribute("user", Teacher);
             // Check to see if there is any form data, then validate:
             request = this.registerTeacher(request);
 
-            session.setAttribute("user", Teacher);
             RequestDispatcher dispatcher = request.getRequestDispatcher(url);
             dispatcher.forward(request, response);
         } catch(Exception e) {
@@ -73,10 +70,11 @@ public class AddNewUserServlet extends HttpServlet implements SingleThreadModel 
 	private HttpServletRequest registerTeacher(HttpServletRequest request) {
 		if (request.getParameter("userID") != null && request.getParameter("role") != null) {
 			//String passwordConfirm;
-			Teacher = (User) session.getAttribute("user");
 			if (Teacher == null) {
+				System.out.println("ROLE SELECTED IS: "+request.getParameter("role").charAt(0));
 				Teacher = new User(Role.roleFromChar(request.getParameter("role").charAt(0)));
 			}
+			System.out.println("TEACHER ROLE: "+Teacher.getRole().toString());
 			Teacher.setUserID(request.getParameter("userID"));
 			Teacher.setStudentID(request.getParameter("userID"));
 			Teacher.setFirstName(request.getParameter("firstName"));
@@ -91,32 +89,32 @@ public class AddNewUserServlet extends HttpServlet implements SingleThreadModel 
 			Teacher.setPassword(request.getParameter("password"));
 			//passwordConfirm = request.getParameter("passwordConfirm");
 			Teacher.setStaff(request.getParameter("staff") != null && request.getParameter("staff").equals("yes") ? true : false);
-			boolean isValid = true;
-			if (!Teacher.validateField(User.Field.EMAIL)) {
-				request.setAttribute("emailError", new RPLError(FieldError.STUDENT_EMAIL));
-				isValid = false;
-			}
-			if (!Teacher.validateField(User.Field.USER_ID)) {
-				request.setAttribute("userIDError", new RPLError(FieldError.STUDENT_ID));
-				isValid = false;
-			}
-			if (!Teacher.validateField(User.Field.FIRST_NAME)) {
-				request.setAttribute("firstNameError", new RPLError(FieldError.NAME));
-				isValid = false;
-			}
-			if (!Teacher.validateField(User.Field.LAST_NAME)) {
-				request.setAttribute("lastNameError", new RPLError(FieldError.NAME));
-				isValid = false;
-			}
-			if ((request.getParameter("acceptTerms") == null || !request.getParameter("acceptTerms").equals("yes")) && (request.getParameter("acceptPrivacy") == null || !request.getParameter("acceptPrivacy").equals("yes"))) {
-				request.setAttribute("termsAndCondError", new RPLError(FieldError.TERMS_AND_COND));
-				isValid = false;
-			}
-			if(isValid) {
+//			boolean isValid = true;
+//			if (!Teacher.validateField(User.Field.EMAIL)) {
+//				request.setAttribute("emailError", new RPLError(FieldError.STUDENT_EMAIL));
+//				isValid = false;
+//			}
+//			if (!Teacher.validateField(User.Field.USER_ID)) {
+//				request.setAttribute("userIDError", new RPLError(FieldError.STUDENT_ID));
+//				isValid = false;
+//			}
+//			if (!Teacher.validateField(User.Field.FIRST_NAME)) {
+//				request.setAttribute("firstNameError", new RPLError(FieldError.NAME));
+//				isValid = false;
+//			}
+//			if (!Teacher.validateField(User.Field.LAST_NAME)) {
+//				request.setAttribute("lastNameError", new RPLError(FieldError.NAME));
+//				isValid = false;
+//			}
+//			if ((request.getParameter("acceptTerms") == null || !request.getParameter("acceptTerms").equals("yes")) && (request.getParameter("acceptPrivacy") == null || !request.getParameter("acceptPrivacy").equals("yes"))) {
+//				request.setAttribute("termsAndCondError", new RPLError(FieldError.TERMS_AND_COND));
+//				isValid = false;
+//			}
+			if(true) {
 				try {
+					System.out.println("TEACHER IS: "+Teacher.toString());
 					new UserIO(Teacher.role).insert(Teacher);
-					Teacher.logIn();
-					url = RPLPage.REGISTER_CONFIRM.relativeAddress;
+					System.out.println("TEACHER INSERTED");
 				} catch (SQLException e) {
 					System.out.println("AddNewUserServlet: registerStudent: SQLException: "+e.getMessage());
 					if (e.getSQLState().equals(PostgreError.UNIQUE_VIOLATION.code)) {
@@ -126,7 +124,7 @@ public class AddNewUserServlet extends HttpServlet implements SingleThreadModel 
 					System.out.println("AddNewUserServlet: registerStudent: Exception: "+e.getMessage());
 				}
 			}
-                        
+
 		}
         return request;
     }

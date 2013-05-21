@@ -163,6 +163,10 @@
         <servlet-name>GetFileServlet</servlet-name>
         <servlet-class>web.GetFileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddNewUserServlet</servlet-name>
+        <servlet-class>web.AddNewUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -296,6 +300,10 @@
     <servlet-mapping>
         <servlet-name>MaintainCoreModulesServlet</servlet-name>
         <url-pattern>/maintenance/coreModules</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewUserServlet</servlet-name>
+        <url-pattern>/maintenance/register</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddEvidencePrevServlet</servlet-name>
