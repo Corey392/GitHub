@@ -1,8 +1,8 @@
 /* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:	?
- *  Version:	v2.170
- *  Modified:	13/05/2013
+ *  Version:	v2.190
+ *  Modified:	21/05/2013
  *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
@@ -35,6 +35,7 @@
 		v2.166:	Todd:	Updated 'fn_insertevidence', 'fn_updateevidence' in line with Table update.
  *		v2.170:	Todd:	Added 'fn_insertFile', 'fn_updateFile', 'fn_deleteFile', 'fn_deleteFiles', 'fn_getAllFiles', 'fn_getFileByID'. Added Permissions for "File" table.
  *		v2.180: Mitch:	Updated 'fn_getAllFiles' and 'fn_getFileByID'; neither would work with pgadmin previously.
+ *		v2.190: Mitch:	Fixed issue with 'fn_getAllFiles' and 'fn_getFileByID' where was failing under some circumstances.
 * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1581,7 +1582,7 @@ CREATE OR REPLACE FUNCTION fn_insertFile(claimID int, filename text) RETURNS voi
 	AS $_$
 BEGIN
 	INSERT INTO "File" ("claimID", "filename")
-		VALUES (claimID, filename);
+		VALUES ($1, $2);
 END;
 $_$;
 
@@ -1592,8 +1593,8 @@ CREATE OR REPLACE FUNCTION fn_updateFile(_fileID int, _claimID int, _filename te
 	AS $_$
 BEGIN
 	UPDATE "File"
-		SET "filename" = _filename
-		WHERE "fileID" = _fileID AND "claimID" = _claimID;
+		SET "filename" = $3
+		WHERE "fileID" = $1 AND "claimID" = $2;
 END;
 $_$;
 
@@ -1604,7 +1605,7 @@ CREATE OR REPLACE FUNCTION fn_deleteFile(_fileID int) RETURNS void
 	AS $_$
 BEGIN
 	DELETE FROM "File"
-		WHERE "fileID" = _fileID;
+		WHERE "fileID" = $1;
 END;
 $_$;
 
@@ -1615,32 +1616,28 @@ CREATE OR REPLACE FUNCTION fn_deleteFiles(_claimID int) RETURNS void
 	AS $_$
 BEGIN
 	DELETE FROM "File"
-		WHERE "claimID" = _claimID;
+		WHERE "claimID" = $1;
 END;
 $_$;
 
 
 --Added 13/05/2013, Todd Wiggins
 CREATE OR REPLACE FUNCTION fn_getAllFiles(_claimID int) RETURNS SETOF "File"
-	LANGUAGE plpgsql
+	LANGUAGE sql
 	AS $_$
-BEGIN
 	SELECT *
 		FROM "File"
-		WHERE "claimID" = _claimID;
-END;
+		WHERE "claimID" = $1;
 $_$;
 
 
 --Added 13/05/2013, Todd Wiggins
 CREATE OR REPLACE FUNCTION fn_getFileByID(_fileID int) RETURNS SETOF "File"
-	LANGUAGE plpgsql
+	LANGUAGE sql
 	AS $_$
-BEGIN
 	SELECT *
 		FROM "File"
-		WHERE "fileID" = _fileID;
-END;
+		WHERE "fileID" = $1;
 $_$;
 
 --
