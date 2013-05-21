@@ -31,6 +31,7 @@ import util.RPLPage;
  *  @version    1.001
  *	Created:    13/05/2013
  *	Change Log: 15/05/2013: TW: Fixed removal of files, now updates list correctly.
+ *	            21/05/2013: TW: Added handling of the file types.
  */
 public class AttachEvidenceServlet extends HttpServlet {
 
@@ -72,17 +73,21 @@ public class AttachEvidenceServlet extends HttpServlet {
 				while (it.hasNext()) {
 					FileItem fileItem = it.next();
 					if (!fileItem.isFormField()) {
-						//Ensure the folder for the files exists otherwise create it.
-						fileFolderLocation.mkdirs();
-						//Generate the file name and location to save the files uploaded.
-						String fileName = fileItem.getName();
-						File fileSaveLocation = new File(ClaimFile.directoryClaims+fileFolder+fileName);
-						//Save the file to the new loaction.
-						fileItem.write(fileSaveLocation);
+						if (fileItem.getContentType().equalsIgnoreCase("application/pdf") || fileItem.getContentType().startsWith("image/")) {
+							//Ensure the folder for the files exists otherwise create it.
+							fileFolderLocation.mkdirs();
+							//Generate the file name and location to save the files uploaded.
+							String fileName = fileItem.getName();
+							File fileSaveLocation = new File(ClaimFile.directoryClaims+fileFolder+fileName);
+							//Save the file to the new loaction.
+							fileItem.write(fileSaveLocation);
 
-						//Add the file references to the database.
-						claimFiles.add(new ClaimFile(claim.getClaimID(), fileName));
-						System.out.println("File Uploaded to: "+fileSaveLocation.getAbsolutePath());
+							//Add the file references to the database.
+							claimFiles.add(new ClaimFile(claim.getClaimID(), fileName));
+							System.out.println("File Uploaded to: "+fileSaveLocation.getAbsolutePath());
+						} else {
+							request.setAttribute("error", "The file '"+fileItem.getName()+"' is not a valid Image or PDF file.");
+						}
 					}
 				}
 				//Update the database

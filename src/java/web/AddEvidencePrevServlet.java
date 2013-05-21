@@ -55,13 +55,11 @@ public class AddEvidencePrevServlet extends HttpServlet {
 
 		boolean editable = false;
 		boolean attachEvidence = false;
-		System.out.println("STATUS::: "+claim.getStatus());
 		if (user.role.name().equals(Role.STUDENT.name())) {
 			if (claim.getStatus().code == Status.DRAFT.code || claim.getStatus().code == Status.EVIDENCE.code) {
 				editable = true;
 			}
 			if (claim.getStatus().code != Status.EMPTY_DRAFT.code && claim.getStatus().code != Status.DRAFT.code && claim.getStatus().code != Status.PRELIMINARY.code) {
-				System.out.println("HELLO");
 				attachEvidence = true;
 			}
 		} else if (user.role.name().equals(Role.TEACHER.name()) || user.role.name().equals(Role.ADMIN.name())) {

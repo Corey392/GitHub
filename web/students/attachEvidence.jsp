@@ -27,7 +27,7 @@
 		upload has completed, your files will be displayed below.</p>
 		<p>Files being uploaded must an Image (for scanned documents) or Adobe PDF format</p>
 		<div id="upload">
-			<input type="file" name="files" accept="images/*|application/pdf" multiple>
+			<input type="file" name="files" accept="image/*|application/pdf" multiple>
 			<br/>
 			<div id="buttons">
 				<input type="submit" name="submitFiles" value="Upload Files to Claim">
