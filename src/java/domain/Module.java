@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import util.FieldError;
 
@@ -10,13 +11,14 @@ import util.FieldError;
  * that list performance criteria for gaining credit for the
  * module, but the list of elements may be empty.
  * @author Adam Shortall, Todd Wiggins, Mitchell Carr
- * @version    1.10
+ * @version    1.10.01
  * Created:    ?
  * Modified:   05/05/2013: TW: Added 'National Module ID', deprecated existing constructors.
- * 	       05/05/2013: MC: Removed unnecessary check, minor cleanup
- *              15/05/2013: MC: Removed two unused, deprecated methods
+ * 	           05/05/2013: MC: Removed unnecessary check, minor cleanup
+ *             15/05/2013: MC: Removed two unused, deprecated methods
+ *             21/05/2013: TW: Added Serializable as was throwing an error.
  */
-public class Module implements Comparable<Module> {
+public class Module implements Comparable<Module>, Serializable {
 
     protected String moduleID;
     private String nationalModuleID;
