@@ -7,6 +7,7 @@
     Changelog:	27/04/2013: BC:	Added header label for Modules.
 		07/05/2013: BC:	Added button for Course deletion and message beans to accompany.
 		23/05/2013: BC:	Added form elements for Guide File uploading. Need to fix content type so that the servlet can get the file.
+				Fixed content type thing.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_COURSE; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
@@ -27,7 +28,7 @@
 
 <h2>Update Courses</h2>
 
-<form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">
+<form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>" enctype="multipart/form-data">
 
 
 ${courseIDError}${updateSuccess}${deleteSuccess}${courseNameError}

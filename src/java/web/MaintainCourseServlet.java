@@ -7,37 +7,37 @@ import data.PostgreError;
 import domain.Course;
 import domain.GuideFile;
 import domain.User;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.tomcat.util.http.fileupload.FileItem;
+import javax.servlet.http.Part;
 import org.apache.tomcat.util.http.fileupload.FileItemFactory;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import util.FieldError;
 import util.RPLError;
 import util.RPLPage;
 import util.RPLServlet;
-//import util.Util;
 
 /**
  *
  * @author Adam Shortall, Bryce Carr, Mitchell Carr
- * @version 1.031
+ * @version 1.040
  * Created:	Unknown
  * Modified:	23/05/2013
  * Change Log:	08/04/2013: Bryce Carr:	Made small changes to incorporate guideFileAddress DB field.
@@ -45,7 +45,9 @@ import util.RPLServlet;
  *		07/05/2013: Bryce Carr:	Implemented Course deletion.
  *		15/05/2013: MC: Removed guideFileAddress fields to match Course
  *		23/05/2013: Bryce Carr: Attempted to implement Guide File uploading. It doesn't work yet - something to do with the content type of the request.
+ *					Actually implemented Guide File uploading.
  */
+@MultipartConfig
 public class MaintainCourseServlet extends HttpServlet {
 
     /**
@@ -73,24 +75,36 @@ public class MaintainCourseServlet extends HttpServlet {
 
 	    CourseIO courseIO = new CourseIO(user.role);
 	    ModuleIO moduleIO = new ModuleIO(user.role);
+	    
+	    if(request.getContentType() == null)    {
+		courseIO = new CourseIO(user.role);
+		ArrayList<Course> courses = courseIO.getList();
+		Collections.sort(courses);
+		request.setAttribute("courses", courses);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+		dispatcher.forward(request, response);
+	    }
 
 	    // Have either pressed 'Add Course', 'Save Courses', 'Update Modules', 'Attach GuideFile' or 'Back'
-	    if (request.getParameter("addCourse") != null) {
-		this.addCourse(request);
-	    } else if (request.getParameter("saveCourses") != null) {
-		this.saveCourses(request);
-	    } else if (request.getParameter("updateModules") != null) {
-		String id = request.getParameter("updateModules");
+	    if(!request.getMethod().equals("GET"))  {
+		if (request.getPart("addCourse") != null) {
+		    this.addCourse(request);
+		} else if (request.getPart("saveCourses") != null) {
+		    this.saveCourses(request);
+		} else if (request.getPart("updateModules") != null) {
+		    String id = getValue(request.getPart("updateModules"));
 
-		// Load course into session
-		Course course = courseIO.getByID(id);
-		course.setCoreModules(moduleIO.getListOfCores(id));
-		session.setAttribute("selectedCourse", course);
-		url = RPLServlet.MAINTAIN_CORE_MODULES_SERVLET.relativeAddress;
-	    } else if (request.getParameter("deleteCourse") != null) {
-		this.deleteCourse(request);
-	    } else if (request.getParameter("uploadGuideFile") != null) {
-		this.uploadGuideFile(request);
+		    // Load course into session
+		    Course course = courseIO.getByID(id);
+		    course.setCoreModules(moduleIO.getListOfCores(id));
+		    session.setAttribute("selectedCourse", course);
+		    url = RPLServlet.MAINTAIN_CORE_MODULES_SERVLET.relativeAddress;
+		} else if (request.getPart("deleteCourse") != null) {
+		    this.deleteCourse(request);
+		} else if (request.getPart("uploadGuideFile") != null) {
+		    this.uploadGuideFile(request);
+		}
 	    }
 
 	    courseIO = new CourseIO(user.role);
@@ -112,11 +126,11 @@ public class MaintainCourseServlet extends HttpServlet {
      * @param request HTTP request containing within it the ID of the Course to
      * delete
      */
-    private void deleteCourse(HttpServletRequest request) {
+    private void deleteCourse(HttpServletRequest request) throws ServletException, IOException {
 	HttpSession session = request.getSession();
 	User user = (User) session.getAttribute("user");
 
-	String ID = request.getParameter("deleteCourse");
+	String ID = getValue(request.getPart("deleteCourse"));
 
 	if (ID != null) {
 	    CourseIO courseIO = new CourseIO(user.role);
@@ -175,9 +189,9 @@ public class MaintainCourseServlet extends HttpServlet {
      * @param request HTTP request containing within it the name and ID of a
      * Course to add
      */
-    private void addCourse(HttpServletRequest request) {
-	String courseID = request.getParameter("newCourseID");
-	String name = request.getParameter("newCourseName");
+    private void addCourse(HttpServletRequest request) throws ServletException, IOException {
+	String courseID = getValue(request.getPart("newCourseID"));
+	String name = getValue(request.getPart("newCourseName"));
 
 	Course course = new Course(courseID, name);
 	ArrayList<FieldError> errors = course.validate();
@@ -217,10 +231,10 @@ public class MaintainCourseServlet extends HttpServlet {
      * @param request HTTP request containing within it the ID of a Course and a
      * Guide File
      */
-    private void uploadGuideFile(HttpServletRequest request) {
+    private void uploadGuideFile(HttpServletRequest request) throws ServletException, IOException {
 	HttpSession session = request.getSession();
 	User user = (User) session.getAttribute("user");
-	String courseID = request.getParameter("uploadGuideFile");
+	String courseID = getValue(request.getPart("uploadGuideFile"));
 	GuideFile guideFile = null;
 	String message = "";
 	//Get ready for database activity
@@ -243,37 +257,46 @@ public class MaintainCourseServlet extends HttpServlet {
 	FileItemFactory factory = new DiskFileItemFactory();
 	ServletFileUpload upload = new ServletFileUpload(factory);
 	try {
-	    //Get the files
-	    List<FileItem> files = upload.parseRequest(request);
-	    Iterator<FileItem> it = files.iterator();
+	    //Get the file
+	    Part filePart = request.getPart("guideFile"); // Retrieves <input type="file" name="guideFile">
+	    InputStream fileContent = filePart.getInputStream();
+	    
+	    if (filePart.getContentType().equalsIgnoreCase("text/plain")) {
+		//Ensure the folder for the files exists otherwise create it.
+		fileFolderLocation.mkdirs();
+		//Generate the file name and location to save the files uploaded.
+		String fileSaveLocation = GuideFile.DIRECTORY_GUIDE_FILES + fileFolder + GuideFile.FILE_NAME;
+		//Save the file to the new loaction.
+		filePart.write(fileSaveLocation);
 
-	    while (it.hasNext()) {
-		FileItem fileItem = it.next();
-		if (!fileItem.isFormField()) {
-		    if (fileItem.getContentType().equalsIgnoreCase("text/plain")) {
-			//Ensure the folder for the files exists otherwise create it.
-			fileFolderLocation.mkdirs();
-			//Generate the file name and location to save the files uploaded.
-			File fileSaveLocation = new File(GuideFile.DIRECTORY_GUIDE_FILES + fileFolder + GuideFile.FILE_NAME);
-			//Save the file to the new loaction.
-			fileItem.write(fileSaveLocation);
-
-			//Add the file references to the database.
-			guideFile = (new GuideFile(courseID, GuideFile.FILE_NAME));
-			System.out.println("File Uploaded to: " + fileSaveLocation.getAbsolutePath());
-		    } else {
-			request.setAttribute("uploadError", "The file '" + fileItem.getName() + "' is not a valid text file.");
-		    }
-		}
+		//Add the file references to the database.
+		guideFile = (new GuideFile(courseID, GuideFile.FILE_NAME));
+		System.out.println("File Uploaded to: " + fileSaveLocation);
+	    } else {
+		request.setAttribute("uploadError", "The file is not a valid text file.");
 	    }
+		
+	    
 	    //Update the database
-	    fileIO.insert(guideFile);
-	} catch (FileUploadException ex) {
+	    if(guideFile != null)   {
+		fileIO.insert(guideFile);
+	    }
+	} /*catch (FileUploadException ex) {
 	    Logger.getLogger(MaintainCourseServlet.class.getName()).log(Level.SEVERE, null, ex);
-	} catch (Exception e) {
+	} */catch (Exception e) {
 	    Logger.getLogger(MaintainCourseServlet.class.getName()).log(Level.SEVERE, null, e);
 	}
 
+    }
+    
+    private static String getValue(Part part) throws IOException {
+	BufferedReader reader = new BufferedReader(new InputStreamReader(part.getInputStream(), "UTF-8"));
+	StringBuilder value = new StringBuilder();
+	char[] buffer = new char[1024];
+	for (int length = 0; (length = reader.read(buffer)) > 0;) {
+	    value.append(buffer, 0, length);
+	}
+	return value.toString();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
