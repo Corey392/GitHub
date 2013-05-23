@@ -1,8 +1,8 @@
 /* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:	?
- *  Version:	v2.190
- *  Modified:	21/05/2013
+ *  Version:	v2.200
+ *  Modified:	23/05/2013
  *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
@@ -36,6 +36,7 @@
  *		v2.170:	Todd:	Added 'fn_insertFile', 'fn_updateFile', 'fn_deleteFile', 'fn_deleteFiles', 'fn_getAllFiles', 'fn_getFileByID'. Added Permissions for "File" table.
  *		v2.180: Mitch:	Updated 'fn_getAllFiles' and 'fn_getFileByID'; neither would work with pgadmin previously.
  *		v2.190: Mitch:	Fixed issue with 'fn_getAllFiles' and 'fn_getFileByID' where was failing under some circumstances.
+		v2.200:	Bryce:	Added 'fn_setGuideFileAddress' and 'fn_deleteGuideFile'.
 * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1640,6 +1641,24 @@ CREATE OR REPLACE FUNCTION fn_getFileByID(_fileID int) RETURNS SETOF "File"
 		WHERE "fileID" = $1;
 $_$;
 
+--Added 23/05/2013, Bryce Carr
+CREATE OR REPLACE FUNCTION fn_setGuideFileAddress(courseID character(5), guideFileAddress text) RETURNS void
+	LANGUAGE sql
+	AS $_$
+	UPDATE "Course"
+	    SET "guideFileAddress" = $2
+	    WHERE "courseID" = $1;
+$_$;
+
+--Added 23/05/2013, Bryce Carr
+CREATE OR REPLACE FUNCTION fn_deleteGuideFile(courseID character(5)) RETURNS void
+	LANGUAGE sql
+	AS $_$
+	UPDATE "Course"
+	    SET "guideFileAddress" = ''
+	    WHERE "courseID" = $1;
+$_$;
+
 --
 -- Name: public; Type: ACL; Schema: -; Owner: -
 --
@@ -1663,6 +1682,25 @@ GRANT ALL ON FUNCTION fn_addcoursetodiscipline(campusid text, disciplineid integ
 GRANT ALL ON FUNCTION fn_addcoursetodiscipline(campusid text, disciplineid integer, courseid text) TO teacher;
 GRANT ALL ON FUNCTION fn_addcoursetodiscipline(campusid text, disciplineid integer, courseid text) TO student;
 
+--
+-- Name: fn_setGuideFileAddress(character(5), text); Type: ACL; Schema: public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION fn_setGuideFileAddress(courseID character(5), guideFileAddress text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_setGuideFileAddress(courseID character(5), guideFileAddress text) FROM postgres;
+GRANT ALL ON FUNCTION fn_setGuideFileAddress(courseID character(5), guideFileAddress text) TO postgres;
+GRANT ALL ON FUNCTION fn_setGuideFileAddress(courseID character(5), guideFileAddress text) TO admin;
+GRANT ALL ON FUNCTION fn_setGuideFileAddress(courseID character(5), guideFileAddress text) TO clerical;
+
+--
+-- Name: fn_deleteGuideFile(character(5)); Type: ACL; Schema: public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION fn_deleteGuideFile(courseID character(5)) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_deleteGuideFile(courseID character(5)) FROM postgres;
+GRANT ALL ON FUNCTION fn_deleteGuideFile(courseID character(5)) TO postgres;
+GRANT ALL ON FUNCTION fn_deleteGuideFile(courseID character(5)) TO admin;
+GRANT ALL ON FUNCTION fn_deleteGuideFile(courseID character(5)) TO clerical;
 
 --
 -- Name: fn_addprovidertoclaimedmodule( integer, text, character); Type: ACL; Schema: public; Owner: -
