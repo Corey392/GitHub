@@ -129,6 +129,7 @@
 				<input type="submit" value="Back" name="back" />
 			</c:otherwise>
 		</c:choose>
+        <p>Please select the modules for which you are making a claim.</p>
 </form>
 
 <%@include file="../WEB-INF/jspf/footer.jspf" %>

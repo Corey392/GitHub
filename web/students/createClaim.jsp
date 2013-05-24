@@ -53,21 +53,21 @@
         <tr>
             <th>Campus:</th>
             <td colspan="2">
-        <select name="campus" id="campus" onchange="javascript:getDisciplines();">
-        <c:forEach var="aCampus" items="${campuses}">
-            <c:choose>
-                <c:when test="${aCampus.campusID == claim.campusID}">
-                    <option value="${aCampus.campusID}" selected="true">
-                        ${aCampus.name}
-                    </option>
-                </c:when><c:otherwise>
-                    <option value="${aCampus.campusID}">
-                        ${aCampus.name}
-                    </option>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-        </select>
+                <select name="campus" id="campus" onchange="javascript:getDisciplines();">
+                <c:forEach var="aCampus" items="${campuses}">
+                    <c:choose>
+                        <c:when test="${aCampus.campusID == claim.campusID}">
+                            <option value="${aCampus.campusID}" selected="true">
+                                ${aCampus.name}
+                            </option>
+                        </c:when><c:otherwise>
+                            <option value="${aCampus.campusID}">
+                                ${aCampus.name}
+                            </option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+                </select>
             </td>
         </tr>
         <tr>
@@ -79,17 +79,22 @@
             <th>Course:</th>
             <td colspan="2" id="ajaxCourse">
             </td>
-    </tr>
-    <tr>
-        <%-- Changed to radio buttons, JLC  --%>
-        <th>Claim Type:</th>
-        <td><input type="radio" name="claimType" value="prevStudies" />Previous Studies</td>
-        <td><input type="radio" name="claimType" value="rpl" />Recognition of Prior Learning</td>
-    </tr>
-    <tr>
-        <td><input type="submit" value="Create Claim" /></td>
-    </tr>
+        </tr>
+        <tr>
+            <%-- Changed to radio buttons, JLC  --%>
+            <th>Claim Type:</th>
+            <td><input type="radio" name="claimType" value="prevStudies" />Previous Studies</td>
+            <td><input type="radio" name="claimType" value="rpl" />Recognition of Prior Learning</td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Create Claim" /></td>        
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
     </table>
+            <p>Please select the Campus, Discipline and Course for which you are making a claim.<br />
+            If your experience was at a TAFE institute, select Previous Studies. Otherwise, select Recognition of Prior Learning.</p>
 	<c:if test="${errorCampusID.message.length() > 0 || errorDisciplineID.message.length() > 0 || errorCourseID.message.length() > 0 || errorClaimType.message.length() > 0}">
 		<div id="errorMessage">${errorCampusID.message}${errorDisciplineID.message}${errorCourseID.message}${errorClaimType.message}</div>
 	</c:if>
