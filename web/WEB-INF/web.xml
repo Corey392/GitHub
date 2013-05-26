@@ -316,6 +316,9 @@
     <servlet-mapping>
         <servlet-name>GetFileServlet</servlet-name>
         <url-pattern>/students/getFile</url-pattern>
+        <url-pattern>/teachers/getFile</url-pattern>
+        <url-pattern>/admins/getFile</url-pattern>
+        <url-pattern>/maintenance/getFile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

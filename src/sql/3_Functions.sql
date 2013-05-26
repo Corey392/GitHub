@@ -1,8 +1,8 @@
 /* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:	?
- *  Version:	v2.200
- *  Modified:	23/05/2013
+ *  Version:	v2.210
+ *  Modified:	26/05/2013
  *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
@@ -23,21 +23,22 @@
  *      	v2.110: Todd:   Added 'fn_insertstudent' with supplying a password instead of returning a generated password.
  *		v2.120: Mitch:	Updated 'fn_deleteclaim' to delete claimed modules associated with the deleted claim.
  *		v2.121: Mitch:	Added 'fn_getclaimtotal'
-		v2.130:	Bryce:	Added 'fn_listmodulesnotcoreincourse'.
-		v2.140:	Mitch:	Updated both  'fn_updateclaim' methods.
-		v2.150: Todd:   Added 'fn_deletedraftclaim' to reduce read from Database from web server. Ensures only draft claims are deleted.
-		v2.160:	Bryce:	Fixed 'fn_insertelement' so that it increments PK properly.
-		v2.161:	Todd:	Updated 'fn_resetpassword' to accept User ID or Email address.
-		v2.162:	Todd:	Minor updates 'fn_insertevidence' and 'fn_updateevidence'.
-		v2.163:	Bryce:	Updated 'fn_insertcriterion' and 'fn_listcriteria' to account for new composite primary key in Criterion table.
-		v2.164:	Bryce:	Updated 'fn_deletecriterion' to account for new composite primary key in Criterion table.
-		v2.165:	Todd:	Fixed permissions for 'fn_insertcriterion', 'fn_deletecriterion' and 'fn_listcriteria'.
-		v2.166:	Todd:	Updated 'fn_insertevidence', 'fn_updateevidence' in line with Table update.
+ *		v2.130:	Bryce:	Added 'fn_listmodulesnotcoreincourse'.
+ *		v2.140:	Mitch:	Updated both  'fn_updateclaim' methods.
+ *		v2.150: Todd:   Added 'fn_deletedraftclaim' to reduce read from Database from web server. Ensures only draft claims are deleted.
+ *		v2.160:	Bryce:	Fixed 'fn_insertelement' so that it increments PK properly.
+ *		v2.161:	Todd:	Updated 'fn_resetpassword' to accept User ID or Email address.
+ *		v2.162:	Todd:	Minor updates 'fn_insertevidence' and 'fn_updateevidence'.
+ *		v2.163:	Bryce:	Updated 'fn_insertcriterion' and 'fn_listcriteria' to account for new composite primary key in Criterion table.
+ *		v2.164:	Bryce:	Updated 'fn_deletecriterion' to account for new composite primary key in Criterion table.
+ *		v2.165:	Todd:	Fixed permissions for 'fn_insertcriterion', 'fn_deletecriterion' and 'fn_listcriteria'.
+ *		v2.166:	Todd:	Updated 'fn_insertevidence', 'fn_updateevidence' in line with Table update.
  *		v2.170:	Todd:	Added 'fn_insertFile', 'fn_updateFile', 'fn_deleteFile', 'fn_deleteFiles', 'fn_getAllFiles', 'fn_getFileByID'. Added Permissions for "File" table.
  *		v2.180: Mitch:	Updated 'fn_getAllFiles' and 'fn_getFileByID'; neither would work with pgadmin previously.
  *		v2.190: Mitch:	Fixed issue with 'fn_getAllFiles' and 'fn_getFileByID' where was failing under some circumstances.
-		v2.200:	Bryce:	Added 'fn_setGuideFileAddress' and 'fn_deleteGuideFile'.
-* Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
+ *		v2.200:	Bryce:	Added 'fn_setGuideFileAddress' and 'fn_deleteGuideFile'.
+ *		v2.210:	Todd:	Added 'fn_getGuideFileByID'.
+ * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
 --
@@ -1658,6 +1659,17 @@ CREATE OR REPLACE FUNCTION fn_deleteGuideFile(courseID character(5)) RETURNS voi
 	    SET "guideFileAddress" = ''
 	    WHERE "courseID" = $1;
 $_$;
+
+
+--Added 26/05/2013, Todd Wiggins
+CREATE OR REPLACE FUNCTION fn_getGuideFileByID(_courseID character(5)) RETURNS text
+	LANGUAGE sql
+	AS $_$
+	SELECT "guideFileAddress"
+		FROM "Course"
+		WHERE "courseID" = $1;
+$_$;
+
 
 --
 -- Name: public; Type: ACL; Schema: -; Owner: -
@@ -3319,6 +3331,17 @@ GRANT ALL ON FUNCTION fn_getFileByID(_fileID int) TO admin;
 GRANT ALL ON FUNCTION fn_getFileByID(_fileID int) TO clerical;
 GRANT ALL ON FUNCTION fn_getFileByID(_fileID int) TO teacher;
 GRANT ALL ON FUNCTION fn_getFileByID(_fileID int) TO student;
+GRANT ALL ON FUNCTION fn_getAllFiles(_claimID int) TO student;
+
+
+--Added 26/05/2013, Todd Wiggins
+REVOKE ALL ON FUNCTION fn_getGuideFileByID(_courseID character(5)) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_getGuideFileByID(_courseID character(5)) FROM postgres;
+GRANT ALL ON FUNCTION fn_getGuideFileByID(_courseID character(5)) TO postgres;
+GRANT ALL ON FUNCTION fn_getGuideFileByID(_courseID character(5)) TO admin;
+GRANT ALL ON FUNCTION fn_getGuideFileByID(_courseID character(5)) TO clerical;
+GRANT ALL ON FUNCTION fn_getGuideFileByID(_courseID character(5)) TO teacher;
+GRANT ALL ON FUNCTION fn_getGuideFileByID(_courseID character(5)) TO student;
 
 
 

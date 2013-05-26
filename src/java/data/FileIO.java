@@ -17,6 +17,7 @@ import java.util.ArrayList;
  * Created:	23/05/2013
  * Change Log:	15/05/2013: TW: Fixed removal of Physical file, also now removes directory if no other files exist within the claims/id/ directory.
  *		23/05/2013: BC:	Added methods for working with Guide Files.
+ *		26/05/2013: TW:	Added 'getGuideFileByID()' method for use Student: 'Add Evidence'.
  */
 public class FileIO extends RPL_IO<ClaimFile> {
 
@@ -176,6 +177,26 @@ public class FileIO extends RPL_IO<ClaimFile> {
 	    directory.delete();
 	}
     }
+
+	/**
+	 * Gets the Guide File associated with the specified Course.
+	 * @param courseID The Course as character(5) we are trying to get the Guide File details for.
+	 * @return A GuideFile with the details of the file, or null if no files exist.
+	 * @throws SQLException Exception thrown by Database, check Database log or
+     * Tomcat Logs for more information if not caught elsewhere.
+	 */
+	public GuideFile getGuideFileByID(String courseID) throws SQLException {
+		String sql = "SELECT * FROM fn_getGuideFileByID(?)";
+		SQLParameter p1 = new SQLParameter(courseID);
+
+		ResultSet results = super.doPreparedStatement(sql, p1);
+
+		GuideFile gf = null;
+		while (results.next()) {
+			gf = new GuideFile(courseID, results.getString(1));
+		}
+		return gf;
+	}
 
     /**
      * Gets the file associated with the specified file ID.

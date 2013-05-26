@@ -3,11 +3,13 @@ package web;
 import data.FileIO;
 import domain.Claim;
 import domain.ClaimFile;
+import domain.GuideFile;
 import domain.User;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,9 +23,9 @@ import javax.servlet.http.HttpSession;
 
 /** Purpose:    Gets the file requested from system.
  *  @author     Todd Wiggins
- *  @version    1.000
+ *  @version    1.100
  *	Created:    14/05/2013
- *	Change Log:
+ *	Change Log: 26/05/2013: Added handling getting 'Guide Files' by adding the 'courseID' parameter.
  */
 public class GetFileServlet extends HttpServlet {
 	private static final int BUFFER_SIZE = 4096;
@@ -55,7 +57,6 @@ public class GetFileServlet extends HttpServlet {
 			if (claimFile != null) {
 				File file = new File(ClaimFile.directoryClaims + claimFile.getClaimID() + "/" + claimFile.getFilename());
 
-				//UP TO HERE
 				int length = 0;
 				ServletOutputStream outStream = response.getOutputStream();
 				ServletContext context  = getServletConfig().getServletContext();
@@ -81,6 +82,51 @@ public class GetFileServlet extends HttpServlet {
 				in.close();
 				outStream.close();
 			}
+		} else if (request.getParameter("courseID") != null) {
+			//Get session User & Claim.
+			HttpSession session = request.getSession();
+			User user = (User) session.getAttribute("user");
+
+			GuideFile guideFile;
+
+			try {
+				guideFile = new FileIO(user.role).getGuideFileByID(request.getParameter("courseID"));
+			} catch (SQLException ex) {
+				Logger.getLogger(GetFileServlet.class.getName()).log(Level.SEVERE, null, ex);
+				guideFile = null;
+			}
+
+			if (guideFile != null && guideFile.getFilename() != null) {
+				File file = new File(GuideFile.DIRECTORY_GUIDE_FILES + request.getParameter("courseID") + "/" + guideFile.getFilename());
+
+				int length = 0;
+				ServletOutputStream outStream = response.getOutputStream();
+				ServletContext context  = getServletConfig().getServletContext();
+				String mimetype = context.getMimeType(file.getAbsolutePath());
+
+				if (mimetype == null) {
+					mimetype = "application/octet-stream";
+				}
+				response.setContentType(mimetype);
+				response.setContentLength((int)file.length());
+				String fileName = request.getParameter("courseID") + file.getName();
+
+				// sets HTTP header
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+				byte[] byteBuffer = new byte[BUFFER_SIZE];
+				DataInputStream in = new DataInputStream(new FileInputStream(file));
+
+				// reads the file's bytes and writes them to the response stream
+				while ((length = in.read(byteBuffer)) != -1) {
+					outStream.write(byteBuffer,0,length);
+				}
+				in.close();
+				outStream.close();
+			} else {
+				PrintWriter out = response.getWriter();
+				out.println("There is no 'Guide' available for this Course.");
+			}
 		}
 	}
 
@@ -90,6 +136,6 @@ public class GetFileServlet extends HttpServlet {
 	 */
 	@Override
 	public String getServletInfo() {
-		return "Gets the file request from the system.";
+		return "Gets the file requested from the system.";
 	}// </editor-fold>
 }
