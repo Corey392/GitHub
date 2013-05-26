@@ -46,6 +46,7 @@ import util.RPLServlet;
  *		15/05/2013: MC: Removed guideFileAddress fields to match Course
  *		23/05/2013: Bryce Carr: Attempted to implement Guide File uploading. It doesn't work yet - something to do with the content type of the request.
  *					Actually implemented Guide File uploading.
+ *		26/05/2013:	Fixed "java.lang.IllegalStateException: Cannot forward after response has been committed" error.
  */
 @MultipartConfig
 public class MaintainCourseServlet extends HttpServlet {
@@ -62,9 +63,6 @@ public class MaintainCourseServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	response.setContentType("text/html;charset=UTF-8");
-	PrintWriter out = response.getWriter();
-	try {
 	    String url = RPLPage.CLERICAL_COURSE.relativeAddress;
 	    //String updateCourseID = Util.getPageStringID(request, "updateCourse");
 
@@ -75,48 +73,45 @@ public class MaintainCourseServlet extends HttpServlet {
 
 	    CourseIO courseIO = new CourseIO(user.role);
 	    ModuleIO moduleIO = new ModuleIO(user.role);
-	    
-	    if(request.getContentType() == null)    {
-		courseIO = new CourseIO(user.role);
-		ArrayList<Course> courses = courseIO.getList();
-		Collections.sort(courses);
-		request.setAttribute("courses", courses);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-		dispatcher.forward(request, response);
-	    }
+	    if(request.getContentType() == null) {
+			courseIO = new CourseIO(user.role);
+			ArrayList<Course> courses = courseIO.getList();
+			Collections.sort(courses);
+			request.setAttribute("courses", courses);
 
-	    // Have either pressed 'Add Course', 'Save Courses', 'Update Modules', 'Attach GuideFile' or 'Back'
-	    if(!request.getMethod().equals("GET"))  {
-		if (request.getPart("addCourse") != null) {
-		    this.addCourse(request);
-		} else if (request.getPart("saveCourses") != null) {
-		    this.saveCourses(request);
-		} else if (request.getPart("updateModules") != null) {
-		    String id = getValue(request.getPart("updateModules"));
+			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			dispatcher.forward(request, response);
+	    } else {
+			// Have either pressed 'Add Course', 'Save Courses', 'Update Modules', 'Attach GuideFile' or 'Back'
+			if(!request.getMethod().equals("GET"))  {
+				if (request.getPart("addCourse") != null) {
+					this.addCourse(request);
+				} else if (request.getPart("saveCourses") != null) {
+					this.saveCourses(request);
+				} else if (request.getPart("updateModules") != null) {
+					String id = getValue(request.getPart("updateModules"));
 
-		    // Load course into session
-		    Course course = courseIO.getByID(id);
-		    course.setCoreModules(moduleIO.getListOfCores(id));
-		    session.setAttribute("selectedCourse", course);
-		    url = RPLServlet.MAINTAIN_CORE_MODULES_SERVLET.relativeAddress;
-		} else if (request.getPart("deleteCourse") != null) {
-		    this.deleteCourse(request);
-		} else if (request.getPart("uploadGuideFile") != null) {
-		    this.uploadGuideFile(request);
+					// Load course into session
+					Course course = courseIO.getByID(id);
+					course.setCoreModules(moduleIO.getListOfCores(id));
+					session.setAttribute("selectedCourse", course);
+					url = RPLServlet.MAINTAIN_CORE_MODULES_SERVLET.relativeAddress;
+				} else if (request.getPart("deleteCourse") != null) {
+					this.deleteCourse(request);
+				} else if (request.getPart("uploadGuideFile") != null) {
+					this.uploadGuideFile(request);
+				}
+			}
+
+			courseIO = new CourseIO(user.role);
+			ArrayList<Course> courses = courseIO.getList();
+			Collections.sort(courses);
+			request.setAttribute("courses", courses);
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			dispatcher.forward(request, response);
 		}
-	    }
-
-	    courseIO = new CourseIO(user.role);
-	    ArrayList<Course> courses = courseIO.getList();
-	    Collections.sort(courses);
-	    request.setAttribute("courses", courses);
-
-	    RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-	    dispatcher.forward(request, response);
-	} finally {
-	    out.close();
-	}
     }
 
     /**
@@ -260,7 +255,7 @@ public class MaintainCourseServlet extends HttpServlet {
 	    //Get the file
 	    Part filePart = request.getPart("guideFile"); // Retrieves <input type="file" name="guideFile">
 	    InputStream fileContent = filePart.getInputStream();
-	    
+
 	    if (filePart.getContentType().equalsIgnoreCase("text/plain")) {
 		//Ensure the folder for the files exists otherwise create it.
 		fileFolderLocation.mkdirs();
@@ -275,8 +270,8 @@ public class MaintainCourseServlet extends HttpServlet {
 	    } else {
 		request.setAttribute("uploadError", "The file is not a valid text file.");
 	    }
-		
-	    
+
+
 	    //Update the database
 	    if(guideFile != null)   {
 		fileIO.insert(guideFile);
@@ -288,7 +283,7 @@ public class MaintainCourseServlet extends HttpServlet {
 	}
 
     }
-    
+
     private static String getValue(Part part) throws IOException {
 	BufferedReader reader = new BufferedReader(new InputStreamReader(part.getInputStream(), "UTF-8"));
 	StringBuilder value = new StringBuilder();
