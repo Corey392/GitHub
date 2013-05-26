@@ -23,9 +23,10 @@ import javax.servlet.http.HttpSession;
 
 /** Purpose:    Gets the file requested from system.
  *  @author     Todd Wiggins
- *  @version    1.100
+ *  @version    1.110
  *	Created:    14/05/2013
  *	Change Log: 26/05/2013: Added handling getting 'Guide Files' by adding the 'courseID' parameter.
+ *	            26/05/2013: Added error messages if invalid files are specified, or the files do not physically exist.
  */
 public class GetFileServlet extends HttpServlet {
 	private static final int BUFFER_SIZE = 4096;
@@ -56,31 +57,38 @@ public class GetFileServlet extends HttpServlet {
 
 			if (claimFile != null) {
 				File file = new File(ClaimFile.directoryClaims + claimFile.getClaimID() + "/" + claimFile.getFilename());
+				if (file.exists()) {
+					int length = 0;
+					ServletOutputStream outStream = response.getOutputStream();
+					ServletContext context  = getServletConfig().getServletContext();
+					String mimetype = context.getMimeType(file.getAbsolutePath());
 
-				int length = 0;
-				ServletOutputStream outStream = response.getOutputStream();
-				ServletContext context  = getServletConfig().getServletContext();
-				String mimetype = context.getMimeType(file.getAbsolutePath());
+					if (mimetype == null) {
+						mimetype = "application/octet-stream";
+					}
+					response.setContentType(mimetype);
+					response.setContentLength((int)file.length());
+					String fileName = file.getName();
 
-				if (mimetype == null) {
-					mimetype = "application/octet-stream";
+					// sets HTTP header
+					response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+					byte[] byteBuffer = new byte[BUFFER_SIZE];
+					DataInputStream in = new DataInputStream(new FileInputStream(file));
+
+					// reads the file's bytes and writes them to the response stream
+					while ((length = in.read(byteBuffer)) != -1) {
+						outStream.write(byteBuffer,0,length);
+					}
+					in.close();
+					outStream.close();
+				} else {
+					PrintWriter out = response.getWriter();
+					out.println("The Evidence file requested is not available at this time.");
 				}
-				response.setContentType(mimetype);
-				response.setContentLength((int)file.length());
-				String fileName = file.getName();
-
-				// sets HTTP header
-				response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-
-				byte[] byteBuffer = new byte[BUFFER_SIZE];
-				DataInputStream in = new DataInputStream(new FileInputStream(file));
-
-				// reads the file's bytes and writes them to the response stream
-				while ((length = in.read(byteBuffer)) != -1) {
-					outStream.write(byteBuffer,0,length);
-				}
-				in.close();
-				outStream.close();
+			}  else {
+				PrintWriter out = response.getWriter();
+				out.println("The Evidence file requested is not a valid selection, refresh the Evidence page and try again.");
 			}
 		} else if (request.getParameter("courseID") != null) {
 			//Get session User & Claim.
@@ -99,30 +107,35 @@ public class GetFileServlet extends HttpServlet {
 			if (guideFile != null && guideFile.getFilename() != null) {
 				File file = new File(GuideFile.DIRECTORY_GUIDE_FILES + request.getParameter("courseID") + "/" + guideFile.getFilename());
 
-				int length = 0;
-				ServletOutputStream outStream = response.getOutputStream();
-				ServletContext context  = getServletConfig().getServletContext();
-				String mimetype = context.getMimeType(file.getAbsolutePath());
+				if (file.exists()) {
+					int length = 0;
+					ServletOutputStream outStream = response.getOutputStream();
+					ServletContext context  = getServletConfig().getServletContext();
+					String mimetype = context.getMimeType(file.getAbsolutePath());
 
-				if (mimetype == null) {
-					mimetype = "application/octet-stream";
+					if (mimetype == null) {
+						mimetype = "application/octet-stream";
+					}
+					response.setContentType(mimetype);
+					response.setContentLength((int)file.length());
+					String fileName = request.getParameter("courseID") + file.getName();
+
+					// sets HTTP header
+					response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+					byte[] byteBuffer = new byte[BUFFER_SIZE];
+					DataInputStream in = new DataInputStream(new FileInputStream(file));
+
+					// reads the file's bytes and writes them to the response stream
+					while ((length = in.read(byteBuffer)) != -1) {
+						outStream.write(byteBuffer,0,length);
+					}
+					in.close();
+					outStream.close();
+				} else {
+					PrintWriter out = response.getWriter();
+					out.println("There is no 'Guide' available for this Course at this time.");
 				}
-				response.setContentType(mimetype);
-				response.setContentLength((int)file.length());
-				String fileName = request.getParameter("courseID") + file.getName();
-
-				// sets HTTP header
-				response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-
-				byte[] byteBuffer = new byte[BUFFER_SIZE];
-				DataInputStream in = new DataInputStream(new FileInputStream(file));
-
-				// reads the file's bytes and writes them to the response stream
-				while ((length = in.read(byteBuffer)) != -1) {
-					outStream.write(byteBuffer,0,length);
-				}
-				in.close();
-				outStream.close();
 			} else {
 				PrintWriter out = response.getWriter();
 				out.println("There is no 'Guide' available for this Course.");

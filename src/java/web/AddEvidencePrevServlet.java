@@ -3,11 +3,13 @@ package web;
 import data.CriterionIO;
 import data.ElementIO;
 import data.EvidenceIO;
+import data.FileIO;
 import domain.Claim;
 import domain.Claim.Status;
 import domain.ClaimedModule;
 import domain.Element;
 import domain.Evidence;
+import domain.GuideFile;
 import domain.User;
 import domain.User.Role;
 import java.io.IOException;
@@ -32,6 +34,7 @@ import util.RPLServlet;
  *			   12/05/2013: TW: Added handling if adding/modifying evidence is possible based on claim status and user role. Moved 'Submit Claim' and 'Save Draft Claim' buttons to this page and added handling them here, removed 'Save Evidence' button and moved code to a 'saveEvidence()' method.
  *			   13/05/2013: TW: Moved 'AttachEvidence' button and handling to here. Added attribute to request for 'attachEvidence' based on Claim Status and User Type.
  *			   15/05/2013: TW: Fixed qualification of "Attach Evidence".
+ *			   26/05/2013: TW: Added checking if a GuideFile is available for this course.
  */
 public class AddEvidencePrevServlet extends HttpServlet {
 	/**
@@ -70,8 +73,17 @@ public class AddEvidencePrevServlet extends HttpServlet {
 				attachEvidence = true;
 			}
 		}
+		//Check if this course has a Guide File.
+		GuideFile courseGuideFile = null;
+		try {
+			courseGuideFile = new FileIO(user.role).getGuideFileByID(claim.getCourseID());
+		} catch (SQLException ex) {
+			Logger.getLogger(AddEvidencePrevServlet.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
 		request.setAttribute("editable", editable?"true":"false");
 		request.setAttribute("attachEvidence", attachEvidence?"true":"false");
+		request.setAttribute("guideFile", courseGuideFile);
 
 		if (request.getParameter("submitClaim") != null) {
 			if (!claim.getClaimedModules().isEmpty()) {

@@ -60,20 +60,4 @@
 	</form>
 <% } %>
 <%@include file="../WEB-INF/jspf/footer.jspf" %>
-<script>
-var attachEvidence = function() {
-	var addOnClick = function() {
-		$('#view').click(function() {
-			if ($("input:radio[name='selected']:checked").val() !== undefined) {
-				window.open('<%= RPLPage.ROOT %>/students/getFile?id='+$("input:radio[name='selected']:checked").val());
-			} else {
-				alert("Please select a file with the Radio Buttons.");
-			}
-		});
-	};
-	return {
-		register : addOnClick
-	};
-}();
-attachEvidence.register();
-</script>
+<script src="<%= RPLPage.ROOT %>/scripts/attachEvidence.js"></script>
