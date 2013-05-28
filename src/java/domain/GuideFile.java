@@ -11,11 +11,12 @@ package domain;
  * Modified:	23/05/2013
  * Version:	1.000
  * Changelog:	23/05/2013: Bryce Carr: Created class, copied and reworked basic fields and constructors from ClaimFile.java
+ *              28/05/2013: Bryce Carr: Changed filetype in FILE_NAME to PDF.
  */
 public class GuideFile {
 
     public final static String DIRECTORY_GUIDE_FILES = ClaimFile.directoryAbsolute + "/guideFiles/";
-    public final static String FILE_NAME = "guideFile.txt";
+    public final static String FILE_NAME = "guideFile.pdf";
     //Class variables/members
     private int fileID;
     private String courseID;

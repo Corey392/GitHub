@@ -11,13 +11,15 @@ import java.util.ArrayList;
 /**
  * Purpose: Manages communication with the File table in the Database. Also
  * removes the physical file when calling a delete method.
+ * Also handles communication with Course table for the purpose of guideFileAddress setting.
  *
  * @author Todd Wiggins
- * @version 1.020
- * Created:	23/05/2013
+ * @version 1.021
+ * Created:	28/05/2013
  * Change Log:	15/05/2013: TW: Fixed removal of Physical file, also now removes directory if no other files exist within the claims/id/ directory.
  *		23/05/2013: BC:	Added methods for working with Guide Files.
  *		26/05/2013: TW:	Added 'getGuideFileByID()' method for use Student: 'Add Evidence'.
+ *              28/05/2013: BC: Changed argument for call to fn_setGuideFileAddress to include file path as well as filename.
  */
 public class FileIO extends RPL_IO<ClaimFile> {
 
@@ -91,7 +93,7 @@ public class FileIO extends RPL_IO<ClaimFile> {
 
 	String sql = "SELECT fn_setGuideFileAddress(?,?);";
 	SQLParameter p1 = new SQLParameter(file.getCourseID());
-	SQLParameter p2 = new SQLParameter(file.getFilename());
+	SQLParameter p2 = new SQLParameter(GuideFile.DIRECTORY_GUIDE_FILES + file.getFilename());
 
 	super.doPreparedStatement(sql, p1, p2);
     }

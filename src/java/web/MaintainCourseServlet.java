@@ -37,16 +37,18 @@ import util.RPLServlet;
 /**
  *
  * @author Adam Shortall, Bryce Carr, Mitchell Carr
- * @version 1.040
+ * @version 1.050
  * Created:	Unknown
- * Modified:	23/05/2013
- * Change Log:	08/04/2013: Bryce Carr:	Made small changes to incorporate guideFileAddress DB field.
- *		24/04/2013: Bryce Carr:	Added header comments to match code conventions.
- *		07/05/2013: Bryce Carr:	Implemented Course deletion.
- *		15/05/2013: MC: Removed guideFileAddress fields to match Course
- *		23/05/2013: Bryce Carr: Attempted to implement Guide File uploading. It doesn't work yet - something to do with the content type of the request.
- *					Actually implemented Guide File uploading.
- *		26/05/2013:	Fixed "java.lang.IllegalStateException: Cannot forward after response has been committed" error.
+ * Modified:	28/05/2013
+ * Change Log:	08/04/2013: Bryce Carr:     Made small changes to incorporate guideFileAddress DB field.
+ *		24/04/2013: Bryce Carr:     Added header comments to match code conventions.
+ *		07/05/2013: Bryce Carr:     Implemented Course deletion.
+ *		15/05/2013: MC:             Removed guideFileAddress fields to match Course
+ *		23/05/2013: Bryce Carr:     Attempted to implement Guide File uploading. It doesn't work yet - something to do with the content type of the request.
+ *                                          Actually implemented Guide File uploading.
+ *		26/05/2013: Todd Wiggins:   Fixed "java.lang.IllegalStateException: Cannot forward after response has been committed" error.
+ *              28/05/2013: Bryce Carr:     Changed filetype of guideFile to PDF
+ *                                          Fixed error where you couldn't upload a file for Courses other than the top one in the list.
  */
 @MultipartConfig
 public class MaintainCourseServlet extends HttpServlet {
@@ -253,10 +255,10 @@ public class MaintainCourseServlet extends HttpServlet {
 	ServletFileUpload upload = new ServletFileUpload(factory);
 	try {
 	    //Get the file
-	    Part filePart = request.getPart("guideFile"); // Retrieves <input type="file" name="guideFile">
+	    Part filePart = request.getPart("guideFile" + courseID); // Retrieves <input type="file" name="guideFile">
 	    InputStream fileContent = filePart.getInputStream();
 
-	    if (filePart.getContentType().equalsIgnoreCase("text/plain")) {
+	    if (filePart.getContentType() != null && filePart.getContentType().equalsIgnoreCase("application/pdf")) {
 		//Ensure the folder for the files exists otherwise create it.
 		fileFolderLocation.mkdirs();
 		//Generate the file name and location to save the files uploaded.
@@ -268,13 +270,14 @@ public class MaintainCourseServlet extends HttpServlet {
 		guideFile = (new GuideFile(courseID, GuideFile.FILE_NAME));
 		System.out.println("File Uploaded to: " + fileSaveLocation);
 	    } else {
-		request.setAttribute("uploadError", "The file is not a valid text file.");
+		request.setAttribute("uploadError", "The file is not a valid PDF file.");
 	    }
 
 
 	    //Update the database
 	    if(guideFile != null)   {
 		fileIO.insert(guideFile);
+                request.setAttribute("uploadSuccess", "'" + getFileName(filePart) + "' uploaded successfully.");
 	    }
 	} /*catch (FileUploadException ex) {
 	    Logger.getLogger(MaintainCourseServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -293,6 +296,16 @@ public class MaintainCourseServlet extends HttpServlet {
 	}
 	return value.toString();
     }
+    
+    	private static String getFileName(Part part) {
+            for (String cd : part.getHeader("content-disposition").split(";")) {
+                if (cd.trim().startsWith("filename")) {
+                    return cd.substring(cd.indexOf('=') + 1).trim()
+                    .replace("\"", "");
+                }
+            }
+            return null;
+        }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
