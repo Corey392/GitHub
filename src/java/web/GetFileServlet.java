@@ -23,10 +23,11 @@ import javax.servlet.http.HttpSession;
 
 /** Purpose:    Gets the file requested from system.
  *  @author     Todd Wiggins
- *  @version    1.110
+ *  @version    1.111
  *	Created:    14/05/2013
  *	Change Log: 26/05/2013: Added handling getting 'Guide Files' by adding the 'courseID' parameter.
  *	            26/05/2013: Added error messages if invalid files are specified, or the files do not physically exist.
+ *	            28/05/2013: Updated to reflect the changes made to how 'Guide Files' are being uploaded (with full path into database).
  */
 public class GetFileServlet extends HttpServlet {
 	private static final int BUFFER_SIZE = 4096;
@@ -58,7 +59,7 @@ public class GetFileServlet extends HttpServlet {
 			if (claimFile != null) {
 				File file = new File(ClaimFile.directoryClaims + claimFile.getClaimID() + "/" + claimFile.getFilename());
 				if (file.exists()) {
-					int length = 0;
+					int length;
 					ServletOutputStream outStream = response.getOutputStream();
 					ServletContext context  = getServletConfig().getServletContext();
 					String mimetype = context.getMimeType(file.getAbsolutePath());
@@ -105,10 +106,10 @@ public class GetFileServlet extends HttpServlet {
 			}
 
 			if (guideFile != null && guideFile.getFilename() != null) {
-				File file = new File(GuideFile.DIRECTORY_GUIDE_FILES + request.getParameter("courseID") + "/" + guideFile.getFilename());
+				File file = new File(guideFile.getFilename());
 
 				if (file.exists()) {
-					int length = 0;
+					int length;
 					ServletOutputStream outStream = response.getOutputStream();
 					ServletContext context  = getServletConfig().getServletContext();
 					String mimetype = context.getMimeType(file.getAbsolutePath());
