@@ -1,9 +1,9 @@
-<%-- 
+<%--
     Document   : elementCriteria
     Created on : 16/06/2011, 10:59:17 PM
     Author     : Adam Shortall
 --%>
-<%! RPLPage thisPage = RPLPage.MAINTAIN_MODULE_ELEMENTS; %>
+<%! RPLPage thisPage = RPLPage.MAINTAIN_ELEMENT_CRITERIA; %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
@@ -28,7 +28,7 @@
                 <td colspan="2"><textarea disabled="true" readonly="true" rows="4" cols="60">${selectedElement}</textarea></td>
             </tr>
             <tr>
-                <td colspan="3"><b>${criterionUpdateMessage}</b></td>                
+                <td colspan="3"><b>${criterionUpdateMessage}</b></td>
             </tr>
             <tr>
                 <th>Criterion ID</th>

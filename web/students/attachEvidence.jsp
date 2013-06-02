@@ -6,6 +6,7 @@
  *              13/05/2013: MC: Changed "images/*" to "image/*"; untested, but should fix the filetype selection issue
  *              15/05/2013: TW: Improving display of errors to be consistent across site.
  *              02/06/2013: TW: Improved instructions.
+ *				02/06/2013: TW: Fixed the 'thisPage' variable to point to the correct one.
 --%>
 <%@page import="domain.ClaimFile"%>
 <%@page import="java.util.ArrayList"%>
@@ -14,7 +15,7 @@
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
 
 <%@include file="../WEB-INF/jspf/header.jspf" %>
-<%! RPLPage thisPage = RPLPage.ADD_EVIDENCE_PREV; %>
+<%! RPLPage thisPage = RPLPage.ATTACH_EVIDENCE; %>
 <script src="<%= RPLPage.ROOT %>/scripts/jquery-1.9.1.js"></script>
 
 <h2 class="center">Attach Evidence to Claim</h2>
