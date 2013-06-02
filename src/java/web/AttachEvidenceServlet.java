@@ -28,10 +28,11 @@ import util.RPLPage;
 /**
  *  Purpose:    Handles uploading evidence files to a claim.
  *  @author     Todd Wiggins
- *  @version    1.001
+ *  @version    1.002
  *	Created:    13/05/2013
  *	Change Log: 15/05/2013: TW: Fixed removal of files, now updates list correctly.
  *	            21/05/2013: TW: Added handling of the file types.
+ *	            02/06/2013: TW: Improved handling of Error Messages, added a check for when no files were uploaded.
  */
 public class AttachEvidenceServlet extends HttpServlet {
 
@@ -47,6 +48,7 @@ public class AttachEvidenceServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		Claim claim = (Claim) session.getAttribute("claim");
+		ArrayList<String> errors = new ArrayList<String>();
 
 		//Get ready for database activity
 		FileIO fileIO = new FileIO(user.role);
@@ -86,7 +88,12 @@ public class AttachEvidenceServlet extends HttpServlet {
 							claimFiles.add(new ClaimFile(claim.getClaimID(), fileName));
 							System.out.println("File Uploaded to: "+fileSaveLocation.getAbsolutePath());
 						} else {
-							request.setAttribute("error", "The file '"+fileItem.getName()+"' is not a valid Image or PDF file.");
+							if (fileItem.getName().isEmpty()) {
+								errors.add("No files were uploaded. Please choose a file and try again.");
+								throw new Exception();
+							} else {
+								errors.add("The file '"+fileItem.getName()+"' is not a valid Image or PDF file.");
+							}
 						}
 					}
 				}
@@ -118,14 +125,29 @@ public class AttachEvidenceServlet extends HttpServlet {
 						}
 					}
 				} catch (SQLException ex) {
-					request.setAttribute("error", "There was an error while trying to remove this file, please advise the Site Administrator.");
+					errors.add("There was an error while trying to remove this file, please advise the Site Administrator.");
 					Logger.getLogger(AttachEvidenceServlet.class.getName()).log(Level.SEVERE, null, ex);
 				}
 			} else {
-				request.setAttribute("error", "Not a valid file was selected, please use the radio buttons to select a file.");
+				errors.add("Not a valid file was selected, please use the radio buttons to select a file.");
 			}
 		}
 
+		if (!errors.isEmpty()) {
+			//Dump all errors nicely formatted
+			StringBuffer allErrors = new StringBuffer();
+			allErrors.append("<ul>");
+			for (String error : errors) {
+				allErrors.append("<li>"+error+"</li>");
+			}
+			allErrors.append("</ul>");
+			request.setAttribute("error", allErrors.toString());
+		} else {
+			//Remove any previous errors
+			if (request.getAttribute("error") != null) {
+				request.removeAttribute("error");
+			}
+		}
 		session.setAttribute("claim", claim);
 		session.setAttribute("claimFiles", claimFiles);
 
