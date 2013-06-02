@@ -1,12 +1,13 @@
 <%--Create Claim page where you select Campus, Disciple, Course and Claim type.
  *  @author     James Purves, Todd Wiggins, Mitch Carr
- *  @version    1.11
+ *  @version    1.21
  *  Created:    14/05/2011, 5:06:19 PM
  *	Change Log: 1.01: TW: Added error messages from servlet.
  *              1.02: TW: Moved error messages to central location. Team decision.
  *              29/04/2013: 1.10: TW: Added AJAX queries to get Discipline and Courses instead of a full page refresh.
  *              15/05/2013: 1.11: TW: Improving display of errors to be consistent across site.
- *		16/05/2013: 1.20: MC: Fixed error in ClaimType error check; changed invalid String length property to length() method
+ *		        16/05/2013: 1.20: MC: Fixed error in ClaimType error check; changed invalid String length property to length() method
+ *		        02/06/2013: 1.21: TW: Minor improvement to instructions.
 --%>
 
 <%@include file="..\WEB-INF\jspf\header.jspf" %>
@@ -87,14 +88,15 @@
             <td><input type="radio" name="claimType" value="rpl" />Recognition of Prior Learning</td>
         </tr>
         <tr>
-            <td><input type="submit" value="Create Claim" /></td>        
+            <td><input type="submit" value="Create Claim" /></td>
         </tr>
         <tr>
             <td></td>
         </tr>
     </table>
-            <p>Please select the Campus, Discipline and Course for which you are making a claim.<br />
-            If your experience was at a TAFE institute, select Previous Studies. Otherwise, select Recognition of Prior Learning.</p>
+			<h3>Instructions:</h3>
+            <p>Please select the Campus, Discipline and Course for which you are making a claim.</p>
+            <p>If your experience was at a TAFE institute, select Previous Studies. Otherwise, select Recognition of Prior Learning.</p>
 	<c:if test="${errorCampusID.message.length() > 0 || errorDisciplineID.message.length() > 0 || errorCourseID.message.length() > 0 || errorClaimType.message.length() > 0}">
 		<div id="errorMessage">${errorCampusID.message}${errorDisciplineID.message}${errorCourseID.message}${errorClaimType.message}</div>
 	</c:if>
