@@ -1,6 +1,6 @@
 <%--Purpose:    Allows a student add modules to a claim.
  *  @author     James Lee Chin, Todd Wiggins
- *  @version    1.215
+ *  @version    1.217
  *  Created:    18/05/2011, 4:11:01 PM
  *	Modified:	05/05/2013: TW: Added 'National Module Code' as per Story Boards, Removed 'Evidence' as this is for another page after first review.
  *				06/05/2013: TW: Added Draft / Preliminary / Attach Evidence Status Handling, eg. only allows you to add modules in Draft Status.
@@ -10,6 +10,7 @@
  *				12/05/2013: TW: Changed heading from 'Recognition of Previous Studies' to 'Claim: Module Selection', more accurate.
  *				13/05/2013: TW: Moved attach evidence button to "Add Evidence" Text page. Added handling when size of modules to be added is 0, now hides module list section and displays a notice to user.
  *				15/05/2013: TW: Improving display of errors to be consistent across site.
+ *				02/06/2013: TW: Improved Student instructions, also are now specific to the state of the claim, further improvement to display of errors to be consistent across site.
 --%>
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
@@ -64,7 +65,7 @@
 		<br />
 		<c:choose>
 			<c:when test="<%= (claimCode == Claim.Status.DRAFT.getCode()) %>">
-				<% if (modules.size() <= 1) { out.print("<p>All modules for this course have been added.</p>"); } else { %>
+				<% if (modules.size() <= 1) { out.print("<div id=\"errorMessage\"><p>All modules for this course have been added.</p></div>"); } else { %>
 				<table class="datatable">
 					<% index = 0; %>
 					<tbody class="last_row">
@@ -113,23 +114,35 @@
 				</table>
 				<% } %>
 				<c:if test="${selectError.message.length() > 0}">
-				<b>${selectError.message}</b>
+					<div id="errorMessage">${selectError.message}<div>
 				</c:if>
 			<% if (!claim.getClaimedModules().isEmpty()) { %>
 				<input type="submit" value="Add / Modify Evidence" name="addTextEvidence" />
 			<% } %>
 				<input type="submit" value="Save Draft Claim" name="draftClaim" />
 			</c:when>
-			<c:when test="<%= claimCode == Claim.Status.EVIDENCE.getCode() %>">
-				<input type="submit" value="View Evidence" name="viewTextEvidence" />
-				<input type="submit" value="Back" name="back" />
-			</c:when>
 			<c:otherwise>
 				<input type="submit" value="View Evidence" name="viewTextEvidence" />
 				<input type="submit" value="Back" name="back" />
 			</c:otherwise>
 		</c:choose>
-        <p>Please select the modules for which you are making a claim.</p>
+
+		<h3>Instructions:</h3>
+		<c:choose>
+			<c:when test="<%= (claimCode == Claim.Status.DRAFT.getCode()) %>">
+				<ul>
+					<li>Select the Modules for which you are making a claim.</li>
+					<li>Select the Provider that delivered the training / experience.</li>
+					<li>Click "Add Module".</li>
+					<li>Once the Modules you want to claim for have been added, click "Add / Modify Evidence" to proceed.</li>
+				</ul>
+			</c:when>
+			<c:otherwise>
+				<ul>
+					<li>Click "View Evidence" to proceed to adding / modifying your Evidence.</li>
+				</ul>
+			</c:otherwise>
+		</c:choose>
 </form>
 
 <%@include file="../WEB-INF/jspf/footer.jspf" %>

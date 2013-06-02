@@ -6,6 +6,7 @@
  *				12/05/2013: TW: Added handling if adding/modifying evidence is possible based on claim status and user role. Moved 'Submit Claim' and 'Save Draft Claim' buttons to this page and added handling them here, removed 'Save Evidence' button.
  *				13/05/2013: TW: Moved "Attach Evidence" button to this page from Review Claim / Module Selection page. Only show 'Attach Evidence' button 'attachEvidence' attribute of request.
  *				26/05/2013: TW: Added ability to get the "Guide File" for the current course.
+ *				02/06/2013: TW: Minor improvement to instructions.
 --%>
 <%@page import="domain.Claim"%>
 <%@page import="domain.ClaimedModule"%>
@@ -24,8 +25,10 @@
 	if (guideFile != null && guideFile.getFilename() != null) {
 	out.print("<p>For assistance with completing a claim for this course, there is a <a href=\"javascript:addEvidence.getGuide('"+guideFile.getCourseID()+"');\">Guide File available here</a>.</p>");
 } %>
+<h3>Instructions:</h3>
 <p>Describe the evidence you are able to provide that demonstrates your knowledge for each element within each module.</p>
 <p>If you have any documents as evidence, these can be uploaded after you have submitted the claim and a preliminary review been made by an assessor.</p>
+<p></p>
 <form action="AddEvidencePrev" method="post" name="addEvidenceForm">
 	<% ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();
 	for (int i = 0; i < claimedModules.size(); i++) { %>

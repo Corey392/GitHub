@@ -1,10 +1,11 @@
 <%--Purpose:    Allows a student upload evidence to a claim.
  *  @author     Todd Wiggins, Mitch Carr
- *  @version    1.011
+ *  @version    1.012
  *  Created:    13/05/2013
  *	Modified:	13/05/2013: Added list of files attached to claim, added Javascript code.
  *              13/05/2013: MC: Changed "images/*" to "image/*"; untested, but should fix the filetype selection issue
  *              15/05/2013: TW: Improving display of errors to be consistent across site.
+ *              02/06/2013: TW: Improved instructions.
 --%>
 <%@page import="domain.ClaimFile"%>
 <%@page import="java.util.ArrayList"%>
@@ -20,12 +21,11 @@
 
 <form action="attachEvidence" method="post" name="attachEvidenceForm" enctype="multipart/form-data">
     <div>
-		<p>Please upload any files relating to your claim, please ensure you have read
-		the Assessor Notes in the 'Add Evidence' screen as they may have told you what
-		you will or will not need to upload.</p>
-		<p>You may upload multiple files at once if supported by your browser, after an
-		upload has completed, your files will be displayed below.</p>
-		<p>Files being uploaded must an Image (for scanned documents) or Adobe PDF format</p>
+		<h3>Instructions:</h3>
+		<p>Please upload any files relating to your claim, ensure that you have read the Assessor Notes in the 'Add Evidence' screen as they may have explained to you what you will or will not need to upload.</p>
+		<p>You may upload multiple files at once if supported by your browser, after an upload request has completed, your files will be displayed below.</p>
+		<p>Files being uploaded must an <strong>Image</strong> (for scanned documents) or <strong>Adobe PDF format</strong>.</p>
+		<p>Most items can be freely converted to PDF format through online web sites, please use a search engine such as Google with a term such as "Convert Word to PDF online free", there are also a number of freely available "Print to PDF" applications available.
 		<div id="upload">
 			<input type="file" name="files" accept="image/*|application/pdf" multiple>
 			<br/>

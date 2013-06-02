@@ -1,8 +1,9 @@
 <%--Purpose:    Allows a user to change their password.
  *  @author     Todd Wiggins
- *  @version    1.001
+ *  @version    1.002
  *  Created:    12/04/2013
  *	Change Log: 15/05/2013: TW: Improving display of errors to be consistent across site.
+ *	            02/06/2013: TW: Added some basic instructions.
 --%>
 <%@include file="WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.CHANGE_PW; %>
@@ -14,19 +15,20 @@
 <form action="ChangePassword" method="post" name="changePwForm">
 <h3>Change your password:</h3>
 <div>
+	<p>To update your password, enter your current password then type in your new password and again to confirm your new password.</p>
     <div>
-		<span><label for="userID">User ID:</label> ${user.userID}</span>
+		<span><label for="userID">Your User ID:</label> ${user.userID}</span>
 	</div>
     <div>
-		<span><label for="password">Current password:</label></span>
+		<span><label for="password">Your Current password:</label></span>
 		<span><input type="password" name="password" size="20"/></span>
 	</div>
     <div>
-		<span><label for="passwordNew">New password:</label></span>
+		<span><label for="passwordNew">Your New password:</label></span>
 		<span><input type="password" name="passwordNew" size="20"/></span>
 	</div>
     <div>
-		<span><label for="passwordConfirm">Confirm new password:</label></span>
+		<span><label for="passwordConfirm">Confirm your new password:</label></span>
 		<span><input type="password" name="passwordConfirm" size="20"/></span>
 	</div>
 	<c:if test="${passwordError.message.length() > 0 || passwordNewError.message.length() > 0 || passwordConfirmError.message.length() > 0}">
