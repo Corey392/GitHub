@@ -15,6 +15,7 @@
 				1.032:  BC:	Removed Manage Courses link from Clerical menu (already in Data Maintenance menu). Changed header image to unofficial RPL logo.
 				1.040:  TW:	Added new Site Title and Page Title section. Changed <header><title> field to new 'siteTitle' value in RPLPage.
 				1.041:  TW:	Added 'home' link to 'RPL' Logo. More consistent with how the web generally works.
+				1.042:	BC: Removed irrelevant links for Delegate user so the next team doesn't get confused.
 --%>
 <%@page import="domain.User.Role"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -58,15 +59,9 @@
 			<%	} else if (user.getRole() == Role.TEACHER) {%>
 					<li><a href="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET %>?List%20Claims=true">List Available Claims</a></li>
 			<%	} else if (user.getRole() == Role.ADMIN) {%>
-					<li><a href="<%= RPLServlet.ADD_TEACHER %>">Add new Teacher account</a></li>
-					<li><a href="<%= RPLServlet.ADD_CLERICAL %>">Add new Clerical account</a></li>
-					<li><a href="<%= RPLServlet.ADD_ADMIN %>">Add new Admin account</a></li>
-					<li><a href="<%= RPLServlet.ADMIN_LIST_ACCOUNTS %>">Modify permissions for existing account</a></li>
-					<li><a href="<%= RPLServlet.MAINTAIN_TABLE_SERVLET %>">Data entry/maintenance page</a></li>
-					<li><a href="<%= RPLPage.TEACHER_HOME %>">Assess or approve claims</a></li>
+					<li><a href="">Assess or approve claims</a></li>
 					<li><a href="">Assign assessors to claims</a></li>
 					<li><a href="">Assign assessors/delegates to courses/disciplines</a></li>
-					<li><a href="<%= RPLServlet.LIST_ERRORS %>?view=">Manage Error Codes</a></li>
 			<%	} else if (user.getRole() == Role.CLERICAL) {%>
                                         <li><a href="<%= RPLPage.REGISTER_USER %>">Add User</a></li>
                     <li><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT %>">Data Maintenance</a></li>
