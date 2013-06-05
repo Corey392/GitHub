@@ -13,7 +13,7 @@
 
 <%@include file="WEB-INF/jspf/header.jspf" %>
 
-
+<%
 <p></p>
 <!--BEGIN: Remove this section when the site is ready to go live -->
 <form name="login" id="login" action="home" method="post">
@@ -64,7 +64,7 @@
     }
 </script>
 <!--END Remove this section when the site is ready to go live -->
-
+%>
 <h2>Credit for previous learning and experience</h2>
 <!--Source: https://www.tafensw.edu.au/courses/rpl/#.UarZ2kBmiSo -->
 
