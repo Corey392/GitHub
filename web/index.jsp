@@ -14,56 +14,56 @@
 <%@include file="WEB-INF/jspf/header.jspf" %>
 
 <%
-<p></p>
-<!--BEGIN: Remove this section when the site is ready to go live -->
-<form name="login" id="login" action="home" method="post">
-<table border="0">
-    <tbody>
-        <tr>
-            <td>Username:</td>
-            <td><input class="textbox" size="25" type="text" name="userID" id="userID" value=""/></td>
-            <td rowspan="2">
-                <select id="userInfo" onchange="fn_Auto();" autofocus="autofocus">
-                    <option value=";">Select a User</option>
-                    <option value="374371959;password">STUDENT: Todd</option>
-                    <option value="365044651;password">STUDENT: Mitch</option>
-                    <option value="366796436;password">STUDENT: Bryce</option>
-                    <option value="355273971;password">STUDENT: Ryan</option>
-                    <option value="366688315;password">STUDENT: Kelly</option>
-                    <option value="teacher;password">ASSESSOR / TEACHER</option>
-                    <option value="assessor;password">DELEGATE</option>
-                    <option value="admin;password">ADMIN / CLERICAL</option>
-                </select>
-
-            </td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><input class="textbox" size="25" type="password" name="password" id="password" value=""/></td>
-        </tr>
-        <tr>
-            <td colspan="3" height="55" style="background-color: white" ><b>${loginError.message}</b>&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="background-color: white" ></td>
-            <td style="background-color: white" colspan="2">
-                <a class="button" href="#" onclick="document.getElementById('login').submit();"><span>Login</span></a>
-                <a class="button" href="register"><span>Register</span></a>
-             </td>
-        </tr>
-    </tbody>
-</table>
-</form>
-
-<script>
-    function fn_Auto() {
-        var userInfo = new Array();
-        userInfo = document.getElementById("userInfo").value.split(";");
-        document.getElementById("userID").value = userInfo[0];
-        document.getElementById("password").value = userInfo[1];
-    }
-</script>
-<!--END Remove this section when the site is ready to go live -->
+//<p></p>
+//<!--BEGIN: Remove this section when the site is ready to go live -->
+//<form name="login" id="login" action="home" method="post">
+//<table border="0">
+//    <tbody>
+//        <tr>
+//            <td>Username:</td>
+//            <td><input class="textbox" size="25" type="text" name="userID" id="userID" value=""/></td>
+//            <td rowspan="2">
+//                <select id="userInfo" onchange="fn_Auto();" autofocus="autofocus">
+//                    <option value=";">Select a User</option>
+//                    <option value="374371959;password">STUDENT: Todd</option>
+//                    <option value="365044651;password">STUDENT: Mitch</option>
+//                    <option value="366796436;password">STUDENT: Bryce</option>
+//                    <option value="355273971;password">STUDENT: Ryan</option>
+//                    <option value="366688315;password">STUDENT: Kelly</option>
+//                    <option value="teacher;password">ASSESSOR / TEACHER</option>
+//                    <option value="assessor;password">DELEGATE</option>
+//                    <option value="admin;password">ADMIN / CLERICAL</option>
+//                </select>
+//
+//            </td>
+//        </tr>
+//        <tr>
+//            <td>Password:</td>
+//            <td><input class="textbox" size="25" type="password" name="password" id="password" value=""/></td>
+//        </tr>
+//        <tr>
+//            <td colspan="3" height="55" style="background-color: white" ><b>${loginError.message}</b>&nbsp;</td>
+//        </tr>
+//        <tr>
+//            <td style="background-color: white" ></td>
+//            <td style="background-color: white" colspan="2">
+//                <a class="button" href="#" onclick="document.getElementById('login').submit();"><span>Login</span></a>
+//                <a class="button" href="register"><span>Register</span></a>
+//             </td>
+//        </tr>
+//    </tbody>
+//</table>
+//</form>
+//
+//<script>
+//    function fn_Auto() {
+//        var userInfo = new Array();
+//        userInfo = document.getElementById("userInfo").value.split(";");
+//        document.getElementById("userID").value = userInfo[0];
+//        document.getElementById("password").value = userInfo[1];
+//    }
+//</script>
+//<!--END Remove this section when the site is ready to go live -->
 %>
 <h2>Credit for previous learning and experience</h2>
 <!--Source: https://www.tafensw.edu.au/courses/rpl/#.UarZ2kBmiSo -->
