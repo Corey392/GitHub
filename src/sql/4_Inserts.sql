@@ -9,9 +9,10 @@
 				25/04/2013: Todd:   Added more insert statements for CourseModule
 				06/05/2013: Bryce:  Updated insert statements to match new Element PK system
 				08/05/2013: Todd:   Removed Evidence for claims. Add from a claim on site instead.
+				05/06/2013: Todd:   Added sample data for the Demonstration.
  * Pre-conditions: Must be run after all other setup database scripts.
  */
- --
+--
 -- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: -
 --
 -- userID, role, password, email, firstName, lastName
@@ -164,10 +165,10 @@ INSERT INTO "ClaimedModule" VALUES ('ICAA5151B', 2, NULL, NULL, NULL, NULL, NULL
 -- Data for Name: Element; Type: TABLE DATA; Schema: public; Owner: -
 --
 -- elementID, moduleID, description
-INSERT INTO "Element" VALUES (1, 'ICAA5151B', ' ');
-INSERT INTO "Element" VALUES (1, 'ICAA5158B', ' ');
-INSERT INTO "Element" VALUES (1, 'ICAA5046B', ' ');
-INSERT INTO "Element" VALUES (1, 'ICAA5139B', ' ');
+INSERT INTO "Element" VALUES (1, 'ICAA5151B', 'Database Development and Design');
+INSERT INTO "Element" VALUES (1, 'ICAA5158B', 'Implement and Mointor web development');
+INSERT INTO "Element" VALUES (1, 'ICAA5046B', 'Provide information to the workgroup about team policies');
+INSERT INTO "Element" VALUES (1, 'ICAA5139B', 'Investigate and suggest improvements to the cost to running the operation');
 INSERT INTO "Element" VALUES (2, 'ICAA5046B', 'Implement and monitor participative arrangements for the management of OHS');
 INSERT INTO "Element" VALUES (3, 'ICAA5046B', 'Provide information to the workgroup about OHS policies and procedures.');
 INSERT INTO "Element" VALUES (2, 'ICAA5151B', 'Investigate current practices in relation to resource usage');
@@ -216,3 +217,24 @@ INSERT INTO "CourseModule" ("courseID","moduleID","elective") VALUES
 	('19010','ICAA5151B',true),
 	('19010','ICAA5139B',true),
 	('19010','ICAA5046B',true);
+
+
+/* Sample Data for Presentation : RELIES UPON SOME OF THE INFORMATION ABOVE */
+-- Create new users: 123456789, demo_steve, demo_deb, demo_admin, all passwords are 'password'
+-- Course to create a claim for: 19010: Certificate IV in Information Technology (Programming)
+SELECT fn_insertstudent('123456789','demo.student@tafensw.net.au','(DEMO) Jimmy','Jones','Jake','123 Fake Street','','Faketown','NSW',2315,'02 4343 4343','123456789',false,'password');
+SELECT fn_insertUser('demo_steve','password','T','stephen.etherington@tafe.nsw.edu.au','(DEMO) Stephen','Etherington');
+SELECT fn_insertUser('demo_deb','password','A','deborah.spindler@tafe.nsw.edu.au','(DEMO) Deb','Spindler');
+SELECT fn_insertUser('demo_admin','password','C','admin@tafe.nsw.edu.au','(DEMO) Admin','Istrator');
+SELECT fn_updateuser('demo_steve','demo_steve','password');
+SELECT fn_updateuser('demo_deb','demo_deb','password');
+INSERT INTO "Teacher" VALUES ('demo_deb','demo_deb');
+INSERT INTO "Teacher" VALUES ('demo_steve','demo_steve');
+INSERT INTO "Assessor" VALUES ('011', '19018', 1, true, 'demo_deb');
+-- Uses Campus 011, Discipline 1, Course 19010, the 4 Modules, Elements, Criterions,
+INSERT INTO "Criterion" VALUES (1, 3, 'Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.', 'ICAA5046B');
+INSERT INTO "Criterion" VALUES (2, 3, 'Provide information to the workgroup on the organisation''s OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.', 'ICAA5046B');
+INSERT INTO "Criterion" VALUES (1, 1, 'Regularly provide and clearly explain information about identified hazards and the outcomes of risk assessment and control to the workgroup.', 'ICAA5151B');
+INSERT INTO "Criterion" VALUES (2, 1, 'Identify environmental regulations applying to the enterprise', 'ICAA5151B');
+INSERT INTO "Criterion" VALUES (1, 2, 'Analyse procedures for assessing compliance with environmental/sustainability regulations', 'ICAA5151B');
+INSERT INTO "Criterion" VALUES (2, 2, 'Collect information on environmental and resource efficiency systems and procedures, and provide to the work group where appropriate', 'ICAA5151B');

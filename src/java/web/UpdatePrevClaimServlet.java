@@ -30,7 +30,8 @@ import util.*;
  *				12/05/2013: TW: Added handling of 'viewTextEvidence', added changing date of claim to "now / today". Made 'submitClaim()' public static to allow it to be used by AddEvidencePrevServlet. Moved 'Submit Claim' button to 'Add Evidence' page and only shows the 'Add Evidence' button after at least 1 module has been added.
  *				12/05/2013: TW: Added handling of 'AttachEvidence' button.
  *				13/05/2013: TW: Moved 'AttachEvidence' button to 'AddEvidence' Text page.
- *                              15/05/2013: MC: Updated addModule method to reflect changes made to ClaimedModule
+ *              15/05/2013: MC: Updated addModule method to reflect changes made to ClaimedModule
+ *              05/06/2013: TW: Updated the way the Submit action updates the claim, now to the next state instead of 'Preliminary'.
  *	Purpose:    Handles the adding and removing of modules from a Previous Studies claim as well as the adding and editing of evidence for the modules.
  */
 public class UpdatePrevClaimServlet extends HttpServlet {
@@ -322,7 +323,8 @@ public class UpdatePrevClaimServlet extends HttpServlet {
             }
             if (submit) {
 				Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully submitted.");
-				claim.setStatus(Claim.Status.PRELIMINARY);
+				//Handles if any User Submits a claim, simply increments it to the next status
+				claim.setStatus(Claim.Status.values()[claim.getStatus().code+1]);
             } else {
 				claim.setStatus(Claim.Status.DRAFT);
             }

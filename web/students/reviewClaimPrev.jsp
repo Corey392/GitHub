@@ -35,7 +35,7 @@
     <table border="0" class="datatable">
         <tr>
             <th>Module / Unit Code</th>
-            <th>National Module Code</th>
+            <% //<th>National Module Code</th> %>
             <th>Module / Unit Name</th>
 			<c:if test="<%= claimCode == Claim.Status.DRAFT.getCode() %>">
 				<th>Actions</th>
@@ -46,7 +46,7 @@
                 <c:forEach var="claimedModule" items="${claim.claimedModules}">
                     <tr class="highlight_row" name="highlight_row">
                         <td>${claimedModule.moduleID}</td>
-						<td>${claimedModule.getNationalModuleID()}</td>
+						<% //<td>${claimedModule.getNationalModuleID()}</td> %>
                         <td>${claimedModule.getName()}</td>
 						<c:if test="<%= claimCode == Claim.Status.DRAFT.getCode() %>">
 							<td><button type="submit" name="removeModule" value="<%= index %>">Remove Module</button></td>
