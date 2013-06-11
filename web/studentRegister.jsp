@@ -22,54 +22,39 @@
 <div>
     <TABLE BORDER="0" CELLPADDING="1" CELLSPACING="3">
  <TR>
+    <div>
         <td><label for="userID">TAFE Student Number:</label></td>
 	<td><input type="text" name="userID" maxlength="9" size="10" value="${user.userID}"/></td>
 </TR>
     <TR>           
-    <div>
-        
 		<td><label for="firstName">First Name:</label></td>
 		<td><input type="text" name="firstName" size="30" value="${user.firstName}"/></td>
-	</div>
 </TR>
     <TR>  
-    <div>
 		<td><label for="otherName">Other Name:</label></td>
 		<td><input type="text" name="otherName" size="30" value="${user.otherName}"/></td>
-	</div>
         </TR>
     <TR>  
-    <div>
 		<td><label for="lastName">Last Name:</label></td>
 		<td><input type="text" name="lastName" size="30" value="${user.lastName}"/></td>
-	</div>
         </TR>
     <TR>
-    <div>
 		<td><label for="email">TAFE email address:</label></td>
 		<td><input type="email" name="email" maxlength="60" size="40" value="${user.email}"/></td>
-	</div>
         </TR>
     <TR> 
-    <div>
 		<td><label for="address1">Address Line 1:</label></td>
 		<td><input type="text" name="address1" size="40" value="${user.address[0]}"/></td>
-	</div>
         </TR>
     <TR> 
-    <div>
 		<td><label for="address2">Address Line 2:</label></td>
 		<td><input type="text" name="address2" size="40" value="${user.address[1]}"/></td>
-	</div>
         </TR>
     <TR> 
-    <div>
 		<td><label for="town">Town:</label></td>
 		<td><input type="text" name="town" size="30" value="${user.town}"/></td>
-	</div>
                 </TR>
    <TR> 
-    <div>
 		<td><label for="state">State:</label>
 		<td><select name="state">
 				<option value="NSW"${user.state.equals("NSW") ? " selected=\"selected\"" : ""}>New South Wales</option>
@@ -81,28 +66,20 @@
 				<option value="VIC"${user.state.equals("VIC") ? " selected=\"selected\"" : ""}>Victoria</option>
 				<option value="WA"${user.state.equals("WA") ? " selected=\"selected\"" : ""}>Western Australia</option>
 			</select></td>
-	</div>
                                 </TR>
    <TR> 
-    <div>
 		<td><label for="postCode">Post Code:</label></td>
 		<td><input type="text" name="postCode" maxlength="4" size="4" value="${user.postCode}"/></td>
-	</div>
                 </TR>
     <TR> 
-    <div>
 		<td><label for="phone">Phone Number:</label></td>
 		<td><input type="tel" name="phone" maxlength="16" size="20" value="${user.phoneNumber}"/></td>
-	</div>
         </TR>
     <TR> 
-    <div>
 		<td><label for="password">Choose a password:</label></td>
 		<td><input type="password" name="password" size="20"/></td>
-	</div>
         </TR>
     <TR> 
-    <div>
 		<td><label for="passwordConfirm">Confirm password:</label></td>
                 <td><input type="password" name="passwordConfirm" size="20"/></td>
 	</div>
@@ -133,7 +110,7 @@
 					${termsAndCondError.message}</div>
 	</c:if>
     <div>
-        <input type="submit" value="Submit"/> <input type="submit"<a href="home">Cancel</a>
+        <input type="submit" value="Submit"/> <a href="home">Cancel</a>
 	</div>
 </div>
 </form>
