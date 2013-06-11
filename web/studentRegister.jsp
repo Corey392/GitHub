@@ -22,7 +22,6 @@
 <div>
     <TABLE BORDER="0" CELLPADDING="1" CELLSPACING="3">
  <TR>
-    <div>
         <td><label for="userID">TAFE Student Number:</label></td>
 	<td><input type="text" name="userID" maxlength="9" size="10" value="${user.userID}"/></td>
 </TR>
@@ -82,7 +81,6 @@
     <TR> 
 		<td><label for="passwordConfirm">Confirm password:</label></td>
                 <td><input type="password" name="passwordConfirm" size="20"/></td>
-	</div>
         </TR>
 </table>
     <div>
