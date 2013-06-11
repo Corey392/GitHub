@@ -14,3 +14,20 @@ CREATE FUNCTION fn_insertstudent("userID" text, "email" text, "firstName" text, 
 		RETURN pw;
     END;
 $_$;
+
+--
+-- Name: fn_insertuser(text, text, text, text, text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) RETURNS text
+    LANGUAGE plpgsql
+    AS $_$
+    DECLARE pw TEXT;
+
+    BEGIN
+        SELECT INTO pw fn_GeneratePassword();
+
+        PERFORM fn_InsertUser($1, pw, $2, $3, $4, $5);
+        RETURN pw;
+    END;
+$_$;
