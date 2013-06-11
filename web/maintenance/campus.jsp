@@ -40,7 +40,7 @@
         </thead>
         <tbody>
             <c:forEach var="campus" items="${campuses}">
-            <tr class="highlight_row">
+            <tr>
                 <td><input style="text-align:right; width:75px" required maxlength="3" type="text" value="${campus.campusID}" name="campusID[]" /></td>
                 <td><input required type="text" value="${campus.name}" name="campusNames[]" /></td>
                 <td><button type="submit" name="viewDisciplines" style="width:225px;" value="${campus.campusID}">View or Modify Disciplines</button></td>

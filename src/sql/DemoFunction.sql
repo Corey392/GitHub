@@ -1,6 +1,3 @@
---
--- Name: fn_insertstudent(text, text, text, text, text, text, text, text, text, integer, text, text, boolean); Type: FUNCTION; Schema: public; Owner: -
---
 
 CREATE FUNCTION fn_insertstudent("userID" text, "email" text, "firstName" text, "lastName" text, "otherName" text, "addressLine1" text, "addressLine2" text, "town" text, "state" text, "postCode" integer, "phoneNumber" text, "studentID" text, "staff" boolean) RETURNS text
     LANGUAGE plpgsql
@@ -16,7 +13,7 @@ CREATE FUNCTION fn_insertstudent("userID" text, "email" text, "firstName" text, 
 $_$;
 
 --
--- Name: fn_insertuser(text, text, text, text, text); Type: FUNCTION; Schema: public; Owner: -
+-- 
 --
 
 CREATE FUNCTION fn_insertuser("userID" text, role character, "email" text, "firstName" text, "lastName" text) RETURNS text

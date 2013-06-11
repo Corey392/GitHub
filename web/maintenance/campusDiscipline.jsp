@@ -72,7 +72,7 @@
             </c:otherwise>
         </c:choose>         
         <c:forEach var="discipline" items="${selectedCampus.disciplines}">
-            <tr class="highlight_row">
+            <tr>
                 <td><a href="<%= RPLServlet.MAINTAIN_CAMPUS_DISCIPLINE_SERVLET %>?disciplineID=${discipline.disciplineID}">${discipline}</a></td>
                 <td><button type="submit" name="removeDiscipline" value="${discipline.disciplineID}">Remove Discipline</button></td>
             </tr>

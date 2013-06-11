@@ -49,7 +49,7 @@ ${invalidNameError}${uploadError}${uploadSuccess}
     </thead>
     <tbody>
         <c:forEach var="course" items="${courses}">
-            <tr class="highlight_row">
+            <tr>
                 <td><input required style="width:50px" maxlength="5" type="text" name="courseID[]" value="${course.courseID}" /></td>
                 <td><input required style="width:500px" type="text" name="courseName[]" value="${course.name}" /></td>
                 <td><button type="submit" name="updateModules" value="${course.courseID}">Add/Remove Core Modules</button></td>
