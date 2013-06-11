@@ -44,7 +44,7 @@
         <c:choose>
             <c:when test="${claim.claimedModules != null && claim.claimedModules.size() != 0}">
                 <c:forEach var="claimedModule" items="${claim.claimedModules}">
-                    <tr class="highlight_row" name="highlight_row">
+                    <tr>
                         <td>${claimedModule.moduleID}</td>
 						<% //<td>${claimedModule.getNationalModuleID()}</td> %>
                         <td>${claimedModule.getName()}</td>

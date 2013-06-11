@@ -31,7 +31,7 @@ ${moduleUpdateMessage}${moduleUniqueError}${moduleInvalidIDError}${moduleInvalid
     </thead>
     <tbody>
         <c:forEach var="module" items="${modules}">
-        <tr class="highlight_row">
+        <tr>
             <td><input style="width:120px" required readonly maxlength="10" type="text" name="moduleID[]" value="${module.moduleID}" /></td>
             <td><input style="width:500px" required type="text" name="moduleName[]" value="${module.name}" /></td>
             <td><button style="width:150px" type="submit" name="addElementsToModule" value="${module.moduleID}">Add Elements</button></td>

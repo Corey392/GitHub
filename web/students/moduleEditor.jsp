@@ -51,7 +51,7 @@ if(session.getAttribute("claim") != null) {
         <c:choose>
             <c:when test="${claim.claimedModules != null && claim.claimedModules.size() != 0}">
                 <c:forEach var="claimedModule" items="${claim.claimedModules}">
-                    <tr class="highlight_row" onmouseover="document.getElementById('butt<%= index %>').style.visibility='visible';" onmouseout="document.getElementById('butt<%= index %>').style.visibility='hidden';">
+                    <tr onmouseover="document.getElementById('butt<%= index %>').style.visibility='visible';" onmouseout="document.getElementById('butt<%= index %>').style.visibility='hidden';">
                         <td>${claimedModule.moduleID}</td>
                         <td>${claimedModule.name}</td>
                         <c:choose>

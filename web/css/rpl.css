@@ -178,17 +178,6 @@ div #upload {
     background: blanchedalmond;
 }
 
-tr.highlight_row td button {
-    visibility: hidden;
-}
-tr.highlight_row:hover td button {
-    visibility: visible;
-}
-
-tr.highlight_row:hover {
-    background: lightyellow;
-}
-
 .center {
     text-align: center;
 }
