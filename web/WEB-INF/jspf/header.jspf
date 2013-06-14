@@ -16,6 +16,7 @@
 				1.040:  TW:	Added new Site Title and Page Title section. Changed <header><title> field to new 'siteTitle' value in RPLPage.
 				1.041:  TW:	Added 'home' link to 'RPL' Logo. More consistent with how the web generally works.
 				1.042:	BC: Removed irrelevant links for Delegate user so the next team doesn't get confused.
+				1.050:	MC: Removed Teacher as default login; it should only be re-added for testing purposes.
 --%>
 <%@page import="domain.User.Role"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -74,8 +75,8 @@
 			} else { %>
             <hr />
             <form name="login" action="<%= RPLPage.ROOT %>/home" method="post">
-            Username: <input type="text" name="userID" value="teacher" /><br />
-            Password: <input type="password" name="password" value="password" />
+            Username: <input type="text" name="userID" /><br />
+            Password: <input type="password" name="password" />
             <input type="submit" name="" value="Login" />
             <a href="register">Register</a><br/>
 			<a href="<%= RPLPage.RESET_PASSWORD %>">Reset Password</a>
