@@ -42,7 +42,7 @@ ${invalidNameError}${uploadError}${uploadSuccess}
         <tr>
             <th>Course ID</th>
             <th>Name</th>
-            <th>Modules</th>
+            <th>Module</th>
 	    <th>Guide File</th>
             <th>Delete</th>
         </tr>
@@ -52,9 +52,9 @@ ${invalidNameError}${uploadError}${uploadSuccess}
             <tr>
                 <td><input required style="width:50px" maxlength="5" type="text" name="courseID[]" value="${course.courseID}" /></td>
                 <td><input required style="width:500px" type="text" name="courseName[]" value="${course.name}" /></td>
-                <td><button type="submit" name="updateModules" value="${course.courseID}">Add/Remove Core Modules</button></td>
+                <td><button type="submit" name="updateModules" value="${course.courseID}">Modify</button></td>
 		<td><input type="file" name="guideFile${course.courseID}" accept="applicaton/pdf"><button type="submit" name="uploadGuideFile" value="${course.courseID}">Upload Guide File</button></td>
-		<td><button type="submit" name="deleteCourse" value="${course.courseID}">Delete Course</button></td>
+		<td><button type="submit" name="deleteCourse" value="${course.courseID}">Delete</button></td>
             </tr>
         </c:forEach>  
         <tr class="last_row">
