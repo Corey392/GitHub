@@ -147,6 +147,25 @@ CREATE FUNCTION fn_assignassessor("teacherID" text, "disciplineID" integer, "cam
 	VALUES($1,$2,$3,$4,$5)
 $_$;
 
+CREATE OR REPLACE FUNCTION fn_assignclaim(claimid integer, assessorID text)
+  RETURNS void AS
+$BODY$
+    UPDATE "Claim"
+    SET
+        "assessorID" = $2
+    WHERE
+        "claimID" = $1;
+$BODY$
+  LANGUAGE sql VOLATILE
+  COST 100;
+ALTER FUNCTION fn_assignclaim(integer, text)
+  OWNER TO postgres;
+GRANT EXECUTE ON FUNCTION fn_assignclaim(integer, text) TO postgres;
+GRANT EXECUTE ON FUNCTION fn_assignclaim(integer, text) TO admin;
+GRANT EXECUTE ON FUNCTION fn_assignclaim(integer, text) TO clerical;
+GRANT EXECUTE ON FUNCTION fn_assignclaim(integer, text) TO teacher;
+GRANT EXECUTE ON FUNCTION fn_assignclaim(integer, text) TO student;
+
 --
 -- Name: fn_assigncourse(text, integer, text); Type: FUNCTION; Schema: public; Owner: -
 --
