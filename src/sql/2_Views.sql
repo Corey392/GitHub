@@ -108,3 +108,7 @@ CREATE VIEW "vw_ModulesOutOfCourse" AS
 -- Added 03/04/2013, Todd Wiggins
 -- Required for Teacher to be able to login.
 GRANT SELECT ON TABLE "vw_TeacherUser" TO teacher;
+
+-- Added 14/06/2013, Bryce Carr
+-- Required for assigning claim to an assessor.
+GRANT SELECT ON TABLE "vw_AssessorDetails" TO admin;

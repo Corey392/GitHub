@@ -108,6 +108,7 @@ public class ClaimIO extends RPL_IO <Claim> {
         SQLParameter p3;
         SQLParameter p4 = new SQLParameter(optionValue);
         SQLParameter p9 = new SQLParameter(status);
+	SQLParameter p10;
 
         if (role == Role.STUDENT) {
             sql = "SELECT fn_UpdateClaim(?,?,?,?,?)";
@@ -118,6 +119,11 @@ public class ClaimIO extends RPL_IO <Claim> {
             p3 = new SQLParameter(disciplineID);
 
             super.doPreparedStatement(sql, p1, p2, p3, p4, p9);
+	    
+	    sql = "SELECT fn_assignclaim(?,?)";
+	    String assessorID = claim.getAssessorID();
+	    p10 = new SQLParameter(assessorID);
+	    super.doPreparedStatement(sql, p1, p10);
         }else {
             sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?,?)";
             Boolean assessorApproved = claim.getAssessorApproved();
