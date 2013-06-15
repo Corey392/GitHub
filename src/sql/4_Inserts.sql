@@ -1,8 +1,8 @@
 /* Purpose:  	Adds the Views to the database.
- * Authors:		Ryan,Kelly,Todd
+ * Authors:		Ryan,Kelly,Todd,Mitch
  * Created:		?
- * Version:		4.013
- * Modified:	08/05/2013
+ * Version:		4.014
+ * Modified:	15/06/2013
  * Change Log:	v2: Todd: Added new users into User, Student, Teacher and Assessor tables.
  * 				v3: Ryan:
 				09/04/2013: Todd:   Updated Student inserts to match new table structure
@@ -10,60 +10,9 @@
 				06/05/2013: Bryce:  Updated insert statements to match new Element PK system
 				08/05/2013: Todd:   Removed Evidence for claims. Add from a claim on site instead.
 				05/06/2013: Todd:   Added sample data for the Demonstration.
+				15/06/2013: Mitch:  Removed sample data not intended for Demonstration.
  * Pre-conditions: Must be run after all other setup database scripts.
  */
---
--- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: -
---
--- userID, role, password, email, firstName, lastName
-INSERT INTO "User" VALUES ('deb.spindler', 'T', '\\x3063613462626136666665343332313039376136336263666465316162323033', 'deb.spindler@tafensw.edu.au', 'deb', 'spindler');
-INSERT INTO "User" VALUES ('kim.king6', 'T', '\\x3763633062336435383630336538303438313639336565343931376436356631','kim.king6@tafensw.edu.au','kim', 'king');
-INSERT INTO "User" VALUES ('steve.etherington', 'T', '\\x6339346131653661663139663765336161313565643465656535656134356134','steve.etherington@tafensw.edu.au','steve', 'etherington');
-INSERT INTO "User" VALUES ('clerical.person', 'C', '\\x3066313437333539343932376466623434396239393633633031343363346334', 'clerical@tafensw.edu.au', 'clericla', 'person');
-INSERT INTO "User" VALUES ('admin.person', 'A', '\\x3231323332663239376135376135613734333839346130653461383031666333', 'admin@tafensw.edu.au', 'admin', 'person');
-INSERT INTO "User" VALUES ('me.me', 'T', '\\x3731336466313366653464353765353263356363666666643262306131376638', 'me.me@tafensw.edu.au','me', 'me');
-INSERT INTO "User" VALUES ('355878634', 'S', '\\x6535383964616632626238323163376134393163333838643736613965346330', 'Henry.Tudor@tafensw.net.au', 'Henry', 'Tudor');
-INSERT INTO "User" VALUES ('a.g', 'T', '\\x3130656532653763343036333739333237633230316662316639323234373734','a.g@tafe.nsw.edu.au','a', 'g');
-INSERT INTO "User" VALUES ('adam.shortall', 'T', '\\x3763623031666535343662653430386633373635643438633665313033316461', 'adam.shortall@tafensw.net.au', 'Adam', 'Shortall');
-INSERT INTO "User" VALUES ('a.b', 'T', '\\x6534653164666561316138343333323863663661313064643231346662316162','a.b@tafe.nsw.edu.au','a', 'b');
--- 02/04/2013, (Todd Wiggins): Our usernames -- All password = password
-SELECT fn_insertuser('374371959','password','S','todd.wiggins3@tafensw.net.au','Todd','Wiggins');
-SELECT fn_insertuser('365044651','password','S','mitch________@tafensw.net.au','Mitch','Carr');
-SELECT fn_insertuser('366796436','password','S','bryce________@tafensw.net.au','Bryce','Carr');
-SELECT fn_insertuser('355273971','password','S','ryan.donaldson3@tafensw.net.au','Ryan','Donaldson');
-SELECT fn_insertuser('366688315','password','S','kelly.bayliss3@tafensw.net.au','Kelly','Bayliss');
--- 02/04/2013, (Todd Wiggins): Other roles -- All password = password
-SELECT fn_insertuser('teacher','password','T','email@teacher','Teacher','Teacher');
-SELECT fn_insertuser('assessor','password','A','email@assessor','Assessor','Assessor');
-SELECT fn_insertuser('admin','password','C','email@admin','Admin','Admin');
--- 03/04/2013, (Todd Wiggins): Student/Teacher/Assessor Data to match the user names created
-INSERT INTO "Student" VALUES ('374371959',NULL,NULL,NULL,'Ourimbah','NSW',2258,NULL,'374371959',false);
-INSERT INTO "Student" VALUES ('365044651',NULL,NULL,NULL,'Hornsby','NSW',2000,NULL,'365044651',false);
-INSERT INTO "Student" VALUES ('366796436',NULL,NULL,NULL,'Gorokan','NSW',2265,NULL,'366796436',false);
-INSERT INTO "Student" VALUES ('355273971',NULL,NULL,NULL,'Newcastle','NSW',2500,NULL,'355273971',false);
-INSERT INTO "Student" VALUES ('366688315',NULL,NULL,NULL,'Newcastle','NSW',2500,NULL,'366688315',false);
-INSERT INTO "Teacher" VALUES ('teacher','teacher');
-INSERT INTO "Teacher" VALUES ('assessor','assessor');
-INSERT INTO "Teacher" VALUES ('admin','admin');
-
---
--- Data for Name: Teacher; Type: TABLE DATA; Schema: public; Owner: -
---
--- userID, teacherID
-INSERT INTO "Teacher" VALUES ('deb.spindler','deb.spindler' );
-INSERT INTO "Teacher" VALUES ('kim.king6', 'kim.king6');
-INSERT INTO "Teacher" VALUES ('steve.etherington', 'steve.etherington');
-INSERT INTO "Teacher" VALUES ('me.me', 'me.me');
-INSERT INTO "Teacher" VALUES ('a.g', 'a.g');
-INSERT INTO "Teacher" VALUES ('adam.shortall', 'adam.shortall');
-INSERT INTO "Teacher" VALUES ('a.b', 'a.b');
-
---
--- Data for Name: Student; Type: TABLE DATA; Schema: public; Owner: -
---
--- userID, otherName, address1, address2, state, phoneNumber, postCode, staff, studentID, town
-INSERT INTO "Student" VALUES ('adam.shortall', NULL, NULL, NULL, 'Hamilton', 'NSW', 2303,NULL, '355878635', true );
-INSERT INTO "Student" VALUES ('355878634', NULL, NULL, NULL, 'Hamilton', 'NSW', 2303,NULL, '355878634', false);
 
 --
 -- Data for Name: Campus; Type: TABLE DATA; Schema: public; Owner: -
