@@ -322,9 +322,34 @@ public class UpdatePrevClaimServlet extends HttpServlet {
                 }
             }
             if (submit) {
-				Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully submitted.");
 				//Handles if any User Submits a claim, simply increments it to the next status
 				claim.setStatus(Claim.Status.values()[claim.getStatus().code+1]);
+				if(claim.getStatus() == Claim.Status.PRELIMINARY)   {
+				    //Claim is being submitted for the first time, so assign an assessor
+				    int leastClaims = 0;
+				    User leastBusyAssessor = null;
+				    UserIO userIO = new UserIO(User.Role.ADMIN);
+				    ArrayList<User> relevantAssessors = userIO.getListOfAssessors(claim.getCampus(), claim.getDiscipline(), claim.getCourse());
+				    boolean firstAssessor = true;
+				    for(User assessor : relevantAssessors)  {
+					int assessorClaims = claimIO.getList(assessor).size();
+					if(firstAssessor)   {
+					    leastClaims = assessorClaims;
+					    leastBusyAssessor = assessor;
+					    firstAssessor = false;
+					    continue;
+					}
+					if(assessorClaims < leastClaims)  {
+					    leastClaims = assessorClaims;
+					    leastBusyAssessor = assessor;
+					}
+				    }
+				    if(leastBusyAssessor != null)   {
+					claim.setAssessor(leastBusyAssessor);
+					claim.setAssessorID(leastBusyAssessor.getUserID());
+				    }
+				}
+				Email.send(user.getEmail(), "Claim#:" + claim.getClaimID(), "This claim was successfully submitted.");
             } else {
 				claim.setStatus(Claim.Status.DRAFT);
             }
