@@ -7,9 +7,10 @@ import java.io.Serializable;
 
 /** A Claim is made by a Student
  *  @author     Adam Shortall, David Gibbins, Todd Wiggins, Mitchell Carr
- *  @version    1.030
+ *  @version    1.031
  *	Created:    ?
  *	Change Log: 06/05/2013: TW: Added getCode() and EMPTY_DRAFT status to status Enum.
+ *	            15/06/2013: TW: Added getValidStatuses() to Enum
  */
 public class Claim implements Serializable {
 
@@ -33,10 +34,19 @@ public class Claim implements Serializable {
             this.desc = desc;
         }
 
+		public static Status[] getValidStatuses() {
+			Status[] statuses = Status.values();
+			Status[] validStatuses = new Status[statuses.length - 1];
+			for (int i = 0; i < statuses.length-1; i++) {
+				validStatuses[i] = statuses[i+1];
+			}
+			return validStatuses;
+		}
+
         /**
          * @param value Integer indicating the Claim's current status
          * @return Status object indicating the stage at which a Claim currently is
-         * @throws IllegalArgumentException if value passed in doesn't map to a 
+         * @throws IllegalArgumentException if value passed in doesn't map to a
          *          valid Claim Status
          */
         public static Status getFromInt(int value) {
@@ -392,7 +402,7 @@ public class Claim implements Serializable {
     }
 
     /**
-     * @param studentID Unique ID representing the student who lodged this 
+     * @param studentID Unique ID representing the student who lodged this
      *                  specific Claim.
      */
     public void setStudentID(String studentID) {
@@ -400,7 +410,7 @@ public class Claim implements Serializable {
     }
 
     /**
-     * @param campusID Unique ID representing the Campus at which this 
+     * @param campusID Unique ID representing the Campus at which this
      *                  specific Claim was lodged.
      */
     public void setCampusID(String campusID) {
@@ -416,7 +426,7 @@ public class Claim implements Serializable {
     }
 
     /**
-     * @param disciplineID Unique ID representing the Discipline this specific 
+     * @param disciplineID Unique ID representing the Discipline this specific
      *                      Claim targets.
      */
     public void setDisciplineID(Integer disciplineID) {
@@ -424,7 +434,7 @@ public class Claim implements Serializable {
     }
 
     /**
-     * @param assessorID Unique ID representing the Assessor responsible for 
+     * @param assessorID Unique ID representing the Assessor responsible for
      *                  this specific Claim
      */
     public void setAssessorID(String assessorID) {
@@ -432,7 +442,7 @@ public class Claim implements Serializable {
     }
 
     /**
-     * @param delegateID Unique ID representing the Delegate responsible for 
+     * @param delegateID Unique ID representing the Delegate responsible for
      *                  this specific Claim
      */
     public void setDelegateID(String delegateID) {

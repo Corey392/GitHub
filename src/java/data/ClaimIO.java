@@ -26,6 +26,7 @@ import java.util.logging.Logger;
  *              04/05/2013:   Implemented getTotalClaims() method
  *              06/05/2013:   Fixed update method
  *              06/05/2013: TW: Added 'deleteDraft' method.
+ *              15/06/2013: TW: Updated 'update' method to reflect DB changes and Assessor Approval
  * <b>Purpose:</b>  Controller class for interaction between application and database's Claim table.
  */
 public class ClaimIO extends RPL_IO <Claim> {
@@ -93,8 +94,8 @@ public class ClaimIO extends RPL_IO <Claim> {
 
         Role role = super.role;
 
-        if (!(role == Role.ADMIN || role == Role.TEACHER || role == Role.STUDENT)){
-            return;
+        if (role == Role.CLERICAL){
+            return;	//Clerical has no access to claims.
         }
 
         String sql;
@@ -108,7 +109,7 @@ public class ClaimIO extends RPL_IO <Claim> {
         SQLParameter p3;
         SQLParameter p4 = new SQLParameter(optionValue);
         SQLParameter p9 = new SQLParameter(status);
-	SQLParameter p10;
+		SQLParameter p10;
 
         if (role == Role.STUDENT) {
             sql = "SELECT fn_UpdateClaim(?,?,?,?,?)";
@@ -119,28 +120,28 @@ public class ClaimIO extends RPL_IO <Claim> {
             p3 = new SQLParameter(disciplineID);
 
             super.doPreparedStatement(sql, p1, p2, p3, p4, p9);
-	    
-	    sql = "SELECT fn_assignclaim(?,?)";
-	    String assessorID = claim.getAssessorID();
-	    p10 = new SQLParameter(assessorID);
-	    super.doPreparedStatement(sql, p1, p10);
-        }else {
-            sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?,?)";
+
+			sql = "SELECT fn_assignclaim(?,?)";
+			String assessorID = claim.getAssessorID();
+			p10 = new SQLParameter(assessorID);
+			super.doPreparedStatement(sql, p1, p10);
+        } else {	//Assessor OR Delegate
+            sql = "SELECT fn_UpdateClaim(?,?,?,?,?,?,?,?)";
             Boolean assessorApproved = claim.getAssessorApproved();
             Boolean delegateApproved = claim.getDelegateApproved();
             Boolean requestComp = claim.getRequestCompletion();
-            Date dateResolved = claim.getDateResolved();
             String assessorID = claim.getAssessorID();
-            String delegateID = claim.getDelegateID();
+            //String delegateID = claim.getDelegateID();
+			//TODO: Remove comment above and line below when Delegates are Automatically assigned
+			String delegateID = "demo_deb"; //HACK as not working - for Demonstration
 
             p2 = new SQLParameter(assessorApproved);
             p3 = new SQLParameter(delegateApproved);
             SQLParameter p5 = new SQLParameter(requestComp);
-            SQLParameter p6 = new SQLParameter(dateResolved);
             SQLParameter p7 = new SQLParameter(assessorID);
             SQLParameter p8 = new SQLParameter(delegateID);
 
-            super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+            super.doPreparedStatement(sql, p1, p2, p3, p4, p5, p7, p8, p9);
         }
 
     }

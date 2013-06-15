@@ -2,6 +2,7 @@ package web;
 
 import data.ClaimIO;
 import domain.*;
+import domain.Claim.Status;
 import domain.User.Role;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,12 +27,14 @@ import util.Util;
  *             16/05/2013 MC: Updated 'processRequest' to reflect changes made to Util class
  *             18/05/2013 MC: Removed unnecessary studentID fields pertaining to ClaimedModule calls
  *             19/05/2013 MC: Removed unused parameters and updated affected method calls
+ *             15/06/2013 TW: Updated to handle new statuses, added ability to set status to selected status, additional buttons, added pushing errors back, improved efficiency of approveClaim method.
  */
 public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadModel {
 
     HttpSession session;
     User user;
-    
+	Claim claim;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -47,11 +50,12 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         String url;
 
         String rpath = request.getParameter("rpath");
+		Status[] claimStatuses = Claim.Status.getValidStatuses();
+		session.setAttribute("statuses", claimStatuses);
 
         // If User came from ListClaims Page
         if (rpath.equalsIgnoreCase(RPLPage.LIST_CLAIMS_TEACHER.relativeAddress)) {
             String ccmd = request.getParameter("ccmd");
-            System.out.println("ccmd=" + ccmd);
             if(ccmd != null) {
                 if (ccmd.equalsIgnoreCase("Back")) {
                     url = RPLPage.TEACHER_HOME.relativeAddress;
@@ -98,7 +102,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
             if (selectedClaimID == null) {
 
                 int claimID = Integer.parseInt(request.getParameter("claimID"));
-                
+
                 Claim claim = Util.getCompleteClaim(claimID, user.role);
                 url = getForwardURLForClaimType(claim);
                 request.setAttribute("claim", claim);
@@ -114,49 +118,45 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
 
         } else if (rpath.equalsIgnoreCase(RPLPage.ASSESS_CLAIM_PREV.relativeAddress)
                     || rpath.equalsIgnoreCase(RPLPage.ASSESS_CLAIM_RPL.relativeAddress)){
+            String cmd = request.getParameter("cmd");
         // If User came from assessClaimPrev or assessClaimRPL Page
-            String moduleID = Util.getPageStringID(request, "evid");
-            // If "View Evidence" Button clicked
-            if (!(moduleID == null || moduleID.isEmpty())) {
+			if (cmd == null) {	//View Evidence was pressed
+				String moduleID = Util.getPageStringID(request, "evid");
+				if (moduleID == null || moduleID.isEmpty()) {
+					request.setAttribute("error", "The module you selected was invalid");
+				} else {	//A valid module was selected
+					request.removeAttribute("rpath");
+					String claimID = request.getParameter("claimID");
+					//rpath = RPLServlet.ASSESS_CLAIM_RPL_SERVLET.relativeAddress;
 
-                request.removeAttribute("rpath");
-                String claimID = request.getParameter("claimID");
-                //rpath = RPLServlet.ASSESS_CLAIM_RPL_SERVLET.relativeAddress;
+					url = RPLServlet.VIEW_EVIDENCE_SERVLET.relativeAddress;
+					request.setAttribute("claimID", claimID);
+					request.setAttribute("moduleID", moduleID);
+					request.setAttribute("rpath", moduleID);
+					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+					dispatcher.forward(request, response);
+				}
+				return;
+			}
 
-                url = RPLServlet.VIEW_EVIDENCE_SERVLET.relativeAddress;
-                request.setAttribute("claimID", claimID);
-                request.setAttribute("moduleID", moduleID);
-                request.setAttribute("rpath", moduleID);
-                RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-                dispatcher.forward(request, response);
-            } else {
-            // else "Approve Claim", "Approve Selected" or "Back" button clicked
-                String action = request.getParameter("cmd");
-                request.getParameterValues(action);
+            int claimID = Integer.parseInt(request.getParameter("claimID"));
+            Claim claim = Util.getCompleteClaim(claimID, user.role);
+            url = getForwardURLForClaimType(claim);
 
-                int claimID = Integer.parseInt(request.getParameter("claimID"));
-                
-                Claim claim = Util.getCompleteClaim(claimID, user.role);
-
-                url = getForwardURLForClaimType(claim);
-
-                if (action.equals("Approve Claim")) {
-                    approveClaim(claim);
-                } else if (action.equals("Approve Selected")) {
-                    approveSelected(request, claim);
-                } else if (action.equals("Print Claim")) {
-                    printClaim(request, response, claim);
-                } else if (action.equals("Back")) {
-                    url = RPLServlet.VIEW_TEACHER_CLAIM_SERVLET.relativeAddress;
-                } else {
-                    throw new ServletException("Cannot process Action.");
-                }
-                request.setAttribute("claim", claim);
-                RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-                dispatcher.forward(request, response);
+			if (cmd.equals("Set Claim Status")) {
+                approveClaim(claim, request);
+			} else if (cmd.equals("Approve Selected Modules")) {
+				approveSelected(request, claim);
+			} else if (cmd.equals("Print Claim")) {
+				printClaim(request, response, claim);
+			} else {	//Only other option is "Back"
+                url = RPLServlet.VIEW_TEACHER_CLAIM_SERVLET.relativeAddress;
             }
+            request.setAttribute("claim", claim);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+            dispatcher.forward(request, response);
         } else if (rpath.equalsIgnoreCase(RPLPage.EVIDENCE_UPDATED_PAGE.relativeAddress)) {
-            
+
             int claimID = Integer.parseInt(request.getParameter("claimID"));
 
             Claim claim = Util.getCompleteClaim(claimID, user.role);
@@ -168,40 +168,55 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
     }
 
     /**
-     * Method is called when an Assessor or Delegate wishes to approve a claim. 
+     * Method is called when an Assessor or Delegate wishes to approve a claim.
      * The claim's 'Assessor Approved' and 'Delegate Approved' fields will
      * be set depending on the User's ID and whether they are the designated Assessor,
      * Delegate, or both. Each of the claimed modules are then set then set to approved.
      * @param claim The Claim to approve
      */
-    public void approveClaim(Claim claim) {
-        ClaimIO cIO = new ClaimIO(Role.TEACHER);
+    public HttpServletRequest approveClaim(Claim claim, HttpServletRequest request) {
         String userID = user.getUserID();
-        if (claim.getAssessorID() != null) {
-            if (claim.getAssessorID().equals(userID)) {
+        if (user.role == Role.TEACHER) {
+            if (claim.getAssessorID() != null && claim.getAssessorID().equals(userID)) {
                 claim.setAssessorApproved(Boolean.TRUE);
             }
-        }
-        if (claim.getDelegateID() != null) {
-            if (claim.getDelegateID().equals(userID)) {
-            claim.setDelegateApproved(Boolean.TRUE);
+        } else if (user.role == Role.ADMIN) {
+            if (claim.getDelegateID() != null && claim.getDelegateID().equals(userID)) {
+				claim.setDelegateApproved(Boolean.TRUE);
             }
-        }
+        } else {
+			request.setAttribute("error", "You are not authorised to perform this function.");
+			return request;
+		}
 
         for (ClaimedModule claimedModule: claim.getClaimedModules()) {
             claimedModule.setApproved(true);
             ArrayList<Evidence> evi = claimedModule.getEvidence();
             for (Evidence e : evi) {
-		e.setApproved(true);
+				e.setApproved(true);
             }
         }
-        claim.setStatus(Claim.Status.APPROVED);
+
+		String newStatus = request.getParameter("newStatus");
+		if (newStatus == null && newStatus.isEmpty()) {
+			request.setAttribute("error", "You must select a status before trying to set the status on this claim");
+		} else {
+			try {
+				claim.setStatus(Claim.Status.valueOf(newStatus));
+				System.out.println("CLAIM STATUS: "+claim.getStatus());
+			} catch (IllegalArgumentException iae) {
+				request.setAttribute("error", "The status specified for the claim was invalid.");
+				return request;
+			}
+		}
+
         try {
-            cIO.update(claim);
+			new ClaimIO(user.role).update(claim);
+        } catch(SQLException SQLex) {
+            System.out.println("AssessClaimRPLServlet: SQLException: "+SQLex.getMessage());
+			request.setAttribute("error", "This claim was unable to be updated due to a database failure. Please see the system administrator if the issue persists.");
         }
-        catch(SQLException SQLex) {
-            SQLex.getMessage();
-        }
+		return request;
     }
 
     /**
@@ -209,7 +224,7 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
      * @param request HTTP request containing the IDs of Modules to approve
      * @param claim Claim for which to approve ClaimedModules
      */
-    public void approveSelected(HttpServletRequest request, Claim claim) {
+    public HttpServletRequest approveSelected(HttpServletRequest request, Claim claim) {
         String[] selectedValues = request.getParameterValues("approved");
         ClaimIO cIO = new ClaimIO(user.role);
         if(selectedValues != null) {
@@ -228,10 +243,12 @@ public class AssessClaimRPLServlet extends HttpServlet implements SingleThreadMo
         }catch(SQLException SQLex) {
             SQLex.getMessage();
         }
+		return request;
     }
 
-    public void printClaim(HttpServletRequest request, HttpServletResponse response, Claim claim) {
+    public HttpServletRequest printClaim(HttpServletRequest request, HttpServletResponse response, Claim claim) {
         //TODO: Print Claim Method
+		return request;
     }
 
     /**

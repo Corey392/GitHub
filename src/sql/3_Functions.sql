@@ -1,8 +1,8 @@
 /* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:	?
- *  Version:	v2.210
- *  Modified:	26/05/2013
+ *  Version:	v2.211
+ *  Modified:	15/06/2013
  *  Change Log:
  *		v2.010:	Todd:	Updated 'fn_insertstudent' to incorporate all columns that have been added
  *		v2.020:	Todd:	Updated 'fn_insertstudent' as the processing order falied the foreign key constraints on the User table.
@@ -38,6 +38,7 @@
  *		v2.190: Mitch:	Fixed issue with 'fn_getAllFiles' and 'fn_getFileByID' where was failing under some circumstances.
  *		v2.200:	Bryce:	Added 'fn_setGuideFileAddress' and 'fn_deleteGuideFile'.
  *		v2.210:	Todd:	Added 'fn_getGuideFileByID'.
+ *		v2.211:	Todd:	Update 'fn_updateclaim' method for when Assessor / Delegate update the claim.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -1275,10 +1276,10 @@ $_$;
 
 
 --
--- Name: fn_updateclaim(integer, boolean, boolean, character(1), boolean, date, text, text, integer); Type: FUNCTION; Schema: public; Owner: -
+-- Name: fn_updateclaim(integer, boolean, boolean, character(1), boolean, text, text, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, dateresolved date, assessorid text, delegateid text, status integer) RETURNS void
+CREATE FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, assessorid text, delegateid text, status integer) RETURNS void
     LANGUAGE sql
     AS $_$
     UPDATE "Claim"
@@ -1287,10 +1288,9 @@ CREATE FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delega
         "delApproved" = $3,
         "option" = $4,
         "requestComp" = $5,
-        "dateResolved" = $6,
-        "assessorID" = $7,
-        "delegateID" = $8,
-        "status" = $9
+        "assessorID" = $6,
+        "delegateID" = $7,
+        "status" = $8
     WHERE
         "claimID" = $1;
 $_$;

@@ -1,8 +1,9 @@
-<%--
-    Document   : viewEvidence
-    Created on : 11/06/2011, 6:56:16 PM
-    Author     : David, Mitch Carr
-    Changelog  :   18/05/2013: MC: Updated studentID fields to reflect changes to database and ClaimedModule class
+<%--Purpose:    viewEvidence
+ *  @author     David, Mitch Carr, Todd Wiggins
+ *  Created:    11/06/2011, 6:56:16 PM
+ *  @version    1.11
+ *  Change Log: 18/05/2013: MC: Updated studentID fields to reflect changes to database and ClaimedModule class
+ *              15/06/2013: TW: Visual improvements
 --%>
 
 <%@page import="data.ClaimIO"%>
@@ -14,7 +15,7 @@
 <jsp:useBean id="empt" class="java.lang.String"/>
 <jsp:useBean id="prevtype" class="java.lang.String"/>
 
-<% 
+<%
     boolean approved;
     ClaimIO claimIO = new ClaimIO(Role.TEACHER);
     String studentID = claimIO.getByID(claimedModule.getClaimID()).getStudentID();
@@ -26,7 +27,7 @@
 <h1><%=thisPage.title%></h1>
 <div class="body">
     <form action="<%= RPLServlet.VIEW_EVIDENCE_SERVLET.absoluteAddress %>" method="post">
-    <div style="text-align:center">
+    <div>
         <p>     <i>For RPL Claims you may view the details of the evidence that has been submitted.
                 For Previous Studies claims, you may view and approve the evidence displayed, which is usually in the form of
                 previously studied modules.</i><br/><br/>
@@ -39,7 +40,7 @@
         </p>
     </div>
         <div>
-            <table border="1" width="900" cellpadding="6">
+            <table width="900" cellpadding="6" class="datatable">
                 <thead>
                     <tr>
                         <th>Element</th>
