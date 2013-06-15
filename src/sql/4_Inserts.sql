@@ -11,6 +11,7 @@
 				08/05/2013: Todd:   Removed Evidence for claims. Add from a claim on site instead.
 				05/06/2013: Todd:   Added sample data for the Demonstration.
 				15/06/2013: Mitch:  Removed sample data not intended for Demonstration.
+					    Mitch:  Further removal of sample data not intended for Demonstration.
  * Pre-conditions: Must be run after all other setup database scripts.
  */
 
@@ -36,12 +37,6 @@ INSERT INTO "Discipline" VALUES (2, 'Business');
 INSERT INTO "CampusDiscipline" VALUES ('011', 1);
 INSERT INTO "CampusDiscipline" VALUES ('022', 2);
 INSERT INTO "CampusDiscipline" VALUES ('656', 2);
-
---
--- Data for Name: Delegate; Type: TABLE DATA; Schema: public; Owner: -
---
--- disciplineID, campusID, teacherID
-INSERT INTO "Delegate" VALUES (1, '011', 'deb.spindler');
 
 --
 -- Data for Name: Module; Type: TABLE DATA; Schema: public; Owner: -
@@ -76,39 +71,11 @@ INSERT INTO "CampusDisciplineCourse" VALUES ('19010', 1, '011');
 INSERT INTO "CampusDisciplineCourse" VALUES ('45879', 1, '011');
 
 --
--- Data for Name: Assessor; Type: TABLE DATA; Schema: public; Owner: -
--- campusID, courseID, disciplineID, courseCoordinator, teacherID
-INSERT INTO "Assessor" VALUES ('011', '19018', 1, true, 'deb.spindler');
-INSERT INTO "Assessor" VALUES ('011', '19010', 1, true, 'steve.etherington');
-
---
--- Data for Name: Claim; Type: TABLE DATA; Schema: public; Owner: -
---
--- claimID, studentID, dateMade, dateResolved, claimType, courseID, campusID, disciplineID, assApproved, delApproved, option, requestComp, submitted, assessorID, delegateID, status
-INSERT INTO "Claim" VALUES (1, '355878635',  now()::date, NULL, false, '19018', '011', 1, NULL, NULL, NULL, NULL, false, NULL, NULL, 0);
-INSERT INTO "Claim" VALUES (2, '355878635',  now()::date, NULL, false, '19018', '011', 1, NULL, NULL, NULL, NULL, false, NULL, NULL, 0);
-
---
--- Data for Name: Update; Type: TABLE DATA; Schema: public; Owner: -
---
--- updateID, claimID, userID, dateTime
-INSERT INTO "Update" VALUES (12, 1, 'adam.shortall', '2012-02-19');
-INSERT INTO "Update" VALUES (13, 1, 'deb.spindler', '2012-03-22');
-
---
 -- Data for Name: File; Type: TABLE DATA; Schema: public; Owner: -
 --
 -- fileID, claimID, filename
 INSERT INTO "File" VALUES (11, 1, 'something.txt');
 INSERT INTO "File" VALUES (12, 2, 'someother.txt');
-
---
--- Data for Name: ClaimedModule; Type: TABLE DATA; Schema: public; Owner: -
---
--- moduleID, claimID, approved, arrangementNo, functionalCode, overseasEvidence, recognition
-INSERT INTO "ClaimedModule" VALUES ('ICAA5046B', 1, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "ClaimedModule" VALUES ('ICAA5046B', 2, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO "ClaimedModule" VALUES ('ICAA5151B', 2, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Data for Name: Element; Type: TABLE DATA; Schema: public; Owner: -
@@ -123,17 +90,6 @@ INSERT INTO "Element" VALUES (3, 'ICAA5046B', 'Provide information to the workgr
 INSERT INTO "Element" VALUES (2, 'ICAA5151B', 'Investigate current practices in relation to resource usage');
 
 --
--- Data for Name: Criterion; Type: TABLE DATA; Schema: public; Owner: -
---
--- criterionID, elementID, description, moduleID
-INSERT INTO "Criterion" VALUES (1, 1, 'Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.', 'ICAA5158B');
-INSERT INTO "Criterion" VALUES (2, 1, 'Provide information to the workgroup on the organisation''s OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.', 'ICAA5158B');
-INSERT INTO "Criterion" VALUES (3, 1, 'Regularly provide and clearly explain information about identified hazards and the outcomes of risk assessment and control to the workgroup.', 'ICAA5158B');
-INSERT INTO "Criterion" VALUES (1, 2, 'Identify environmental regulations applying to the enterprise', 'ICAA5046B');
-INSERT INTO "Criterion" VALUES (2, 1, 'Analyse procedures for assessing compliance with environmental/sustainability regulations', 'ICAA5139B');
-INSERT INTO "Criterion" VALUES (3, 1, 'Collect information on environmental and resource efficiency systems and procedures, and provide to the work group where appropriate', 'ICAA5046B');
-
---
 -- Data for Name: Provider; Type: TABLE DATA; Schema: public; Owner: -
 --
 -- providerID, name
@@ -143,18 +99,6 @@ INSERT INTO "Provider" VALUES ('3', 'School');
 INSERT INTO "Provider" VALUES ('4', 'TAFE NSW');
 INSERT INTO "Provider" VALUES ('5', 'Other VET provider');
 INSERT INTO "Provider" VALUES ('6', 'Non-formal/other');
-
---
--- Data for Name: ClaimedModuleProvider; Type: TABLE DATA; Schema: public; Owner: -
---
--- claimID, moduleID, providerID
-INSERT INTO "ClaimedModuleProvider" VALUES ( 1, 'ICAA5046B', '1');
-INSERT INTO "ClaimedModuleProvider" VALUES ( 2, 'ICAA5046B', '1');
-INSERT INTO "ClaimedModuleProvider" VALUES ( 2, 'ICAA5151B', '1');
-INSERT INTO "ClaimedModuleProvider" VALUES ( 2, 'ICAA5151B', '2');
-INSERT INTO "ClaimedModuleProvider" VALUES ( 2, 'ICAA5151B', '4');
-INSERT INTO "ClaimedModuleProvider" VALUES ( 2, 'ICAA5151B', '5');
-
 
 --
 -- Data for Name: CourseModule; Type: TABLE DATA; Schema: public; Owner: -
