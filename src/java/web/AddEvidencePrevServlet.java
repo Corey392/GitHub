@@ -55,6 +55,7 @@ public class AddEvidencePrevServlet extends HttpServlet {
 		Claim claim = (Claim) session.getAttribute("claim");
 		//Get the modules that evidence is required for
 		ArrayList<ClaimedModule> claimedMods = claim.getClaimedModules();
+		System.out.println("claimedMods.size() "+ claimedMods.size());
 
 		boolean editable = false;
 		boolean attachEvidence = false;
@@ -138,7 +139,7 @@ public class AddEvidencePrevServlet extends HttpServlet {
 
 				for (Element element : claimedModule.getElements()) {
 					Evidence evidence = new Evidence(claim.getClaimID(), claimedModule.getModuleID(), element.getElementID(), request.getParameter(element.getModuleID()+"|"+element.getElementID()));
-					if (existingEvidence != null) {
+					if (existingEvidence != null && existingEvidence.size() > 0) {
 						for (int i = 0; i < existingEvidence.size(); i++) {
 							if (existingEvidence.get(i).getElementID().equals(element.getElementID())) {
 								if (!existingEvidence.get(i).getDescription().equals(evidence.getDescription())) {

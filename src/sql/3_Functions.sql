@@ -3011,7 +3011,7 @@ GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, campusid text, disciplinei
 
 
 --
--- Name: fn_updateclaim(integer, text, boolean, boolean, character(1), boolean, date, text, text, integer); Type: ACL; Schema: public; Owner: -
+-- Name: fn_updateclaim(integer, text, boolean, boolean, character(1), boolean, text, text, integer); Type: ACL; Schema: public; Owner: -
 --
 
 REVOKE ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, assessorid text, delegateid text, status integer) FROM PUBLIC;

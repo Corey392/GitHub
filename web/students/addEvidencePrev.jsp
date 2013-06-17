@@ -21,13 +21,13 @@
 <%! RPLPage thisPage = RPLPage.ADD_EVIDENCE_PREV; %>
 
 <h2 class="center">Add Evidence to Previous Studies Claim</h2>
+<h3>Instructions:</h3>
+<p>Describe the evidence you are able to provide that demonstrates your knowledge for each element within each module.</p>
+<p>If you have any documents as evidence, these can be uploaded after you have submitted the claim and a preliminary review been made by an assessor.</p>
 <% GuideFile guideFile = (GuideFile) request.getAttribute("guideFile");
 	if (guideFile != null && guideFile.getFilename() != null) {
 	out.print("<p>For assistance with completing a claim for this course, there is a <a href=\"javascript:addEvidence.getGuide('"+guideFile.getCourseID()+"');\">Guide File available here</a>.</p>");
 } %>
-<h3>Instructions:</h3>
-<p>Describe the evidence you are able to provide that demonstrates your knowledge for each element within each module.</p>
-<p>If you have any documents as evidence, these can be uploaded after you have submitted the claim and a preliminary review been made by an assessor.</p>
 <p></p>
 <form action="AddEvidencePrev" method="post" name="addEvidenceForm">
 	<% ArrayList<ClaimedModule> claimedModules = claim.getClaimedModules();

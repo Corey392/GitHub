@@ -1,11 +1,12 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * @author David, James
  */
-public class Element implements Comparable<Element> {
+public class Element implements Comparable<Element>, Serializable {
     private ArrayList<Criterion> criteria;
     private int elementID;
     private String moduleID;
@@ -14,7 +15,7 @@ public class Element implements Comparable<Element> {
     public Element() {
         this(-1,"","");
     }
-    
+
     public Element(int elementID, String moduleID) {
         this(elementID, moduleID, "");
     }
@@ -90,7 +91,7 @@ public class Element implements Comparable<Element> {
     public int compareTo(Element that) {
         if (this.elementID < that.elementID) {
             return -1;
-        } 
+        }
         return (this.elementID == that.elementID ? 0 : 1);
     }
 }

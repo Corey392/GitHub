@@ -1,6 +1,7 @@
 package domain;
 
 import data.UserIO;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
  *				also have otherName, address1, address2, town, state,
  *				postcode, phone, studentID and staff fields.
  */
-public class User implements Comparable<User> {
+public class User implements Comparable<User>, Serializable {
     private ArrayList<Claim> claims;
     private String userID;
     private String firstName;
@@ -176,7 +177,7 @@ public class User implements Comparable<User> {
          * Returns a Role object from the character stored in the database
          * @param c Char representing a user Role
          * @return Returns the Role associated with the char passed in
-         * @throws IllegalArgumentException if the char from the database 
+         * @throws IllegalArgumentException if the char from the database
          *          doesn't have a corresponding Role.
          */
         public static Role roleFromChar(char c) {
@@ -203,12 +204,12 @@ public class User implements Comparable<User> {
         LOGGED_IN,
         NOT_LOGGED_IN;
     }
-    
+
     /**
      * Validates a specified field of a user by checking it against a pattern.
      * @param field the field to validate
      * @return true if the field is valid
-     * @throws IllegalArgumentException if the field does not match an existing 
+     * @throws IllegalArgumentException if the field does not match an existing
      *          pattern.
      */
     public boolean validateField(Field field) {
