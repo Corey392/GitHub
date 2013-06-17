@@ -1,4 +1,4 @@
-/* Purpose:  	Adds the Functions to the database.
+﻿/* Purpose:  	Adds the Functions to the database.
  *  Authors:	Ryan,Kelly,Bryce,Todd,Mitch
  *  Created:	?
  *  Version:	v2.211
@@ -39,6 +39,7 @@
  *		v2.200:	Bryce:	Added 'fn_setGuideFileAddress' and 'fn_deleteGuideFile'.
  *		v2.210:	Todd:	Added 'fn_getGuideFileByID'.
  *		v2.211:	Todd:	Update 'fn_updateclaim' method for when Assessor / Delegate update the claim.
+ *		v2.212:	Bryce:	Fixed a type in the REVOKE/GRANT statements for the new 'fn_updateclaim'.
  * Pre-conditions: Database must be created, tables must already exist, functions must not already exist.
  */
 
@@ -3013,13 +3014,13 @@ GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, campusid text, disciplinei
 -- Name: fn_updateclaim(integer, text, boolean, boolean, character(1), boolean, date, text, text, integer); Type: ACL; Schema: public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, dateresolved date, assessorid text, delegateid text, status integer) FROM PUBLIC;
-REVOKE ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, dateresolved date, assessorid text, delegateid text, status integer) FROM postgres;
-GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, dateresolved date, assessorid text, delegateid text, status integer) TO postgres;
-GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, dateresolved date, assessorid text, delegateid text, status integer) TO admin;
-GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, dateresolved date, assessorid text, delegateid text, status integer) TO clerical;
-GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, dateresolved date, assessorid text, delegateid text, status integer) TO teacher;
-GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, dateresolved date, assessorid text, delegateid text, status integer) TO student;
+REVOKE ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, assessorid text, delegateid text, status integer) FROM PUBLIC;
+REVOKE ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, assessorid text, delegateid text, status integer) FROM postgres;
+GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, assessorid text, delegateid text, status integer) TO postgres;
+GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, assessorid text, delegateid text, status integer) TO admin;
+GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, assessorid text, delegateid text, status integer) TO clerical;
+GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, assessorid text, delegateid text, status integer) TO teacher;
+GRANT ALL ON FUNCTION fn_updateclaim(claimid integer, assessorapproved boolean, delegateapproved boolean, option character(1), requestcomp boolean, assessorid text, delegateid text, status integer) TO student;
 
 
 --
