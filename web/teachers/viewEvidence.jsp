@@ -4,12 +4,15 @@
  *  @version    1.11
  *  Change Log: 18/05/2013: MC: Updated studentID fields to reflect changes to database and ClaimedModule class
  *              15/06/2013: TW: Visual improvements
+ *				18/06/2013: MC/TW: Implemented viewing Students uploaded files.
 --%>
 
+<%@page import="domain.ClaimFile"%>
 <%@page import="data.ClaimIO"%>
 <%@page import="data.ClaimedModuleIO"%>
 <%@page import="java.util.*" %>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
+<script src="<%= RPLPage.ROOT %>/scripts/jquery-1.9.1.js"></script>
 <%! RPLPage thisPage = RPLPage.VIEW_EVIDENCE_PAGE; %>
 <jsp:useBean id="claimedModule" scope="request" class="domain.ClaimedModule"/>
 <jsp:useBean id="empt" class="java.lang.String"/>
@@ -103,6 +106,30 @@
             </c:choose>
             </tbody>
         </table>
+		<p> </p>
+		<h2>Files Uploaded by Student</h2>
+	<% ArrayList<ClaimFile> claimFiles = (ArrayList<ClaimFile>) session.getAttribute("claimFiles");
+	if (claimFiles != null && claimFiles.size() > 0) {
+		if (request.getAttribute("error") != null) { %>
+			<div id="errorMessage">${error}</div>
+		<% } %>
+	<form action="attachEvidence" method="post" name="attachEvidenceForm">
+		<table id="evidence_tbl">
+			<thead>
+				<tr>
+					<th>Filename</th>
+					<th>Select</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for (ClaimFile claimFile : claimFiles) {
+					out.print("<tr><td>"+claimFile.getFilename()+"</td><td><input type=\"radio\" value=\""+claimFile.getFileID()+"\" name=\"selected\"></td></td>");
+				} %>
+			</tbody>
+		</table>
+		<input type="button" id="view" value="View File">
+	</form>
+	<% } %>
         <div style="text-align:center">
             <br/>
             <c:if test="${empt == '0'}">
@@ -114,3 +141,4 @@
     </div>
 
 <%@include file="../WEB-INF/jspf/footer.jspf" %>
+<script src="<%= RPLPage.ROOT %>/scripts/attachEvidence.js"></script>

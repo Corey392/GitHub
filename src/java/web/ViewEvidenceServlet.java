@@ -2,13 +2,17 @@ package web;
 
 import data.ElementIO;
 import data.EvidenceIO;
+import data.FileIO;
 import domain.Claim;
+import domain.ClaimFile;
 import domain.ClaimedModule;
 import domain.Evidence;
 import domain.User;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,6 +29,7 @@ import util.Util;
  *	Change Log: 07/05/2013: TW: Updated to handle ArrayList<Evidence>
  *                  16/05/2013: MC: Updated 'processRequest' to reflect changes to Util class
  *                  18/05/2013: MC: Removed unnecessary studentID fields pertaining to ClaimedModule
+ *					18/06/2013: MC/TW: Implemented viewing Students uploaded files.
  */
 public class ViewEvidenceServlet extends HttpServlet {
 
@@ -43,16 +48,22 @@ public class ViewEvidenceServlet extends HttpServlet {
         String url;
         String rpath = request.getParameter("rpath"); // jsp path
 
-
-        //If user came from AssessPrevClaim Page
-
+        int claimID = Integer.parseInt(request.getParameter("claimID"));
+		Claim claim = Util.getCompleteClaim(claimID, user.role);
+		FileIO fileIO = new FileIO(user.role);
+		ArrayList<ClaimFile> claimFiles;
+		try {
+			claimFiles = fileIO.getList(claim.getClaimID());
+		} catch (SQLException ex) {
+			Logger.getLogger(AttachEvidenceServlet.class.getName()).log(Level.SEVERE, null, ex);
+			claimFiles = new ArrayList<ClaimFile>();
+		}
+		session.setAttribute("claimFiles", claimFiles);
 
         // If user came from viewEvidence Page
         if (rpath.equalsIgnoreCase(RPLPage.VIEW_EVIDENCE_PAGE.relativeAddress)) {
             //Get button pressed
             String action = request.getParameter("btn");
-
-            int claimID = Integer.parseInt(request.getParameter("claimID"));
             String moduleID = request.getParameter("moduleID");
 
             //Check button pressed
@@ -70,7 +81,7 @@ public class ViewEvidenceServlet extends HttpServlet {
                         for (int i = 0; i < selectedValues.length; i++) {
                             ArrayList<Evidence> evidence = Util.getCompleteEvidence(claimID, moduleID, user.role);
                             for (Evidence e : evidence) {
-				e.setApproved(true);
+								e.setApproved(true);
                             }
                             try {
                                 evidenceIO.update(evidence);
@@ -89,10 +100,9 @@ public class ViewEvidenceServlet extends HttpServlet {
         } else if (rpath.equalsIgnoreCase(RPLPage.ASSESS_CLAIM_RPL.relativeAddress)) {
         // If user came from AssessRPLClaim Page
             //get request params
-            int claimID = Integer.parseInt(request.getParameter("claimID"));
-            
+            claimID = Integer.parseInt(request.getParameter("claimID"));
+
             String moduleID = Util.getPageStringID(request, "evid");
-            Claim claim = Util.getCompleteClaim(claimID, user.role);
 
             ElementIO elementIO = new ElementIO(user.role);
             ClaimedModule claimedModule = new ClaimedModule();

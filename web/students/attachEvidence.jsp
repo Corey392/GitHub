@@ -7,6 +7,7 @@
  *              15/05/2013: TW: Improving display of errors to be consistent across site.
  *              02/06/2013: TW: Improved instructions.
  *				02/06/2013: TW: Fixed the 'thisPage' variable to point to the correct one.
+ *				18/06/2013: TW: Added Submit and Back Buttons
 --%>
 <%@page import="domain.ClaimFile"%>
 <%@page import="java.util.ArrayList"%>

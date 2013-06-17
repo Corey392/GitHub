@@ -34,6 +34,7 @@ import util.RPLServlet;
  *	Change Log: 15/05/2013: TW: Fixed removal of files, now updates list correctly.
  *	            21/05/2013: TW: Added handling of the file types.
  *	            02/06/2013: TW: Improved handling of Error Messages, added a check for when no files were uploaded.
+ *				18/06/2013: TW: Added Submit & Back buttons
  */
 public class AttachEvidenceServlet extends HttpServlet {
 
