@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import util.Util;
 
 /**
@@ -12,12 +13,12 @@ import util.Util;
  *		    07/05/2013:	Bryce Carr: Added moduleID field and updated methods/constructors to match. Part of implementing Criterion insertion.
  * <b>Purpose:</b>  Model class for database's Criterion table.
  */
-public class Criterion implements Comparable<Criterion> {
+public class Criterion implements Comparable<Criterion>, Serializable {
     private int criterionID;
     private int elementID;
     private String moduleID;
     private String description;
-    
+
     public Criterion(){
         this(Util.INT_ID_EMPTY,Util.INT_ID_EMPTY,"","");
     }
@@ -25,7 +26,7 @@ public class Criterion implements Comparable<Criterion> {
     public Criterion(int elementID, String moduleID, String description) {
         this(0, elementID, moduleID, description);
     }
-    
+
     public Criterion(int criterionID, int elementID, String moduleID, String description) {
         this.criterionID = criterionID;
         this.elementID = elementID;
@@ -69,22 +70,22 @@ public class Criterion implements Comparable<Criterion> {
     }
 
     /**
-     * @param elementID ID uniquely identifying the Element associated with 
+     * @param elementID ID uniquely identifying the Element associated with
      *          this Criterion
      */
     public void setElementID(int elementID) {
         this.elementID = elementID;
     }
-    
+
     /**
      * @return ID uniquely identifying the Module associated with this Criterion
      */
     public String getModuleID()	{
 	return this.moduleID;
     }
-    
+
     /**
-     * @param moduleID ID uniquely identifying the Module associated with 
+     * @param moduleID ID uniquely identifying the Module associated with
      *              this Criterion
      */
     public void setModuleID(String moduleID)	{
@@ -100,7 +101,7 @@ public class Criterion implements Comparable<Criterion> {
     public int compareTo(Criterion that) {
         if (this.criterionID < that.criterionID) {
             return -1;
-        } 
+        }
         return (this.criterionID == that.criterionID ? 0 : 1);
     }
 }

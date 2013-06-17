@@ -4,6 +4,8 @@
  */
 package domain;
 
+import java.io.Serializable;
+
 /**
  *  Model class of a Guide File for a Course.
  * @author Bryce
@@ -13,7 +15,7 @@ package domain;
  * Changelog:	23/05/2013: Bryce Carr: Created class, copied and reworked basic fields and constructors from ClaimFile.java
  *              28/05/2013: Bryce Carr: Changed filetype in FILE_NAME to PDF.
  */
-public class GuideFile {
+public class GuideFile implements Serializable {
 
     public final static String DIRECTORY_GUIDE_FILES = ClaimFile.directoryAbsolute + "/guideFiles/";
     public final static String FILE_NAME = "guideFile.pdf";
