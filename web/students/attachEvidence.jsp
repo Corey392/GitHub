@@ -60,5 +60,12 @@
 		<input type="submit" name="remove" value="Remove File">
 	</form>
 <% } %>
+
+<form action="attachEvidence" method="post" name="attachEvidence">
+	<div id="buttons">
+		<input type="submit" value="Submit Claim" name="submitClaim" />
+		<input type="submit" name="back" value="Back">
+	</div>
+</form>
 <%@include file="../WEB-INF/jspf/footer.jspf" %>
 <script src="<%= RPLPage.ROOT %>/scripts/attachEvidence.js"></script>

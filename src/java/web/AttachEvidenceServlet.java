@@ -24,6 +24,7 @@ import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import util.RPLPage;
+import util.RPLServlet;
 
 /**
  *  Purpose:    Handles uploading evidence files to a claim.
@@ -131,6 +132,13 @@ public class AttachEvidenceServlet extends HttpServlet {
 			} else {
 				errors.add("Not a valid file was selected, please use the radio buttons to select a file.");
 			}
+		} else if (request.getParameter("submitClaim") != null) {
+			claim = UpdatePrevClaimServlet.submitClaim(user, claim, true);
+			url = RPLServlet.LIST_CLAIMS_STUDENT_SERVLET.relativeAddress;
+			request.removeAttribute("back");
+		} else if (request.getParameter("back") != null) {
+			url = RPLServlet.UPDATE_PREV_CLAIM_SERVLET.relativeAddress;
+			request.removeAttribute("back");
 		}
 
 		if (!errors.isEmpty()) {
