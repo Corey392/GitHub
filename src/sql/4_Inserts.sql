@@ -12,6 +12,8 @@
 				05/06/2013: Todd:   Added sample data for the Demonstration.
 				15/06/2013: Mitch:  Removed sample data not intended for Demonstration.
 					    Mitch:  Further removal of sample data not intended for Demonstration.
+                                18/06/2013: Bryce:  Put removed Criterion back.
+                                                    Added 'demo_steve' to Assessor table for the presentation.
  * Pre-conditions: Must be run after all other setup database scripts.
  */
 
@@ -90,6 +92,17 @@ INSERT INTO "Element" VALUES (3, 'ICAA5046B', 'Provide information to the workgr
 INSERT INTO "Element" VALUES (2, 'ICAA5151B', 'Investigate current practices in relation to resource usage');
 
 --
+-- Data for Name: Criterion; Type: TABLE DATA; Schema: public; Owner: -
+--
+-- criterionID, elementID, description, moduleID
+INSERT INTO "Criterion" VALUES (1, 1, 'Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.', 'ICAA5158B');
+INSERT INTO "Criterion" VALUES (2, 1, 'Provide information to the workgroup on the organisation''s OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.', 'ICAA5158B');
+INSERT INTO "Criterion" VALUES (3, 1, 'Regularly provide and clearly explain information about identified hazards and the outcomes of risk assessment and control to the workgroup.', 'ICAA5158B');
+INSERT INTO "Criterion" VALUES (1, 2, 'Identify environmental regulations applying to the enterprise', 'ICAA5046B');
+INSERT INTO "Criterion" VALUES (2, 1, 'Analyse procedures for assessing compliance with environmental/sustainability regulations', 'ICAA5139B');
+INSERT INTO "Criterion" VALUES (3, 1, 'Collect information on environmental and resource efficiency systems and procedures, and provide to the work group where appropriate', 'ICAA5046B');
+
+--
 -- Data for Name: Provider; Type: TABLE DATA; Schema: public; Owner: -
 --
 -- providerID, name
@@ -123,7 +136,7 @@ SELECT fn_updateuser('demo_steve','demo_steve','password');
 SELECT fn_updateuser('demo_deb','demo_deb','password');
 INSERT INTO "Teacher" VALUES ('demo_deb','demo_deb');
 INSERT INTO "Teacher" VALUES ('demo_steve','demo_steve');
-INSERT INTO "Assessor" VALUES ('011', '19018', 1, true, 'demo_deb');
+INSERT INTO "Assessor" VALUES ('011', '19010', 1, false, 'demo_steve');
 -- Uses Campus 011, Discipline 1, Course 19010, the 4 Modules, Elements, Criterions,
 INSERT INTO "Criterion" VALUES (1, 3, 'Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.', 'ICAA5046B');
 INSERT INTO "Criterion" VALUES (2, 3, 'Provide information to the workgroup on the organisation''s OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.', 'ICAA5046B');
