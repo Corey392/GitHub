@@ -1,5 +1,5 @@
 <%--Purpose:    Allows a user to change their password.
- *  @author     Todd Wiggins, Added this here as a test for GitHub!
+ *  @author     Todd Wiggins
  *  @version    1.002
  *  Created:    12/04/2013
  *	Change Log: 15/05/2013: TW: Improving display of errors to be consistent across site.
