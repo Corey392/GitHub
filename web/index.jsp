@@ -7,6 +7,7 @@
                  02/06/2013: TW: Added information about the system.
 	 Purpose:    This is the "HOME" page for a non-logged in user. The first/index page when a vistor navigates to the domain.
 EXTRA LINE FOR GIT HUB PURPOSES!
+Comment
 --%>
 <%@page import="util.RPLPage" %>
 <%! RPLPage thisPage = RPLPage.HOME; %>
