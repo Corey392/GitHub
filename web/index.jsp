@@ -9,7 +9,7 @@
 --%>
 <%@page import="util.RPLPage" %>
 <%! RPLPage thisPage = RPLPage.HOME; %>
-<jsp:useBean id="loginError" scope="request" class="util.RPLError"/>
+<%--<jsp:useBean id="loginError" scope="request" class="util.RPLError"/>--%>
 
 <%@include file="WEB-INF/jspf/header.jspf" %>
 
