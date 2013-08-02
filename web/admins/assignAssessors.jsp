@@ -5,7 +5,7 @@
     Author     : Vince Lombardo
 --%>
 
-<%@page import="web.FormAssignAssessor"%>
+<%--@page import="web.FormAssignAssessor"%>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.ASSIGN_ASSESSOR_TO_CLAIMS; %>
 <%--<%@page contentType="text/html" pageEncoding="UTF-8"%>--%>
@@ -14,7 +14,7 @@
     <c:redirect url="<%= RPLPage.ADMIN_HOME.relativeAddress %>" />
 </c:if>--%>
 
-<form action="<%= FormAssignAssessor.ACTION %>" method="post" name="<%= FormAssignAssessor.NAME %>">
+<%--<form action="<%= FormAssignAssessor.ACTION %>" method="post" name="<%= FormAssignAssessor.NAME %>">--%>
 <!--<!DOCTYPE html>
 <html>
     <head>
