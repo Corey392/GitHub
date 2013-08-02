@@ -57,8 +57,10 @@ public enum RPLPage {
     LIST_ERRORS("View Errors", "/admins/listErrors.jsp"),  // Kyoungho Lee
     ADMIN_ACCESS_HISTORY("View Access History", "/admins/accessHistory.jsp"),  // Ben
     TERMS_AND_CONDITIONS("Terms And Conditions", "/legal/terms.jsp"),//Added by: Todd Wiggins
-	PRIVACY_POLICY("Privacy Policy", "/legal/privacy.jsp");//Added by: Todd Wiggins
-
+	PRIVACY_POLICY("Privacy Policy", "/legal/privacy.jsp"),//Added by: Todd Wiggins
+    ASSIGN_ASSESSOR_TO_CLAIMS("Assign Assessor to Claims", "/admins/assignAssessors.jsp"); //Added by Vince Lombardo
+    
+    
     /** The name of the website, should match the name of the directory on the server. */
     public final static String ROOT = "/RPL2013";
     public final static String URL = "rpl.cccit.info";
