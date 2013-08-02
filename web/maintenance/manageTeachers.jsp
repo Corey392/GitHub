@@ -1,13 +1,13 @@
 <%-- 
-    Document   : assignAssessors
+    Document   : manageTeachers
     Purpose    : allows delegate users to set which assessors can assess specific displine,
-    Created on : 01/08/2013, 8:27:03 PM
+    Created on : 02/08/2013, 8:27:03 PM
     Author     : Vince Lombardo
 --%>
 
-<%@page import="web.FormAssignAssessor"%>
+<%@page import="web.FormManageTeachers"%>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
-<%! RPLPage thisPage = RPLPage.ASSIGN_ASSESSOR_TO_CLAIMS; %>
+<%! RPLPage thisPage = RPLPage.ADMIN_MANAGE_TEACHERS; %>
 
 <%--<%@page contentType="text/html" pageEncoding="UTF-8"%>--%>
 
@@ -15,7 +15,7 @@
     <c:redirect url="<%= RPLPage.ADMIN_HOME.relativeAddress %>" />
 </c:if>--%>
 
-<form action="<%= FormAssignAssessor.ACTION %>" method="post" name="<%= FormAssignAssessor.NAME %>">
+<form action="<%= FormManageTeachers.ACTION %>" method="post" name="<%= FormManageTeachers.NAME %>">
     
 <!--<!DOCTYPE html>
 <html>
@@ -34,7 +34,7 @@
         </select>  
     </body>
 </html>-->
-<h1>Welcome - Assign assessors to claim form</h1>
+<h1>Welcome - Manage Teachers</h1>
 </form>
 
 <%@include file="../WEB-INF/jspf/footer.jspf" %>

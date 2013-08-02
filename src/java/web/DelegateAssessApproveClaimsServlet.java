@@ -24,7 +24,7 @@ import util.Util;
  * a teacher from the list and which disciplines the assessor is eligible to assess
  */
 
-public class DelegateAssignAssessorServlet extends HttpServlet {
+public class DelegateAssessApproveClaimsServlet extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

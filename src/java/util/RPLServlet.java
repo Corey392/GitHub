@@ -10,7 +10,9 @@ package util;
  *		            07/05/2013:	Bryce Carr: Added RPLServlet field for Provider maintenance servlet.
  *		            08/05/2013:	TW: Added RPLServlet field for ADD_EVIDENCE_PREV.
  *		            12/05/2013:	TW: Added RPLServlet field for ATTACH_EVIDENCE_.
- *                          1/08/2013:	VL: Added RPLServlet field for ASSIGN_ASSESSOR.
+ *                          1/08/2013:	VL: Added RPLServlet field for DELEGATE_ASSIGN_ASSESSOR_SERVLET.
+ *                          3/08/2013:	VL: Added RPLServlet field for DELEGATE_ASSESS_APPROVE_CLAIM_SERVLET.
+ *                          3/08/2013:	VL: Added RPLServlet field for ADMIN_MANAGE_TEACHERS_SERVLET.
  * <b>Purpose:</b>  Servlet urls are stored here.
  */
 public enum RPLServlet {
@@ -26,6 +28,7 @@ public enum RPLServlet {
     LIST_ERRORS("/admins/listErrors"), // Kyoungho Lee
     ADMIN_LIST_UNASSIGNED_CLAIMS("/admins/listUnassignedClaims"),
     ADMIN_MODIFY_ACCOUNT("/admins/modifyAccount"),
+    ADMIN_MANAGE_TEACHERS_SERVLET("/maintenance/manageTeachers"), // Added by Vince Lombardo
     MAINTAIN_ELEMENT_CRITERIA_SERVLET("/maintenance/elementCriteria"),
     MAINTAIN_CAMPUS_SERVLET("/maintenance/maintainCampus"),
     MAINTAIN_DISCIPLINE_SERVLET("/maintenance/maintainDiscipline"),
@@ -39,7 +42,8 @@ public enum RPLServlet {
     MAINTAIN_MODULE_ELEMENTS_SERVLET("/maintenance/moduleElements"),
     MAINTAIN_PROVIDER_SERVLET("/maintenance/maintainProviders"),
     MAINTAIN_TABLE_SERVLET("/maintenance/maintainTable"),
-    DELEGATE_ASSIGN_ASSESSOR_SERVLET("/admins/delegateAssignAssessor"), // Added by Vince Lombardo
+    DELEGATE_ASSIGN_ASSESSOR_SERVLET("/admins/assignAssessor"), // Added by Vince Lombardo
+    DELEGATE_ASSESS_APPROVE_CLAIM_SERVLET("/admins/delegateAssessApproveClaimForm"), // Added by Vince Lombardo    
     /* Student Servlets */
     ADD_EVIDENCE_SERVLET("/students/addEvidence"),
     ADD_EVIDENCE_PREV("/students/AddEvidencePrev"),//Added by: Todd Wiggins

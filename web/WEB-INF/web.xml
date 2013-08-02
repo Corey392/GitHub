@@ -171,6 +171,14 @@
         <servlet-name>DelegateAssignAssessorServlet</servlet-name>
         <servlet-class>web.DelegateAssignAssessorServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DelegateAssessApproveClaimServlet</servlet-name>
+        <servlet-class>web.DelegateAssessApproveClaimsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminManageTeachersServlet</servlet-name>
+        <servlet-class>web.AdminManageTeachersServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -327,6 +335,14 @@
     <servlet-mapping>
         <servlet-name>DelegateAssignAssessorServlet</servlet-name>
         <url-pattern>/admins/assignAssessors</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DelegateAssessApproveClaimServlet</servlet-name>
+        <url-pattern>/admins/assessApproveClaims</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManageTeachersServlet</servlet-name>
+        <url-pattern>/maintenance/manageTeachers</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

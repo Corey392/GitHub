@@ -1,14 +1,17 @@
 package util;
 
-/**<b>Purpose:</b>  Stores values for names and addresses of pages for the RPL website.
- * @author Adam Shortall, Todd Wiggins, Bryce Carr
+/**<b>Purpose:</b>  Stores values for names and relative addresses of pages for the RPL website.
+ * @author Adam Shortall, Todd Wiggins, Bryce Carr, Vince Lombardo
  * @version 1.031
  * <b>Created:</b>  Unknown<br/>
- * <b>Modified:</b> 07/05/2013<br/>
+ * <b>Last Modified:</b> 03/08/2013<br/>
  * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Added reference to new Data Maintenance page (dataMaintenanceSelect.jsp).<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
  *                  05/05/2013: TW: Added site title field which is used in the browser on tabs / window title bar. Added a variety of fields over time, see line comments.<br/>
- *					07/05/2013:	BC: Added RPLPage field for CLERICAL_PROVIDER page.
+ *					07/05/2013:	BC: Added RPLPage field for CLERICAL_PROVIDER page.<br/>
+ *                  02/08/2013: VL: Added reference to assign assessor to claims page (assignAssessor.jsp) .<br/>
+ *                  02/08/2013: VL: Added reference to assess or approve claims page (assessApproveClaims.jsp) .<br/>
+ *                  03/08/2013: VL: Added reference to manage teachers page (manageTeachers.jsp) .<br/>
  */
 public enum RPLPage {
     HOME("", "/index.jsp"),
@@ -30,6 +33,7 @@ public enum RPLPage {
     ADMIN_HOME("Admin Home page", "/admins/index.jsp"),
     LIST_CLAIMS_STUDENT("List Claims", "/students/listClaims.jsp"),
     LIST_CLAIMS_TEACHER("List Claims", "/teachers/listClaims.jsp"),
+    /* Admin/Clerical references*/
     CLERICAL_CAMPUS("Campus Table Maintenance", "/maintenance/campus.jsp"),
     CLERICAL_DISCIPLINE("Discipline Table Maintenance", "/maintenance/discipline.jsp"),
     CLERICAL_COURSE("Course Table Maintenance", "/maintenance/course.jsp"),
@@ -58,8 +62,9 @@ public enum RPLPage {
     ADMIN_ACCESS_HISTORY("View Access History", "/admins/accessHistory.jsp"),  // Ben
     TERMS_AND_CONDITIONS("Terms And Conditions", "/legal/terms.jsp"),//Added by: Todd Wiggins
 	PRIVACY_POLICY("Privacy Policy", "/legal/privacy.jsp"),//Added by: Todd Wiggins
-    ASSIGN_ASSESSOR_TO_CLAIMS("Assign Assessor to Claims", "/admins/assignAssessors.jsp"); //Added by Vince Lombardo
-    
+    ASSIGN_ASSESSOR_TO_CLAIMS("Assign Assessor to Claims", "/admins/assignAssessors.jsp"), //Added by Vince Lombardo
+    ADMIN_ASSESS_APPROVE_CLAIMS("Assess or Approve Claims", "/admins/assessApproveClaims.jsp"), //Added by Vince Lombardo
+    ADMIN_MANAGE_TEACHERS("Manage Teachers", "/maintenance/manageTeachers.jsp");//Added by Vince Lombardo
     
     /** The name of the website, should match the name of the directory on the server. */
     public final static String ROOT = "/RPL2013";
