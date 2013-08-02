@@ -26,7 +26,7 @@
                         <a href="support.jsp" ><span class="footer">Contact Support</span></a>
                 </div>
                 <div class="footerRow">
-                        Copyright &copy; 2013 TAFE All Rights Reserved.<br/>
+                        Copyright &copy; 2013 RPL CCC All Rights Reserved.<br/>
                 </div>
 	    </td>
     </tr>
@@ -34,7 +34,7 @@
 <!--    Tafe NSW Website standard footer-->
     <!-- standard footer -->	
         <div id="footer">
-                &copy; Copyright TAFE NSW 2013   <span>|</span>    <a href="/misc/use_of_services.htm">Use of services</a>     <span>|</span>     <a href="/misc/disclaimer.htm">Disclaimer</a>   <span>|</span>     <a href="http://www.dec.nsw.gov.au/footer/privacy" class="external" target="_blank">Privacy</a>    <span>|</span>   <a href="/misc/sitemap.htm" accesskey="3">Site map</a>    <span>|</span>   <a href="/misc/information_access.htm">Information access</a>    <span>|</span>    <a href="/languages/index.htm">Help in languages other than English</a>
+                &copy; Copyright RPL CCC 2013   <span>|</span>    <a href="/misc/use_of_services.htm">Use of services</a>     <span>|</span>     <a href="/misc/disclaimer.htm">Disclaimer</a>   <span>|</span>     <a href="http://www.dec.nsw.gov.au/footer/privacy" class="external" target="_blank">Privacy</a>    <span>|</span>   <a href="/misc/sitemap.htm" accesskey="3">Site map</a>    <span>|</span>   <a href="/misc/information_access.htm">Information access</a>    <span>|</span>    <a href="/languages/index.htm">Help in languages other than English</a>
         </div>
     <!-- end standard footer -->
 
