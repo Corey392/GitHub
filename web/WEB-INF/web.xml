@@ -172,6 +172,7 @@
         <servlet-class>web.DelegateAssignAssessorServlet</servlet-class>
     </servlet>
     <servlet>
+        <description>Assess or Approve claim servlet returns a list of claims, allows delegate user to assess claims</description>
         <servlet-name>DelegateAssessApproveClaimServlet</servlet-name>
         <servlet-class>web.DelegateAssessApproveClaimsServlet</servlet-class>
     </servlet>

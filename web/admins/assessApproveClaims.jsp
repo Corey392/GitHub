@@ -3,7 +3,7 @@
     Created on : 02/08/2013, 9:52:51 PM
     Author     : Vince Lombardo
 --%>
-<%@page import="web.FormAssessApproveClaim"%>
+<%@page import="web.FormAssessOrApproveClaim"%>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.ADMIN_ASSESS_APPROVE_CLAIMS; %>
 

@@ -38,7 +38,7 @@ public class DelegateAssessApproveClaimsServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String url = RPLPage.ASSIGN_ASSESSOR_TO_CLAIMS.relativeAddress;
+            String url = RPLPage.ADMIN_ASSESS_APPROVE_CLAIMS.relativeAddress;
             HttpSession session = request.getSession();
 //            User user = (User) session.getAttribute("user");
 //            

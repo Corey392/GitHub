@@ -42,8 +42,8 @@ public enum RPLServlet {
     MAINTAIN_MODULE_ELEMENTS_SERVLET("/maintenance/moduleElements"),
     MAINTAIN_PROVIDER_SERVLET("/maintenance/maintainProviders"),
     MAINTAIN_TABLE_SERVLET("/maintenance/maintainTable"),
-    DELEGATE_ASSIGN_ASSESSOR_SERVLET("/admins/assignAssessor"), // Added by Vince Lombardo
-    DELEGATE_ASSESS_APPROVE_CLAIM_SERVLET("/admins/delegateAssessApproveClaimForm"), // Added by Vince Lombardo    
+    DELEGATE_ASSIGN_ASSESSOR_SERVLET("/admins/assignAssessors"), // Added by Vince Lombardo
+    DELEGATE_ASSESS_APPROVE_CLAIM_SERVLET("/admins/assessApproveClaims"), // Added by Vince Lombardo    
     /* Student Servlets */
     ADD_EVIDENCE_SERVLET("/students/addEvidence"),
     ADD_EVIDENCE_PREV("/students/AddEvidencePrev"),//Added by: Todd Wiggins
