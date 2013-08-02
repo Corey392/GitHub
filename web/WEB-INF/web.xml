@@ -167,6 +167,10 @@
         <servlet-name>AddNewUserServlet</servlet-name>
         <servlet-class>web.AddNewUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DelegateAssignAssessorServlet</servlet-name>
+        <servlet-class>web.DelegateAssignAssessorServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -319,6 +323,10 @@
         <url-pattern>/teachers/getFile</url-pattern>
         <url-pattern>/admins/getFile</url-pattern>
         <url-pattern>/maintenance/getFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DelegateAssignAssessorServlet</servlet-name>
+        <url-pattern>/admins/assignAssessors</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
