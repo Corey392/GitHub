@@ -68,6 +68,12 @@
 <h2>Credit for previous learning and experience</h2>
 <!--Source: https://www.tafensw.edu.au/courses/rpl/#.UarZ2kBmiSo -->
 
+<!--<table id="tableId">
+<tr><td> This is demo </td></tr>
+</table>
+ 
+<input type="button" value="Toggle Table" onClick="$("#tableId").toggle();" />-->
+
 <h4>What is RPL Assist?</h4>
 <p>RPL Assist is a system currently in development and being used on a testing and trial basis designed to improve the existing paper based process.</p>
 <p>Students must register separately for access to the RPL Assist system as an account is not automatically created upon registering with the TAFE.</p>
