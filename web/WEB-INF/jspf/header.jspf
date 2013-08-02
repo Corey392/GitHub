@@ -61,7 +61,7 @@
 					<li><a href="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET %>?List%20Claims=true">List Available Claims</a></li>
 			<%	} else if (user.getRole() == Role.ADMIN) {%>
 					<li><a href="">Assess or approve claims</a></li>
-					<li><a href="">Assign assessors to claims</a></li>
+					<li><a href="<%= RPLPage.ASSIGN_ASSESSOR_TO_CLAIMS %>">Assign assessors to claims</a></li>
 					<li><a href="">Assign assessors/delegates to courses/disciplines</a></li>
 			<%	} else if (user.getRole() == Role.CLERICAL) {%>
                                         <li><a href="<%= RPLPage.REGISTER_USER %>">Add User</a></li>
