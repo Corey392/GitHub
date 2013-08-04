@@ -3,7 +3,7 @@
 	 Created:    10/04/2013
 	 Modified:
 	 Change Log:
-	 Purpose:    Displays the Terms & Conditions for the users of this web site/application.
+	 Purpose:    Displays the Privacy Policy for the users of this web site/application.
 --%>
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.PRIVACY_POLICY; %>

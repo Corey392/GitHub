@@ -64,7 +64,8 @@ public enum RPLPage {
 	PRIVACY_POLICY("Privacy Policy", "/legal/privacy.jsp"),//Added by: Todd Wiggins
     ASSIGN_ASSESSOR_TO_CLAIMS("Assign Assessor to Claims", "/admins/assignAssessors.jsp"), //Added by Vince Lombardo
     ADMIN_ASSESS_APPROVE_CLAIMS("Assess or Approve Claims", "/admins/assessApproveClaims.jsp"), //Added by Vince Lombardo
-    ADMIN_MANAGE_TEACHERS("Manage Teachers", "/maintenance/manageTeachers.jsp");//Added by Vince Lombardo
+    ADMIN_MANAGE_TEACHERS("Manage Teachers", "/maintenance/manageTeachers.jsp"),//Added by Vince Lombardo
+    ADMIN_MANAGE_USERS("Manage Users", "/maintenance/manageUsers.jsp");//Added by Vince Lombardo
     
     /** The name of the website, should match the name of the directory on the server. */
     public final static String ROOT = "/RPL2013";

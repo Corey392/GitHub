@@ -15,7 +15,7 @@
 --%>
 
 <%! RPLPage thisPage = RPLPage.CLERICAL_MAINTENANCE_SELECT; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 <div class="body">

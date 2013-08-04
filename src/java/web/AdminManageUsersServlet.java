@@ -24,7 +24,7 @@ import util.Util;
  * a teacher from the list and which disciplines the assessor is eligible to assess
  */
 
-public class AdminManageTeachersServlet extends HttpServlet {
+public class AdminManageUsersServlet extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,7 +38,7 @@ public class AdminManageTeachersServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String url = RPLPage.ADMIN_MANAGE_TEACHERS.relativeAddress;
+            String url = RPLPage.ADMIN_MANAGE_USERS.relativeAddress;
             HttpSession session = request.getSession();
 //            User user = (User) session.getAttribute("user");
 //            

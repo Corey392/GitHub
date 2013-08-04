@@ -180,6 +180,10 @@
         <servlet-name>AdminManageTeachersServlet</servlet-name>
         <servlet-class>web.AdminManageTeachersServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminManageUserServlet</servlet-name>
+        <servlet-class>web.AdminManageUsersServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -344,6 +348,10 @@
     <servlet-mapping>
         <servlet-name>AdminManageTeachersServlet</servlet-name>
         <url-pattern>/maintenance/manageTeachers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminManageUserServlet</servlet-name>
+        <url-pattern>/maintenance/manageUsers</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

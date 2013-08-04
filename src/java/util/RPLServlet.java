@@ -29,6 +29,7 @@ public enum RPLServlet {
     ADMIN_LIST_UNASSIGNED_CLAIMS("/admins/listUnassignedClaims"),
     ADMIN_MODIFY_ACCOUNT("/admins/modifyAccount"),
     ADMIN_MANAGE_TEACHERS_SERVLET("/maintenance/manageTeachers"), // Added by Vince Lombardo
+    ADMIN_MANAGE_USERS_SERVLET("/maintenance/manageUsers"), // Added by Vince Lombardo
     MAINTAIN_ELEMENT_CRITERIA_SERVLET("/maintenance/elementCriteria"),
     MAINTAIN_CAMPUS_SERVLET("/maintenance/maintainCampus"),
     MAINTAIN_DISCIPLINE_SERVLET("/maintenance/maintainDiscipline"),

@@ -10,7 +10,7 @@
 
 <%@page import="domain.User"%>
 <%@page import="web.FormAddTeacher"%>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.REGISTER_USER; %>
 
 <%@page import="domain.User"%>

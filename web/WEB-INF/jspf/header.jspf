@@ -1,25 +1,23 @@
 <%--
-	Purpose:	Header code, sets up page, ensures consistency, reduced code.
-	@author		Adam Shortall, Todd Wiggins, Bryce Carr, Mitch Carr
-	@version	1.041
-	Created:	9/05/2011, 10:19 PM
-	Modified:   06/05/2013
-	Change Log: 1.010:  TW:	Moved user level navigation to header from each users index pages.
-				1.011:  TW: Added 'Manage My Details' to Student and 'Change My Password' to all users.
-				1.012:  BC: Begun cleanup of Clerical/Admin links to match new storyboards.
-				1.020:  BC: Added link to new Data Maintenance page and finalised link names in Clerical Admin's sidebar.
-				1.021:  BC: Added header comments to (sort of) match code conventions. Some inconsistency with comments throughout project, needs to be agreed-upon.
-				1.022:  BC: Minor formatting fix with regard to </ul> tag.
-				1.030:  MC: Removed student menu for listing claim status.
-				1.031:  MC: Removed other unused links.
-				1.032:  BC: Removed Manage Courses link from Clerical menu (already in Data Maintenance menu). Changed header image to unofficial RPL logo.
-				1.040:  TW: Added new Site Title and Page Title section. Changed <header><title> field to new 'siteTitle' value in RPLPage.
-				1.041:  TW: Added 'home' link to 'RPL' Logo. More consistent with how the web generally works.
-				1.042:	BC: Removed irrelevant links for Delegate user so the next team doesn't get confused.
-				1.050:	MC: Removed Teacher as default login; it should only be re-added for testing purposes.
-                                1.051:  VL: Added link to manage teachers page for clerical role.
-                                1.051:  VL: Added link to assign assessor to claim page for admin role.
-                                1.051:  VL: Added link to assess or approve claim page for admin role.
+    Purpose:	Header code, sets up page, ensures consistency, reduced code.
+    @author     Adam Shortall, Todd Wiggins, Bryce Carr, Mitch Carr, Vince Lombardo
+    @version	1.041
+    Created:	9/05/2011, 10:19 PM
+    Modified:   06/05/2013
+    Change Log: 1.010:  TW:	Moved user level navigation to header from each users index pages.
+                1.011:  TW: Added 'Manage My Details' to Student and 'Change My Password' to all users.
+                1.012:  BC: Begun cleanup of Clerical/Admin links to match new storyboards.
+                1.020:  BC: Added link to new Data Maintenance page and finalised link names in Clerical Admin's sidebar.
+                1.021:  BC: Added header comments to (sort of) match code conventions. Some inconsistency with comments throughout project, needs to be agreed-upon.
+                1.022:  BC: Minor formatting fix with regard to </ul> tag.
+                1.030:  MC: Removed student menu for listing claim status.
+                1.031:  MC: Removed other unused links.
+                1.032:  BC: Removed Manage Courses link from Clerical menu (already in Data Maintenance menu). Changed header image to unofficial RPL logo.
+                1.040:  TW: Added new Site Title and Page Title section. Changed <header><title> field to new 'siteTitle' value in RPLPage.
+                1.041:  TW: Added 'home' link to 'RPL' Logo. More consistent with how the web generally works.
+                1.042:  BC: Removed irrelevant links for Delegate user so the next team doesn't get confused.
+                1.050:  MC: Removed Teacher as default login; it should only be re-added for testing purposes.
+                1.051:  VL: Added link to manage teachers page for clerical role, assign assessor to claim page for admin role, assess or approve claim page for admin role and set autofocus to username textfield.
 --%>
 <%@page import="domain.User.Role"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -78,7 +76,7 @@
 			} else { %>
             <hr />
             <form name="login" action="<%= RPLPage.ROOT %>/home" method="post">
-            Username: <input type="text" name="userID" /><br />
+            Username: <input type="text" name="userID" autofocus/><br />
             Password: <input type="password" name="password" />
             <input type="submit" name="" value="Login" />
             <a href="register">Register</a><br/>
