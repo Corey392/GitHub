@@ -11,7 +11,7 @@
 <%@page import="data.ClaimIO"%>
 <%@page import="data.ClaimedModuleIO"%>
 <%@page import="java.util.*" %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <script src="<%= RPLPage.ROOT %>/scripts/jquery-1.9.1.js"></script>
 <%! RPLPage thisPage = RPLPage.VIEW_EVIDENCE_PAGE; %>
 <jsp:useBean id="claimedModule" scope="request" class="domain.ClaimedModule"/>

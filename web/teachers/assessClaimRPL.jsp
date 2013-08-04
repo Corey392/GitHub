@@ -8,7 +8,7 @@
 <%! RPLPage thisPage = RPLPage.ASSESS_CLAIM_RPL; %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="java.lang.Enum" %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <jsp:useBean id="claim" scope="request" class="domain.Claim"/>
 <% int index = 0; %>
 <c:if test="${claim == null || claim.claimedModules == null}">

@@ -4,7 +4,7 @@
     Author     : Kyoungho Lee
 --%>
 
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.TEACHER_LIST_CLAIM_RECORDS; %>
 <jsp:useBean id="claimRecordParam" scope="request" class="domain.ClaimRecord" />
 <jsp:useBean id="claimRecords" scope="request" class="java.util.ArrayList" />

@@ -10,7 +10,7 @@
 <jsp:useBean id="listError" scope="request" class="util.RPLError"/>
 <jsp:useBean id="len" scope="request" class="java.lang.String"/>
 <% int index = 0; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 
 <h1><%=thisPage.title%></h1>
 <h5>Claims Relevant to you:</h5>
