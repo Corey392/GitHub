@@ -46,7 +46,10 @@
 	buildSelect("discipline",blank);
 	buildSelect("course",blank);
 </script>
-<h2 class="center">Create Claim</h2>
+
+<h3>Instructions:</h3>
+            <p>Please select the Campus, Discipline and Course for which you are making a claim.</p>
+            <p>If your experience was at a TAFE institute, select Previous Studies. Otherwise, select Recognition of Prior Learning.</p>
 
 <form action="createClaim" method="post" name="createClaimForm" id="createClaimForm">
     <table>
@@ -94,9 +97,7 @@
             <td></td>
         </tr>
     </table>
-			<h3>Instructions:</h3>
-            <p>Please select the Campus, Discipline and Course for which you are making a claim.</p>
-            <p>If your experience was at a TAFE institute, select Previous Studies. Otherwise, select Recognition of Prior Learning.</p>
+			
 	<c:if test="${errorCampusID.message.length() > 0 || errorDisciplineID.message.length() > 0 || errorCourseID.message.length() > 0 || errorClaimType.message.length() > 0}">
 		<div id="errorMessage">${errorCampusID.message}${errorDisciplineID.message}${errorCourseID.message}${errorClaimType.message}</div>
 	</c:if>

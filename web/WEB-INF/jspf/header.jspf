@@ -12,11 +12,14 @@
 				1.022:  BC: Minor formatting fix with regard to </ul> tag.
 				1.030:  MC: Removed student menu for listing claim status.
 				1.031:  MC: Removed other unused links.
-				1.032:  BC:	Removed Manage Courses link from Clerical menu (already in Data Maintenance menu). Changed header image to unofficial RPL logo.
-				1.040:  TW:	Added new Site Title and Page Title section. Changed <header><title> field to new 'siteTitle' value in RPLPage.
-				1.041:  TW:	Added 'home' link to 'RPL' Logo. More consistent with how the web generally works.
+				1.032:  BC: Removed Manage Courses link from Clerical menu (already in Data Maintenance menu). Changed header image to unofficial RPL logo.
+				1.040:  TW: Added new Site Title and Page Title section. Changed <header><title> field to new 'siteTitle' value in RPLPage.
+				1.041:  TW: Added 'home' link to 'RPL' Logo. More consistent with how the web generally works.
 				1.042:	BC: Removed irrelevant links for Delegate user so the next team doesn't get confused.
 				1.050:	MC: Removed Teacher as default login; it should only be re-added for testing purposes.
+                                1.051:  VL: Added link to manage teachers page for clerical role.
+                                1.051:  VL: Added link to assign assessor to claim page for admin role.
+                                1.051:  VL: Added link to assess or approve claim page for admin role.
 --%>
 <%@page import="domain.User.Role"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -60,13 +63,13 @@
 			<%	} else if (user.getRole() == Role.TEACHER) {%>
 					<li><a href="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET %>?List%20Claims=true">List Available Claims</a></li>
 			<%	} else if (user.getRole() == Role.ADMIN) {%>
-					<li><a href="">Assess or approve claims</a></li>
-					<li><a href="">Assign assessors to claims</a></li>
+					<li><a href="<%= RPLPage.ADMIN_ASSESS_APPROVE_CLAIMS %>">Assess or approve claims</a></li>
+					<li><a href="<%= RPLPage.ASSIGN_ASSESSOR_TO_CLAIMS %>">Assign assessors to claims</a></li>
 					<li><a href="">Assign assessors/delegates to courses/disciplines</a></li>
 			<%	} else if (user.getRole() == Role.CLERICAL) {%>
                                         <li><a href="<%= RPLPage.REGISTER_USER %>">Add User</a></li>
-                    <li><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT %>">Data Maintenance</a></li>
-					<li><a href="">Manage Teachers</a></li>
+                                        <li><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT %>">Data Maintenance</a></li>
+					<li><a href="<%= RPLPage.ADMIN_MANAGE_TEACHERS %>">Manage Teachers</a></li>
 					<li><a href="">Manage Users</a></li>
 			<%	} %>
 				<li><a href="<%= RPLPage.CHANGE_PW %>">Change My Password</a></li>

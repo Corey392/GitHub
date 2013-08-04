@@ -21,19 +21,19 @@
 <div class="body">
         
     <form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.absoluteAddress %>" name="form" id="form">
-        <p>Please select an area to maintain:<br></p>
+        <h1><p style="text-align:center">Please select an area to maintain:<br></p></h1>
     <table cellspacing="5" cellpadding="5" border="1" align="center">
         <tr>
-            <td align="center"><a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>">Campus</a></td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:right" width="32" height="32">Campus</a></td>
         </tr>
         <tr>
-            <td align="center"><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Course</a></td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:right" width="32" height="32">Course</a></td>
         </tr>
         <tr>
-            <td align="center"><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>">Discipline</a></td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:right" width="32" height="32">Discipline</a></td>
         </tr>
         <tr>
-            <td align="center"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></td>
+            <td align="center"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:right" width="32" height="32">Module</a></td>
         </tr>
     </table>
     </form>

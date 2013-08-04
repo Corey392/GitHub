@@ -6,7 +6,7 @@
 
 <%@include file="../WEB-INF/jspf/header.jspf" %>
 <%! RPLPage thisPage = RPLPage.LIST_ERRORS; %>
-<jsp:useBean id="user" scope="session" class="domain.User" />
+<%--<jsp:useBean id="user" scope="session" class="domain.User" />--%>
 <jsp:useBean id="errors" scope="request" class="java.util.ArrayList" />
 <jsp:useBean id="errorsCount" scope="request" class="java.lang.String" />
 <jsp:useBean id="error" scope="request" class="util.RPLError"/>
