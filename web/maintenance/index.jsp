@@ -6,7 +6,7 @@
 	 Purpose:    Welcome page for 'Clerical Admin' once logged in.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_HOME; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 
 
 <h1>RPL Data Maintenance</h1>

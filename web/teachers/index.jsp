@@ -9,7 +9,7 @@
 <%! RPLPage thisPage = RPLPage.TEACHER_HOME;
     String title = RPLPage.TEACHER_HOME.title; %>
 
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 
 
 <h1>Teacher Home Page</h1>

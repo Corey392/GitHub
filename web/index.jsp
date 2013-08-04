@@ -13,7 +13,7 @@
 <%! RPLPage thisPage = RPLPage.HOME; %>
 <%--<jsp:useBean id="loginError" scope="request" class="util.RPLError"/>--%>
 
-<%@include file="WEB-INF/jspf/header.jspf" %>
+<%@include file="WEB-INF/jspf/header_1.jspf" %>
 
 <%
 //<p></p>

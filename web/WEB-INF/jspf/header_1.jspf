@@ -1,0 +1,65 @@
+<%--
+	Purpose:	Header code, sets up page, ensures consistency, reduced code.
+	@author		Bradley Metcalf
+	@version	1.0
+	Created:	4/08/2013
+--%>
+<%@page import="domain.User.Role"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<%@page import="util.*" %>
+<%@page import="web.Form" %>
+<%@page import="domain.User.Status" %>
+
+<jsp:useBean id="user" scope="session" class="domain.User" />
+
+<html>
+<head>
+    <script src="<%= RPLFragment.JAVASCRIPT.absoluteAddress %>"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT %>/css/rpl.css">
+    <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT %>/css/main.css">
+    <title></title>
+</head>
+
+<body>
+    <div id="header">
+        <% if(user != null && user.getStatus() == Status.LOGGED_IN) { %>
+        <ul id="headerList">
+            <%if (user.getRole() == Role.STUDENT)	{ %>
+                <li class="headerItem"><a href="<%= RPLServlet.CREATE_CLAIM_SERVLET %>?createClaim=true">Create Claim</a></li>
+                <li class="headerItem"><a href="<%= RPLServlet.LIST_CLAIMS_STUDENT_SERVLET %>?List%20Claims=true">List Claims</a></li>
+                <li class="headerItem"><a href="<%= RPLPage.STUDENT_DETAILS %>">Manage My Details</a></li>
+        <%	} else if (user.getRole() == Role.TEACHER) {%>
+                <li class="headerItem"><a href="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET %>?List%20Claims=true">List Available Claims</a></li>
+        <%	} else if (user.getRole() == Role.ADMIN) {%>
+                <li class="headerItem"><a href="<%= RPLPage.ADMIN_ASSESS_APPROVE_CLAIMS %>">Assess or approve claims</a></li>
+                <li class="headerItem"><a href="<%= RPLPage.ASSIGN_ASSESSOR_TO_CLAIMS %>">Assign assessors to claims</a></li>
+                <li class="headerItem"><a href="">Assign assessors/delegates to courses/disciplines</a></li>
+        <%	} else if (user.getRole() == Role.CLERICAL) {%>
+                <li class="headerItem"><a href="<%= RPLPage.REGISTER_USER %>">Add User</a></li>
+                <li class="headerItem"><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT %>">Data Maintenance</a></li>
+                <li class="headerItem"><a href="<%= RPLPage.ADMIN_MANAGE_TEACHERS %>">Manage Teachers</a></li>
+                <li class="headerItem"><a href="">Manage Users</a></li>
+        <%	} %>
+                <li class="headerItem"><a href="<%= RPLPage.CHANGE_PW %>">Change My Password</a></li>
+                <li class="headerItem"><a href="<%= RPLPage.ROOT %>/logout">Log Out</a></li>
+                </ul>
+        <%	} else { %>
+        <form name="login" action="<%= RPLPage.ROOT %>/home" method="post">
+                <label for="username">UserName:</label><input type="text" name="userID" id="userID" />
+                <label for="password">Password:</label><input type="password" name="password" id="password" />
+                <input class="headerButton" type="submit" value="Login">
+                <input class="headerButton" type="button" value="Register">
+        </form>
+                <% } %>
+    </div>
+    <div class="clearfloat"></div>
+
+    <div id="container">
+            <div id="content">

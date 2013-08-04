@@ -7,7 +7,7 @@
 --%>
 
 <%! RPLPage thisPage = RPLPage.STUDENT_HOME; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 
 
 <h1>Student Home Page</h1>

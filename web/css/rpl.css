@@ -14,9 +14,8 @@
 
 body {
     font-family: Arial;
-    font-size: 12px;
-    margin-left: 20px;
-    margin-right: 30px;
+    font-size: 14px;
+    margin:0px;
 }
 #pg_titlebar {
 	width: 100%;
@@ -98,13 +97,8 @@ div #upload {
     border-right: 1px solid #ccc;
 	padding-bottom:20%;
 }
-#content {
-    overflow: auto; /*IMPORTANT! DO NOT REMOVE*/
-    display:block;
-    margin-left: 5px;
-    padding: 5px;
-	max-width:1000px;
-}
+
+
 
 #menu {
     background-color: white;
