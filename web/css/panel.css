@@ -1,0 +1,40 @@
+/* 
+    Document   : panel
+    Created on : Aug 4, 2013, 11:18:28 PM
+    Author     : Brad
+    Description:
+        Purpose of the stylesheet follows.
+*/
+#panel
+{
+    padding:5px;
+    text-align:left;
+    /*background-color:#e5eecc;*/
+    border:solid 1px #c3c3c3;
+}
+.heading
+{
+    padding:5px;
+    text-align:left;
+    border:#000 solid 1px;
+    background: #b81900; /* Old browsers */
+    background: -moz-linear-gradient(top,  #b81900 0%, #ff1003 50%, #ea1000 51%, #ff6c67 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b81900), color-stop(50%,#ff1003), color-stop(51%,#ea1000), color-stop(100%,#ff6c67)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #b81900 0%,#ff1003 50%,#ea1000 51%,#ff6c67 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #b81900 0%,#ff1003 50%,#ea1000 51%,#ff6c67 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #b81900 0%,#ff1003 50%,#ea1000 51%,#ff6c67 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #b81900 0%,#ff1003 50%,#ea1000 51%,#ff6c67 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b81900', endColorstr='#ff6c67',GradientType=0 ); /* IE6-9 */
+    color:#eee;
+}
+#panel
+{
+    padding:5px;
+    display:none;
+}
+
+#panel p, #panel h2, #panel h4, #panel ul, #panel h5 {
+    width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}

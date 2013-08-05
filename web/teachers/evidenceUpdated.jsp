@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.util.*" %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.VIEW_EVIDENCE_PAGE; %>
 <jsp:useBean id="user" scope="session" class="domain.User" />
 <jsp:useBean id="claimedModule" scope="request" class="domain.ClaimedModule"/>

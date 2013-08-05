@@ -8,7 +8,7 @@
 	27/04/2013: BC:	Added 'delete' button to table and changed header labels.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_CAMPUS; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 

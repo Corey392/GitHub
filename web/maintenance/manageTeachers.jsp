@@ -12,11 +12,40 @@
 <jsp:useBean id="claim" class="domain.Claim" scope="request"/>
 <jsp:useBean id="listError" scope="request" class="util.RPLError"/>
 <% int index = 0; %>
-
-<form name="<%= FormManageTeachers.NAME %>" action="<%= FormManageTeachers.ACTION %>" method="post">
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {                        
+//                $('#submit').click(function(event) {  
+//                    var username=$('#user').val();
+//                 $.get('ActionServlet',{user:username},function(responseText) { 
+//                        $('#welcometext').text(responseText);         
+//                    });
+//                });
+                S('#searchBy').onchange(function() {
+                    var username=$('#searchBy').val();
+                    alert(username)
+                });
+            });
+        </script>
+<%-- See more at: http://www.programming-free.com/2012/08/ajax-with-jsp-and-servlet-using-jquery.html#.Uf8-XZLI3jI--%>
+</head>
+<body>
+    
     <h1>Manage Teachers Form</h1>
+    
+<form name="<%= FormManageTeachers.NAME %>" action="<%= FormManageTeachers.ACTION %>" method="post">
+    
+    
+    <div class="userinput">
+    
+    <input style="text-align:right; width:75px" required maxlength="3" type="text" value="${campus.campusID}" name="campusID[]" />
+    
+    </div>
     <div class="tablecontrols">Search By: 
-            <select name="searchBy">
+            <select name="searchBy" id="searchBy">
                 <option value="" selected></option>
                 <option value="claimID" selected="${selectedField == 'claimID'}"> Claim ID</option>
                 <option value="studentID" selected="${selectedField == 'studentID'}">Student ID</option>
@@ -86,24 +115,9 @@
             </c:choose>
             </tbody>
         </table>
-<!--<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-        <select id="cc" class="easyui-combobox" name="dept" style="width:200px;">  
-            <option value="aa">aitem1</option>  
-            <option>bitem2</option>  
-            <option>bitem3</option>  
-            <option>ditem4</option>  
-            <option>eitem5</option>  
-        </select>  
-    </body>
-</html>-->
 
 </form>
+</body>
+</html>
 
 <%@include file="../WEB-INF/jspf/footer.jspf" %>

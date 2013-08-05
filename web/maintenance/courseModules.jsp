@@ -12,7 +12,7 @@
 
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_COURSE_MODULES;%>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 

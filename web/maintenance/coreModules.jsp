@@ -8,7 +8,7 @@
     Changelog:	04/05/2013: BC:	Removed/modified page code to fit its new context (as an extension of Maintain Course)
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_CORE_MODULES; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 

@@ -11,7 +11,7 @@
 		03/05/2013: Bryce Carr:	Moved if block to below variable declaration (it just keeps happening).
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_DISCIPLINE_COURSES; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 

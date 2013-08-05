@@ -7,7 +7,7 @@
     Changelog:	06/05/2013: Bryce Carr:	Added 'delete' button to Discipline rows. Expanded bottom row for UI prettiness.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_DISCIPLINE;%>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 
 
 <jsp:useBean id="disciplines" scope="request" class="java.util.ArrayList"/>

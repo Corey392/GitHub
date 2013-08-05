@@ -13,7 +13,7 @@
                                 Changed handling of guideFile field ID to ensure uniqueness.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_COURSE; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 

@@ -6,7 +6,7 @@
 
 <%! RPLPage thisPage = RPLPage.ASSESS_CLAIM_PREV; %>
 <%@page import="java.util.ArrayList" %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <jsp:useBean id="claim" scope="request" class="domain.Claim"/>
 <c:if test="${claim.claimedModules == null || claim == null}">
     <c:redirect url="<%= RPLServlet.ASSESS_CLAIM_RPL_SERVLET.relativeAddress %>" />

@@ -7,7 +7,7 @@
     Changelog:	07/05/2013: Created JSP and removed non-rename code pending team discussion.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_PROVIDER;%>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 
 
 <jsp:useBean id="providers" scope="request" class="java.util.ArrayList"/>

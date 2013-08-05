@@ -7,7 +7,7 @@
     Changelog:	28/04/2013: BC:	Moved test for null variables so that it comes after the assignment of said variables.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_COURSE_ELECTIVES; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 

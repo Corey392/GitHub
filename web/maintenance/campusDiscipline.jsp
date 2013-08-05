@@ -8,7 +8,7 @@
 		04/05/2013: BC:	Added 'back' button.
 --%>
 <%! RPLPage thisPage = RPLPage.CLERICAL_CAMPUS_DISCIPLINE; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 

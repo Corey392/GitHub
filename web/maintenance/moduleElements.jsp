@@ -4,7 +4,7 @@
     Author     : Adam Shortall
 --%>
 <%! RPLPage thisPage = RPLPage.MAINTAIN_MODULE_ELEMENTS; %>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%@include file="../WEB-INF/jspf/sidebar.jspf" %>
 
 
