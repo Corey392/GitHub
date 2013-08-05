@@ -2,9 +2,10 @@
     Document   : listClaimRecords for a Student
     Created on : 09/05/2012, 3:53:01 PM
     Author     : Kyoungho Lee
+ *      Modified:   05/08/2013: CW: Changed header/footer imports.
 --%>
 
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.STUDENT_LIST_CLAIM_RECORDS; %>
 <jsp:useBean id="claimRecordParam" scope="request" class="domain.ClaimRecord" />
 <jsp:useBean id="claimRecords" scope="request" class="java.util.ArrayList" />
@@ -117,4 +118,4 @@
                 var pageNo = ${claimRecordParam.pageNo};
                 document.listClaimRecords.pageNo.value = pageNo; 
         </script>
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>

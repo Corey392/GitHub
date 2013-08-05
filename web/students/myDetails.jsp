@@ -3,10 +3,11 @@
  *  @version    1.011
  *  Created:    ?
  *	Modified:	12/04/2013: TW: Added additonal fields for user details.
- *              15/05/2013: TW: Improving display of errors to be consistent across site.
- *		16/05/2013: MC: Fixed error in password error check; changed invalid String length property to length() method
+ *                      15/05/2013: TW: Improving display of errors to be consistent across site.
+ *                      16/05/2013: MC: Fixed error in password error check; changed invalid String length property to length() method
+ *                      05/08/2013: CW: Changed header/footer imports.
 --%>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.STUDENT_DETAILS; %>
 
 <%@page import="domain.User"%>
@@ -92,4 +93,4 @@
 </div>
 </form>
 
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>

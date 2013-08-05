@@ -11,6 +11,7 @@
  *				13/05/2013: TW: Moved attach evidence button to "Add Evidence" Text page. Added handling when size of modules to be added is 0, now hides module list section and displays a notice to user.
  *				15/05/2013: TW: Improving display of errors to be consistent across site.
  *				02/06/2013: TW: Improved Student instructions, also are now specific to the state of the claim, further improvement to display of errors to be consistent across site.
+ *                              05/08/2013: CW: Changed header/footer imports.
 --%>
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
@@ -21,7 +22,7 @@
 <jsp:useBean id="selectError" scope="request" class="util.RPLError"/>
 <% int index = 0; %>
 
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.REVIEW_CLAIM_PREV; %>
 <% int claimCode = claim.getStatus().getCode(); %>
 
@@ -145,4 +146,4 @@
 		</c:choose>
 </form>
 
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>

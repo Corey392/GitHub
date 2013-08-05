@@ -3,6 +3,7 @@
  *  @version    1.001
  *  Created:    18/05/2011, 4:10:44 PM
  *	Modified:	15/05/2013: TW: Improving display of errors to be consistent across site.
+ *                      05/08/2013: CW: Changed header/footer imports.
 --%>
 
 <%@page import="domain.Claim"%>
@@ -14,7 +15,7 @@
 <jsp:useBean id="selectError" scope="request" class="util.RPLError"/>
 <% int index = 0; %>
 
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.REVIEW_CLAIM_RPL; %>
 <%
     boolean unsubmitted = (claim.getStatus() == Claim.Status.DRAFT);
@@ -124,4 +125,4 @@
         </c:choose>
 </form>
 
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>
