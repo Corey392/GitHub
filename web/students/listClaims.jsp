@@ -3,9 +3,10 @@
  *  @version    1.001
  *  Created:    15/05/2011, 3:53:01 PM
  *	Modified:	15/05/2013: TW: Added Status Explanations, Changed Error message to be wrapped in <div> #errorMessage.
+ *                      05/08/2013: CW: Changed header/footer imports.
 --%>
 
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.LIST_CLAIMS_STUDENT; %>
 <jsp:useBean id="claims" scope="session" class="java.util.ArrayList" />
 <jsp:useBean id="error" scope="request" class="util.RPLError"/>
@@ -68,4 +69,4 @@
 		</ul>
 	</p>
 </div>
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>

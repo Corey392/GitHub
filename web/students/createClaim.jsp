@@ -8,9 +8,10 @@
  *              15/05/2013: 1.11: TW: Improving display of errors to be consistent across site.
  *		        16/05/2013: 1.20: MC: Fixed error in ClaimType error check; changed invalid String length property to length() method
  *		        02/06/2013: 1.21: TW: Minor improvement to instructions.
+ *                      05/08/2013: CW: Changed header/footer imports.
 --%>
 
-<%@include file="..\WEB-INF\jspf\header.jspf" %>
+<%@include file="..\WEB-INF\jspf\header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.CREATE_CLAIM; %>
 <%@page import="java.util.*" %>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
@@ -103,4 +104,4 @@
 	</c:if>
 </form>
 
-<%@include file="..\WEB-INF\jspf\footer.jspf" %>
+<%@include file="..\WEB-INF\jspf\footer_1.jspf" %>

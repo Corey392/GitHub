@@ -7,6 +7,7 @@
  *				13/05/2013: TW: Moved "Attach Evidence" button to this page from Review Claim / Module Selection page. Only show 'Attach Evidence' button 'attachEvidence' attribute of request.
  *				26/05/2013: TW: Added ability to get the "Guide File" for the current course.
  *				02/06/2013: TW: Minor improvement to instructions.
+ *                              05/08/2013: CW: Changed header/footer imports.
 --%>
 <%@page import="domain.Claim"%>
 <%@page import="domain.ClaimedModule"%>
@@ -17,7 +18,7 @@
 <%@page import="java.util.ArrayList"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
 
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.ADD_EVIDENCE_PREV; %>
 
 <h2 class="center">Add Evidence to Previous Studies Claim</h2>
@@ -92,5 +93,5 @@
 	</div>
 </form>
 
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>
 <script src="<%= RPLPage.ROOT %>/scripts/addEvidence.js"></script>

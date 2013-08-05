@@ -8,6 +8,7 @@
  *              02/06/2013: TW: Improved instructions.
  *				02/06/2013: TW: Fixed the 'thisPage' variable to point to the correct one.
  *				18/06/2013: TW: Added Submit and Back Buttons
+ *                              05/08/2013: CW: Changed header/footer imports.
 --%>
 <%@page import="domain.ClaimFile"%>
 <%@page import="java.util.ArrayList"%>
@@ -15,7 +16,7 @@
 <%@page import="domain.Claim"%>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
 
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.ATTACH_EVIDENCE; %>
 <script src="<%= RPLPage.ROOT %>/scripts/jquery-1.9.1.js"></script>
 
@@ -68,5 +69,5 @@
 		<input type="submit" name="back" value="Back">
 	</div>
 </form>
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>
 <script src="<%= RPLPage.ROOT %>/scripts/attachEvidence.js"></script>

@@ -2,11 +2,12 @@
     Document   : addRPLEvidence
     Created on : 19/05/2011, 6:02:35 PM
     Author     : James Purves, Mitch Carr
+ *              Modified:   05/08/2013: CW: Changed header/footer imports.
 --%>
 
 <%@page import="domain.Module"%>
 <%@page import="domain.Evidence"%>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.ADD_RPL_EVIDENCE; %>
 <jsp:useBean id="claim" scope="session" class="domain.Claim"/>
 <jsp:useBean id="selectedModule" scope="request" class="domain.Module"/>
@@ -90,4 +91,4 @@
 </table>
 </form>
 
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>

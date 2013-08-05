@@ -1,7 +1,8 @@
 <%-- 
     Document   : moduleEditor
     Created on : 10/10/2012, 9:20:32 PM
-    Author     : James Lee Chin :-)
+    Author     : James Lee Chin
+ *      Modified:   05/08/2013: CW: Changed header/footer imports.
 --%>
 
 <%@page import="domain.Claim"%>
@@ -13,7 +14,7 @@
 <jsp:useBean id="selectError" scope="request" class="util.RPLError"/>
 <% int index = 0; %>
 
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <% 
 String formAction = "";
 
@@ -145,4 +146,4 @@ if(session.getAttribute("claim") != null) {
 </div>
 
         
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>

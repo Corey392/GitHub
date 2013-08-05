@@ -2,8 +2,9 @@
     Document   : registerConfirm
     Created on : 10/05/2011, 9:42:34 PM
     Author     : Adam Shortall
+ *      Modified:   05/08/2013: CW: Changed header/footer imports.
 --%>
-<%@include file="../WEB-INF/jspf/header.jspf" %>
+<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <%--<%@include file="../WEB-INF/jspf/sidebar.jspf" %>--%>
 <%! RPLPage thisPage = RPLPage.REGISTER_CONFIRM; %>
 
@@ -38,4 +39,4 @@
     </tfoot>
 </table>
 
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>

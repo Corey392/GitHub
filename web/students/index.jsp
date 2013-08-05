@@ -3,6 +3,8 @@
 	 Created:    14/05/2011, 9:41:41 AM
 	 Change Log:        1.1: TW: Removed user level navigation, moved to header.
 	             02/06/2013: TW: Added instructions.
+                     05/08/2013: CW: Added drop downs for instructions.
+                                     Changed footer imports.
 	 Purpose:    Welcome page for 'Student' once logged in.
 --%>
 
@@ -87,4 +89,4 @@
     <p>The Claim process is not quick, the evidence needs to be manually reviewed by an Assessor. If it has been more than 1 week and you have not had any feedback, it is recommended that you contact the TAFE directly, if you don't know your Assessor yet, contact the Head Teacher for the Discipline at the Campus.</p>
 </div>
 
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>
