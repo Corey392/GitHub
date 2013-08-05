@@ -35,7 +35,7 @@
 <!-- standard footer -->	
 <div id="footer">
     <% if(user != null && user.getStatus() == Status.LOGGED_IN) { %>
-    <p>User: </p>
+    <p>User: ${user.firstName} ${user.lastName}</p>
     <%}%>
     &copy; Copyright RPL CCC 2013   
     <span>|</span>    <a href="#">Use of services</a>     
