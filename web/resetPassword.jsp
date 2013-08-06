@@ -5,7 +5,7 @@
  *	Change Log: 15/05/2013: TW: Improving display of errors to be consistent across site.
  *	            02/06/2013: TW: Consolidated error messages.
 --%>
-<%@include file="WEB-INF/jspf/header.jspf" %>
+<%@include file="WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.RESET_PASSWORD; %>
 
 <%@page import="domain.User"%>

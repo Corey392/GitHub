@@ -9,7 +9,6 @@
 <%! RPLPage thisPage = RPLPage.CLERICAL_DISCIPLINE;%>
 <%@include file="../WEB-INF/jspf/header_1.jspf" %>
 
-
 <jsp:useBean id="disciplines" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="invalidNameError" scope="request" class="util.RPLError"/>
 <jsp:useBean id="disciplineUpdatedMessage" scope ="request" class="java.lang.String"/>
@@ -47,5 +46,5 @@
     </form>
 </div>
 
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>
 

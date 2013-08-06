@@ -6,7 +6,7 @@
  *				11/04/2013: TW: Data Validation update: User now selects a state instead of manual input.
  *				15/05/2013: TW: Improving display of errors to be consistent across site.
 --%>
-<%@include file="WEB-INF/jspf/header.jspf" %>
+<%@include file="WEB-INF/jspf/header_1.jspf" %>
 <%! RPLPage thisPage = RPLPage.REGISTER; %>
 
 <%@page import="domain.User"%>

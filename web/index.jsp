@@ -69,7 +69,7 @@
 %>
 
 <!DOCTYPE html>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 <script>
     $(document).ready(function() {
         $(".heading").click(function() {
@@ -182,5 +182,3 @@
     <p>More information about credit processes and how to arrange an assessment is available from your local TAFE NSW Institute</p>
 </div>
 <%@include file="WEB-INF/jspf/footer.jspf" %>
-    </body>
-</html>

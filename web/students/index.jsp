@@ -5,13 +5,13 @@
 	             02/06/2013: TW: Added instructions.
                      05/08/2013: CW: Added drop downs for instructions.
                                      Changed footer imports.
+                     05/08/2013: VL: Moved jQuery script tag to header file making it accessible to all pages 
 	 Purpose:    Welcome page for 'Student' once logged in.
 --%>
 
 <%! RPLPage thisPage = RPLPage.STUDENT_HOME; %>
 <%@include file="../WEB-INF/jspf/header_1.jspf" %>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
         $(".heading").click(function() {

@@ -3,8 +3,9 @@
         @author		Bradley Metcalf
         @version	1.0
         Created:	4/08/2013
+        Modified:       5/08/2013: VL: Added Jquery script to <head> tag making it accessible to all pages
 --%>
-<%@page import="domain.User.Role"%>
+
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -12,6 +13,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
+<%@page import="domain.User.Role"%>
 <%@page import="util.*" %>
 <%@page import="web.Form" %>
 <%@page import="domain.User.Status" %>
@@ -21,6 +23,7 @@
 <html>
     <head>
         <script src="<%= RPLFragment.JAVASCRIPT.absoluteAddress%>"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/rpl.css">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/main.css">
@@ -47,7 +50,7 @@
                 <li class="headerItem left"><a href="<%= RPLPage.REGISTER_USER%>">Add User</a></li>
                 <li class="headerItem left"><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT%>">Data Maintenance</a></li>
                 <li class="headerItem left"><a href="<%= RPLPage.ADMIN_MANAGE_TEACHERS%>">Manage Teachers</a></li>
-                <li class="headerItem left"><a href="">Manage Users</a></li>
+                <li class="headerItem left"><a href="<%= RPLPage.ADMIN_MANAGE_USERS%>">Manage Users</a></li>
                     <%	}%>
                 <li class="headerItem right"><a href="<%= RPLPage.ROOT%>/logout">Log Out</a></li>
                 <li class="headerItem right"><a href="<%= RPLPage.CHANGE_PW%>">Change My Password</a></li>
