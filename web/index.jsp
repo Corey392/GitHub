@@ -181,4 +181,4 @@
     <h4>Find out more</h4>
     <p>More information about credit processes and how to arrange an assessment is available from your local TAFE NSW Institute</p>
 </div>
-<%@include file="WEB-INF/jspf/footer.jspf" %>
+<%@include file="WEB-INF/jspf/footer_1.jspf" %>
