@@ -51,7 +51,7 @@
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.REGISTER_USER%>">Add User</a></li>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT%>">Data Maintenance</a></li>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.ADMIN_MANAGE_TEACHERS%>">Manage Teachers</a></li>
-                <li class="headerItem left headerBorderRight"><a href="<%= RPLPage.ADMIN_MANAGE_USERS%>">Manage Users</a></li>
+                <li class="headerItem left headerBorderLeft headerBorderRight"><a href="<%= RPLPage.ADMIN_MANAGE_USERS%>">Manage Users</a></li>
                     <%	}%>
                 <li class="headerItem right headerBorderLeft headerBorderRight"><a href="<%= RPLPage.ROOT%>/logout">Log Out</a></li>
                 <li class="headerItem right headerBorderLeft"><a href="<%= RPLPage.CHANGE_PW%>">Change My Password</a></li>
