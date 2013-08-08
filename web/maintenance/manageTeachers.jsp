@@ -52,10 +52,11 @@
                 <p>Welcome ${user.firstName} ${user.lastName}</p>
                 <h3>Instructions:</h3>
             </div>-->
-            <h2 id="">Panel</h2>
+            <h2>Panel</h2>
             <!--<a href="#rightHelpPanel" data-role="button" data-inline="true" data-mini="true">Overlay</a>-->
-            <a href="#test.html" data-slidepanel="panel">Show Panel</a> or
-            <a href="#test.html" class="panel">Show Panel</a>
+            <a href="<%= RPLPage.ROOT%>/maintenance/test.html" data-slidepanel="panel" id="showpanel">Show Panel</a>
+            
+            
         <!--<form name="<%= FormManageTeachers.NAME%>" action="<%= FormManageTeachers.ACTION%>" method="post">-->
 <!--            <fieldset>
                 <legend>Personal information:</legend>
