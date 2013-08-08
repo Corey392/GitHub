@@ -31,7 +31,6 @@
     
 <%! RPLPage thisPage = RPLPage.CLERICAL_MAINTENANCE_SELECT; %>
 <%@include file="../WEB-INF/jspf/header_1.jspf" %>
-<%--<%@include file="../WEB-INF/jspf/sidebar.jspf" %>--%>
 <div class="body">
       
     <form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.absoluteAddress %>" name="form" id="form">
