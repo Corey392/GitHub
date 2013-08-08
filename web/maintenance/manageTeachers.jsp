@@ -6,122 +6,73 @@
 --%>
 
 <%@page import="web.FormManageTeachers"%>
-<%@include file="../WEB-INF/jspf/header_1.jspf" %>
 
-<%! RPLPage thisPage = RPLPage.ADMIN_MANAGE_TEACHERS; %>
+<meta http-equiv="refresh" content="10" >
+<%! RPLPage thisPage = RPLPage.ADMIN_MANAGE_TEACHERS;%>
 <jsp:useBean id="claim" class="domain.Claim" scope="request"/>
 <jsp:useBean id="listError" scope="request" class="util.RPLError"/>
 
-<% int index = 0; %>
+<% int index = 0;%>
 
-<script>
-    $(document).ready(function() {                        
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('[data-slidepanel]').slidepanel({
+                  orientation: 'top',
+                  mode: 'push'
+        });
 //                $('#submit').click(function(event) {  
 //                    var username=$('#user').val();
 //                 $.get('ActionServlet',{user:username},function(responseText) { 
 //                        $('#welcometext').text(responseText);         
 //                    });
 //                });
-
-        $('#searchBy').change(function() {
-            var username=$('#searchBy').val();
-            alert(username);
-        });
+    
+//        $('#searchBy').change(function() {
+//            var username = $('#searchBy').val();
+//            alert(username);
+//        });
     });
 </script>
 <%-- See more at: http://www.programming-free.com/2012/08/ajax-with-jsp-and-servlet-using-jquery.html#.Uf8-XZLI3jI--%>
-    <body>
-        <div class="">
-            <h1>Manage Teachers Form</h1>
-            <p>Welcome ${user.firstName} ${user.lastName}</p>
-            <h3>Instructions:</h3>
-            
-        </div>
-        <div>
-            
-            <form name="<%= FormManageTeachers.NAME %>" action="<%= FormManageTeachers.ACTION %>" method="post">
-                <fieldset>
+
+<!-- right help panel  
+    <div data-role="panel" id="rightHelpPanel" data-position="right" data-display="overlay" data-dismissible="true" data-theme="b">
+        <h3>Right Panel: Overlay</h3>
+        <p>This panel is positioned on the right with the overlay display mode. The panel markup is <em>after</em> the header, content and footer in the source order.</p>
+        <p>To close, click off the panel, swipe left or right, hit the Esc key, or use the button below:</p>
+        <a href="#" data-rel="close" data-role="button" data-theme="c" data-icon="delete" data-inline="true">Close panel</a>
+    </div> /rightpanel3 -->
+<!--    <div data-role="page" class="ui-responsive-panel">-->
+<!--<div data-role="page" class="ui-responsive-panel">-->
+    <%@include file="../WEB-INF/jspf/header_1.jspf" %>
+<!--</div>-->
+        <div data-role="content">
+<!--            <div class="">
+                <h1>Manage Teachers Form</h1>
+                <p>Welcome ${user.firstName} ${user.lastName}</p>
+                <h3>Instructions:</h3>
+            </div>-->
+            <h2 id="">Panel</h2>
+            <!--<a href="#rightHelpPanel" data-role="button" data-inline="true" data-mini="true">Overlay</a>-->
+            <a href="#test.html" data-slidepanel="panel">Show Panel</a> or
+            <a href="#test.html" class="panel">Show Panel</a>
+        <!--<form name="<%= FormManageTeachers.NAME%>" action="<%= FormManageTeachers.ACTION%>" method="post">-->
+<!--            <fieldset>
                 <legend>Personal information:</legend>
                 Name: <input type="text" size="30"><br>
                 E-mail: <input type="text" size="30"><br>
                 Date of birth: <input type="text" size="10">
-                </fieldset>
-                
-                <div class="tablecontrols">Search By: 
-                <select name="searchBy" id="searchBy">
-                    <option value="" selected></option>
-                    <option value="claimID" selected="${selectedField == 'claimID'}"> Claim ID</option>
-                    <option value="studentID" selected="${selectedField == 'studentID'}">Student ID</option>
-                    <option value="dateMade" selected="${selectedField == 'dateMade'}">Date Made</option>
-                    <option value="dateResolved" selected="${selectedField == 'dateResolved'}">Date Resolved</option>
-                    <option value="status" selected="${selectedField == 'status'}">Status</option>
-                    <option value="courseID" selected="${selectedField == 'courseID'}">Course ID</option>
-                    <option value="disciplineID" selected="${selectedField == 'disciplineID'}">Discipline ID</option>
-                    <option value="campusID" selected="${selectedField == 'campusID'}">Campus ID</option>
-                    <option value="dateResolved" selected="${selectedField == 'dateResolved'}">Date Resolved</option>
-                    <option value="delegateApproved" selected="${selectedField == 'delegateApproved'}">Delegate Approved</option>
-                    <option value="assessorApproved" selected="${selectedField == 'assessorApproved'}">Assessor Approved</option>
-                </select>
-                Search Term: <input type="text" name="searchTerm" /> <input type="submit" name="go" value="Go" />
-                <input type="submit" name="reset" value="Reset" />
-            </div>
-                
-            <input type="checkbox" name="vehicle" value="Bike">Check 1
-            <input type="checkbox" name="vehicle" value="Car">Check 2 
+            </fieldset>-->              
+        
+        
+        <!--</form>-->
+<!--        <p>To make the page work alongside the open panel, it needs to re-flow to a narrower width so it will fit next to the panel. This can be done purely with CSS by adding a left or right margin equal to the panel width (17em) to the page contents to force a re-flow. Second, the invisible layer placed over the page for the click out to dismiss behavior is hidden with CSS so you can click on the page and not close the menu. </p>
+			<p>Here is an example of these rules wrapped in a media query to only apply this behavior above 35em (560px):</p>
+			
+			<pre><code>-->
 
-            <table border="0" class="datatable">
-                <thead>
-                    <tr>
-                        <th>Claim ID</th>
-                        <th>Student ID</th>
-                        <th>Date Made</th>
-                        <th>Date Resolved</th>
-                        <th>Status</th>
-                        <th>Course ID</th>
-                        <th>Discipline ID</th>
-                        <th>Campus ID</th>
-                        <th>Delegate Approved</th>
-                        <th>Assessor Approved</th>
-                        <th>(Select)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:choose>
-                        <c:when test="${len == '0'}">
-                            <tr>
-                                <td align="center" colspan="11">
-                                    <b>No Claims to Display</b>
-                                </td>
-                            </tr>
-                        </c:when>
-                    <c:otherwise>
-                    <% index = 0; %>
-                        <c:forEach var="claim" items="${claims}">
-                            <tr>
-                                <td>${claim.claimID}</td>
-                                <td>${claim.studentID}</td>
-                                <td>${claim.dateMade}</td>
-                                <td><c:choose>
-                                        <c:when test="${empty claim.dateResolved}">Unresolved</c:when>
-                                        <c:otherwise>${claim.dateResolved}</c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>${claim.status}</td>
-                                <td>${claim.courseID}</td>
-                                <td>${claim.disciplineID}</td>
-                                <td>${claim.campusID}</td>
-                                <td>${claim.delegateApproved}</td>
-                                <td>${claim.assessorApproved}</td>
-                                <td align="center"><input type="radio" name="selectedClaim" value="${claim.claimID}" /></td>
-                                <input type="hidden" name="studentID" value="${claim.studentID}:${claim.claimID}"/>
-                            </tr>
-                            <% index++; %>
-                            </c:forEach>
-                     </c:otherwise>
-                </c:choose>
-                </tbody>
-            </table>
-            </form>
         </div>
-
-<%@include file="../WEB-INF/jspf/footer_1.jspf" %>
+<!--<div data-role="footer" id="footer" class="footer" data-theme="c">-->
+    <%@include file="../WEB-INF/jspf/footer_1.jspf" %>    
+<!--</div>-->
+<!--</div>-->
