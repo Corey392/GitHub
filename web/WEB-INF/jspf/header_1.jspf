@@ -28,6 +28,9 @@
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/rpl.css">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/main.css">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/panel.css">
+        
+        <script type="text/javascript" src="js/jquery.slidepanel.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/jquery.slidepanel.css">
         <title><%= thisPage.siteTitle%></title>
     </head>
 
