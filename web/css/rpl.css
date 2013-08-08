@@ -145,7 +145,7 @@ body {
     margin-left:auto;
     margin-right:auto;
     margin-top: 210px; /* Keeps the text bellow the banner and header*/
-    margin-bottom: 80px; /*keeps the text above the footer */
+    margin-bottom: 90px; /*keeps the text above the footer */
 
 }
 
@@ -163,7 +163,7 @@ body {
     color: white;
     z-index: 1;
     width:100%;
-    height:70px;
+    height:80px;
     min-width:960px;
     text-align: center;
     position:fixed;
