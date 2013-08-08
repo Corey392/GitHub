@@ -11,6 +11,7 @@
 <%! RPLPage thisPage = RPLPage.ADMIN_MANAGE_TEACHERS; %>
 <jsp:useBean id="claim" class="domain.Claim" scope="request"/>
 <jsp:useBean id="listError" scope="request" class="util.RPLError"/>
+
 <% int index = 0; %>
 
 <script>
