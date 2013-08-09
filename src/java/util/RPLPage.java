@@ -14,7 +14,7 @@ package util;
  *                  03/08/2013: VL: Added reference to manage teachers page (manageTeachers.jsp) .<br/>
  */
 public enum RPLPage {
-    HOME("", "/index.jsp"),
+    HOME("", "/index_1.jsp"),
     REGISTER("RPL Student Registration", "/studentRegister.jsp"),
     REGISTER_USER("Register User", "/maintenance/addUser.jsp"),
     REGISTER_CONFIRM("RPL Registration Confirmed", "/students/registerConfirm.jsp"),

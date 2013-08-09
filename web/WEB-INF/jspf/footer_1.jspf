@@ -6,39 +6,15 @@
     Change Log : 31/07/2013 10:38 PM VL: Added two examples of footers, needs confirmation
 --%>
 
-
-</div>
-</div>
-<!--<div id="footer">Ourimbah 2013</div>-->
-<!--    footer with multiple rows links haven't been created yet also needs css adjusted-->
-<!--    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="white" class="footer">
-    <tr>						
-        <td class="footerNew">
-                <div class="footerRow">
-                        <a href="aboutus.jsp" ><span class="footer">About RPL</span></a>
-                        <a href="termsOfUse.jsp" ><span class="footer">Terms of Use</span></a>
-                        <a href="privacyPolicy.jsp" ><span class="footer">Privacy Policy</span></a>
-                        <a href="codeOfConduct.jsp" ><span class="footer">Code of Conduct</span></a>
-                        <a href="guidelines/" ><span class="footer">Guidelines</span></a>
-                </div>
-
-                <div class="footerRow">
-                        <a href="support.jsp" ><span class="footer">Contact Support</span></a>
-                </div>
-                <div class="footerRow">
-                        Copyright &copy; 2013 RPL CCC All Rights Reserved.<br/>
-                </div>
-            </td>
-    </tr>
-</table>-->
-<!--    Tafe NSW Website standard footer-->
+</div><!-- end content -->
+</div><!-- end container -->
 <!-- standard footer -->	
-<div id="footer">
-    <% if(user != null && user.getStatus() == Status.LOGGED_IN) { %>
-    <p>User: ${user.firstName} ${user.lastName}</p>
-    <%}%>
-    <p>Copyright Central Coast RPL 2013 | <a href="http://www.dec.nsw.gov.au/footer/privacy" target="_blank">Privacy</a> | <a href="#">Terms of Use</a>
-</div>
-<!-- end standard footer -->
+    <div id="footer">
+        <% if(user != null && user.getStatus() == Status.LOGGED_IN) { %>
+        <p>User: ${user.firstName} ${user.lastName}</p>
+        <%}%>
+        <p>Copyright Central Coast RPL 2013 | <a href="http://www.dec.nsw.gov.au/footer/privacy" target="_blank">Privacy</a> | <a href="#">Terms of Use</a>
+    </div>
+    <!-- end standard footer -->
 </body>
 </html>
