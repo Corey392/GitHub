@@ -370,3 +370,18 @@ div #upload {
     margin-bottom: 5px;
     padding: 5px;
 }
+
+
+#sidePanelRight {
+    position: fixed;
+    right:0px;
+    width:10px;
+    height:100%;
+    background-color: #1e5799;
+    color: transparent;
+}
+
+#sidePanelRight:hover{
+    width:500px;
+    color: white;
+}

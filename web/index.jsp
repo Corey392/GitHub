@@ -12,7 +12,7 @@
 <%@page import="util.RPLPage" %>
 <%! RPLPage thisPage = RPLPage.HOME;%>
 <%--<jsp:useBean id="loginError" scope="request" class="util.RPLError"/>--%>
-
+<div id="sidePanelRight"><p>Hi There</p></div>
 <%@include file="WEB-INF/jspf/header_1.jspf" %>
 
 <%
@@ -181,4 +181,6 @@
     <h4>Find out more</h4>
     <p>More information about credit processes and how to arrange an assessment is available from your local TAFE NSW Institute</p>
 </div>
+
+
 <%@include file="WEB-INF/jspf/footer_1.jspf" %>
