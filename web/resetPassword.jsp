@@ -34,4 +34,4 @@
 <p>If you have not previously registered for the RPL Assist web site, you will need to register for this site separately as being a TAFE student does not automatically provide you with access to this tool.</p>
 </form>
 
-<%@include file="WEB-INF/jspf/footer.jspf" %>
+<%@include file="WEB-INF/jspf/footer_1.jspf" %>

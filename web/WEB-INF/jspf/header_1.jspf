@@ -28,40 +28,45 @@
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/rpl.css">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/main.css">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/panel.css">
+        
+        <script type="text/javascript" src="<%= RPLPage.ROOT%>scripts/jquery.slidepanel.js"></script>
+        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>css/jquery.slidepanel.css">
         <title><%= thisPage.siteTitle%></title>
     </head>
 
     <body>
+        <div id="banner"></div>
         <div id="header">
             <% if (user != null && user.getStatus() == Status.LOGGED_IN) {%>
             <ul id="headerList">
-                <li class="headerItem left"><a href="<%= RPLPage.ROOT%>">Home</a></li>
+                
                     <%if (user.getRole() == Role.STUDENT) {%>
-                <li class="headerItem left"><a href="<%= RPLServlet.CREATE_CLAIM_SERVLET%>?createClaim=true">Create Claim</a></li>
-                <li class="headerItem left"><a href="<%= RPLServlet.LIST_CLAIMS_STUDENT_SERVLET%>?List%20Claims=true">List Claims</a></li>
-                <li class="headerItem left"><a href="<%= RPLPage.STUDENT_DETAILS%>">Manage My Details</a></li>
+                <li class="headerItem left headerBorderLeft"><a href="<%= RPLServlet.CREATE_CLAIM_SERVLET%>?createClaim=true">Create Claim</a></li>
+                <li class="headerItem left headerBorderLeft"><a href="<%= RPLServlet.LIST_CLAIMS_STUDENT_SERVLET%>?List%20Claims=true">List Claims</a></li>
+                <li class="headerItem left headerBorderRight"><a href="<%= RPLPage.STUDENT_DETAILS%>">Manage My Details</a></li>
                     <%	} else if (user.getRole() == Role.TEACHER) {%>
-                <li class="headerItem left"><a href="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET%>?List%20Claims=true">List Available Claims</a></li>
+                <li class="headerItem left headerBorderLeft headerBorderRight"><a href="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET%>?List%20Claims=true">List Available Claims</a></li>
                     <%	} else if (user.getRole() == Role.ADMIN) {%>
-                <li class="headerItem left"><a href="<%= RPLPage.ADMIN_ASSESS_APPROVE_CLAIMS%>">Assess or approve claims</a></li>
-                <li class="headerItem left"><a href="<%= RPLPage.ASSIGN_ASSESSOR_TO_CLAIMS%>">Assign assessors to claims</a></li>
-                <li class="headerItem left"><a href="">Assign assessors/delegates to courses/disciplines</a></li>
+                <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.ADMIN_ASSESS_APPROVE_CLAIMS%>">Assess Claims</a></li>
+                <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.ASSIGN_ASSESSOR_TO_CLAIMS%>">Assign to Claims</a></li>
+                <li class="headerItem left headerBorderRight"><a href="">Assign to Courses/Disciplines</a></li>
                     <%	} else if (user.getRole() == Role.CLERICAL) {%>
-                <li class="headerItem left"><a href="<%= RPLPage.REGISTER_USER%>">Add User</a></li>
-                <li class="headerItem left"><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT%>">Data Maintenance</a></li>
-                <li class="headerItem left"><a href="<%= RPLPage.ADMIN_MANAGE_TEACHERS%>">Manage Teachers</a></li>
-                <li class="headerItem left"><a href="<%= RPLPage.ADMIN_MANAGE_USERS%>">Manage Users</a></li>
+                <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.REGISTER_USER%>">Add User</a></li>
+                <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT%>">Data Maintenance</a></li>
+                <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.ADMIN_MANAGE_TEACHERS%>">Manage Teachers</a></li>
+                <li class="headerItem left headerBorderLeft headerBorderRight"><a href="<%= RPLPage.ADMIN_MANAGE_USERS%>">Manage Users</a></li>
                     <%	}%>
-                <li class="headerItem right"><a href="<%= RPLPage.ROOT%>/logout">Log Out</a></li>
-                <li class="headerItem right"><a href="<%= RPLPage.CHANGE_PW%>">Change My Password</a></li>
+                <li class="headerItem right headerBorderLeft headerBorderRight"><a href="<%= RPLPage.ROOT%>/logout">Log Out</a></li>
+                <li class="headerItem right headerBorderLeft"><a href="<%= RPLPage.CHANGE_PW%>">Change My Password</a></li>
+                <li class="headerItem right headerBorderLeft"><a href="<%= RPLPage.ROOT%>">Home</a></li>
             </ul>
             <%	} else {%>
             <form name="login" action="<%= RPLPage.ROOT%>/home" method="post">
                 <ul id="headerLogin">
                     <li class="headerItem right"><a href="<%= RPLPage.REGISTER%>">Register</a></li>
-                    <li class="headerButton right"><input class="headerButton right loginButton" type="submit" value="Login"></li>
-                    <li class="headerButton right"><label class="loginLabel right" for="username">UserName:</label><input type="text" name="userID" id="userID" />
-                        <label class="loginLabel right" for="password">Password:</label><input type="password" name="password" id="password" /></li>
+                    <li class="headerButton right headerBorderLeft headerBorderRight"><input class="headerButton right loginButton" type="submit"  value="Login"></li>
+                    <li class="headerButton right "><label class="loginLabel right" for="username">Username:</label><input type="text" name="userID" placeholder="Username" id="userID" />
+                        <label class="loginLabel right" for="password">Password:</label><input type="password" name="password" placeholder="Password" id="password" /></li>
 
 
                 </ul>

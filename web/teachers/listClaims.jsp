@@ -103,4 +103,4 @@
     </c:otherwise>
 </c:choose>
 
-<%@include file="../WEB-INF/jspf/footer.jspf" %>
+<%@include file="../WEB-INF/jspf/footer_1.jspf" %>

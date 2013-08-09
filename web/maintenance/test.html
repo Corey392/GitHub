@@ -1,0 +1,61 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div data-role="page" class="ui-responsive-panel">
+            <!-- right help panel  -->
+            <div data-role="panel" id="rightHelpPanel" data-position="right" data-display="overlay" data-dismissible="true" data-theme="b">
+                <h3>Right Panel: Overlay</h3>
+                <p>This panel is positioned on the right with the overlay display mode. The panel markup is <em>after</em> the header, content and footer in the source order.</p>
+                <p>To close, click off the panel, swipe left or right, hit the Esc key, or use the button below:</p>
+                <a href="#" data-rel="close" data-role="button" data-theme="c" data-icon="delete" data-inline="true">Close panel</a>
+            </div><!-- /rightpanel3 -->
+    
+        <div data-role="content">
+<!--            <div class="">
+                <h1>Manage Teachers Form</h1>
+                <p>Welcome ${user.firstName} ${user.lastName}</p>
+                <h3>Instructions:</h3>
+            </div>-->
+            <h2 id="">Panel</h2>
+            <a href="#rightHelpPanel" data-role="button" data-inline="true" data-mini="true">Overlay</a>
+        <!--<form name="<%= FormManageTeachers.NAME%>" action="<%= FormManageTeachers.ACTION%>" method="post">-->      
+        
+        
+        <!--</form>-->
+        <p>To make the page work alongside the open panel, it needs to re-flow to a narrower width so it will fit next to the panel. This can be done purely with CSS by adding a left or right margin equal to the panel width (17em) to the page contents to force a re-flow. Second, the invisible layer placed over the page for the click out to dismiss behavior is hidden with CSS so you can click on the page and not close the menu. </p>
+			<p>Here is an example of these rules wrapped in a media query to only apply this behavior above 35em (560px):</p>
+			
+			<pre><code>
+<!--/* wrap push on wide viewports once open */
+@media (min-width: 35em){
+	.ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-push,
+	.ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-open.ui-panel-content-fixed-toolbar-display-reveal,
+	.ui-responsive-panel.ui-page-panel-open .ui-panel-content-wrap-open.ui-panel-content-wrap-display-push,
+	.ui-responsive-panel.ui-page-panel-open .ui-panel-content-wrap-open.ui-panel-content-wrap-display-reveal {
+		margin-right: 17em;
+	}
+	.ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-open.ui-panel-content-wrap-display-push.ui-panel-content-fixed-toolbar-position-right,
+	.ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-open.ui-panel-content-wrap-display-reveal.ui-panel-content-fixed-toolbar-position-right,
+	.ui-responsive-panel.ui-page-panel-open .ui-panel-content-wrap-open.ui-panel-content-wrap-display-push.ui-panel-content-wrap-position-right,
+	.ui-responsive-panel.ui-page-panel-open .ui-panel-content-wrap-open.ui-panel-content-wrap-display-reveal.ui-panel-content-wrap-position-right {
+		margin: 0 0 0 17em;
+	}
+	.ui-responsive-panel .ui-panel-dismiss-display-push {
+		display: none;
+	}
+}-->
+        </div>
+        
+        <div data-role="footer" id="footer" class="footer" data-theme="c">
+            
+        </div>
+    </body>
+</html>
