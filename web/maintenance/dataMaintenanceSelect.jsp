@@ -117,6 +117,30 @@
                 </c:choose>
                 </tbody>
             </table>
+         
+        <ul class="basictab">   
+            <li class="tab" id="tab"><a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>">Campus</a></li>
+            <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>">Discipline</a></li>
+            <li class="inactiveTab"  ><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Course</a></li>
+            <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></li>
+        </ul>
+        
+        <div id="displayArea" >
+            <div id="scrollingArea" >
+                <div id="campusArea" >
+                    
+                </div>
+                <div id="disciplineArea" >
+                    
+                </div>
+                <div id="courseArea" >
+                    
+                </div>
+                <div id="moduleArea" >
+                    
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 
