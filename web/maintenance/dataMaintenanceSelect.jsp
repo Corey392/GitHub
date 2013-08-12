@@ -121,8 +121,8 @@
         <ul class="basictab">   
             <li class="tab" id="tab"><a href="#campusArea">Campus</a></li>
             <li class="inactiveTab"><a href="#disciplineArea">Discipline</a></li>
-            <li class="inactiveTab"  ><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Course</a></li>
-            <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></li>
+            <li class="inactiveTab"  ><a href="#courseArea">Course</a></li>
+            <li class="inactiveTab"><a href="#moduleArea">Module</a></li>
         </ul>
         
         <div id="displayArea" >
