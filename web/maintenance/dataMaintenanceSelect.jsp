@@ -32,8 +32,7 @@
 <%! RPLPage thisPage = RPLPage.CLERICAL_MAINTENANCE_SELECT; %>
 <%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <div class="body">
-      
-    <form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.absoluteAddress %>" name="form" id="form">
+    <!--<form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.absoluteAddress %>" name="form" id="form">
         <div class="tablecontrols">Select an area to maintain: 
         <select name="maintainarea" id="maintainArea">
             <option value="" selected></option>
@@ -51,9 +50,9 @@
           <option value="Campus">
           <option value="Module">
         </datalist>
-<!--                Search Term: <input type="text" name="searchTerm" /> <input type="submit" name="go" value="Go" />
-                <input type="submit" name="reset" value="Reset" />-->
-            </div>  
+                Search Term: <input type="text" name="searchTerm" /> <input type="submit" name="go" value="Go" />
+                <input type="submit" name="reset" value="Reset" />
+        </div>-->  
         <div>
             <p>Campus<a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:left" width="32" height="32"></a></p>
         </div>
@@ -66,7 +65,8 @@
         <div>
             <p>Module<a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:left" width="32" height="32"></a></p>
         </div>
-        <!--Start of table-->
+      <!--
+        <!--Start of table
         <% int index = 0; %>
         
         <div></div>
@@ -117,6 +117,31 @@
                 </c:choose>
                 </tbody>
             </table>
+         -->
+        <div id="tabContainer">
+            <ul class="basictab">   
+                <li class="tab" id="tab"><a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>">Campus</a></li>
+                <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Discipline</a></li>
+                <li class="inactiveTab"  ><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>">Course</a></li>
+                <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></li>
+            </ul>
+        </div>
+        <div id="displayArea" >
+            <div id="scrollingArea" >
+                <div class="displayItem" id="campusArea" >
+                    <p>Campus</p>
+                </div>
+                <div class="displayItem" id="disciplineArea" >
+                    <p>Discipline</p>
+                </div>
+                <div class="displayItem" id="courseArea" >
+                    <p>Course</p>
+                </div>
+                <div class="displayItem" id="moduleArea" >
+                    <p>Module</p>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 
