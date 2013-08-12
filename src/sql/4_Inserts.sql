@@ -128,15 +128,15 @@ INSERT INTO "CourseModule" ("courseID","moduleID","elective") VALUES
 /* Sample Data for Presentation : RELIES UPON SOME OF THE INFORMATION ABOVE */
 -- Create new users: 123456789, demo_steve, demo_deb, demo_admin, all passwords are 'password'
 -- Course to create a claim for: 19010: Certificate IV in Information Technology (Programming)
-SELECT fn_insertstudent('123456789','demo.student@tafensw.net.au','(DEMO) Jimmy','Jones','Jake','123 Fake Street','','Faketown','NSW',2315,'02 4343 4343','123456789',false,'password');
-SELECT fn_insertUser('demo_steve','password','T','stephen.etherington@tafe.nsw.edu.au','(DEMO) Stephen','Etherington');
-SELECT fn_insertUser('demo_deb','password','A','deborah.spindler@tafe.nsw.edu.au','(DEMO) Deb','Spindler');
-SELECT fn_insertUser('demo_admin','password','C','admin@tafe.nsw.edu.au','(DEMO) Admin','Istrator');
-SELECT fn_updateuser('demo_steve','demo_steve','password');
-SELECT fn_updateuser('demo_deb','demo_deb','password');
-INSERT INTO "Teacher" VALUES ('demo_deb','demo_deb');
-INSERT INTO "Teacher" VALUES ('demo_steve','demo_steve');
-INSERT INTO "Assessor" VALUES ('011', '19010', 1, false, 'demo_steve');
+SELECT fn_insertstudent('student','demo.student@tafensw.net.au','Student','Jones','Jake','123 Fake Street','','Faketown','NSW',2315,'02 4343 4343','123456789',false,'password');
+SELECT fn_insertUser('assesor','password','T','stephen.etherington@tafe.nsw.edu.au','Assesor','Etherington');
+SELECT fn_insertUser('delegate','password','A','deborah.spindler@tafe.nsw.edu.au','Delegate','Spindler');
+SELECT fn_insertUser('admin','password','C','admin@tafe.nsw.edu.au','Admin','Istrator');
+SELECT fn_updateuser('teacher','teacher','password');
+SELECT fn_updateuser('delegate','delegate','password');
+INSERT INTO "Teacher" VALUES ('delegate','delegate');
+INSERT INTO "Teacher" VALUES ('assesor','assesor');
+INSERT INTO "Assessor" VALUES ('011', '19010', 1, false, 'assesor');
 -- Uses Campus 011, Discipline 1, Course 19010, the 4 Modules, Elements, Criterions,
 INSERT INTO "Criterion" VALUES (1, 3, 'Accurately explain relevant provisions of OHS legislation and codes of practice to the workgroup.', 'ICAA5046B');
 INSERT INTO "Criterion" VALUES (2, 3, 'Provide information to the workgroup on the organisation''s OHS policies, procedures and programs, ensuring it is readily accessible by the workgroup.', 'ICAA5046B');
