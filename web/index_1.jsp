@@ -12,9 +12,9 @@
 <%@page import="util.RPLPage" %>
 <%! RPLPage thisPage = RPLPage.HOME;%>
 <%--<jsp:useBean id="loginError" scope="request" class="util.RPLError"/>--%>
-<div id="sidePanelRight"><p>Hi There brad</p></div>
-<%@include file="WEB-INF/jspf/header_1.jspf" %>
 
+<%@include file="WEB-INF/jspf/header_1.jspf" %>
+<div id="sidePanelRight"><p>Hi There brad</p></div>
 <%
 //<p></p>
 //<!--BEGIN: Remove this section when the site is ready to go live -->
@@ -147,12 +147,14 @@
     }
   };
   });<!-- end document ready func -->
+  
+  
 </script>
 <!--Source: https://www.tafensw.edu.au/courses/rpl/#.UarZ2kBmiSo--> 
 <div id="accordion">
     
-    <h3>What is RPL Assist?</h3>
-    <div>
+    <h3 class="heading">What is RPL Assist?</h3>
+    <div class="panel">
         <h2>Credit for previous learning and experience</h2>
         <p>RPL Assist is a system currently in development and being used on a testing and trial basis designed to improve the existing paper based process.</p>
         <p>Students must register separately for access to the RPL Assist system as an account is not automatically created upon registering with the TAFE.</p>
@@ -162,8 +164,8 @@
         <p>With all data entered into the system the delegate prints out the claim along with any evidence and these items are signed by the Delegate, Assessor and Student. The form is then sent to Newcastle for processing.</p>
     </div>
     
-    <h3>What is credit?</h3>
-    <div>
+    <h3 class="heading">What is credit?</h3>
+    <div class="panel">
         <p>If you already have skills and knowledge that are relevant to your course, you may be able to apply for credit.</p>
         <h4>Credit may be granted through a number of processes:</h4>
         <p>Articulation allows you to progress from one completed qualfication to another in a defined pathway (such as from school to TAFE, or from TAFE to university).</p>
@@ -173,8 +175,8 @@
         <p>If you can clearly show you have already gained the equivalent skills or knowledge, you may be given an exemption for a unit of study or, in some cases, a full course.</p>
     </div>
 
-    <h3>Who may apply for credit?</h3>
-    <div>
+    <h3 class="heading">Who may apply for credit?</h3>
+    <div class="panel">
         <p>You may apply for credit if you have:
         <ul>
             <li>completed previous training at TAFE NSW</li>
@@ -197,8 +199,8 @@
         <p>An example of articulation is where you have achieved a whole qualification (such as a Certificate II) with another education and training provider, and you are granted credit for these studies towards a higher level qualification at TAFE NSW (such as a Certificate III).</p>
     </div>
 
-    <h3>Evidence and assessment requirements</h3>
-    <div>
+    <h3 class="heading">Evidence and assessment requirements</h3>
+    <div class="panel">
         <p>You will need to provide evidence to the assessor at your local TAFE campus to demonstrate that you have the knowledge and skills required to be granted credit. The evidence that you provide needs to map to the unit(s) of competency in your course. Staff at your local TAFE NSW campus can assist you with information relevant to your course.</p>
         <p>Your evidence for applications for credit transfer and articulation may include:</p>
         <ul>
