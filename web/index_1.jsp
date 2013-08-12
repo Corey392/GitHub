@@ -12,7 +12,7 @@
 <%@page import="util.RPLPage" %>
 <%! RPLPage thisPage = RPLPage.HOME;%>
 <%--<jsp:useBean id="loginError" scope="request" class="util.RPLError"/>--%>
-<div id="sidePanelRight"><p>Hi There</p></div>
+<div id="sidePanelRight"><p>Hi There brad</p></div>
 <%@include file="WEB-INF/jspf/header_1.jspf" %>
 
 <%
