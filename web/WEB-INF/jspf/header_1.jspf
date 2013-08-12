@@ -24,6 +24,9 @@
     <head>
         <script src="<%= RPLFragment.JAVASCRIPT.absoluteAddress%>"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/rpl.css">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/main.css">
@@ -31,6 +34,8 @@
         
         <script type="text/javascript" src="<%= RPLPage.ROOT%>scripts/jquery.slidepanel.js"></script>
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>css/jquery.slidepanel.css">
+        
+        
         <title><%= thisPage.siteTitle%></title>
     </head>
 
@@ -67,8 +72,6 @@
                     <li class="headerButton right headerBorderLeft headerBorderRight"><input class="headerButton right loginButton" type="submit"  value="Login"></li>
                     <li class="headerButton right "><label class="loginLabel right" for="username">Username:</label><input type="text" name="userID" placeholder="Username" id="userID" />
                         <label class="loginLabel right" for="password">Password:</label><input type="password" name="password" placeholder="Password" id="password" /></li>
-
-
                 </ul>
             </form>
             <% }%>
