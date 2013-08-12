@@ -462,7 +462,7 @@ div #upload {
 #accordion{
     margin-left:auto;
     margin-right:auto;
-    margin-top: 210px; /* Keeps the text bellow the banner and header*/
+    margin-top: 0px; /* Keeps the text bellow the banner and header*/
     margin-bottom: 90px; /*keeps the text above the footer */
     min-width: 720px;
     max-width: 100%;

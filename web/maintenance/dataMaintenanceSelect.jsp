@@ -32,7 +32,7 @@
 <%! RPLPage thisPage = RPLPage.CLERICAL_MAINTENANCE_SELECT; %>
 <%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <div class="body">
-      
+      <!--
     <form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.absoluteAddress %>" name="form" id="form">
         <div class="tablecontrols">Select an area to maintain: 
         <select name="maintainarea" id="maintainArea">
@@ -52,7 +52,7 @@
           <option value="Module">
         </datalist>
 <!--                Search Term: <input type="text" name="searchTerm" /> <input type="submit" name="go" value="Go" />
-                <input type="submit" name="reset" value="Reset" />-->
+                <input type="submit" name="reset" value="Reset" />
             </div>  
         <div>
             <p>Campus<a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:left" width="32" height="32"></a></p>
@@ -66,7 +66,7 @@
         <div>
             <p>Module<a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:left" width="32" height="32"></a></p>
         </div>
-        <!--Start of table-->
+        <!--Start of table
         <% int index = 0; %>
         
         <div></div>
@@ -117,7 +117,7 @@
                 </c:choose>
                 </tbody>
             </table>
-         
+         -->
         <ul class="basictab">   
             <li class="tab" id="tab"><a href="#campusArea">Campus</a></li>
             <li class="inactiveTab"><a href="#disciplineArea">Discipline</a></li>
