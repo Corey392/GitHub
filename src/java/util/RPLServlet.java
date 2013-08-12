@@ -58,8 +58,8 @@ public enum RPLServlet {
     ASSESS_CLAIM_RPL_SERVLET("/teachers/AssessRPLClaim"),
     TEACHER_LIST_CLAIM_RECORDS("/teachers/listClaimRecords"),
     VIEW_EVIDENCE_SERVLET("/teachers/ViewEvidence"),
-    VIEW_TEACHER_CLAIM_SERVLET("/teachers/ViewTeacherClaims"); // Kyoungho Lee
-    
+    VIEW_TEACHER_CLAIM_SERVLET("/teachers/ViewTeacherClaims"), // Kyoungho Lee
+    MAINTAIN_SERVLET("/maintenance/dataMaintenanceSelect"); // Vince Lombardo
 
     public final String relativeAddress;
     public final String absoluteAddress;

@@ -24,17 +24,26 @@
     <head>
         <script src="<%= RPLFragment.JAVASCRIPT.absoluteAddress%>"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<!--        <script>  
+            // Fallback to loading jQuery from a local path if the CDN is unavailable  
+            (window.jQuery || document.write('<script src="/scripts/jquery-1.10.2.min.js"><\/script>'));
+        </script>-->
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/rpl.css">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/main.css">
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/panel.css">
         
-        <script type="text/javascript" src="<%= RPLPage.ROOT%>scripts/jquery.slidepanel.js"></script>
-        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>css/jquery.slidepanel.css">
+ <!--       <script type="text/javascript" src="<%= RPLPage.ROOT%>scripts/jquery.slidepanel.js"></script>
+        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>css/jquery.slidepanel.css">-->
+<!--        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/jquery.ui.tabs.css">        -->
         
+        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/style.css">
+        <script type="text/javascript" src="/scripts/organictabs.jquery.js"></script>
+        <script type="text/javascript" src="/scripts/withoutPlugin.js"></script>
         
         <title><%= thisPage.siteTitle%></title>
     </head>

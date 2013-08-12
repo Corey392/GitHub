@@ -40,18 +40,18 @@ public class AdminManageTeachersServlet extends HttpServlet {
         try {
             String url = RPLPage.ADMIN_MANAGE_TEACHERS.relativeAddress;
             HttpSession session = request.getSession();
-//            User user = (User) session.getAttribute("user");
-//            
-//            UserIO userIO = new UserIO(user.role);
+            User user = (User) session.getAttribute("user");
+            
+            UserIO userIO = new UserIO(user.role);
 //            
 //            // Get user input:
 //            String selectedAccountID = Util.getPageStringID(request, FormAdminListAccounts.selectedAccountID);
 //            String cancel = request.getParameter(Form.CANCEL); 
 //            
-//            // Set list of accounts:
-//            ArrayList<User> accounts = userIO.getListOfTeacherAndAdminUsers();
-//            Collections.sort(accounts);
-//            request.setAttribute("accounts", accounts);
+            // Set list of accounts:
+            ArrayList<User> accounts = userIO.getListOfTeacherAndAdminUsers();
+            Collections.sort(accounts);
+            request.setAttribute("accounts", accounts);
 //            
 //            // Event handling:
 //            if (selectedAccountID != null) {
