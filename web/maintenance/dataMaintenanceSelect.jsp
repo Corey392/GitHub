@@ -119,25 +119,25 @@
             </table>
          
         <ul class="basictab">   
-            <li class="tab" id="tab"><a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>">Campus</a></li>
-            <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>">Discipline</a></li>
+            <li class="tab" id="tab"><a href="#campusArea">Campus</a></li>
+            <li class="inactiveTab"><a href="#disciplineArea">Discipline</a></li>
             <li class="inactiveTab"  ><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Course</a></li>
             <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></li>
         </ul>
         
         <div id="displayArea" >
             <div id="scrollingArea" >
-                <div id="campusArea" >
-                    
+                <div class="displayItem" id="campusArea" >
+                    <p>Campus</p>
                 </div>
-                <div id="disciplineArea" >
-                    
+                <div class="displayItem" id="disciplineArea" >
+                    <p>Discipline</p>
                 </div>
-                <div id="courseArea" >
-                    
+                <div class="displayItem" id="courseArea" >
+                    <p>Course</p>
                 </div>
-                <div id="moduleArea" >
-                    
+                <div class="displayItem" id="moduleArea" >
+                    <p>Module</p>
                 </div>
             </div>
         </div>
