@@ -23,8 +23,6 @@ body {
     height: 150px;
     width: 100%;
     background-color: black;
-    position: fixed;
-    top:0px;
 }
 
 #header {
@@ -38,9 +36,6 @@ body {
     background: linear-gradient(to bottom,  rgba(206,219,233,1) 0%,rgba(170,197,222,1) 17%,rgba(97,153,199,1) 50%,rgba(58,132,195,1) 51%,rgba(65,154,214,1) 59%,rgba(75,184,240,1) 71%,rgba(58,139,194,1) 84%,rgba(38,85,139,1) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cedbe9', endColorstr='#26558b',GradientType=0 ); /* IE6-9 */
 
-
-    position: fixed;
-    top:150px;
     text-align:center;
 
     width:100%;
@@ -144,7 +139,7 @@ body {
     z-index: 0;
     margin-left:auto;
     margin-right:auto;
-    margin-top: 210px; /* Keeps the text bellow the banner and header*/
+    /*margin-top: 210px;  Keeps the text bellow the banner and header*/
     margin-bottom: 90px; /*keeps the text above the footer */
 
 }
@@ -166,7 +161,7 @@ body {
     height:80px;
     min-width:960px;
     text-align: center;
-    position:fixed;
+    position: fixed;
     bottom: 0px;
     font-size: 12pt;
 }
@@ -414,4 +409,18 @@ top: 1px;
 padding-top: 4px;
 background-color: #DBFF6C;
 color: black;
+}
+
+ #displayArea {
+    width: 75%;
+    height: 500px;
+    min-width: 960px;
+    overflow: hidden;
+}
+
+.displayItem {
+    width: 75%;
+    height: 500px;
+    min-width: 960px;
+    float: left;
 }

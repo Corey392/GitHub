@@ -33,6 +33,7 @@
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/panel.css">
         
         <script type="text/javascript" src="<%= RPLPage.ROOT%>scripts/jquery.slidepanel.js"></script>
+        <script type="text/javascript" src="<%= RPLPage.ROOT%>scripts/scroll.js"></script>
         <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>css/jquery.slidepanel.css">
         
         
