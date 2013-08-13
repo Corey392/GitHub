@@ -434,9 +434,10 @@ div #upload {
     position: fixed;
     right:0px;
     width:420px;
-    height:100%;
+    height:50%;
     background-color: #1e5799;
     color: transparent;
+    overflow: auto;
 
     transition:All 1s ease;
     -webkit-transition:All 1s ease;

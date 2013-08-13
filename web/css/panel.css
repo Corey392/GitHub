@@ -11,8 +11,8 @@
     text-align:left;
     /*background-color:#e5eecc;*/
     border:solid 1px #c3c3c3;
-    width:960px;
-    margin-left: auto;
+    width:390px;
+    margin-left: 0px;
     margin-right: auto;
 }
 .heading
@@ -31,8 +31,8 @@
 
     color: #1e5799;
 
-    width:960px;
-    margin-left: auto;
+    width:390px;
+    margin-left: 0px;
     margin-right: auto;
 }
 #panel
@@ -42,7 +42,7 @@
 }
 
 #panel p, #panel h2, #panel h4, #panel ul, #panel h5 {
-    width: 720px;
+    width: 350px;
     margin-left: auto;
     margin-right: auto;
 }

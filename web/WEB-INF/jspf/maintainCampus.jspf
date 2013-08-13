@@ -9,18 +9,16 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="util.RPLPage"%>
 <%@page import="util.RPLServlet"%>
---%>
+
 <c:if test="${requestScope.campuses == null}">
     <c:redirect url="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET.relativeAddress %>" />
 </c:if>
-
-<%--
+--%>
 <jsp:useBean id="campuses" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="uniqueIDMessage" scope="request" class="util.RPLError"/>
 <jsp:useBean id="invalidIDMessage" scope="request" class="util.RPLError"/>
 <jsp:useBean id="invalidNameMessage" scope="request" class="util.RPLError"/>
 <jsp:useBean id="campusUpdatedMessage" scope ="request" class="java.lang.String"/>
---%>
 
 <h2>Update Campuses</h2>
 
