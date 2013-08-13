@@ -108,6 +108,29 @@
              </div> <!-- END List Wrap -->
              </div> <!-- END Organic Tabs (Example One) -->
 	
+             <ul class="basictab">   
+            <li class="tab" id="tab"><a href="#campusArea">Campus</a></li>
+            <li class="inactiveTab"><a href="#disciplineArea">Discipline</a></li>
+            <li class="inactiveTab"  ><a href="#courseArea">Course</a></li>
+            <li class="inactiveTab"><a href="#moduleArea">Module</a></li>
+        </ul>
+<div id="displayArea" >
+            <div id="scrollingArea" >
+                <div class="displayItem" id="campusArea" >
+                    <%@include file="../WEB-INF/jspf/maintainCampus.jspf" %>
+                </div>
+                <div class="displayItem" id="disciplineArea" >
+                    <p>Discipline</p>
+                </div>
+                <div class="displayItem" id="courseArea" >
+                    <p>Course</p>
+                </div>
+                <div class="displayItem" id="moduleArea" >
+                    <p>Module</p>
+                </div>
+            </div>
+        </div>
+
 		 <p>This is some content below the tabs. It will be moved up or down to accommodate the tabbed area above.</p>
     <!--<form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.absoluteAddress %>" name="form" id="form">
         <div class="tablecontrols">Select an area to maintain: 
