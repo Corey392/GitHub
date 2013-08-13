@@ -13,6 +13,7 @@
 		05/05/2013: Bryce Carr:	Removed Element from list. Elements are have a 1:N relationship with Modules, thus they will be incorporated into Module maintenance.
 		08/05/2013: Bryce Carr:	Removed Provider from the list following discussion with Todd Wiggins.
 --%>
+
 <script>
     $(document).ready(function() {                        
 //                $('#submit').click(function(event) {  
@@ -20,18 +21,94 @@
 //                 $.get('ActionServlet',{user:username},function(responseText) { 
 //                        $('#welcometext').text(responseText);         
 //                    });
-//                });
+//                });  
 
+        $(function() {
+            $("#example-one").organicTabs();
+            $("#example-two").organicTabs({
+                "speed": 200
+        });
+
+    });
         $('#maintainarea').change(function() {
             var area=$('#maintainarea').val();
             alert(area);
         });
     });
 </script>
-    
 <%! RPLPage thisPage = RPLPage.CLERICAL_MAINTENANCE_SELECT; %>
+
+<jsp:useBean id="disciplines" scope="request" class="java.util.ArrayList"/>
+<jsp:useBean id="invalidNameError" scope="request" class="util.RPLError"/>
+<jsp:useBean id="disciplineUpdatedMessage" scope ="request" class="java.lang.String"/>
+
 <%@include file="../WEB-INF/jspf/header_1.jspf" %>
-<div class="body">
+
+    <div id="page-wrap">
+            <h1>Organic Tabs</h1>
+            <p>the content in tabbed panels are of different heights. 
+                When we switch between tabs, the content below is gently moved up or down to accomodate.</p>
+            
+        <div id="example-one">		
+            <ul class="nav">
+                <li class="nav-one"><a href="#campus" class="current">Campus</a></li>
+                <li class="nav-two"><a href="#discipline">Discipline</a></li>
+                <li class="nav-three"><a href="#course">Course</a></li>
+                <li class="nav-four last"><a href="#module">Module</a></li>
+            </ul>
+            <div class="list-wrap">
+                    <ul id="campus">
+<!--                <li><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Campus</a></li>
+                <li><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Discipline</a></li>
+                <li><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Course</a></li>
+                <li><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Module</a></li>-->
+                        <li><a href="http://google.com">Google1</a></li>
+                    </ul>
+                    <ul id="discipline" class="hide">
+                        <li><a href="http://google.com">Google2</a></li>
+                    </ul>
+                    <ul id="course" class="hide">
+                        <li><a href="http://google.com">Google3</a></li>   
+                    </ul>
+                    <ul id="module" class="hide">
+                        <li><a href="http://google.com">Google4</a></li>     
+                    </ul>
+             </div> <!-- END List Wrap -->
+    </div> <!-- END Tabs -->
+    </div> <!-- END page -->
+    
+    <p>This is a plugin, so you can call it on multiple tabbed areas, which can be styled totally differently</p>
+	<div id="example-two">			
+    	<ul class="nav">
+            <li class="nav-one"><a href="#campus" class="current">Campus</a></li>
+            <li class="nav-two"><a href="#discipline">Discipline</a></li>
+            <li class="nav-three"><a href="#course">Course</a></li>
+            <li class="nav-four last"><a href="#module">module</a></li>
+        </ul>
+            <div class="list-wrap">
+                <ul id="campus">
+                    <li><a href="http://google.com">Google1</a></li>
+                    
+                </ul>
+
+                <ul id="discipline" class="hide">
+                   <li><a href="http://google.com">Google2</a></li>
+                   
+                </ul>
+
+                <ul id="course" class="hide">
+                   <li><a href="http://google.com">Google3</a></li>
+                   
+                </ul>
+
+                <ul id="module" class="hide">
+                   <li><a href="http://google.com">Google4</a></li>
+                   
+                </ul>	 
+             </div> <!-- END List Wrap -->
+             </div> <!-- END Organic Tabs (Example One) -->
+	
+		 <p>This is some content below the tabs. It will be moved up or down to accommodate the tabbed area above.</p>
     <!--<form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.absoluteAddress %>" name="form" id="form">
         <div class="tablecontrols">Select an area to maintain: 
         <select name="maintainarea" id="maintainArea">
@@ -65,84 +142,23 @@
         <div>
             <p>Module<a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:left" width="32" height="32"></a></p>
         </div>
-      <!--
+      
         <!--Start of table
         <% int index = 0; %>
-        
-        <div></div>
-    <table border="0" class="datatable">
-                <thead>
-                    <tr>
-                        <th>Claim ID</th>
-                        <th>Student ID</th>
-                        <th>Date Made</th>
-                        <th>Date Resolved</th>
-                        <th>Status</th>
-                        <th>(Select)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:choose>
-                        <c:when test="${len == '0'}">
-                            <tr>
-                                <td align="center" colspan="11">
-                                    <b>No Claims to Display</b>
-                                </td>
-                            </tr>
-                        </c:when>
-                    <c:otherwise>
-                    <% index = 0; %>
-                        <c:forEach var="claim" items="${claims}">
-                            <tr>
-                                <td>${claim.claimID}</td>
-                                <td>${claim.studentID}</td>
-                                <td>${claim.dateMade}</td>
-                                <td><c:choose>
-                                        <c:when test="${empty claim.dateResolved}">Unresolved</c:when>
-                                        <c:otherwise>${claim.dateResolved}</c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>${claim.status}</td>
-                                <td>${claim.courseID}</td>
-                                <td>${claim.disciplineID}</td>
-                                <td>${claim.campusID}</td>
-                                <td>${claim.delegateApproved}</td>
-                                <td>${claim.assessorApproved}</td>
-                                <td align="center"><input type="radio" name="selectedClaim" value="${claim.claimID}" /></td>
-                                <input type="hidden" name="studentID" value="${claim.studentID}:${claim.claimID}"/>
-                            </tr>
-                            <% index++; %>
-                            </c:forEach>
-                     </c:otherwise>
-                </c:choose>
-                </tbody>
-            </table>
-         -->
-        <div id="tabContainer">
-            <ul class="basictab">   
+         <!-- the tabs -->
+           <!-- <ul class="basictab">   
                 <li class="tab" id="tab"><a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>">Campus</a></li>
                 <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Discipline</a></li>
                 <li class="inactiveTab"  ><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>">Course</a></li>
                 <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></li>
+                
+                <li class="tab" id="tab"><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Campus</a></li>
+                <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Discipline</a></li>
+                <li class="inactiveTab"  ><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Course</a></li>
+                <li class="inactiveTab"><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Module</a></li>
             </ul>
-        </div>
-        <div id="displayArea" >
-            <div id="scrollingArea" >
-                <div class="displayItem" id="campusArea" >
-                    <p>Campus</p>
-                </div>
-                <div class="displayItem" id="disciplineArea" >
-                    <p>Discipline</p>
-                </div>
-                <div class="displayItem" id="courseArea" >
-                    <p>Course</p>
-                </div>
-                <div class="displayItem" id="moduleArea" >
-                    <p>Module</p>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
+        </div>-->
+    <!--</form>-->
+<!--</div>-->
 
 <%@include file="../WEB-INF/jspf/footer_1.jspf" %>
