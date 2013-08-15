@@ -68,12 +68,12 @@
 //<!--END Remove this section when the site is ready to go live -->
 %>
 <style>
-  #accordion-resizer {
-    padding: 10px;
-    width: 100%;
-    height: 500px;
-  }
-  </style>
+    #accordion-resizer {
+      padding: 10px;
+      width: 100%;
+      height: 60%;
+    }
+</style>
 <script>
     $(document).ready(function() {
 //        http://jqueryui.com/accordion/#hoverintent
@@ -81,9 +81,18 @@
             $( "#accordion" ).accordion({
                 event: "click hoverintent",
                 heightStyle: "fill"
-//heightStyle: "content"
+//                autoHeight: true
+                //heightStyle: "content"
             });
         });
+        
+        var missionWrap = $('#accordion');
+        var w = $(window);
+        w.on('load resize',function() {
+            missionWrap.css({ width:w.width(), height:w.height()});
+//        $(window).resize(function() {
+//            $("#accordion").height($(window).height());
+//        });
         // Default accordian
 //        $(function() {
 //            $( "#accordion" ).accordion();
@@ -93,10 +102,12 @@
         $( "#accordion-resizer" ).resizable({
             minHeight: 140,
             minWidth: 200,
+//            maxheight: 500,
             resize: function() {
               $( "#accordion" ).accordion( "refresh" );
             }
         });
+    });
   /*
    * hoverIntent | Copyright 2011 Brian Cherne
    * http://cherne.net/brian/resources/jquery.hoverIntent.html
@@ -162,7 +173,7 @@
       });
     }
   };
-  });<!-- end document ready func -->
+  }); <!-- end document ready func -->
 </script>
 <!--Source: https://www.tafensw.edu.au/courses/rpl/#.UarZ2kBmiSo--> 
 <div id="accordion-resizer" class="ui-widget-content">

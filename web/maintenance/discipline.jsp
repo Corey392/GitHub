@@ -16,7 +16,7 @@
 <div class="body">
 
     <h2>Update Disciplines</h2>
-
+        
     <b>${invalidNameError}${disciplineUpdatedMessage}</b>
     <form method="post" action="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET.absoluteAddress%>">
 	<table class="inputtable">
