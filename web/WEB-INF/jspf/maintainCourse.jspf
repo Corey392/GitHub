@@ -1,0 +1,62 @@
+<%--
+    @author    : Corey Wills
+    @version   : 1.0
+    Document   : maintainCourse
+    Created on : 14/8/2013, 2:16 PM
+    Change Log : 
+--%>
+
+<%@page import="util.RPLPage"%>
+<%@page import="util.RPLServlet"%>
+
+<c:if test="${requestScope.courses == null}">
+    <c:redirect url="<%= RPLServlet.MAINTAIN_TABLE_SERVLET.relativeAddress %>"/>
+</c:if>
+
+<jsp:useBean id="courses" scope="request" class="java.util.ArrayList"/>
+<jsp:useBean id="courseIDError" scope="request" class="util.RPLError"/>
+<jsp:useBean id="courseNameError" scope="request" class="util.RPLError"/>
+<jsp:useBean id="updateSuccess" scope="request" class="java.lang.String"/>
+<jsp:useBean id="deleteSuccess" scope="request" class="java.lang.String"/>
+<jsp:useBean id="deleteError" scope="request" class="java.lang.String"/>
+<jsp:useBean id="uploadError" scope="request" class="java.lang.String"/>
+<jsp:useBean id="uploadSuccess" scope="request" class="java.lang.String"/>
+
+<h2>Update Courses</h2>
+
+<form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>" enctype="multipart/form-data">
+
+
+${courseIDError}${updateSuccess}${deleteSuccess}${courseNameError}
+${invalidNameError}${uploadError}${uploadSuccess}
+<table class="inputtable">
+    <thead>
+        <tr>
+            <th>Course ID</th>
+            <th>Name</th>
+            <th>Module</th>
+	    <th>Guide File</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="course" items="${courses}">
+            <tr>
+                <td><input required style="width:50px" maxlength="5" type="text" name="courseID[]" value="${course.courseID}" /></td>
+                <td><input required style="width:500px" type="text" name="courseName[]" value="${course.name}" /></td>
+                <td><button type="submit" name="updateModules" value="${course.courseID}">Modify</button></td>
+		<td><input type="file" name="guideFile${course.courseID}" accept="applicaton/pdf"><button type="submit" name="uploadGuideFile" value="${course.courseID}">Upload Guide File</button></td>
+		<td><button type="submit" name="deleteCourse" value="${course.courseID}">Delete</button></td>
+            </tr>
+        </c:forEach>  
+        <tr class="last_row">
+            <td><input style="width:50px" maxlength="5" type="text" value="" name="newCourseID" maxlength="5"/></td>
+            <td><input style="width:500px" type="text" value="" name="newCourseName"/></td>
+	    <td></td>
+            <td><input type="submit" value="Add New Course" name="addCourse" style="width:150px"/></td>
+	    <td></td>
+        </tr>
+    </tbody>
+</table>
+<input type="submit" value="Save Courses" name="saveCourses" style="width:150px" />
+</form>

@@ -1,0 +1,46 @@
+<%--
+    @author    : Corey Wills
+    @version   : 1.0
+    Document   : maintainCampus
+    Created on : 13/8/2013, 2:23 PM
+    Change Log : 
+--%>
+
+<%@page import="util.RPLPage"%>
+<%@page import="util.RPLServlet"%>
+
+<%--<jsp:useBean id="disciplines" scope="request" class="java.util.ArrayList"/>
+<jsp:useBean id="invalidNameError" scope="request" class="util.RPLError"/>
+<jsp:useBean id="disciplineUpdatedMessage" scope ="request" class="java.lang.String"/>
+--%>
+
+
+    <h2>Update Disciplines</h2>
+
+    <b>${invalidNameError}${disciplineUpdatedMessage}</b>
+    <form method="post" action="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET.absoluteAddress%>">
+	<table class="inputtable">
+	    <thead>
+		<tr>
+		    <th>Name</th>
+		    <th>Delete</th>
+		</tr>
+	    </thead>
+	    <tbody>
+		<c:forEach var="discipline" items="${disciplines}">
+		    <tr>
+			<td>
+			    <input type="hidden" name="disciplineID[]" value="${discipline.disciplineID}" />
+			    <input required type="text" name="disciplineName[]" style="width:400px" value="${discipline.name}" />
+			</td>
+			<td><button type="submit" name="deleteDiscipline" style="width:130px;" value="${discipline.disciplineID}">Delete Discipline</button></td>
+		    </tr>
+		</c:forEach>
+		<tr class="last_row">
+		    <td><input type="text" name="newDisciplineName" value="" /><input type="submit" name="addDiscipline" style="width:150px" value="Add New Discipline" /></td>
+		    <td></td>
+		</tr>
+	    </tbody>
+	</table>
+	<input type="submit" name="saveDisciplines" value="Save Disciplines" />
+    </form>

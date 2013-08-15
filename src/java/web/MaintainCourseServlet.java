@@ -65,7 +65,7 @@ public class MaintainCourseServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	    String url = RPLPage.CLERICAL_COURSE.relativeAddress;
+	    String url = RPLPage.CLERICAL_MAINTENANCE_SELECT.relativeAddress;
 	    //String updateCourseID = Util.getPageStringID(request, "updateCourse");
 
 	    HttpSession session = request.getSession();

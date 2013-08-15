@@ -73,7 +73,7 @@
     });
 </script>
 <div id ="sidePanelRight" >
-    <div id="heading1" class="heading">To Make a Claim (Initial)<img src="images/1-navigation-expand.png" style="float:right" alt="" height="16" width="16" /></div>
+    <div id="heading1" class="heading">To Make a Claim (Initial)</div>
     <div id="panel" class="panel1">
         <ul>
                 <li>Click "Create Claim" from the menu on the left.</li>
@@ -87,7 +87,7 @@
         <p>Your claim will be reviewed and you will be contacted advising you of the next step.</p>
     </div>
 
-    <div id="heading2" class="heading">To Make a Claim (1st Review)<img src="images/1-navigation-expand.png" style="float:right" alt="" height="16" width="16" /></div>
+    <div id="heading2" class="heading">To Make a Claim (1st Review)</div>
     <div id="panel" class="panel2">
         <ul>
                 <li>You should receive an email or phone call advising you that further information is required.</li>
@@ -103,17 +103,17 @@
         <p>Your claim will be reviewed again with your evidence by the Assessor assigned to your claim, you will need be contacted by the Assessor as you will need to attend the TAFE Campus and meet with your Assessor to complete your claim.</p>
     </div>
 
-    <div id="heading3" class="heading">What happens if I cannot finish my Claim?<img src="images/1-navigation-expand.png" style="float:right" alt="" height="16" width="16" /></div>
+    <div id="heading3" class="heading">What happens if I cannot finish my Claim?</div>
     <div id="panel" class="panel3">
         <p>You can save your Claim as a Draft at anytime and return to it through the "List Claims" menu item.</p>
     </div>
 
-    <div id="heading4" class="heading">I submitted my claim, but I forgot to add something?<img src="images/1-navigation-expand.png" style="float:right" alt="" height="16" width="16" /></div>
+    <div id="heading4" class="heading">I submitted my claim, but I forgot to add something?</div>
     <div id="panel" class="panel4">
         <p>That's Okay, you will have another chance to update your Claim. You will be contacted by email or phone once each stage has been completed. If you have been contacted by your Assessor, please contact them directly if you have progressed passed the "Attach Evidence" stage.</p>
     </div>
 
-    <div id="heading5" class="heading">My Claim has not updated for sometime?<img src="images/1-navigation-expand.png" style="float:right" alt="" height="16" width="16" /></div>
+    <div id="heading5" class="heading">My Claim has not updated for sometime?</div>
     <div id="panel" class="panel5">
         <p>The Claim process is not quick, the evidence needs to be manually reviewed by an Assessor. If it has been more than 1 week and you have not had any feedback, it is recommended that you contact the TAFE directly, if you don't know your Assessor yet, contact the Head Teacher for the Discipline at the Campus.</p>
     </div>

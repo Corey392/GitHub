@@ -437,7 +437,7 @@ div #upload {
     height:50%;
     background-color: #1e5799;
     color: transparent;
-    overflow: auto;
+    overflow-y: scroll;
 
     transition:All 1s ease;
     -webkit-transition:All 1s ease;

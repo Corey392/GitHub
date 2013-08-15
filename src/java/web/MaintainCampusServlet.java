@@ -46,7 +46,7 @@ public class MaintainCampusServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String url = RPLPage.CLERICAL_CAMPUS.relativeAddress;
+            String url = RPLPage.CLERICAL_MAINTENANCE_SELECT.relativeAddress;
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             
@@ -102,7 +102,7 @@ public class MaintainCampusServlet extends HttpServlet {
         
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        String url = RPLPage.CLERICAL_CAMPUS.relativeAddress;
+        String url = RPLPage.CLERICAL_MAINTENANCE_SELECT.relativeAddress;
         
         if (invalidFields.isEmpty()) {
             try {
@@ -143,7 +143,7 @@ public class MaintainCampusServlet extends HttpServlet {
 	
 	HttpSession session = request.getSession();
 	User user = (User)session.getAttribute("user");
-	String url = RPLPage.CLERICAL_CAMPUS.relativeAddress;
+	String url = RPLPage.CLERICAL_MAINTENANCE_SELECT.relativeAddress;
 	
 	String campusID = request.getParameter("deleteCampus");		
 	Campus deleteCampus = Util.getCampusWithDisciplinesAndCourses(campusID, user.role);
@@ -171,7 +171,7 @@ public class MaintainCampusServlet extends HttpServlet {
     private void saveCampuses(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        String url = RPLPage.CLERICAL_CAMPUS.relativeAddress;
+        String url = RPLPage.CLERICAL_MAINTENANCE_SELECT.relativeAddress;
         CampusIO campusIO = new CampusIO(user.role);
         
         String[] campusIDs = request.getParameterValues("campusID[]");
