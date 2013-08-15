@@ -38,7 +38,7 @@
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="<%= RPLFragment.RPL_CSS.absoluteAddress%>">
-        <link rel="stylesheet" type="text/css" href="<%= RPLFragment.MAIN_CSS.absoluteAddress%>">
+        <!--<link rel="stylesheet" type="text/css" href="<%= RPLFragment.MAIN_CSS.absoluteAddress%>">-->
         <link rel="stylesheet" type="text/css" href="<%= RPLFragment.PANEL_CSS.absoluteAddress%>">
         <!-- not used -->
  <!--       <script type="text/javascript" src="<%= RPLPage.ROOT%>/scripts/jquery.slidepanel.js"></script>

@@ -2,7 +2,7 @@
     Purpose:    Displays links to data maintenance pages for Clerical Admin.
     Document:	dataMaintenanceSelect
     Created on:	23/04/2013, 12:16:31 PM
-    Author:	Bryce
+    Author:	Bryce, Vince Lombardo
     Version:    1.003
     Modified:   05/05/2013
     Change Log: 23/04/2013: Bryce Carr: Created page, added links to servlets that exist (even if they don't actually work).
@@ -12,8 +12,8 @@
                                         Centered table. UI prettiness isn't a concern at the moment but this was a trivial change and it's slightly more appealing.
 		05/05/2013: Bryce Carr:	Removed Element from list. Elements are have a 1:N relationship with Modules, thus they will be incorporated into Module maintenance.
 		08/05/2013: Bryce Carr:	Removed Provider from the list following discussion with Todd Wiggins.
+                12/08/2013: Vince:	Added Tab widget
 --%>
-
 <script>
     $(document).ready(function() {                        
 //                $('#submit').click(function(event) {  
@@ -23,19 +23,19 @@
 //                    });
 //                });  
 
-        $(function() {
-            $("#example-one").organicTabs();
-            $("#example-two").organicTabs({
-                "speed": 200
-        });
-
-    });
+//        $(function() {
+//            $("#example-one").organicTabs();
+//            $("#example-two").organicTabs({
+//                "speed": 200
+//            });
+//        });
         $('#maintainarea').change(function() {
             var area=$('#maintainarea').val();
             alert(area);
         });
     });
 </script>
+
 <%! RPLPage thisPage = RPLPage.CLERICAL_MAINTENANCE_SELECT; %>
 
 <jsp:useBean id="disciplines" scope="request" class="java.util.ArrayList"/>
@@ -43,25 +43,27 @@
 <jsp:useBean id="disciplineUpdatedMessage" scope ="request" class="java.lang.String"/>
 
 <%@include file="../WEB-INF/jspf/header_1.jspf" %>
-
-    <div id="page-wrap">
-            <h1>Organic Tabs</h1>
-            <p>the content in tabbed panels are of different heights. 
-                When we switch between tabs, the content below is gently moved up or down to accomodate.</p>
+<div id="sidePanelRight"><p>Hi There brad</p></div>
+    <div id="page-wrap">            
+        <h1>Data Maintenance</h1>
+        <div id="example-one">
             
-        <div id="example-one">		
             <ul class="nav">
                 <li class="nav-one"><a href="#campus" class="current">Campus</a></li>
                 <li class="nav-two"><a href="#discipline">Discipline</a></li>
                 <li class="nav-three"><a href="#course">Course</a></li>
                 <li class="nav-four last"><a href="#module">Module</a></li>
+<!--                <li class="nav-one"><a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>" class="current">Campus</a></li>
+                <li class="nav-two"><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Discipline</a></li>
+                <li class="nav-three"><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>">Course</a></li>
+                <li class="nav-four last"><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></li>-->
             </ul>
             <div class="list-wrap">
                     <ul id="campus">
-<!--                <li><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Campus</a></li>
-                <li><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Discipline</a></li>
-                <li><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Course</a></li>
-                <li><a href="<%= RPLServlet.MAINTAIN_SERVLET %>">Module</a></li>-->
+                        <li><a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>">Campus</a></li>
+                        <li><a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>">Discipline</a></li>
+                        <li><a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>">Course</a></li>
+                        <li><a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>">Module</a></li>
                         <li><a href="http://google.com">Google1</a></li>
                     </ul>
                     <ul id="discipline" class="hide">
@@ -75,7 +77,7 @@
                     </ul>
              </div> <!-- END List Wrap -->
     </div> <!-- END Tabs -->
-    </div> <!-- END page -->
+
     
     <p>This is a plugin, so you can call it on multiple tabbed areas, which can be styled totally differently</p>
 	<div id="example-two">			
@@ -120,28 +122,9 @@
         </select>
         
         <input list="options">
-
-        <datalist id="options">
-          <option value="Discipline">
-          <option value="Course">
-          <option value="Campus">
-          <option value="Module">
-        </datalist>
                 Search Term: <input type="text" name="searchTerm" /> <input type="submit" name="go" value="Go" />
                 <input type="submit" name="reset" value="Reset" />
-        </div>-->  
-        <div>
-            <p>Campus<a href="<%= RPLServlet.MAINTAIN_CAMPUS_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:left" width="32" height="32"></a></p>
-        </div>
-        <div>
-            <p>Course<a href="<%= RPLServlet.MAINTAIN_COURSE_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:left" width="32" height="32"></a></p>
-        </div>
-        <div>
-            <p>Discipline<a href="<%= RPLServlet.MAINTAIN_DISCIPLINE_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:left" width="32" height="32"></a></p>
-        </div>
-        <div>
-            <p>Module<a href="<%= RPLServlet.MAINTAIN_MODULE_SERVLET %>"><img src="<%= RPLPage.ROOT %>/images/left_grey.png" alt="No picture found" style="float:left" width="32" height="32"></a></p>
-        </div>
+        </div>-->
       
         <!--Start of table
         <% int index = 0; %>
@@ -160,5 +143,5 @@
         </div>-->
     <!--</form>-->
 <!--</div>-->
-
+    </div> <!-- END page -->
 <%@include file="../WEB-INF/jspf/footer_1.jspf" %>
