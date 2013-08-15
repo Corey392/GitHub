@@ -66,13 +66,13 @@
                     <%if (user.getRole() == Role.STUDENT) {%>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLServlet.CREATE_CLAIM_SERVLET%>?createClaim=true">Create Claim</a></li>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLServlet.LIST_CLAIMS_STUDENT_SERVLET%>?List%20Claims=true">List Claims</a></li>
-                <li class="headerItem left headerBorderRight"><a href="<%= RPLPage.STUDENT_DETAILS%>">Manage My Details</a></li>
+                <li class="headerItem left headerBorderLeft headerBorderRight"><a href="<%= RPLPage.STUDENT_DETAILS%>">Manage My Details</a></li>
                     <%	} else if (user.getRole() == Role.TEACHER) {%>
                 <li class="headerItem left headerBorderLeft headerBorderRight"><a href="<%= RPLServlet.VIEW_TEACHER_CLAIM_SERVLET%>?List%20Claims=true">List Available Claims</a></li>
                     <%	} else if (user.getRole() == Role.ADMIN) {%>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.ADMIN_ASSESS_APPROVE_CLAIMS%>">Assess Claims</a></li>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.ASSIGN_ASSESSOR_TO_CLAIMS%>">Assign to Claims</a></li>
-                <li class="headerItem left headerBorderRight"><a href="">Assign to Courses/Disciplines</a></li>
+                <li class="headerItem left headerBorderLeft headerBorderRight"><a href="">Assign to Courses/Disciplines</a></li>
                     <%	} else if (user.getRole() == Role.CLERICAL) {%>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.REGISTER_USER%>">Add User</a></li>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLPage.CLERICAL_MAINTENANCE_SELECT%>">Data Maintenance</a></li>
