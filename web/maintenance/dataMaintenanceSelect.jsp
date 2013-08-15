@@ -78,7 +78,7 @@
              </div> <!-- END List Wrap -->
     </div> <!-- END Tabs -->
 
-    
+<!--    
     <p>This is a plugin, so you can call it on multiple tabbed areas, which can be styled totally differently</p>
 	<div id="example-two">			
     	<ul class="nav">
@@ -107,8 +107,8 @@
                    <li><a href="http://google.com">Google4</a></li>
                    
                 </ul>	 
-             </div> <!-- END List Wrap -->
-             </div> <!-- END Organic Tabs (Example One) -->
+             </div>  END List Wrap 
+             </div>  END Organic Tabs (Example One) -->
 	
 		 <p>This is some content below the tabs. It will be moved up or down to accommodate the tabbed area above.</p>
     <!--<form method="post" action="<%= RPLServlet.MAINTAIN_COURSE_MODULES_SERVLET.absoluteAddress %>" name="form" id="form">

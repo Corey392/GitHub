@@ -9,8 +9,11 @@
 
 
 #accordion p { margin: 0 0 20px 0; }
-#page-wrap { width: 440px; margin: 80px auto; }
+#page-wrap { width: 100%; margin: 80px auto; }
 #accordion h1 { font: bold 40px Sans-Serif; margin: 0 0 20px 0; }
+.nav a {
+    text-decoration: none;
+}
 
 /* Generic Utility */
 /*.hide { position: absolute; top: -9999px; left: -9999px; }*/
@@ -41,7 +44,7 @@
 
 /* Specific to example two */
 
-#example-two .list-wrap { background: #eee; padding: 10px; margin: 0 0 15px 0; }
+/*#example-two .list-wrap { background: #eee; padding: 10px; margin: 0 0 15px 0; }
 
 #example-two ul { list-style: none; }
 #example-two ul li a { display: block; border-bottom: 1px solid #666; padding: 4px; color: #666; }
@@ -54,4 +57,4 @@
 #example-two .nav li a { display: block; padding: 5px; background: #666; color: white; font-size: 10px; text-align: center; border: 0; }
 
 #example-two li a.current,#example-two li a.current:hover { background-color: #eee !important; color: black; }
-#example-two .nav li a:hover, #example-two .nav li a:focus { background: #999;}
+#example-two .nav li a:hover, #example-two .nav li a:focus { background: #999;}*/
