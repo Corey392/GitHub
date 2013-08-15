@@ -20,9 +20,21 @@ body {
 }
 
 #banner {
-    height: 150px;
+    height: 100px;
     width: 100%;
     background-color: black;
+    position: fixed;
+    top:0px;
+}
+
+#banner p {
+    width:75%;
+    min-width: 960px;
+    text-align: right;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 150px;
 }
 
 #header {
@@ -40,15 +52,20 @@ body {
 
     width:100%;
     min-width:960px;
-    height: 50px;
+    height: 40px;
 
-    line-height:50px;
+    line-height:40px;
     font-size: 12pt;
     color:#e4e4e4;
+    
+    position: fixed;
+    top:100px;
+    
+    margin-bottom: 0px;
 }
 
 #header .headerButton {
-    height:50px;
+    height:40px;
     background: none;
 
     border: none;
@@ -89,8 +106,8 @@ body {
 }
 
 #headerList .headerItem  a, #headerLogin .headerItem  a{
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
     width:auto;
     display: block;
     text-decoration:none;
@@ -139,8 +156,9 @@ body {
     z-index: 0;
     margin-left:auto;
     margin-right:auto;
-    /*margin-top: 210px;  Keeps the text bellow the banner and header*/
-    margin-bottom: 90px; /*keeps the text above the footer */
+    margin-top: 150px;  /*Keeps the text bellow the banner and header*/
+    margin-bottom: 50px; /*keeps the text above the footer */
+
 
 }
 
@@ -158,12 +176,18 @@ body {
     color: white;
     z-index: 1;
     width:100%;
-    height:80px;
+    height:30px;
+    line-height: 30px;
     min-width:960px;
     text-align: center;
     position: fixed;
     bottom: 0px;
     font-size: 12pt;
+    border-top: #0575f4 solid 1px;
+}
+
+#footer p {
+    margin-top: 0px;
 }
 
 #footer a {
@@ -426,7 +450,10 @@ div #upload {
 }
 
 #sidePanelRight {
+    margin-top: 0px;
+    
     position: fixed;
+    top:140px;
     right:0px;
     width:420px;
     height:100%;
@@ -443,6 +470,15 @@ div #upload {
     -o-transform: rotate(0) scale(1) skew(0) translate(400px);
     -ms-transform: rotate(0) scale(1) skew(0) translate(400px);
 
+}
+
+#sidePanelRight:hover{
+    color:white;
+    transform: rotate(0) scale(1) skew(0) translate(0);
+    -webkit-transform: rotate(0) scale(1) skew(0) translate(0);
+    -moz-transform: rotate(0) scale(1) skew(0) translate(0);
+    -o-transform: rotate(0) scale(1) skew(0) translate(0);
+    -ms-transform: rotate(0) scale(1) skew(0) translate(0);
 }
 
 .basictab li{

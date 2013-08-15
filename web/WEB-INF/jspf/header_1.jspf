@@ -25,17 +25,17 @@
     <head>
         <script src="<%= RPLFragment.JAVASCRIPT.absoluteAddress%>"></script>
         <script src="<%= RPLFragment.GOOGLE_JQUERY_MIN_JS.relativeAddress%>"></script>
-<!--        <script>  
-            // Fallback to loading jQuery from a local path if the CDN is unavailable  
-            (window.jQuery || document.write('<script src="<%= RPLFragment.JQUERY_LOCAL_MIN.relativeAddress%>"><\/script>'));
-        </script>-->
+        <!--        <script>  
+                    // Fallback to loading jQuery from a local path if the CDN is unavailable  
+                    (window.jQuery || document.write('<script src="<%= RPLFragment.JQUERY_LOCAL_MIN.relativeAddress%>"><\/script>'));
+                </script>-->
         <link rel="stylesheet" href="<%= RPLFragment.JQUERY_UI_THEMES_CSS.relativeAddress%>" />
         <script src="<%= RPLFragment.JQUERY_UI.relativeAddress%>"></script>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="<%= RPLFragment.TAB_CSS.absoluteAddress%>">
-        
+
         <!--<script src="scripts/withoutPlugin.js"></script>-->
-        
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="<%= RPLFragment.RPL_CSS.absoluteAddress%>">
         <!--<link rel="stylesheet" type="text/css" href="<%= RPLFragment.MAIN_CSS.absoluteAddress%>">-->
@@ -46,24 +46,29 @@
 <!--        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/jquery.ui.tabs.css">        -->
         <script src="<%= RPLPage.ROOT%>/scripts/organictabs.jquery.js"></script>
 
-<script>
-    $(function() {
-        $("#example-one").organicTabs();
-        $("#example-two").organicTabs({
-            "speed": 100
-        });
-    });
-</script>
+        <script>
+            $(function() {
+                $("#example-one").organicTabs();
+                $("#example-two").organicTabs({
+                    "speed": 100
+                });
+            });
+        </script>
         <title><%= thisPage.siteTitle%></title>
     </head>
 
     <body>
-        <div id="banner"></div>
+        <div id="banner">
+            <% if (user != null && user.getStatus() == Status.LOGGED_IN) {%>
+        <p>Logged in as: ${user.firstName} ${user.lastName}</p>
+        <%}%>
+        </div>
+        
         <div id="header">
             <% if (user != null && user.getStatus() == Status.LOGGED_IN) {%>
             <ul id="headerList">
-                
-                    <%if (user.getRole() == Role.STUDENT) {%>
+
+                <%if (user.getRole() == Role.STUDENT) {%>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLServlet.CREATE_CLAIM_SERVLET%>?createClaim=true">Create Claim</a></li>
                 <li class="headerItem left headerBorderLeft"><a href="<%= RPLServlet.LIST_CLAIMS_STUDENT_SERVLET%>?List%20Claims=true">List Claims</a></li>
                 <li class="headerItem left headerBorderLeft headerBorderRight"><a href="<%= RPLPage.STUDENT_DETAILS%>">Manage My Details</a></li>
