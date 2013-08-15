@@ -8,7 +8,7 @@ package util;
  * <b>Change Log:</b>  22/04/2013:  Bryce Carr: Added reference to new Data Maintenance page (dataMaintenanceSelect.jsp).<br/>
  *                  24/04/2013: Bryce Carr: Added header comments to match code conventions.<br/>
  *                  05/05/2013: TW: Added site title field which is used in the browser on tabs / window title bar. Added a variety of fields over time, see line comments.<br/>
- *					07/05/2013:	BC: Added RPLPage field for CLERICAL_PROVIDER page.<br/>
+ *                  07/05/2013:	BC: Added RPLPage field for CLERICAL_PROVIDER page.<br/>
  *                  02/08/2013: VL: Added reference to assign assessor to claims page (assignAssessor.jsp) .<br/>
  *                  02/08/2013: VL: Added reference to assess or approve claims page (assessApproveClaims.jsp) .<br/>
  *                  03/08/2013: VL: Added reference to manage teachers page (manageTeachers.jsp) .<br/>
@@ -90,8 +90,8 @@ public enum RPLPage {
      * @param relativeAddress address relative to ROOT, beginning with a slash.
      */
     RPLPage(String title, String relativeAddress) {
-		this.title = title;
-		this.siteTitle = title + (title.length() > 0 ? " - " : "") + "RPL Assist";
+        this.title = title;
+        this.siteTitle = title + (title.length() > 0 ? " - " : "") + "RPL Assist";
         this.relativeAddress = relativeAddress;
         this.absoluteAddress = ROOT + relativeAddress;
     }

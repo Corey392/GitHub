@@ -4,6 +4,7 @@
         @version	1.0
         Created:	4/08/2013
         Modified:       5/08/2013: VL: Added Jquery script to <head> tag making it accessible to all pages
+                        12/08/2013: VL: Added enums for JQuery CDN Strings, css, stylesheets to RPLFragment class, making maintenance easier between versions
 --%>
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -23,28 +24,36 @@
 <html>
     <head>
         <script src="<%= RPLFragment.JAVASCRIPT.absoluteAddress%>"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="<%= RPLFragment.GOOGLE_JQUERY_MIN_JS.relativeAddress%>"></script>
 <!--        <script>  
             // Fallback to loading jQuery from a local path if the CDN is unavailable  
-            (window.jQuery || document.write('<script src="/scripts/jquery-1.10.2.min.js"><\/script>'));
+            (window.jQuery || document.write('<script src="<%= RPLFragment.JQUERY_LOCAL_MIN.relativeAddress%>"><\/script>'));
         </script>-->
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+        <link rel="stylesheet" href="<%= RPLFragment.JQUERY_UI_THEMES_CSS.relativeAddress%>" />
+        <script src="<%= RPLFragment.JQUERY_UI.relativeAddress%>"></script>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="<%= RPLFragment.TAB_CSS.absoluteAddress%>">
         
+        <!--<script src="scripts/withoutPlugin.js"></script>-->
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/rpl.css">
-        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/main.css">
-        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/panel.css">
-        
- <!--       <script type="text/javascript" src="<%= RPLPage.ROOT%>scripts/jquery.slidepanel.js"></script>
-        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>css/jquery.slidepanel.css">-->
+        <link rel="stylesheet" type="text/css" href="<%= RPLFragment.RPL_CSS.absoluteAddress%>">
+        <!--<link rel="stylesheet" type="text/css" href="<%= RPLFragment.MAIN_CSS.absoluteAddress%>">-->
+        <link rel="stylesheet" type="text/css" href="<%= RPLFragment.PANEL_CSS.absoluteAddress%>">
+        <!-- not used -->
+ <!--       <script type="text/javascript" src="<%= RPLPage.ROOT%>/scripts/jquery.slidepanel.js"></script>
+        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/jquery.slidepanel.css">-->
 <!--        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/jquery.ui.tabs.css">        -->
-        
-        <link rel="stylesheet" type="text/css" href="<%= RPLPage.ROOT%>/css/style.css">
         <script src="<%= RPLPage.ROOT%>/scripts/organictabs.jquery.js"></script>
-<!--        <script src="<%= RPLPage.ROOT%>/scripts/withoutPlugin.js"></script>-->
-        
+
+<script>
+    $(function() {
+        $("#example-one").organicTabs();
+        $("#example-two").organicTabs({
+            "speed": 100
+        });
+    });
+</script>
         <title><%= thisPage.siteTitle%></title>
     </head>
 

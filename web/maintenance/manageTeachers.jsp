@@ -11,69 +11,172 @@
 <%! RPLPage thisPage = RPLPage.ADMIN_MANAGE_TEACHERS;%>
 <jsp:useBean id="claim" class="domain.Claim" scope="request"/>
 <jsp:useBean id="listError" scope="request" class="util.RPLError"/>
+<jsp:useBean id="disciplines" scope="request" class="java.util.ArrayList"/>
 
 <% int index = 0;%>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('[data-slidepanel]').slidepanel({
-                  orientation: 'top',
-                  mode: 'push'
-        });
-//                $('#submit').click(function(event) {  
-//                    var username=$('#user').val();
-//                 $.get('ActionServlet',{user:username},function(responseText) { 
-//                        $('#welcometext').text(responseText);         
-//                    });
-//                });
+// Add the "focus" value to class attribute 
+//  $('ul.checkbox li').focusin( function() {
+//    $(this).addClass('focus');
+//  }
+//  );
+//
+//  // Remove the "focus" value to class attribute 
+//  $('ul.checkbox li').focusout( function() {
+//    $(this).removeClass('focus');
+//  }
+//  );
     
 //        $('#searchBy').change(function() {
 //            var username = $('#searchBy').val();
 //            alert(username);
 //        });
+//        $(function(){
+//                // Variable to get ids for the checkboxes
+//                var idCounter=1;
+//            $("#btn1").click(function(){
+//                var val = $("#txtAdd").val();
+//                $("#divContainer").append ( "<label for='chk_" + idCounter + "'>" + val + "</label><input id='chk_" + idCounter + "' type='checkbox' value='" + val + "' />" );
+//                idCounter ++;
+//            });
+//        });
+        
+//        $('#addCheckbox').click(function() {
+//            var text = $('#discipline').val();
+//            alert(text);
+//            $('#checkboxes').append('<input type="checkbox" /> ' + text + '<br />');
+//        });
     });
 </script>
-<%-- See more at: http://www.programming-free.com/2012/08/ajax-with-jsp-and-servlet-using-jquery.html#.Uf8-XZLI3jI--%>
+<style type="text/css">
+    fieldset.group  { 
+      border: solid;
+      border-color: #0575f4;
+      margin: 0; 
+      padding: 0; 
+      margin-bottom: 1.25em; 
+      padding: .125em;
+    } 
 
-<!-- right help panel  
-    <div data-role="panel" id="rightHelpPanel" data-position="right" data-display="overlay" data-dismissible="true" data-theme="b">
-        <h3>Right Panel: Overlay</h3>
-        <p>This panel is positioned on the right with the overlay display mode. The panel markup is <em>after</em> the header, content and footer in the source order.</p>
-        <p>To close, click off the panel, swipe left or right, hit the Esc key, or use the button below:</p>
-        <a href="#" data-rel="close" data-role="button" data-theme="c" data-icon="delete" data-inline="true">Close panel</a>
-    </div> /rightpanel3 -->
-<!--    <div data-role="page" class="ui-responsive-panel">-->
-<!--<div data-role="page" class="ui-responsive-panel">-->
+    fieldset.group legend { 
+      margin: 0; 
+      padding: 5; 
+      font-weight: bold;
+      font-size: large;
+      margin-left: 20px; 
+      /*font-size: 100%;*/ 
+      color: #0575f4; 
+    } 
+    ul.checkbox  { 
+      margin: 0; 
+      padding: 0; 
+      margin-left: 20px; 
+      list-style: none;
+    } 
+
+    ul.checkbox li input { 
+      margin-right: .25em; 
+    } 
+
+    ul.checkbox li { 
+      border: 1px transparent solid; 
+    } 
+
+    ul.checkbox li label { 
+      margin-left: .25em;
+    } 
+/*    ul.checkbox li:hover,
+    ul.checkbox li.focus  { 
+      background-color: lightyellow; 
+      border: 1px gray solid; 
+      width: 12em; 
+    }*/
+</style>
     <%@include file="../WEB-INF/jspf/header_1.jspf" %>
 <!--</div>-->
-        <div data-role="content">
-<!--            <div class="">
-                <h1>Manage Teachers Form</h1>
-                <p>Welcome ${user.firstName} ${user.lastName}</p>
-                <h3>Instructions:</h3>
-            </div>-->
-            <h2>Panel</h2>
-            <!--<a href="#rightHelpPanel" data-role="button" data-inline="true" data-mini="true">Overlay</a>-->
-            <a href="<%= RPLPage.ROOT%>/maintenance/test.html" data-slidepanel="panel" id="showpanel">Show Panel</a>
+        <div>
+            <div class="">
+                <h1>Manage Teachers</h1>
+                <!--<p>Welcome ${user.firstName} ${user.lastName}</p>-->
+            </div>
             
-            
-        <!--<form name="<%= FormManageTeachers.NAME%>" action="<%= FormManageTeachers.ACTION%>" method="post">-->
-<!--            <fieldset>
-                <legend>Personal information:</legend>
-                Name: <input type="text" size="30"><br>
-                E-mail: <input type="text" size="30"><br>
-                Date of birth: <input type="text" size="10">
-            </fieldset>-->              
-        
-        
-        <!--</form>-->
-<!--        <p>To make the page work alongside the open panel, it needs to re-flow to a narrower width so it will fit next to the panel. This can be done purely with CSS by adding a left or right margin equal to the panel width (17em) to the page contents to force a re-flow. Second, the invisible layer placed over the page for the click out to dismiss behavior is hidden with CSS so you can click on the page and not close the menu. </p>
-			<p>Here is an example of these rules wrapped in a media query to only apply this behavior above 35em (560px):</p>
-			
-			<pre><code>-->
+            <form name="<%= FormManageTeachers.NAME%>" action="<%= FormManageTeachers.ACTION%>" method="post">
+                <fieldset form="" class="group"> 
+                <legend>Disciplines Maintained</legend> 
+                <ul class="checkbox"> 
+                    <li><input type="checkbox" id="cb1" value="IT" /><label for="cb1">IT</label></li> 
+                    <li><input type="checkbox" id="cb2" value="Business" /><label for="cb2">Business</label></li> 
+                    <li><input type="checkbox" id="cb3" value="Accounting" /><label for="cb3">Accounting</label></li> 
+                    <li><input type="checkbox" id="cb4" value="Science" /><label for="cb4">Science</label></li> 
+                    <li><input type="checkbox" id="cb5" value="Cooking" /><label for="cb5">Cooking</label></li> 
+                    <li><input type="checkbox" id="cb6" value="Administration" /><label for="cb6">Administration</label></li> 
+                </ul> 
+            </fieldset>
+    <!--            <div id="cblist">
+                        <input type="checkbox" value="first checkbox" id="cb1" /> <label for="cb1">first checkbox</label>
+                    </div>
+    <!--            <div id="checkboxes">
 
+                </div>
+                <select name="searchBy" id="discipline">
+                        <option value="" selected>Technology</option>
+                </select>
+                <input type="text" id="newCheckText" /> <button id="addCheckbox">Add Discipline</button>-->
+
+    <!--            <div id='divContainer'></div>
+                <input type="text" id="txtAdd" /> 
+                <button id="btn1">Click</button>-->
+
+    <!--            <div class="userinput">
+                    <input style="text-align:right; width:75px" required maxlength="3" type="text" value="${campus.campusID}" name="campusID[]" />
+                </div>-->
+
+
+                <div class="tablecontrols">Search By: 
+                    <select name="searchBy" id="searchBy">
+                        <option value="" selected></option>
+                        <option value="claimID" selected="${selectedField == 'claimID'}"> Claim ID</option>
+                        <option value="studentID" selected="${selectedField == 'studentID'}">Student ID</option>
+                        <option value="dateMade" selected="${selectedField == 'dateMade'}">Date Made</option>
+                        <option value="dateResolved" selected="${selectedField == 'dateResolved'}">Date Resolved</option>
+                        <option value="status" selected="${selectedField == 'status'}">Status</option>
+                        <option value="courseID" selected="${selectedField == 'courseID'}">Course ID</option>
+                        <option value="disciplineID" selected="${selectedField == 'disciplineID'}">Discipline ID</option>
+                        <option value="campusID" selected="${selectedField == 'campusID'}">Campus ID</option>
+                        <option value="dateResolved" selected="${selectedField == 'dateResolved'}">Date Resolved</option>
+                        <option value="delegateApproved" selected="${selectedField == 'delegateApproved'}">Delegate Approved</option>
+                        <option value="assessorApproved" selected="${selectedField == 'assessorApproved'}">Assessor Approved</option>
+                    </select>
+                    Search Term: <input type="text" name="searchTerm" /> <input type="submit" name="go" value="Go" />
+                    <input type="submit" name="reset" value="Reset" />
+                </div>
+
+                <table border="0" class="datatable">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Claims Assigned</th>
+                            <th>Claims Pending</th>
+                            <th>Claim Assessed</th>
+                            <th>(Select)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:choose>
+                            <c:when test="${len == '0'}">
+                                <tr>
+                                    <td align="center" colspan="11">
+                                        <b>No Teachers to Display</b>
+                                    </td>
+                                </tr>
+                            </c:when>
+                    </c:choose>
+                    </tbody>
+                </table>
+
+            </form>
         </div>
-<!--<div data-role="footer" id="footer" class="footer" data-theme="c">-->
-    <%@include file="../WEB-INF/jspf/footer_1.jspf" %>    
-<!--</div>-->
-<!--</div>-->
+    <%@include file="../WEB-INF/jspf/footer_1.jspf" %>
