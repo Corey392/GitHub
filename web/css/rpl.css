@@ -23,8 +23,11 @@ body {
     height: 150px;
     width: 100%;
     background-color: black;
+<<<<<<< HEAD
     position: fixed;
     top:0px;
+=======
+>>>>>>> parent of 73c378b... Banner and footer fixes
 }
 
 #header {
@@ -144,7 +147,11 @@ body {
     z-index: 0;
     margin-left:auto;
     margin-right:auto;
+<<<<<<< HEAD
     margin-top: 210px; /* Keeps the text bellow the banner and header*/
+=======
+    /*margin-top: 210px;  Keeps the text bellow the banner and header*/
+>>>>>>> parent of 73c378b... Banner and footer fixes
     margin-bottom: 90px; /*keeps the text above the footer */
 
 }
@@ -451,6 +458,7 @@ div #upload {
 
 }
 
+<<<<<<< HEAD
 #sidePanelRight:hover{
     color:white;
     transform: rotate(0) scale(1) skew(0) translate(0);
@@ -458,6 +466,11 @@ div #upload {
     -moz-transform: rotate(0) scale(1) skew(0) translate(0);
     -o-transform: rotate(0) scale(1) skew(0) translate(0);
     -ms-transform: rotate(0) scale(1) skew(0) translate(0);
+=======
+.basictab li{
+display: inline;
+margin: 0;
+>>>>>>> parent of 73c378b... Banner and footer fixes
 }
 
 #accordion{

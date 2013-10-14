@@ -9,6 +9,7 @@
 </div><!-- end content -->
 </div><!-- end container -->
 <!-- standard footer -->	
+<<<<<<< HEAD
     <div id="footer">
         <% if(user != null && user.getStatus() == Status.LOGGED_IN) { %>
         <p>User: ${user.firstName} ${user.lastName}</p>
@@ -16,5 +17,14 @@
         <p>Copyright Central Coast RPL 2013 | <a href="http://www.dec.nsw.gov.au/footer/privacy" target="_blank">Privacy</a> | <a href="#">Terms of Use</a>
     </div>
     <!-- end standard footer -->
+=======
+<div id="footer">
+    <% if(user != null && user.getStatus() == Status.LOGGED_IN) { %>
+    <p>Logged in as: ${user.firstName} ${user.lastName}</p>
+    <%}%>
+    <p>Copyright Central Coast RPL 2013 | <a href="http://www.dec.nsw.gov.au/footer/privacy" target="_blank">Privacy</a> | <a href="#">Terms of Use</a>
+</div>
+<!-- end standard footer -->
+>>>>>>> parent of 73c378b... Banner and footer fixes
 </body>
 </html>
