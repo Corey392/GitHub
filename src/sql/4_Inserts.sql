@@ -458,5 +458,5 @@ SELECT fn_updateuser('teacher','teacher','password');
 SELECT fn_updateuser('delegate','delegate','password');
 INSERT INTO "Teacher" VALUES ('delegate','delegate');
 INSERT INTO "Teacher" VALUES ('assesor','assesor');
-INSERT INTO "Assessor" VALUES ('011', '19010', 1, false, 'assesor');
+INSERT INTO "Assessor" VALUES ('011', '10317', 1, false, 'assesor');
 
